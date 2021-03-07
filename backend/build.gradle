@@ -1,0 +1,12 @@
+allprojects {
+    group 'me.travelplan'
+    version '1.0'
+}
+
+subprojects {
+    apply plugin: 'java'
+}
+
+project('api') {
+}
+
