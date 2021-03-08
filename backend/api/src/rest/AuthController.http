@@ -1,0 +1,22 @@
+POST {{apiUrl}}/auth/register
+Content-Type: application/json
+
+{"email": "{{TEST_USER_EMAIL}}", "password": "{{TEST_USER_PASSWORD}}", "name":  "testname"}
+
+###
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{"email": "{{TEST_USER_EMAIL}}", "password": "{{TEST_USER_PASSWORD}}"}
+
+> {%
+client.global.set("authorizationToken", "Bearer " + response.body.accessToken);
+client.global.set("refreshToken", "Bearer " + response.body.refreshToken);
+client.log("Auth Token : " + client.global.get("authorizationToken"));
+client.log("RefreshToken : " + client.global.get("refreshToken"));
+%}
+
+###
+GET {{apiUrl}}/auth/me
+Content-Type: application/json
+Authorization: {{authorizationToken}}
