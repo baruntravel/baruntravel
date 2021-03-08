@@ -117,6 +117,12 @@ dependencies {
     testImplementation('org.springframework.restdocs:spring-restdocs-mockmvc')
 }
 
+test {
+    useJUnitPlatform {
+        includeEngines 'junit-jupiter'
+    }
+}
+
 /*************************
  * Query DSL
  *************************/
@@ -160,6 +166,9 @@ bootJar {
     }
 }
 
+/*************************
+ * Flyway
+ *************************/
 flyway {
 //    schemas = ['apjung']
     baselineVersion = 0
