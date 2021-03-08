@@ -55,5 +55,6 @@ gradle-app.setting
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
 
-src/main/generated
+api/src/main/generated
 build
+db_volume

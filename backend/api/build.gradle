@@ -16,6 +16,7 @@ buildscript {
 plugins {
     id "idea"
     id "org.asciidoctor.convert" version "2.4.0"
+    id "org.flywaydb.flyway" version "7.0.3"
 }
 
 apply plugin: "org.springframework.boot"
@@ -54,10 +55,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
     // Yaml Resource Resolver
@@ -83,7 +81,7 @@ dependencies {
      */
     runtimeOnly 'mysql:mysql-connector-java'
     runtimeOnly 'com.h2database:h2'
-
+    compile "org.flywaydb:flyway-core"
 
     /**
      * JWT Dependencies
@@ -160,4 +158,13 @@ bootJar {
     from ("${asciidoctor.outputDir}/html5") {
         into 'static/docs'
     }
+}
+
+flyway {
+//    schemas = ['apjung']
+    baselineVersion = 0
+    encoding = 'UTF-8'
+    validateOnMigrate = true
+    baselineOnMigrate = true
+    locations = ["filesystem:${file('src/main/resources/db/migration').absolutePath}"]
 }
