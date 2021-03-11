@@ -9,10 +9,18 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Route exact path="/" component={MainPage} />
-        <Route path="/start" component={SelectLocationPage} />
-        <Route exact path="/:id/places" component={HotplacePage} />
-        <Route exact path="/:id/routes" component={UsersRoutePage} />
+        <Route exact path="/">
+          <MainPage />
+        </Route>
+        <Route path="/start">
+          <SelectLocationPage />
+        </Route>
+        <Route exact path="/:id/places">
+          <HotplacePage />
+        </Route>
+        <Route exact path="/:id/routes">
+          <UsersRoutePage />
+        </Route>
       </Router>
     </div>
   );
