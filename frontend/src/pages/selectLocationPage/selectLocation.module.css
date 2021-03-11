@@ -1,0 +1,60 @@
+.container {
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logoWrap {
+  width: 100px;
+  height: 100px;
+  /* margin: 0 auto; */
+  position: relative;
+  background-color: green;
+  border-radius: 50%;
+}
+
+.logoTitle {
+  text-align: center;
+  color: white;
+  position: absolute;
+  top: 32%;
+  left: 23%;
+}
+
+.title {
+  font-size: 24px;
+}
+
+.profileWrap {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #f1f1f1;
+}
+
+/* Body */
+.body {
+  width: 1024px;
+  margin: 0 auto;
+}
+
+.districtList {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  list-style: none;
+}
+
+.district {
+  border: outset;
+  text-align: center;
+}
+
+.district:hover {
+  background-color: skyblue;
+}
