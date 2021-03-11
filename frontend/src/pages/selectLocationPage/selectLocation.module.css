@@ -10,23 +10,6 @@
   align-items: center;
 }
 
-.logoWrap {
-  width: 100px;
-  height: 100px;
-  /* margin: 0 auto; */
-  position: relative;
-  background-color: green;
-  border-radius: 50%;
-}
-
-.logoTitle {
-  text-align: center;
-  color: white;
-  position: absolute;
-  top: 32%;
-  left: 23%;
-}
-
 .title {
   font-size: 24px;
 }
@@ -41,7 +24,8 @@
 /* Body */
 .body {
   width: 1024px;
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
 }
 
 .districtList {
@@ -52,9 +36,15 @@
 
 .district {
   border: outset;
-  text-align: center;
 }
 
 .district:hover {
   background-color: skyblue;
+}
+
+/* 지역 클릭 후 */
+.locationBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

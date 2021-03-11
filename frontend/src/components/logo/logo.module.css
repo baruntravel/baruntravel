@@ -1,0 +1,16 @@
+.logoWrap {
+  width: 100px;
+  height: 100px;
+  /* margin: 0 auto; */
+  position: relative;
+  background-color: green;
+  border-radius: 50%;
+}
+
+.logoTitle {
+  text-align: center;
+  color: white;
+  position: absolute;
+  top: 32%;
+  left: 23%;
+}
