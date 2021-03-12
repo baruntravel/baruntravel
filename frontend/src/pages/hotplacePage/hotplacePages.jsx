@@ -1,10 +1,9 @@
 import React from 'react'
 
-const HotplacePages = ({match}) => {
-    const location = match.params.id;
+const HotplacePages = () => {
     return (
         <div>
-            <h1>{location} 핫플레이스</h1>
+            <h1>핫플레이스</h1>
         </div>
     )
 }

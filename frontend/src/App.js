@@ -1,6 +1,6 @@
 import "./App.css";
 import MainPage from "./pages/mainPage/mainPage";
-import SelectLocationPage from "./pages/selectLocationPage/selectLocation";
+import SelectAreaPage from "./pages/selectAreaPage/selectAreaPage";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import UsersRoutePage from "./pages/usersRoutePage/usersRoutePage";
 import HotplacePage from "./pages/hotplacePage/hotplacePages";
@@ -13,7 +13,7 @@ function App() {
           <MainPage />
         </Route>
         <Route path="/start">
-          <SelectLocationPage />
+          <SelectAreaPage />
         </Route>
         <Route exact path="/:id/places">
           <HotplacePage />

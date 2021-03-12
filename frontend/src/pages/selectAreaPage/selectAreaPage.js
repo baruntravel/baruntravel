@@ -1,20 +1,20 @@
-import styles from "./selectLocation.module.css";
+import styles from "./selectAreaPage.module.css";
 import { useState } from "react";
 import { useHistory, Link } from "react-router-dom";
-import districtList from "../../assets/districtList.json";
+import areaList from "../../assets/areaList.json";
 import Logo from "../../components/logo/logo";
 
-const SelectLocation = () => {
+const Selectarea = () => {
   const history = useHistory();
   const [isLoggedIn, setLoggedIn] = useState(true);
-  const [location, setLocation] = useState();
+  const [area, setArea] = useState();
 
   //로그인 안돼있을시 홈으로
   !isLoggedIn && history.push("/");
 
   //
-  const handleLocationClick = (e) => {
-    setLocation(e.target.id);
+  const handleAreaClick = (e) => {
+    setArea(e.target.id);
   };
 
   return (
@@ -27,14 +27,14 @@ const SelectLocation = () => {
         </div>
         <div className={styles.body}>
           {/* 지역 클릭 전 */}
-          {!location ? (
-            <ul className={styles.districtList}>
-              {districtList.map((item) => {
+          {!area ? (
+            <ul className={styles.areaList}>
+              {areaList.map((item) => {
                 return (
                   <li
-                    className={styles.district}
+                    className={styles.area}
                     id={item}
-                    onClick={(e) => handleLocationClick(e)}
+                    onClick={(e) => handleAreaClick(e)}
                   >
                     {item}
                   </li>
@@ -44,14 +44,14 @@ const SelectLocation = () => {
           ) : (
             // 지역 클릭 후
             <>
-              <div className={styles.locationBox}>
-                <h1 className={styles.locationTitle}>{location}</h1>
+              <div className={styles.areaBox}>
+                <h1 className={styles.areaTitle}>{area}</h1>
                 <div className={styles.buttonBox}>
                   <button className={styles.hotplace}>
-                    <Link to={`${location}/places`}>핫플레이스 보기</Link>
+                    <Link to={`${area}/places`}>핫플레이스 보기</Link>
                   </button>
                   <button className={styles.route}>
-                    <Link to={`${location}/routes`}>추천 루트 보기</Link>
+                    <Link to={`${area}/routes`}>추천 루트 보기</Link>
                   </button>
                 </div>
               </div>
@@ -63,4 +63,4 @@ const SelectLocation = () => {
   );
 };
 
-export default SelectLocation;
+export default Selectarea;
