@@ -13,7 +13,7 @@ import {
 
 const CategoryBar = (props) => {
   return (
-    <ul className={styles.CategoryBar}>
+    <ul className={styles.CategoryBar} id="category">
       <li id="CE7" data-order="0" className={styles.caffe}>
         <FontAwesomeIcon icon={faCoffee} className={styles.icon} />
         <span>카페</span>
