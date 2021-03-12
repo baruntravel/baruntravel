@@ -1,0 +1,50 @@
+.container {
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  font-size: 24px;
+}
+
+.profileWrap {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #f1f1f1;
+}
+
+/* Body */
+.body {
+  width: 1024px;
+  display: flex;
+  justify-content: center;
+}
+
+.areaList {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  list-style: none;
+}
+
+.area {
+  border: outset;
+}
+
+.area:hover {
+  background-color: skyblue;
+}
+
+/* 지역 클릭 후 */
+.areaBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
