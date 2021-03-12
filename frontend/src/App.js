@@ -1,9 +1,9 @@
 import "./App.css";
 import MainPage from "./pages/mainPage/mainPage";
 import SelectLocationPage from "./pages/selectLocationPage/selectLocation";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import UsersRoutePage from "./pages/usersRoutePage/usersRoutePage";
-import HotplacePage from "./pages/hotplacePage/hotplacePages";
+import HotplacePage from "./pages/hotPlacePage/hotplacePage";
 
 function App() {
   return (
