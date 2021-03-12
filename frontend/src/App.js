@@ -1,13 +1,14 @@
 import "./App.css";
 import MainPage from "./pages/mainPage/mainPage";
 import SelectLocationPage from "./pages/selectLocationPage/selectLocation";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import UsersRoutePage from "./pages/usersRoutePage/usersRoutePage";
-import HotplacePage from "./pages/hotplacePage/hotplacePages";
+import HotplacePage from "./pages/hotPlacePage/hotplacePage";
+import { RecoilRoot } from "recoil";
 
 function App() {
   return (
-    <div className="App">
+    <RecoilRoot>
       <Router>
         <Route exact path="/">
           <MainPage />
@@ -22,7 +23,7 @@ function App() {
           <UsersRoutePage />
         </Route>
       </Router>
-    </div>
+    </RecoilRoot>
   );
 }
 
