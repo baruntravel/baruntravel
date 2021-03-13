@@ -2,10 +2,10 @@ USE `travelplan`;
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `email` VARCHAR(255) NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
   `created_at` DATETIME NOT NULL,
   `updated_at` DATETIME DEFAULT NULL,
   `deleted_at` DATETIME DEFAULT NULL,
