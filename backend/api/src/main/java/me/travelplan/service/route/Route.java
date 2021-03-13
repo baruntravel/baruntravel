@@ -1,6 +1,7 @@
 package me.travelplan.service.route;
 
 import lombok.NoArgsConstructor;
+import me.travelplan.config.jpa.BaseEntity;
 
 import javax.persistence.*;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "routes")
-public class Route {
+public class Route extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
