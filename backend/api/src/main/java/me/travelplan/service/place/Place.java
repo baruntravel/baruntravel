@@ -1,12 +1,13 @@
 package me.travelplan.service.place;
 
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import me.travelplan.config.jpa.BaseEntity;
 import me.travelplan.service.file.File;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "places")
 public class Place extends BaseEntity {

@@ -1,11 +1,12 @@
 package me.travelplan.service.file;
 
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import me.travelplan.config.jpa.BaseEntity;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "files")
 public class File extends BaseEntity {

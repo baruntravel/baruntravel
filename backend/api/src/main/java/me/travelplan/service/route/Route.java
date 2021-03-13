@@ -1,12 +1,13 @@
 package me.travelplan.service.route;
 
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import me.travelplan.config.jpa.BaseEntity;
 
 import javax.persistence.*;
 import java.util.List;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "routes")
 public class Route extends BaseEntity {
