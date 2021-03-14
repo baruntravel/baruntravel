@@ -4,14 +4,23 @@ import PortalCart from "../../containers/portalCart/portalCart";
 import styles from "./hotplacePage.module.css";
 
 const HotplacePage = (props) => {
-  const [cartPortal, setCartPortal] = useState(true);
+  const [cartPortal, setCartPortal] = useState(false);
+  const [place, setPlace] = useState({});
   const handleCartPortal = () => {
     setCartPortal(!cartPortal);
   };
+  const clickedPlace = (place) => {
+    setPlace(place);
+  };
   return (
     <div>
-      <HotplaceMap handleCartPortal={handleCartPortal} />
-      {cartPortal && <PortalCart />}
+      <HotplaceMap
+        handleCartPortal={handleCartPortal}
+        clickedPlace={clickedPlace}
+      />
+      {cartPortal && (
+        <PortalCart place={place} handleCartPortal={handleCartPortal} />
+      )}
     </div>
   );
 };
