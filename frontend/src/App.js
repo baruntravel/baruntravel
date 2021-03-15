@@ -3,7 +3,7 @@ import MainPage from "./pages/mainPage/mainPage";
 import SelectAreaPage from "./pages/selectAreaPage/selectAreaPage";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import UsersRoutePage from "./pages/usersRoutePage/usersRoutePage";
-import HotplacePage from "./pages/hotPlacePage/hotplacePage";
+import HotplacePage from "./pages/hotplacePage/hotplacePage";
 import { RecoilRoot } from "recoil";
 import MyRoutePage from "./pages/myRoutePage/myRoutePage";
 import SideMyProfile from "./components/sideMyProfile/sideMyProfile";
