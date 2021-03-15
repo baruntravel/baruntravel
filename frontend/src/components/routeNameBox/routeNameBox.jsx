@@ -3,7 +3,7 @@ import styles from "./routeNameBox.module.css";
 
 const RouteNameBox = ({ item, objKey, addPlace }) => {
   const handleClick = () => {
-    addPlace(objKey);
+    addPlace && addPlace(objKey);
   };
   return <div onClick={handleClick}>{item.routeName}</div>;
 };
