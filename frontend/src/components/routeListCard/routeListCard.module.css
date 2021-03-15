@@ -1,0 +1,11 @@
+.RouteListCard {
+  height: 10%;
+  width: 100%;
+  padding: 5%;
+  margin-top: 10px;
+  background-color: wheat;
+}
+
+.routeName :hover {
+  background-color: grey;
+}
