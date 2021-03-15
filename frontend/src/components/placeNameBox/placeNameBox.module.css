@@ -1,0 +1,8 @@
+.PlaceNameBox {
+  display: inline-block;
+  width: 100%;
+}
+
+.deleteBtn {
+  float: right;
+}

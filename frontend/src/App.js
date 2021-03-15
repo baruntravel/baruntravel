@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import UsersRoutePage from "./pages/usersRoutePage/usersRoutePage";
 import HotplacePage from "./pages/hotPlacePage/hotplacePage";
 import { RecoilRoot } from "recoil";
+import MyRoutePage from "./pages/myRoutePage/myRoutePage";
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
         </Route>
         <Route exact path="/:id/routes">
           <UsersRoutePage />
+        </Route>
+        <Route exact path="/:id/myRoute">
+          <MyRoutePage />
         </Route>
       </Router>
     </RecoilRoot>
