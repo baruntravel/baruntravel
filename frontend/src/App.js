@@ -6,6 +6,7 @@ import UsersRoutePage from "./pages/usersRoutePage/usersRoutePage";
 import HotplacePage from "./pages/hotPlacePage/hotplacePage";
 import { RecoilRoot } from "recoil";
 import MyRoutePage from "./pages/myRoutePage/myRoutePage";
+import SideMyProfile from "./components/sideMyProfile/sideMyProfile";
 
 function App() {
   return (
@@ -25,6 +26,10 @@ function App() {
         </Route>
         <Route exact path="/:id/myRoute">
           <MyRoutePage />
+        </Route>
+        {/* 테스트 */}
+        <Route exact path="/test">
+          <SideMyProfile />
         </Route>
       </Router>
     </RecoilRoot>
