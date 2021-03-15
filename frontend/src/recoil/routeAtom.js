@@ -2,9 +2,10 @@ import { atom } from "recoil";
 
 export const myRouteCart = atom({
   key: "myRouteCart",
-  default: [
-    {
+  default: {
+    test: {
       routeName: "test",
+      places: [],
     },
-  ],
+  },
 });

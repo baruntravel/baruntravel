@@ -4,10 +4,11 @@ import styles from "./hotplaceMap.module.css";
 
 const { kakao } = window;
 
-const HotplaceMap = ({ handleCartPortal }) => {
+const HotplaceMap = ({ handleCartPortal, clickedPlace }) => {
   const insertToCart = useCallback(
     (place) => {
       console.log(place);
+      clickedPlace(place);
       handleCartPortal();
     },
     [handleCartPortal]
