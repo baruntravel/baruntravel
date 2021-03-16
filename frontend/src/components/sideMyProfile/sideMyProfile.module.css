@@ -1,0 +1,13 @@
+.SideMyProfile {
+  width: 33vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: lightgray;
+}
+
+.profileImage {
+  border-radius: 50%;
+  width: 10em;
+  height: 10em;
+}
