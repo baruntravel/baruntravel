@@ -1,0 +1,13 @@
+.ReviewForm {
+  width: 60%;
+  height: 90vh;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.rate > li {
+  border-right: none;
+}
