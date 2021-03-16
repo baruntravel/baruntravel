@@ -51,7 +51,9 @@ const Selectarea = () => {
                     <Link to={`${area}/places`}>핫플레이스 보기</Link>
                   </button>
                   <button className={styles.route}>
-                    <Link to={`${area}/routes`}>추천 루트 보기</Link>
+                    <Link to={{ pathname: `${area}/routes`, area: area }}>
+                      추천 루트 보기
+                    </Link>
                   </button>
                 </div>
               </div>
