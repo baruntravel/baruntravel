@@ -67,7 +67,7 @@ export const myRouteCart = atom({
 export const usersRouteItems = atom({
   key: "userRouteCart",
   default: {
-    bank1: {
+    TEST1: {
       routeName: "TEST",
       places: [
         {
@@ -93,6 +93,35 @@ export const usersRouteItems = atom({
           addressName: "서울 중구 을지로 16",
           x: "126.979476558519",
           y: "37.5658314512941",
+        },
+      ],
+    },
+    TEST2: {
+      routeName: "TEST2",
+      places: [
+        {
+          id: "10144798",
+          placeName: "A",
+          placeUrl: "http://place.map.kakao.com/10144798",
+          addressName: "서울 중구 세종대로 136",
+          x: "126.97877403165",
+          y: "37.5684910667899",
+        },
+        {
+          id: "8060228",
+          placeName: "B",
+          placeUrl: "http://place.map.kakao.com/8060228",
+          addressName: "서울 중구 세종대로 136",
+          x: "126.9782578910947",
+          y: "37.56842249719518",
+        },
+        {
+          id: "17695618",
+          placeName: "C",
+          placeUrl: "http://place.map.kakao.com/17695618",
+          addressName: "서울 중구 세종대로 136",
+          x: "126.97776884494",
+          y: "37.5685990012609",
         },
       ],
     },

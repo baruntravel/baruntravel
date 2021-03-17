@@ -13,7 +13,7 @@
   z-index: 10;
   list-style: none;
 }
-li {
+.CategoryBar li {
   width: 17%;
   display: flex;
   flex-direction: column;
@@ -23,16 +23,16 @@ li {
   border-right: 1px solid #909090;
 }
 
-li:hover {
+.CategoryBar li:hover {
   background-color: #e6e6e6;
 }
 
-.icon {
+.CategoryBar.icon {
   color: red;
   font-size: 1.2em;
 }
 
-li > span {
+.CategoryBar li > span {
   padding: 5px;
   font-size: 0.7em;
 }

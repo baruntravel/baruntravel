@@ -4,16 +4,16 @@ import { useHistory, Link } from "react-router-dom";
 import areaList from "../../assets/areaList.json";
 import Logo from "../../components/logo/logo";
 
-const Selectarea = () => {
+const SelectAreaPage = () => {
   const history = useHistory();
   const [isLoggedIn, setLoggedIn] = useState(true);
   const [area, setArea] = useState();
 
-  //로그인 안돼있을시 홈으로
+  //로그인 안 돼있을시 홈으로
   !isLoggedIn && history.push("/");
 
-  //
   const handleAreaClick = (e) => {
+    console.log(e);
     setArea(e.target.id);
   };
 
@@ -33,10 +33,10 @@ const Selectarea = () => {
                 return (
                   <li
                     className={styles.area}
-                    id={item}
+                    id={item.eng}
                     onClick={(e) => handleAreaClick(e)}
                   >
-                    {item}
+                    {item.kor}
                   </li>
                 );
               })}
@@ -51,7 +51,7 @@ const Selectarea = () => {
                     <Link to={`${area}/places`}>핫플레이스 보기</Link>
                   </button>
                   <button className={styles.route}>
-                    <Link to={{ pathname: `${area}/routes`, area: area }}>
+                    <Link to={{ pathname: `${area}/routes` }}>
                       추천 루트 보기
                     </Link>
                   </button>
@@ -65,4 +65,4 @@ const Selectarea = () => {
   );
 };
 
-export default Selectarea;
+export default SelectAreaPage;
