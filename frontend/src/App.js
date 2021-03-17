@@ -24,7 +24,7 @@ function App() {
         <Route exact path="/:id/routes">
           <UsersRoutePage />
         </Route>
-        <Route exact path="/:id/myRoute">
+        <Route exact path="/myRoute">
           <MyRoutePage />
         </Route>
         {/* 테스트 */}

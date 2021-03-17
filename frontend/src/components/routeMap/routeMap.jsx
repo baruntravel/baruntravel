@@ -3,12 +3,20 @@ import MapContainer from "../../containers/mapContainer/mapContainer";
 import styles from "./routeMap.module.css";
 const { kakao } = window;
 
-const RouteMap = ({ markers }) => {
+const RouteMap = ({ markers,width,height }) => {
+
   useEffect(() => {
     const dummy = markers.map((place) => {
       return [place.x, place.y];
     });
-    const container = document.getElementById("Map");
+    let container = document.getElementById("Map");
+
+    //Map의 width,height props 전달되면 해당 사이즈로 변경 / 아니면 기본 사이즈
+    if(width){
+      container.style.width=width;
+      container.style.height=height;  
+    }
+
     const options = {
       center: new kakao.maps.LatLng(37.566826, 126.9786567),
       level: 3,
@@ -51,7 +59,7 @@ const RouteMap = ({ markers }) => {
 
   return (
     <div className={styles.RouteMap}>
-      <MapContainer />
+      <MapContainer width={width} height={height}/>
     </div>
   );
 };
