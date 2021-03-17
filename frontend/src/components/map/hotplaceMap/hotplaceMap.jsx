@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import CategoryBar from "../categoryBar/categoryBar";
+import CategoryBar from "./categoryBar/categoryBar";
 import styles from "./hotplaceMap.module.css";
 
 const { kakao } = window;

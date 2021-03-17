@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import RouteList from "../../components/routeList/routeList";
-import RouteMap from "../../components/routeMap/routeMap";
+import RouteMap from "../../components/map/routeMap/routeMap";
 import styles from "./myRoutePage.module.css";
 
 import { useRecoilState } from "recoil";
-import {myRouteCart} from "../../recoil/routeAtom";
+import { myRouteCart } from "../../recoil/routeAtom";
 
 const MyRoutePage = (props) => {
   const [markers, setMarkers] = useState([]);
@@ -24,7 +24,7 @@ const MyRoutePage = (props) => {
           handleMarkers={handleMarkers}
           clickedCardName={clickedCardName}
           updateCardName={updateCardName}
-          routeItems = {routeItems}
+          routeItems={routeItems}
         />
         <div className={styles.map}>
           <RouteMap markers={markers} />

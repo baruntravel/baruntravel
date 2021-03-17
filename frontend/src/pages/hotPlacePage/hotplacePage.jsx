@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import HotplaceMap from "../../components/hotplaceMap/hotplaceMap";
+import HotplaceMap from "../../components/map/hotplaceMap/hotplaceMap";
 import PortalCart from "../../containers/portalCart/portalCart";
 import styles from "./hotplacePage.module.css";
 

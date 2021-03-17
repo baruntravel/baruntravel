@@ -1,5 +1,5 @@
 import styles from "./usersRouteMap.module.css";
-import RouteMap from "../../components/routeMap/routeMap";
+import RouteMap from "../routeMap/routeMap";
 
 const UsersRouteMap = ({ markers }) => {
   return (
