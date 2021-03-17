@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import { useRecoilState } from "recoil";
 import { myRouteCart } from "../../recoil/routeAtom";
-import RouteNameBox from "../routeNameBox/routeNameBox";
+import RouteNameBox from "./routeNameBox/routeNameBox";
 
 const PortalCartBody = ({ place, handleCartPortal }) => {
   const [modalVisible, setModalVisible] = useState(false);

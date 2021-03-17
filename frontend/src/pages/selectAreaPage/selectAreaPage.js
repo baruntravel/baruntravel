@@ -2,8 +2,7 @@ import styles from "./selectAreaPage.module.css";
 import { useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import areaList from "../../assets/areaList.json";
-import Logo from "../../components/logo/logo";
-import Navbar from "../../components/navbar/navbar";
+import Navbar from "../../components/common/navbar/navbar";
 
 const SelectAreaPage = () => {
   const history = useHistory();

@@ -1,5 +1,5 @@
 import React from "react";
-import PlaceNameBox from "../placeNameBox/placeNameBox";
+import PlaceNameBox from "./placeNameBox/placeNameBox";
 import styles from "./routeListCard.module.css";
 const RouteListCard = ({
   item,
