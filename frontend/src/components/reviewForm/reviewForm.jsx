@@ -5,7 +5,7 @@ import styles from "./reviewForm.module.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages } from "@fortawesome/free-solid-svg-icons";
-import ReviewImageEdit from "../reviewImageEdit/reviewImageEdit";
+import ReviewImageEdit from "./reviewImageEdit/reviewImageEdit";
 
 const ReviewForm = ({ placeName }) => {
   const [images, setImages] = useState([]);

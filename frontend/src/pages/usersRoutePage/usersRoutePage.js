@@ -4,7 +4,7 @@ import UsersRouteMap from "../../components/usersRouteMap/usersRouteMap";
 import { useRecoilState } from "recoil";
 import { usersRouteItems } from "../../recoil/routeAtom";
 import RouteList from "../../components/routeList/routeList";
-import Navbar from "../../components/navbar/navbar";
+import Navbar from "../../components/common/navbar/navbar";
 
 const UsersRoutePage = () => {
   //Todo: 한글로 변경해야함
