@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import areaList from "../../assets/areaList.json";
 import Logo from "../../components/logo/logo";
+import Navbar from "../../components/navbar/navbar";
 
 const SelectAreaPage = () => {
   const history = useHistory();
@@ -13,18 +14,14 @@ const SelectAreaPage = () => {
   !isLoggedIn && history.push("/");
 
   const handleAreaClick = (e) => {
-    console.log(e);
     setArea(e.target.id);
   };
 
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.navbar}>
-          <Logo />
-          <h1 className={styles.title}>지역을 선택해주세요!</h1>
-          <div className={styles.profileWrap}></div>
-        </div>
+        {/* Navbar에 title props 전달 */}
+        <Navbar title={"지역을 선택해주세요!"} />
         <div className={styles.body}>
           {/* 지역 클릭 전 */}
           {!area ? (
