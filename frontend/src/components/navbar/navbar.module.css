@@ -1,0 +1,17 @@
+.navbarContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbarTitle {
+  font-size: 24px;
+}
+
+.profileWrap {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #f1f1f1;
+}

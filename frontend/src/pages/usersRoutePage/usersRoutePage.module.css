@@ -1,0 +1,13 @@
+.wrapper {
+}
+.mainContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cardContainer {
+}
+
+.mapContainer {
+  margin-right: 128px;
+}
