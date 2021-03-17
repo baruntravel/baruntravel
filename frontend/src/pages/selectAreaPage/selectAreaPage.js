@@ -2,17 +2,16 @@ import styles from "./selectAreaPage.module.css";
 import { useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import areaList from "../../assets/areaList.json";
-import Logo from "../../components/logo/logo";
+import Navbar from "../../components/common/navbar/navbar";
 
-const Selectarea = () => {
+const SelectAreaPage = () => {
   const history = useHistory();
   const [isLoggedIn, setLoggedIn] = useState(true);
   const [area, setArea] = useState();
 
-  //로그인 안돼있을시 홈으로
+  //로그인 안 돼있을시 홈으로
   !isLoggedIn && history.push("/");
 
-  //
   const handleAreaClick = (e) => {
     setArea(e.target.id);
   };
@@ -20,11 +19,8 @@ const Selectarea = () => {
   return (
     <>
       <div className={styles.container}>
-        <div className={styles.navbar}>
-          <Logo />
-          <h1 className={styles.title}>지역을 선택해주세요!</h1>
-          <div className={styles.profileWrap}></div>
-        </div>
+        {/* Navbar에 title props 전달 */}
+        <Navbar title={"지역을 선택해주세요!"} />
         <div className={styles.body}>
           {/* 지역 클릭 전 */}
           {!area ? (
@@ -33,10 +29,10 @@ const Selectarea = () => {
                 return (
                   <li
                     className={styles.area}
-                    id={item}
+                    id={item.eng}
                     onClick={(e) => handleAreaClick(e)}
                   >
-                    {item}
+                    {item.kor}
                   </li>
                 );
               })}
@@ -51,7 +47,9 @@ const Selectarea = () => {
                     <Link to={`${area}/places`}>핫플레이스 보기</Link>
                   </button>
                   <button className={styles.route}>
-                    <Link to={`${area}/routes`}>추천 루트 보기</Link>
+                    <Link to={{ pathname: `${area}/routes` }}>
+                      추천 루트 보기
+                    </Link>
                   </button>
                 </div>
               </div>
@@ -63,4 +61,4 @@ const Selectarea = () => {
   );
 };
 
-export default Selectarea;
+export default SelectAreaPage;

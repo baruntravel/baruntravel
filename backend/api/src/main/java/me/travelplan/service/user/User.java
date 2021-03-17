@@ -1,12 +1,13 @@
 package me.travelplan.service.user;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import me.travelplan.config.jpa.BaseEntity;
 
 import javax.persistence.*;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
