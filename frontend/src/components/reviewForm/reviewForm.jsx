@@ -8,28 +8,43 @@ import { faImages } from "@fortawesome/free-solid-svg-icons";
 import ReviewImageEdit from "./reviewImageEdit/reviewImageEdit";
 
 const ReviewForm = ({ placeName }) => {
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState({}); // 미리보기용 URL 저장소
+  const [files, setFiles] = useState({});
   const imageInput = useRef();
-  const imageFormData = new FormData();
-
-  console.log(images);
-
+  const onSubmit = () => {
+    const imageFormData = new FormData();
+    Object.keys(files).forEach((key) => {
+      imageFormData.append("images", files[key]);
+    });
+    // place Id도 있어야할 것 같다.
+    // image update API 호출
+  };
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click();
   }, [imageInput]);
-  const onChangeImages = (e) => {
-    // FormData에 저장해뒀다가 작성을 완료하면 서버로 전송하게 하자.
-    const imageFile = e.target.files[0];
-    const imageUrl = URL.createObjectURL(imageFile);
-    setImages((prev) => [...prev, imageUrl]);
-    Array.prototype.forEach.call(e.target.files, (f) => {
-      console.log(f);
-      imageFormData.append("image", f);
-    }); // 이미지 리스트를 어떻게 넘겨줄 지?
-    console.log(imageFormData.values());
-  };
-  const onDeleteImages = () => {
+  const onChangeImages = useCallback(
+    (e) => {
+      const addFiles = {};
+      const addImages = {};
+      Array.prototype.forEach.call(e.target.files, (f) => {
+        const imageUrl = URL.createObjectURL(f);
+        addFiles[f.name] = f;
+        addImages[f.name] = imageUrl;
+      }); //
+      setFiles({ ...files, ...addFiles });
+      setImages({ ...images, ...addImages });
+    },
+    [files, images]
+  );
+  const onDeleteImages = (name) => {
     // 이미지 업로드를 하고 코드 작성을하자
+    // imageFormData;
+    const updatedFiles = { ...files };
+    const updatedImages = { ...images };
+    delete updatedFiles[name];
+    delete updatedImages[name];
+    setFiles(updatedImages);
+    setImages(updatedImages);
   };
   return (
     <div className={styles.ReviewForm}>
@@ -54,8 +69,13 @@ const ReviewForm = ({ placeName }) => {
             <FontAwesomeIcon icon={faImages} />
           </button>
           {images &&
-            images.map((item, index) => (
-              <ReviewImageEdit key={index} item={item} />
+            Object.keys(images).map((v, index) => (
+              <ReviewImageEdit
+                key={index}
+                item={images[v]}
+                name={v}
+                onDeleteImages={onDeleteImages}
+              />
             ))}
         </div>
         <input
@@ -66,6 +86,7 @@ const ReviewForm = ({ placeName }) => {
           ref={imageInput}
           onChange={onChangeImages}
         />
+        <button onClick={onSubmit}>작성</button>
       </Card>
     </div>
   );
