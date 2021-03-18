@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import RouteList from "../../components/routeList/routeList";
-import RouteMap from "../../components/routeMap/routeMap";
+import RouteMap from "../../components/map/routeMap/routeMap";
 import styles from "./myRoutePage.module.css";
 
 import { useRecoilState } from "recoil";

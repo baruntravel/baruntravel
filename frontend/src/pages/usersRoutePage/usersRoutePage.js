@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "./usersRoutePage.module.css";
-import UsersRouteMap from "../../components/usersRouteMap/usersRouteMap";
+import UsersRouteMap from "../../components/map/usersRouteMap/usersRouteMap";
 import { useRecoilState } from "recoil";
 import { usersRouteItems } from "../../recoil/routeAtom";
 import RouteList from "../../components/routeList/routeList";
