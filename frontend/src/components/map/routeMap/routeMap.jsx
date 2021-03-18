@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
-import MapContainer from "../../containers/mapContainer/mapContainer";
+import MapContainer from "../../../containers/mapContainer/mapContainer";
 import styles from "./routeMap.module.css";
 const { kakao } = window;
 
-const RouteMap = ({ markers,width,height }) => {
-
+const RouteMap = ({ markers, width, height }) => {
   useEffect(() => {
     const dummy = markers.map((place) => {
       return [place.x, place.y];
@@ -12,9 +11,9 @@ const RouteMap = ({ markers,width,height }) => {
     let container = document.getElementById("Map");
 
     //Map의 width,height props 전달되면 해당 사이즈로 변경 / 아니면 기본 사이즈
-    if(width){
-      container.style.width=width;
-      container.style.height=height;  
+    if (width) {
+      container.style.width = width;
+      container.style.height = height;
     }
 
     const options = {
@@ -59,7 +58,7 @@ const RouteMap = ({ markers,width,height }) => {
 
   return (
     <div className={styles.RouteMap}>
-      <MapContainer width={width} height={height}/>
+      <MapContainer width={width} height={height} />
     </div>
   );
 };
