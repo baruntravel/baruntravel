@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./reviewCard.module.css";
+import { Card, Rate } from "antd";
 
 const ReviewCard = (props) => {
   const data = {
@@ -15,7 +16,11 @@ const ReviewCard = (props) => {
       "",
     ],
   };
-  return <div className={styles.ReviewCard}></div>;
+  return (
+    <div className={styles.ReviewCard}>
+      <Card></Card>
+    </div>
+  );
 };
 
 export default ReviewCard;
