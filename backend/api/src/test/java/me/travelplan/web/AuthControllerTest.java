@@ -39,7 +39,7 @@ public class AuthControllerTest extends MvcTest {
     public void registerTest() throws Exception {
         User user = User.builder().email("test@test.com").password("encodedPasswordd").name("testname").build();
 
-        given(userService.create(any(), any(), any())).willReturn(user);
+        given(userService.create(any())).willReturn(user);
 
         Map<String, Object> request = new HashMap<>();
         request.put("email", "test@test.com");
