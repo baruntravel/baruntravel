@@ -6,12 +6,12 @@ const PlaceNameBox = ({ item }) => {
     console.log("삭제 api 호출");
   };
   return (
-    <div className={styles.PlaceNameBox}>
+    <li className={styles.PlaceNameBox}>
       <span>{item.placeName}</span>
       <button className={styles.deleteBtn} onClick={handleClick}>
         X
       </button>
-    </div>
+    </li>
   );
 };
 

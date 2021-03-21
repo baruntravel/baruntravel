@@ -21,14 +21,12 @@ const UsersRoutePage = () => {
     <div className={styles.wrapper}>
       <Navbar title={`${area} 추천 루트`} />
       <div className={styles.mainContainer}>
-        <section className={styles.cardContainer}>
-          <RouteList
-            handleMarkers={handleMarkers}
-            clickedCardName={clickedCardName}
-            updateCardName={updateCardName}
-            routeItems={routeItems}
-          />
-        </section>
+        <RouteList
+          handleMarkers={handleMarkers}
+          clickedCardName={clickedCardName}
+          updateCardName={updateCardName}
+          routeItems={routeItems}
+        />
         <div className={styles.mapContainer}>
           <UsersRouteMap markers={markers} />
         </div>

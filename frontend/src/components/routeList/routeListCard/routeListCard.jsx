@@ -12,12 +12,14 @@ const RouteListCard = ({
     updateCardName(item.routeName);
   };
   return (
-    <div className={styles.RouteListCard} onClick={handleClick}>
+    <div className={styles.routeListCard} onClick={handleClick}>
       <div className={styles.routeName}>
         <span>{item.routeName}</span>
       </div>
+      <div className={styles.routeList}>
       {clickedCardName === item.routeName &&
         item.places.map((v, index) => <PlaceNameBox key={index} item={v} />)}
+      </div>
     </div>
   );
 };
