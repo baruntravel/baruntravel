@@ -15,5 +15,10 @@
   background-color: grey;
 }
 
+.cartButton {
+  border-radius: 25%;
+  float: right;
+}
+
 .routeList {
 }

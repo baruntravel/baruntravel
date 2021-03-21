@@ -26,6 +26,8 @@ const UsersRoutePage = () => {
           clickedCardName={clickedCardName}
           updateCardName={updateCardName}
           routeItems={routeItems}
+          //usersRoutePage에서 쓰이는 경우 true
+          usersRoutePage={true}
         />
         <div className={styles.mapContainer}>
           <UsersRouteMap markers={markers} />

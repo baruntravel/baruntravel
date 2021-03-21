@@ -7,6 +7,7 @@ const RouteList = ({
   clickedCardName,
   updateCardName,
   routeItems,
+  usersRoutePage
 }) => {
   return (
     <div className={styles.RouteList}>
@@ -17,6 +18,7 @@ const RouteList = ({
           handleMarkers={handleMarkers}
           clickedCardName={clickedCardName}
           updateCardName={updateCardName}
+          usersRoutePage={usersRoutePage}
         />
       ))}
     </div>
