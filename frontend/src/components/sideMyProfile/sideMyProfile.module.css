@@ -6,8 +6,19 @@
   background-color: lightgray;
 }
 
-.profileImage {
-  border-radius: 50%;
-  width: 10em;
-  height: 10em;
+.header {
+  background-color: #424242;
+}
+.iconBox {
+  float: right;
+  margin-right: 5%;
+}
+.icon {
+  color: white;
+}
+.nicknameBox {
+  display: flex;
+  flex-direction: column;
+}
+.avatarBox {
 }

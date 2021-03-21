@@ -13,7 +13,6 @@ const HotplaceMap = ({ handleCartPortal, clickedPlace }) => {
     },
     [handleCartPortal]
   );
-
   useEffect(() => {
     const placeOverlay = new kakao.maps.CustomOverlay({ zIndex: 1 }),
       contentNode = document.createElement("div"); // 커스텀 오버레이의 컨텐츠 엘리먼트 입니다
@@ -239,11 +238,7 @@ const HotplaceMap = ({ handleCartPortal, clickedPlace }) => {
   return (
     <div className={styles.HotplaceMap}>
       <CategoryBar />
-      <div
-        id="Map"
-        className={styles.map}
-        style={{ width: "500px", height: "500px" }}
-      />
+      <div id="Map" className={styles.map} />
     </div>
   );
 };

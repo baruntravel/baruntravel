@@ -5,7 +5,11 @@ const RouteNameBox = ({ item, objKey, addPlace }) => {
   const handleClick = () => {
     addPlace && addPlace(objKey);
   };
-  return <div onClick={handleClick}>{item.routeName}</div>;
+  return (
+    <div className={styles.RouteNameBox} onClick={handleClick}>
+      <span>{item.routeName}</span>
+    </div>
+  );
 };
 
 export default RouteNameBox;

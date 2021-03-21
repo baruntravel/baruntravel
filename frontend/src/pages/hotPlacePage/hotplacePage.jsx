@@ -13,11 +13,14 @@ const HotplacePage = (props) => {
     setPlace(place);
   };
   return (
-    <div>
-      <HotplaceMap
-        handleCartPortal={handleCartPortal}
-        clickedPlace={clickedPlace}
-      />
+    <div className={styles.HotplacePage}>
+      <header className={styles.navbar}>navbar</header>
+      <div className={styles.map}>
+        <HotplaceMap
+          handleCartPortal={handleCartPortal}
+          clickedPlace={clickedPlace}
+        />
+      </div>
       {cartPortal && (
         <PortalCart place={place} handleCartPortal={handleCartPortal} />
       )}

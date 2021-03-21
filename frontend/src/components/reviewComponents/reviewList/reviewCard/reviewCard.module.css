@@ -1,0 +1,41 @@
+.ReviewCard {
+  border-bottom: 2px solid pink;
+  display: flex;
+  padding: 3%;
+  margin: 5%;
+  margin-right: 10%;
+  margin-left: 10%;
+  height: 20%;
+}
+.content {
+  flex-direction: row;
+  margin-left: 1em;
+  width: 80%;
+  height: 15vh;
+}
+.score {
+  font-size: 1.2em;
+  padding: 0.8em;
+}
+.reviewInfo {
+  padding-top: 0.5em;
+}
+.nickname {
+  margin-right: 0.25em;
+  padding-right: 0.25em;
+  border-right: 1px solid lightgray;
+}
+.date {
+  margin-right: 0.25em;
+  padding-right: 0.25em;
+  border-right: 1px solid lightgray;
+}
+.imageContainer {
+  float: right;
+  width: 13%;
+  padding: 10px;
+  height: 150px;
+}
+.context {
+  font-size: 1.2em;
+}
