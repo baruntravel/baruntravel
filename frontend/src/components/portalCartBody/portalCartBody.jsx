@@ -27,6 +27,7 @@ const PortalCartBody = ({ place, handleCartPortal }) => {
           routeName: inputRef.current.value,
           centerLocation: [], // centerLocation은 어떤기준으로 정해줄지 고민해볼 필요가 있다.
           places: [],
+          wishCount: 0,
         },
       };
     });
@@ -36,6 +37,7 @@ const PortalCartBody = ({ place, handleCartPortal }) => {
   const addPlace = (key) => {
     const newPlaceObj = {
       id: place.id,
+      category: place.category_group_code,
       placeName: place.place_name,
       placeUrl: place.place_url,
       addressName: place.road_address_name || place.address_name,
@@ -56,18 +58,25 @@ const PortalCartBody = ({ place, handleCartPortal }) => {
   };
   return (
     <div className={styles.PortalCartBody}>
-      {myRouteList &&
-        Object.keys(myRouteList).map((objKey, index) => (
-          <RouteNameBox
-            key={index}
-            item={myRouteList[objKey]}
-            objKey={objKey}
-            addPlace={addPlace}
-          />
-        ))}
-      <button className={styles.addBtn} onClick={handleOpen}>
-        + 추가하기
-      </button>
+      <ul className={styles.routeList}>
+        {myRouteList &&
+          Object.keys(myRouteList).map((objKey, index) => (
+            <RouteNameBox
+              key={index}
+              item={myRouteList[objKey]}
+              objKey={objKey}
+              addPlace={addPlace}
+            />
+          ))}
+      </ul>
+      <div className={styles.btnBox}>
+        <button className={styles.addBtn} onClick={handleOpen}>
+          새로 추가
+        </button>
+        <button className={styles.closeBtn} onClick={handleCartPortal}>
+          Close
+        </button>
+      </div>
       <Modal
         title="새로운 여행 카트를 추가해요"
         style={{ marginTop: "10%" }}

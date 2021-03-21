@@ -2,6 +2,7 @@ import { Card, Rate } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import React, { useCallback, useRef, useState } from "react";
 import styles from "./reviewForm.module.css";
+import { getYear, getMonth, getDate } from "date-fns";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages } from "@fortawesome/free-solid-svg-icons";
@@ -16,9 +17,17 @@ const ReviewForm = ({ placeName }) => {
     Object.keys(files).forEach((key) => {
       imageFormData.append("images", files[key]);
     });
+    const date = new Date();
+    const [nowYear, nowMonth, nowDate] = [
+      getYear(date),
+      getMonth(date) + 1,
+      getDate(date),
+    ];
+
     // place Id도 있어야할 것 같다.
     // image update API 호출
   };
+
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click();
   }, [imageInput]);

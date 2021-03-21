@@ -1,0 +1,28 @@
+.PortalCartBody {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.routeList {
+  overflow: auto;
+  margin-bottom: 10%;
+  padding: 0;
+  width: 100%;
+  height: 80%;
+}
+
+.btnBox {
+  width: 100%;
+}
+.closeBtn,
+.addBtn {
+  width: 30%;
+  margin: 10%;
+  font-size: 1.3em;
+  background-color: white;
+  border: none;
+  border-radius: 15px;
+}

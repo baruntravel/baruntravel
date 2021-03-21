@@ -1,13 +1,13 @@
 import "./App.css";
 import MainPage from "./pages/mainPage/mainPage";
 import SelectAreaPage from "./pages/selectAreaPage/selectAreaPage";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import UsersRoutePage from "./pages/usersRoutePage/usersRoutePage";
 import HotplacePage from "./pages/hotplacePage/hotplacePage";
 import { RecoilRoot } from "recoil";
 import MyRoutePage from "./pages/myRoutePage/myRoutePage";
-import ReviewForm from "./components/reviewForm/reviewForm";
-import ReviewCard from "./components/reviewComponents/reviewList/reviewCard/reviewCard";
+import ReviewList from "./components/reviewComponents/reviewList/reviewList";
+import SideMyProfile from "./components/sideMyProfile/sideMyProfile";
 
 function App() {
   return (
@@ -30,7 +30,7 @@ function App() {
         </Route>
         {/* 테스트 */}
         <Route exact path="/test">
-          <ReviewCard />
+          <SideMyProfile />
         </Route>
       </Router>
     </RecoilRoot>
