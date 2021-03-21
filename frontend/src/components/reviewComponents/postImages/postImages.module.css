@@ -1,0 +1,17 @@
+.PostImages {
+  width: 100%;
+  height: 100%;
+}
+.image {
+  height: 100%;
+  width: 100%;
+}
+
+.Carousel {
+  position: fixed;
+  z-index: 5000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}

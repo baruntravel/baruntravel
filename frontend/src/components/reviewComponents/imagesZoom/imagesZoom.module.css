@@ -1,0 +1,52 @@
+.ImagesZoom {
+  background-color: #00000080;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 90%;
+  width: 50%;
+  margin: auto;
+  background-color: transparent;
+}
+.closeBtn {
+  background-color: transparent;
+  border: none;
+  font-size: 2em;
+  float: right;
+}
+.img {
+  margin: auto;
+}
+
+.btnBox {
+  display: flex;
+  justify-content: center;
+}
+
+.prevBtn,
+.nextBtn {
+  margin: 1em;
+  font-size: 2em;
+  background-color: transparent;
+  border: none;
+}
+
+.closeBtn:focus,
+.prevBtn:focus,
+.nextBtn:focus {
+  outline: none;
+}
+.closeBtn:hover,
+.prevBtn:hover,
+.nextBtn:hover {
+  transform: scale(1.1);
+}

@@ -30,18 +30,18 @@ const CategoryBar = (props) => {
         <FontAwesomeIcon icon={faHome} className={styles.icon} />
         <span>숙소</span>
       </li>
-      <li id="PM9" data-order="4" className={styles.drug}>
+      {/* <li id="PM9" data-order="4" className={styles.drug}>
         <FontAwesomeIcon icon={faBriefcaseMedical} className={styles.icon} />
         <span>약국</span>
-      </li>
-      <li id="CS2" data-order="5" className={styles.convenience}>
+      </li> */}
+      {/* <li id="CS2" data-order="5" className={styles.convenience}>
         <FontAwesomeIcon icon={faStoreAlt} className={styles.icon} />
         <span>편의점</span>
-      </li>
-      <li id="SW8" data-order="6" className={styles.subway}>
+      </li> */}
+      {/* <li id="SW8" data-order="6" className={styles.subway}>
         <FontAwesomeIcon icon={faSubway} className={styles.icon} />
         <span>지하철</span>
-      </li>
+      </li> */}
     </ul>
   );
 };
