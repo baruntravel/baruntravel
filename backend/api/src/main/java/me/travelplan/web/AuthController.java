@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import me.travelplan.security.userdetails.CurrentUser;
 import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.service.user.AuthService;
+import me.travelplan.service.user.UserMapper;
 import me.travelplan.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +19,13 @@ public class AuthController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/register")
-    public void register(@RequestBody Register request) {
-        userService.create(request.getEmail(), request.getPassword(), request.getName());
+    public void register(@RequestBody AuthRequest.Register request) {
+        userService.create(UserMapper.INSTANCE.requestToEntity(request));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
-    public AuthService.Login login(@RequestBody Login request) {
+    public AuthService.Login login(@RequestBody AuthRequest.Login request) {
         return authService.login(request.getEmail(), request.getPassword());
     }
 
@@ -34,16 +35,4 @@ public class AuthController {
         return authService.me(currentUser);
     }
 
-    @Getter
-    public static class Register {
-        String email;
-        String password;
-        String name;
-    }
-
-    @Getter
-    public static class Login {
-        String email;
-        String password;
-    }
 }

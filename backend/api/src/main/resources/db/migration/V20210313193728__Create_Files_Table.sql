@@ -1,5 +1,3 @@
-USE `travelplan`;
-
 DROP TABLE IF EXISTS `files`;
 CREATE TABLE `files` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
