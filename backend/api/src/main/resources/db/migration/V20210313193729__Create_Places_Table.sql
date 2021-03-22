@@ -1,5 +1,3 @@
-USE `travelplan`;
-
 DROP TABLE IF EXISTS `places`;
 CREATE TABLE `places` (
   `id` BIGINT NOT NULL AUTO_INCREMENT,
