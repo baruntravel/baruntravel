@@ -1,20 +1,23 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import styles from "./loginBody.module.css";
+import { onLogin } from "../../api/authAPI";
+import { Spin } from "antd";
 
 const LoginBody = ({ onClickRegister }) => {
   const formRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
-  // const successLogin = () => { }
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = useCallback((event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    // axios를 통해서 email, password를 서버에 보낸다.
-
+    const result = await onLogin(email, password);
+    setLoading(false);
     formRef.current.reset();
-  }, []);
+  };
 
   return (
     <form ref={formRef} className={styles.loginForm} onSubmit={handleSubmit}>
@@ -40,6 +43,11 @@ const LoginBody = ({ onClickRegister }) => {
           회원가입
         </span>
       </div>
+      {loading && (
+        <div className={styles.loadingBody}>
+          <Spin tip="Logging in..."></Spin>
+        </div>
+      )}
     </form>
   );
 };

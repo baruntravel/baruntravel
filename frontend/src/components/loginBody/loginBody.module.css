@@ -44,3 +44,7 @@
 .lostPassword:hover {
   cursor: pointer;
 }
+
+.loadingBody {
+  margin-top: 60%;
+}
