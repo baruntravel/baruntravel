@@ -1,9 +1,9 @@
 .SideMyProfile {
-  width: 33vw;
+  width: 20vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: lightgray;
+  background-color: whitesmoke;
 }
 
 .header {
@@ -11,14 +11,29 @@
 }
 .iconBox {
   float: right;
-  margin-right: 5%;
+  margin: 5%;
 }
 .icon {
+  font-size: 1.3em;
   color: white;
 }
+.avatarBox {
+  display: flex;
+  flex-direction: row;
+  padding: 8%;
+}
+
 .nicknameBox {
   display: flex;
   flex-direction: column;
+  margin-top: 5%;
 }
-.avatarBox {
+.nicknameBox > span {
+  width: 100%;
+  margin-left: 10%;
+  color: white;
+  font-weight: 600;
+}
+.nickname {
+  font-size: 1.4em;
 }
