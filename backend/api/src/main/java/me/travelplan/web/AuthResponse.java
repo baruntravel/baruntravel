@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import me.travelplan.security.jwt.JwtToken;
+import me.travelplan.security.jwt.Token;
 
 import java.time.LocalDateTime;
 
@@ -17,14 +17,15 @@ public class AuthResponse {
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime accessTokenExpiredAt;
         private String refreshToken;
-//        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-//        private LocalDateTime refreshTokenExpiredAt;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+        private LocalDateTime refreshTokenExpiredAt;
 
-        public static Login from(JwtToken accessToken, String refreshToken) {
+        public static Login from(Token accessToken, Token refreshToken) {
             return new Login(
                     accessToken.getToken(),
                     accessToken.getExpiredAt(),
-                    refreshToken
+                    refreshToken.getToken(),
+                    refreshToken.getExpiredAt()
             );
         }
     }

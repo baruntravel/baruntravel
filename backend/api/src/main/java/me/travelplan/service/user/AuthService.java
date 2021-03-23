@@ -1,18 +1,16 @@
 package me.travelplan.service.user;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import me.travelplan.security.jwt.Token;
 import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.web.AuthResponse;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import me.travelplan.security.jwt.JwtToken;
 import me.travelplan.security.jwt.JwtTokenProvider;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -47,6 +45,6 @@ public class AuthService {
 
         // TODO RefreshToken 처리 필요
 
-        return AuthResponse.Login.from(tokenProvider.generateAccessToken(user), user.getRefreshToken());
+        return AuthResponse.Login.from(tokenProvider.generateAccessToken(user), new Token(user.getRefreshToken(), user.getRefreshTokenExpiredAt()));
     }
 }
