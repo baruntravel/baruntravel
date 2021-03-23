@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import me.travelplan.security.jwt.Token;
+import me.travelplan.service.user.User;
 
 import java.time.LocalDateTime;
 
@@ -27,6 +28,17 @@ public class AuthResponse {
                     refreshToken.getToken(),
                     refreshToken.getExpiredAt()
             );
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class Me {
+        private String email;
+        private String name;
+
+        public static Me from(User user) {
+            return new Me(user.getEmail(), user.getName());
         }
     }
 }

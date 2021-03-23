@@ -1,6 +1,7 @@
 package me.travelplan.web;
 
 import me.travelplan.MvcTest;
+import me.travelplan.WithMockCustomUser;
 import me.travelplan.security.jwt.Token;
 import me.travelplan.service.user.*;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +22,7 @@ import static me.travelplan.ApiDocumentUtils.getDocumentResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -98,6 +100,29 @@ public class AuthControllerTest extends MvcTest {
                                 fieldWithPath("accessTokenExpiredAt").type(JsonFieldType.STRING).description("액세스 토큰 민료일"),
                                 fieldWithPath("refreshToken").type(JsonFieldType.STRING).description("리프레쉬 토큰(임시)"),
                                 fieldWithPath("refreshTokenExpiredAt").type(JsonFieldType.STRING).description("리프레쉬 토큰 만료일(임시)")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("내 정보 가져오기 테스트")
+    @WithMockCustomUser
+    public void meTest() throws Exception {
+        var response = AuthResponse.Me.from(User.builder().email("test@test.com").name("test").build());
+
+        given(authService.me(any())).willReturn(response);
+
+        ResultActions results = mockMvc.perform(
+                get("/auth/me")
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(document("auth-me",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        responseFields(
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("내 이메일"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("내 이름")
                         )
                 ));
     }

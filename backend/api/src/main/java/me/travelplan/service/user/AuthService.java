@@ -20,19 +20,8 @@ public class AuthService {
     private final JwtTokenProvider tokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public Me me(CustomUserDetails currentUser) {
-        return Me.from(currentUser.getUser());
-    }
-
-    @Getter
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class Me {
-        private String email;
-        private String name;
-
-        public static Me from(User user) {
-            return new Me(user.getEmail(), user.getName());
-        }
+    public AuthResponse.Me me(CustomUserDetails currentUser) {
+        return AuthResponse.Me.from(currentUser.getUser());
     }
 
     @Transactional
