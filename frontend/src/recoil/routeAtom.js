@@ -4,7 +4,11 @@ export const myRouteCart = atom({
   key: "myRouteCart",
   default: {
     bank1: {
-      routeName: "bank1",
+      routeName: "은행 여기저기 탐방",
+      location: "중구",
+      year: "2021",
+      month: "3",
+      date: "6",
       places: [
         {
           id: "688578118",
