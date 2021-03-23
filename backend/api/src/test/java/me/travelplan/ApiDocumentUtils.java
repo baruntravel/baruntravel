@@ -5,7 +5,7 @@ import org.springframework.restdocs.operation.preprocess.OperationResponsePrepro
 
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 
-public interface     ApiDocumentUtils {
+public interface ApiDocumentUtils {
     static OperationRequestPreprocessor getDocumentRequest() {
         return preprocessRequest(
                 modifyUris()

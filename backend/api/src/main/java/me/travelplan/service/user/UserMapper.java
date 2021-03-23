@@ -1,14 +1,23 @@
 package me.travelplan.service.user;
 
-import com.querydsl.core.types.Order;
 import me.travelplan.web.AuthRequest;
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
-@Mapper
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Mapper(
+        componentModel = "spring",
+        uses = {PasswordEncoderMapper.class},
+        imports = {LocalDateTime.class, UUID.class},
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR
+)
 public interface UserMapper {
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    User requestToEntity(AuthRequest.Register request);
+    @Mapping(target = "password", qualifiedBy = EncodeMapping.class)
+    @Mapping(target = "refreshToken", expression = "java(UUID.randomUUID().toString())")
+    @Mapping(target = "refreshTokenExpiredAt", expression = "java(LocalDateTime.now())")
+    User toEntity(AuthRequest.Register request);
 }

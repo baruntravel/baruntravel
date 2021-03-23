@@ -20,11 +20,11 @@ import java.util.Date;
 public class JwtTokenProvider {
     private final JwtProps jwtProps;
 
-    public JwtToken generateAccessToken(User user) {
+    public Token generateAccessToken(User user) {
         return generateToken(user, jwtProps.getAccessTokenProps());
     }
 
-    public JwtToken generateRefreshToken(User user) {
+    public Token generateRefreshToken(User user) {
         return generateToken(user, jwtProps.getRefreshTokenProps());
     }
 
@@ -36,7 +36,7 @@ public class JwtTokenProvider {
         return Long.valueOf(getClaims(token, jwtProps.getRefreshTokenProps()).getBody().getSubject());
     }
 
-    private JwtToken generateToken(User user, JwtProps.TokenProps tokenProps) {
+    private Token generateToken(User user, JwtProps.TokenProps tokenProps) {
         SecretKey key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(tokenProps.getSecret()));
 
         Date exp = new Date((new Date()).getTime() + tokenProps.getExpirationTimeMilliSec());
@@ -47,7 +47,7 @@ public class JwtTokenProvider {
                 .signWith(key)
                 .compact();
 
-        return JwtToken.create(token, exp);
+        return Token.create(token, exp);
     }
 
     private Jws<Claims> getClaims(String token, JwtProps.TokenProps tokenProps) throws RuntimeException {

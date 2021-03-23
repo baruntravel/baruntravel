@@ -5,9 +5,11 @@ import lombok.RequiredArgsConstructor;
 import me.travelplan.security.userdetails.CurrentUser;
 import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.service.user.AuthService;
+import me.travelplan.service.user.PasswordEncoderMapper;
 import me.travelplan.service.user.UserMapper;
 import me.travelplan.service.user.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -15,17 +17,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class AuthController {
     private final UserService userService;
+    private final UserMapper userMapper;
     private final AuthService authService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/register")
     public void register(@RequestBody AuthRequest.Register request) {
-        userService.create(UserMapper.INSTANCE.requestToEntity(request));
+        userService.create(userMapper.toEntity(request));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
-    public AuthService.Login login(@RequestBody AuthRequest.Login request) {
+    public AuthResponse.Login login(@RequestBody AuthRequest.Login request) {
         return authService.login(request.getEmail(), request.getPassword());
     }
 

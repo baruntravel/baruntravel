@@ -8,16 +8,16 @@ import java.time.ZoneId;
 import java.util.Date;
 
 @Getter
-public class JwtToken {
+public class Token {
     private String token;
     private LocalDateTime expiredAt;
 
-    private JwtToken(String token, LocalDateTime expiredAt) {
+    public Token(String token, LocalDateTime expiredAt) {
         this.token = token;
         this.expiredAt = expiredAt;
     }
 
-    public static JwtToken create(String token, Date exp) {
-        return new JwtToken(token, Instant.ofEpochMilli(exp.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime());
+    public static Token create(String token, Date exp) {
+        return new Token(token, Instant.ofEpochMilli(exp.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime());
     }
 }
