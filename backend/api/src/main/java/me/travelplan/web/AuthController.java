@@ -28,7 +28,7 @@ public class AuthController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
-    public AuthService.Login login(@RequestBody AuthRequest.Login request) {
+    public AuthResponse.Login login(@RequestBody AuthRequest.Login request) {
         return authService.login(request.getEmail(), request.getPassword());
     }
 

@@ -5,6 +5,7 @@ CREATE TABLE `users` (
   `name` VARCHAR(255) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
   `refresh_token` VARCHAR(255) NOT NULL,
+  `refresh_token_expired_at` DATETIME NOT NULL,
   `created_at` DATETIME NOT NULL,
   `updated_at` DATETIME DEFAULT NULL,
   `deleted_at` DATETIME DEFAULT NULL,
