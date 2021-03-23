@@ -3,6 +3,7 @@ import PlaceNameBox from "./placeNameBox/placeNameBox.jsx";
 import styles from "./routeListCard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import CartModal from "../../../pages/usersRoutePage/cartModal/cartModal.js";
 
 const RouteListCard = ({
   item,
@@ -21,7 +22,7 @@ const RouteListCard = ({
         <span className={styles.routeName}>{item.routeName}</span>
         {usersRoutePage?
         // usersRoutePage에서는 장바구니 표시 on
-        <button className={styles.cartButton}><FontAwesomeIcon icon={faShoppingCart} size={"sm"}/></button>:null}
+        <CartModal/>:null}
       </div>
       <div className={styles.routeList}>
       {clickedCardName === item.routeName &&

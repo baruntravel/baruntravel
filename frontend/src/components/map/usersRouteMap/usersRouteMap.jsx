@@ -4,8 +4,6 @@ import {useEffect} from "react";
 const { kakao } = window;
 
 const UsersRouteMap = ({ markers }) => {
-  console.log(markers);
-
   useEffect(() => {
     const dummy = markers.map((place) => {
       return [place.x, place.y];
