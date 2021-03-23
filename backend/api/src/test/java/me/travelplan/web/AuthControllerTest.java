@@ -64,4 +64,9 @@ public class AuthControllerTest extends MvcTest {
                         )
                 ));
     }
+
+    @Test
+    @DisplayName("로그인 테스트")
+    public void loginTest() throws Exception {
+    }
 }

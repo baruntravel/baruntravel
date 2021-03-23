@@ -17,13 +17,14 @@ public class User extends BaseEntity {
     private String email;
     private String password;
     private String name;
-
+    private String refreshToken;
 
     @Builder
-    public User(String email, String password, String name) {
+    public User(String email, String password, String name, String refreshToken) {
         this.email = email;
         this.password = password;
         this.name = name;
+        this.refreshToken = refreshToken;
     }
 
     public Long getId() {
