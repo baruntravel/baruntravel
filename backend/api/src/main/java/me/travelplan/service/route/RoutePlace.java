@@ -1,13 +1,11 @@
 package me.travelplan.service.route;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import me.travelplan.service.place.Place;
 
 import javax.persistence.*;
 
+@Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
@@ -21,7 +19,7 @@ public class RoutePlace {
     @JoinColumn(name = "route_id", referencedColumnName = "id")
     private Route route;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "place_id", referencedColumnName = "id")
     private Place place;
 

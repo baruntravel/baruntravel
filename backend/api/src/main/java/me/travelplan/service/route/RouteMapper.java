@@ -35,7 +35,7 @@ public interface RouteMapper {
                                             .url(place.getImage())
                                             .build()
                             )
-                            .thirdId(place.getThirdId())
+                            .id(place.getId())
                             .url(place.getUrl())
                             .name(place.getName())
                             .x(place.getX())

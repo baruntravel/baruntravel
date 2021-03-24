@@ -5,8 +5,8 @@ import lombok.Getter;
 public class RouteDto {
     @Getter
     public static class RoutePlace {
+        private Long id;
         private String image;
-        private Long thirdId;
         private String name;
         private String url;
         private Double x;
