@@ -1,4 +1,4 @@
-package me.travelplan.web;
+package me.travelplan.web.auth;
 
 import lombok.Getter;
 

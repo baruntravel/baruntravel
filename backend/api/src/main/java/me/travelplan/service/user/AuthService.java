@@ -4,7 +4,7 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import me.travelplan.security.jwt.Token;
 import me.travelplan.security.userdetails.CustomUserDetails;
-import me.travelplan.web.AuthResponse;
+import me.travelplan.web.auth.AuthResponse;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package me.travelplan.service.user;
 
-import me.travelplan.web.AuthRequest;
+import me.travelplan.web.auth.AuthRequest;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

@@ -1,15 +1,12 @@
-package me.travelplan.web;
+package me.travelplan.web.auth;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.travelplan.security.userdetails.CurrentUser;
 import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.service.user.AuthService;
-import me.travelplan.service.user.PasswordEncoderMapper;
 import me.travelplan.service.user.UserMapper;
 import me.travelplan.service.user.UserService;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor

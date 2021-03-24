@@ -4,6 +4,8 @@ import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
 import me.travelplan.security.jwt.Token;
 import me.travelplan.service.user.*;
+import me.travelplan.web.auth.AuthController;
+import me.travelplan.web.auth.AuthResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

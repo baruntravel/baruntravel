@@ -1,0 +1,27 @@
+PUT {{apiUrl}}/route
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+{
+  "name": "나의 테스트 경로",
+  "places": [
+    {
+      "image" : "https://www.gn.go.kr/tour/images/tour/main_new/mvisual_img07.jpg",
+      "thirdId" : 123,
+      "name" : "강릉바닷가",
+      "url" : "https://www.gn.go.kr/tour/index.do",
+      "x" : 37.748125,
+      "y" : 128.878996,
+      "order" : 1
+    },
+    {
+      "image" : "https://cf.bstatic.com/xdata/images/hotel/270x200/129750773.jpg?k=d338049190ff48b19261ee5f516ee563aaeb8aeb97c4774c1e171e402cf25891&o=",
+      "thirdId" : 123,
+      "name" : "강릉 어린이집",
+      "url" : "https://kr.hotels.com/go/south-korea/kr-best-gangneung-things-to-do",
+      "x" : 37.748130,
+      "y" : 128.8789333,
+      "order" : 2
+    }
+  ]
+}
