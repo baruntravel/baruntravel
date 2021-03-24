@@ -23,18 +23,20 @@ const ImagesZoom = ({ images, onClose }) => {
             <CloseOutlined style={{ color: "white" }} />
           </button>
         </header>
-        <Carousel ref={arrowRef} style={{ marginTop: "10%", height: "60vh" }}>
-          {images.map((v, index) => (
-            <div className={styles.imgContainer} key={index}>
-              <img
-                key={index}
-                className={styles.img}
-                src={v}
-                alt={"img uploaded"}
-              />
-            </div>
-          ))}
-        </Carousel>
+        <div className={styles.carousel}>
+          <Carousel ref={arrowRef} className={styles.carousel__Body}>
+            {images.map((v, index) => (
+              <div className={styles.imgContainer} key={index}>
+                <img
+                  key={index}
+                  className={styles.img}
+                  src={v}
+                  alt={"img uploaded"}
+                />
+              </div>
+            ))}
+          </Carousel>
+        </div>
         <div className={styles.btnBox}>
           <button className={styles.prevBtn} onClick={onClickPrev}>
             <LeftCircleOutlined style={{ color: "white" }} />

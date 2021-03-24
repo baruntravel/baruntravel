@@ -12,7 +12,11 @@ const RouteListCard = ({
 }) => {
   const handleClick = () => {
     handleMarkers(item.places);
-    updateCardName(item.routeName);
+    if (item.routeName === clickedCardName) {
+      updateCardName(""); // 두번눌렀을 때 토글 닫히게
+    } else {
+      updateCardName(item.routeName);
+    }
   };
   return (
     <div className={styles.RouteListCard} onClick={handleClick}>
@@ -34,10 +38,7 @@ const RouteListCard = ({
             </div>
           </div>
         </div>
-        <div className={styles.toggle}></div>
       </div>
-      {clickedCardName === item.routeName &&
-        item.places.map((v, index) => <PlaceNameBox key={index} item={v} />)}
     </div>
   );
 };

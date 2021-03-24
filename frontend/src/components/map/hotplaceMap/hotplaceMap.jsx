@@ -11,7 +11,7 @@ const HotplaceMap = ({ handleCartPortal, clickedPlace }) => {
       clickedPlace(place);
       handleCartPortal();
     },
-    [handleCartPortal]
+    [clickedPlace, handleCartPortal]
   );
   useEffect(() => {
     const placeOverlay = new kakao.maps.CustomOverlay({ zIndex: 1 }),

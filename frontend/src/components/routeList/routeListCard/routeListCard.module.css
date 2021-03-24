@@ -3,15 +3,17 @@
 .RouteListCard {
   display: flex;
   flex-direction: column;
-  height: 10%;
+  height: 12vh;
+  justify-content: center;
   width: 100%;
   padding-left: 5%;
-  margin-top: 10px;
-  background-color: black;
+  margin-top: 25px;
+  background-color: white;
+  border-radius: 15px;
 }
 
 .infoBox {
-  color: white;
+  color: black;
   display: flex;
   flex-direction: column;
 }
@@ -25,6 +27,7 @@
 }
 .mapIcon {
   font-size: 110%;
+  color: pink;
 }
 .placeCount {
   padding-left: 3%;
