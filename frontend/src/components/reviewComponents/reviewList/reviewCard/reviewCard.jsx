@@ -15,9 +15,13 @@ const ReviewCard = ({ data }) => {
     <div className={styles.ReviewCard}>
       <Avatar src={data.profileImage} size="large" />
       <div className={styles.content}>
-        <div className={styles.header}>
-          <div>
-            <Rate defaultValue={data.score} disabled={true} />
+        <div className={styles.info}>
+          <div className={styles.info__first}>
+            <Rate
+              defaultValue={data.score}
+              disabled={true}
+              className={styles.rate}
+            />
             <span className={styles.score}>{data.score}</span>
           </div>
           <div className={styles.reviewInfo}>
@@ -41,10 +45,10 @@ const ReviewCard = ({ data }) => {
             )}
             <span className={styles.likeCount}>{data.likeCount}</span>
           </div>
+          <section>
+            <span className={styles.context}>{data.context}</span>
+          </section>
         </div>
-        <section>
-          <span className={styles.context}>{data.context}</span>
-        </section>
       </div>
       <div className={styles.imageContainer}>
         <PostImages images={data.images} />

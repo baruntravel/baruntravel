@@ -1,11 +1,35 @@
+@import url("https://fonts.googleapis.com/css2?family=Gaegu:wght@300&family=Song+Myung&display=swap");
+
 .RouteListCard {
-  height: 10%;
+  display: flex;
+  flex-direction: column;
+  height: 12vh;
+  justify-content: center;
   width: 100%;
-  padding: 5%;
-  margin-top: 10px;
-  background-color: wheat;
+  padding-left: 5%;
+  margin-top: 25px;
+  background-color: white;
+  border-radius: 15px;
 }
 
-.routeName :hover {
-  background-color: grey;
+.infoBox {
+  color: black;
+  display: flex;
+  flex-direction: column;
+}
+.rootName {
+  font-size: 150%;
+  font-weight: 600;
+  font-family: "Gaegu", cursive;
+}
+.date {
+  font-size: 85%;
+}
+.mapIcon {
+  font-size: 110%;
+  color: pink;
+}
+.placeCount {
+  padding-left: 3%;
+  font-family: "Song Myung", serif;
 }

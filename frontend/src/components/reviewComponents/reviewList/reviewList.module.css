@@ -1,0 +1,17 @@
+.ReviewList {
+  padding-bottom: 2%;
+  height: 100%;
+  background-color: white;
+  overflow-y: auto;
+}
+.closeBtn {
+  position: fixed;
+  background-color: transparent;
+  border: none;
+  left: 90%;
+  margin-right: 3%;
+  font-size: 120%;
+}
+.closeBtn:focus {
+  outline: none;
+}
