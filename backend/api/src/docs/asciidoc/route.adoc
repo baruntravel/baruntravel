@@ -1,0 +1,25 @@
+= 바른여행길잡이 API 문서 (Auth)
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:snippets: ../../../build/generated-snippets
+
+= Route
+---
+== 기본 API
+
+=== 경로 생성
+
+`PUT /route`
+
+요청 HTTP
+
+- Body
+include::{snippets}/route-put/http-request.adoc[]
+include::{snippets}/route-put/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-put/http-response.adoc[]

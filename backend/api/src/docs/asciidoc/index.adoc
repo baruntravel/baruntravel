@@ -1,1 +1,2 @@
-- link:/docs/auth.html[Auth]
+- link:/docs/auth.html[회원가입 및 인증 API]
+- link:/docs/route.html[경로 API]
