@@ -14,12 +14,12 @@ public class RouteController {
 
     @PostMapping
     public void create(@RequestBody RouteRequest.CreateOrUpdate request) {
-        routeService.put(routeMapper.toEntity(request, 0L));
+        routeService.create(routeMapper.toEntity(request, 0L));
     }
 
     @PutMapping("/{id}")
     public void update(@PathVariable Long id, @RequestBody RouteRequest.CreateOrUpdate request) {
-        routeService.put(routeMapper.toEntity(request, id));
+        routeService.update(routeMapper.toEntity(request, id));
     }
 
     @GetMapping("/{id}")
