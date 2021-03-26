@@ -3,6 +3,7 @@ import PlaceNameBox from "./placeNameBox/placeNameBox.jsx";
 import styles from "./routeListCard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import CartModal from "../../../pages/usersRoutePage/cartModal/cartModal";
 
 const RouteListCard = ({
   item,
@@ -22,7 +23,7 @@ const RouteListCard = ({
   return (
     <div className={styles.RouteListCard} onClick={handleClick}>
       <div className={styles.routeCard}>
-        <div>
+        <div className={styles.routeCardInner}>
           <div className={styles.infoBox}>
             <span className={styles.rootName}>{item.routeName}</span>
             <span
@@ -37,6 +38,9 @@ const RouteListCard = ({
                 className={styles.placeCount}
               >{`${item.places.length}개의 장소가 있어요`}</span>
             </div>
+          </div>
+          <div className={styles.cartButton}>
+            {usersRoutePage && <CartModal />}
           </div>
         </div>
       </div>

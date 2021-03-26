@@ -12,6 +12,13 @@
   border-radius: 15px;
 }
 
+.routeCardInner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 12px 0 4px;
+}
+
 .infoBox {
   color: black;
   display: flex;
@@ -32,11 +39,6 @@
 .placeCount {
   padding-left: 3%;
   font-family: "Song Myung", serif;
-}
-
-.cartButton {
-  border-radius: 25%;
-  float: right;
 }
 
 .routeList {
