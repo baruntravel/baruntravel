@@ -7,7 +7,7 @@ const RouteList = ({
   clickedCardName,
   updateCardName,
   routeItems,
-  usersRoutePage
+  usersRoutePage,
 }) => {
   return (
     <div className={styles.RouteList}>

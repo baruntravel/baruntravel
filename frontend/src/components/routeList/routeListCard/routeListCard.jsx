@@ -1,7 +1,7 @@
 import React from "react";
 import PlaceNameBox from "./placeNameBox/placeNameBox.jsx";
 import styles from "./routeListCard.module.css";
-import CartModal from "../../../pages/usersRoutePage/cartModal/cartModal.js";
+import CartModal from "../../../pages/usersRoutePage/cartModal/cartModal";
 
 const RouteListCard = ({
   item,
@@ -18,13 +18,20 @@ const RouteListCard = ({
     <div className={styles.routeListCard} onClick={handleClick}>
       <div className={styles.routeNameBox}>
         <span className={styles.routeName}>{item.routeName}</span>
-        {usersRoutePage?
-        // usersRoutePage에서는 장바구니 표시 on
-        <CartModal/>:null}
+        {usersRoutePage ? (
+          // usersRoutePage에서는 장바구니 표시 on
+          <CartModal />
+        ) : null}
       </div>
       <div className={styles.routeList}>
-      {clickedCardName === item.routeName &&
-        item.places.map((v, index) => <PlaceNameBox key={index} item={v} usersRoutePage={usersRoutePage}/>)}
+        {clickedCardName === item.routeName &&
+          item.places.map((v, index) => (
+            <PlaceNameBox
+              key={index}
+              item={v}
+              usersRoutePage={usersRoutePage}
+            />
+          ))}
       </div>
     </div>
   );
