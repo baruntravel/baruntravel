@@ -1,9 +1,13 @@
 package me.travelplan.web.route;
 
-import lombok.Getter;
+import lombok.*;
 
 public class RouteDto {
+
     @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class RoutePlace {
         private Long id;
         private String image;
