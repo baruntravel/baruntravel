@@ -1,13 +1,13 @@
 .wrapper {
 }
-.mainContainer {
-  display: flex;
-  justify-content: space-between;
-}
 
-.cardContainer {
+.mainContainer {
+  width: 100%;
+  display: flex;
+  margin-top: 24px;
 }
 
 .mapContainer {
-  margin-right: 128px;
+  /* margin-right: 128px; */
+  margin-top: 10px;
 }

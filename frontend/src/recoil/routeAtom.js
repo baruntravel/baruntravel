@@ -159,11 +159,11 @@ export const usersRouteItems = atom({
   key: "userRouteCart",
   default: {
     TEST1: {
-      routeName: "TEST",
+      routeName: "nth9708님의 루트",
       places: [
         {
           id: "688578118",
-          placeName: "이이잉",
+          placeName: "ㅇㅇ카페",
           placeUrl: "http://place.map.kakao.com/688578118",
           addressName: "서울 중구 무교로 6",
           x: "126.97943787116054",
@@ -171,7 +171,7 @@ export const usersRouteItems = atom({
         },
         {
           id: "508437738",
-          placeName: "오오옹",
+          placeName: "ㅇㅇ식당",
           placeUrl: "http://place.map.kakao.com/508437738",
           addressName: "서울 중구 세종대로 110",
           x: "126.978244947578",
@@ -179,7 +179,7 @@ export const usersRouteItems = atom({
         },
         {
           id: "7975883",
-          placeName: "키키키",
+          placeName: "ㅇㅇ맥주",
           placeUrl: "http://place.map.kakao.com/7975883",
           addressName: "서울 중구 을지로 16",
           x: "126.979476558519",
@@ -188,11 +188,11 @@ export const usersRouteItems = atom({
       ],
     },
     TEST2: {
-      routeName: "TEST2",
+      routeName: "kiki123님의 루트",
       places: [
         {
           id: "10144798",
-          placeName: "A",
+          placeName: "ABC카페",
           placeUrl: "http://place.map.kakao.com/10144798",
           addressName: "서울 중구 세종대로 136",
           x: "126.97877403165",
@@ -200,7 +200,7 @@ export const usersRouteItems = atom({
         },
         {
           id: "8060228",
-          placeName: "B",
+          placeName: "ABC식당",
           placeUrl: "http://place.map.kakao.com/8060228",
           addressName: "서울 중구 세종대로 136",
           x: "126.9782578910947",
@@ -208,7 +208,7 @@ export const usersRouteItems = atom({
         },
         {
           id: "17695618",
-          placeName: "C",
+          placeName: "ABC맥주",
           placeUrl: "http://place.map.kakao.com/17695618",
           addressName: "서울 중구 세종대로 136",
           x: "126.97776884494",

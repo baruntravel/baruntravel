@@ -1,5 +1,5 @@
 import React from "react";
-import PlaceNameBox from "./placeNameBox/placeNameBox";
+import PlaceNameBox from "./placeNameBox/placeNameBox.jsx";
 import styles from "./routeListCard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
@@ -9,6 +9,7 @@ const RouteListCard = ({
   handleMarkers,
   clickedCardName,
   updateCardName,
+  usersRoutePage,
 }) => {
   const handleClick = () => {
     handleMarkers(item.places);

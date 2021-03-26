@@ -25,6 +25,7 @@ const MyRoutePage = (props) => {
           clickedCardName={clickedCardName}
           updateCardName={updateCardName}
           routeItems={routeItems}
+          usersRoutePage={false}
         />
         <div className={styles.map}>
           <RouteMap markers={markers} />
