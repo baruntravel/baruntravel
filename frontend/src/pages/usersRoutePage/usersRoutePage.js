@@ -34,7 +34,6 @@ const UsersRoutePage = () => {
           <UsersRouteMap markers={markers} />
         </div>
       </div>
-      <CartModal />
     </div>
   );
 };

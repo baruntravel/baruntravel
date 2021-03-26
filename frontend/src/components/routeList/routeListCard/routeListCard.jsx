@@ -1,8 +1,6 @@
 import React from "react";
 import PlaceNameBox from "./placeNameBox/placeNameBox.jsx";
 import styles from "./routeListCard.module.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import CartModal from "../../../pages/usersRoutePage/cartModal/cartModal.js";
 
 const RouteListCard = ({
