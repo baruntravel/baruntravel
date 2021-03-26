@@ -6,8 +6,12 @@ import me.travelplan.service.file.FileType;
 import me.travelplan.service.place.Place;
 import me.travelplan.web.route.RouteDto;
 import me.travelplan.web.route.RouteRequest;
+import me.travelplan.web.route.RouteResponse;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Mapper(
         componentModel = "spring",
@@ -45,5 +49,33 @@ public interface RouteMapper {
         });
 
         return route;
+    }
+
+    default RouteResponse.GetOne toResponse(Route route) {
+        var response = RouteResponse.GetOne.builder();
+
+        response.name(route.getName());
+        response.x(route.getX());
+        response.y(route.getY());
+
+        List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
+
+        route.getPlaces().forEach(routePlace -> {
+            var routePlaceBuilder = RouteDto.RoutePlace.builder();
+            routePlaceBuilder.order(routePlace.getOrder());
+
+            Place place = routePlace.getPlace();
+            routePlaces.add(routePlaceBuilder
+                    .id(place.getId())
+                    .name(place.getName())
+                    .image(place.getImage().getUrl())
+                    .x(place.getX())
+                    .y(place.getY())
+                    .url(place.getUrl())
+                    .build());
+        });
+        response.places(routePlaces);
+
+        return response.build();
     }
 }
