@@ -1,4 +1,4 @@
-= TravelPlan API 문서 (Auth)
+= 바른여행길잡이 API 문서 (Auth)
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
