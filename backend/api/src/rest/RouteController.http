@@ -25,3 +25,8 @@ Authorization: {{ authorizationToken }}
     }
   ]
 }
+
+###
+
+GET {{apiUrl}}/route/1
+Authorization: {{ authorizationToken }}

@@ -5,18 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
-public class RouteDto {
+import java.util.List;
+
+public class RouteResponse {
 
     @Getter
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class RoutePlace {
-        private Long id;
-        private String image;
+    public static class GetOne {
         private String name;
-        private String url;
         private Double x;
         private Double y;
-        private Integer order;
+        private List<RouteDto.RoutePlace> places;
     }
 }
