@@ -1,4 +1,4 @@
-= 바른여행길잡이 API 문서 (Auth)
+= 바른여행길잡이 API 문서 (Route)
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -13,13 +13,40 @@
 
 === 경로 생성
 
-`PUT /route`
+`POST /route`
+
+요청 HTTP
+\
+include::{snippets}/route-create/http-request.adoc[]
+include::{snippets}/route-create/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-create/http-response.adoc[]
+
+=== 경로 수정
+
+`PUT /route/{id}`
+
+요청 HTTP
+
+include::{snippets}/route-update/http-request.adoc[]
+include::{snippets}/route-update/path-parameters.adoc[]
+include::{snippets}/route-update/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-update/http-response.adoc[]
+
+s
+=== 경로 가져오기
+
+`GET /route/{id}`
 
 요청 HTTP
 
 - Body
-include::{snippets}/route-put/http-request.adoc[]
-include::{snippets}/route-put/request-fields.adoc[]
+include::{snippets}/route-getOne/http-request.adoc[]
+include::{snippets}/route-getOne/path-parameters.adoc[]
 
 성공 응답 HTTP
-include::{snippets}/route-put/http-response.adoc[]
+include::{snippets}/route-getOne/http-response.adoc[]
+include::{snippets}/route-getOne/response-fields.adoc[]

@@ -12,9 +12,14 @@ public class RouteController {
     private final RouteService routeService;
     private final RouteMapper routeMapper;
 
-    @PutMapping
-    public void put(@RequestBody RouteRequest.Put request) {
-        routeService.put(routeMapper.toEntity(request));
+    @PostMapping
+    public void create(@RequestBody RouteRequest.CreateOrUpdate request) {
+        routeService.create(routeMapper.toEntity(request, 0L));
+    }
+
+    @PutMapping("/{id}")
+    public void update(@PathVariable Long id, @RequestBody RouteRequest.CreateOrUpdate request) {
+        routeService.update(routeMapper.toEntity(request, id));
     }
 
     @GetMapping("/{id}")

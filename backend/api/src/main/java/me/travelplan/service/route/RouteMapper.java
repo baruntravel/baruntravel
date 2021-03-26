@@ -18,12 +18,17 @@ import java.util.List;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR
 )
 public interface RouteMapper {
-    default Route toEntity(RouteRequest.Put request) {
-        Route route = Route.builder()
+    default Route toEntity(RouteRequest.CreateOrUpdate request, Long id) {
+        var routeBuilder = Route.builder()
                 .name(request.getName())
                 .x(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getX).average().getAsDouble())
-                .y(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getY).average().getAsDouble())
-                .build();
+                .y(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getY).average().getAsDouble());
+
+        if (id != 0L) {
+            routeBuilder.id(id);
+        }
+
+        Route route = routeBuilder.build();
 
         request.getPlaces().forEach((place) -> {
             route.addPlace(RoutePlace.builder().order(place.getOrder()).place(
