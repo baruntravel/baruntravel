@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { usersRouteItems } from "../../recoil/routeAtom";
 import RouteList from "../../components/routeList/routeList";
 import Navbar from "../../components/common/navbar/navbar";
-import CartModal from "../usersRoutePage/cartModal/cartModal";
+import CartModal from "./cartModal/cartModal";
 
 const UsersRoutePage = () => {
   //Todo: 한글로 변경해야함
