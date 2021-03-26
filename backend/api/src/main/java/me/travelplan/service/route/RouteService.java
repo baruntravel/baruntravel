@@ -23,4 +23,8 @@ public class RouteService {
         placeRepository.saveAll(route.getPlaces().stream().map(RoutePlace::getPlace).collect(Collectors.toList()));
         return routeRepository.save(route);
     }
+
+    public Route getOne(Long id) {
+        return routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
+    }
 }
