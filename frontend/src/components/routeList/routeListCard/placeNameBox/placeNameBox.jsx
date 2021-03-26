@@ -3,7 +3,6 @@ import styles from "./placeNameBox.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import Portal from "../../../portal/portal";
-import ReviewList from "../../../reviewComponents/reviewList/reviewList";
 import PortalReview from "../../../../containers/portalReview/portalReview";
 
 const PlaceNameBox = ({ item }) => {
