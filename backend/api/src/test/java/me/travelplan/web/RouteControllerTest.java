@@ -27,8 +27,7 @@ import static me.travelplan.ApiDocumentUtils.getDocumentResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -42,11 +41,8 @@ public class RouteControllerTest extends MvcTest {
     @MockBean
     RouteService routeService;
 
-    @Test
-    @WithMockCustomUser
-    @DisplayName("경로 생성 테스트")
-    public void putTest() throws Exception {
-        String request = "{\n" +
+    private String getCreateOrUpdateRequest() {
+        return "{\n" +
                 "  \"name\": \"나의 테스트 경로\",\n" +
                 "  \"places\": [\n" +
                 "    {\n" +
@@ -69,18 +65,59 @@ public class RouteControllerTest extends MvcTest {
                 "    }\n" +
                 "  ]\n" +
                 "}";
+    }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("경로 생성 테스트")
+    public void createTest() throws Exception {
+        String request = getCreateOrUpdateRequest();
 
         ResultActions results = mockMvc.perform(
-                put("/route")
+                post("/route")
                     .content(request)
                     .contentType(MediaType.APPLICATION_JSON)
                     .characterEncoding("UTF-8")
         );
 
         results.andExpect(status().isOk())
-                .andDo(document("route-put",
+                .andDo(document("route-create",
                         getDocumentRequest(),
                         getDocumentResponse(),
+                        requestFields(
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("경로 이륾"),
+                                fieldWithPath("places").type(JsonFieldType.ARRAY).description("장소들 정보"),
+                                fieldWithPath("places[].id").type(JsonFieldType.NUMBER).description("카카오톡에서 제공한 장소 식별자"),
+                                fieldWithPath("places[].image").type(JsonFieldType.STRING).description("장소 이미지 URL"),
+                                fieldWithPath("places[].name").type(JsonFieldType.STRING).description("장소 이름"),
+                                fieldWithPath("places[].url").type(JsonFieldType.STRING).description("장소 URL"),
+                                fieldWithPath("places[].x").type(JsonFieldType.NUMBER).description("장소 X값"),
+                                fieldWithPath("places[].y").type(JsonFieldType.NUMBER).description("장소 Y값"),
+                                fieldWithPath("places[].order").type(JsonFieldType.NUMBER).description("장소들 정렬 순서 (사용할 필요가 있는지 검토 필요)")
+                        )
+                ));
+    }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("경로 생성 테스트")
+    public void updateTest() throws Exception {
+        String request = getCreateOrUpdateRequest();
+
+        ResultActions results = mockMvc.perform(
+                put("/route/{id}", 1)
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(document("route-update",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("id").description("경로 식별자")
+                        ),
                         requestFields(
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("경로 이륾"),
                                 fieldWithPath("places").type(JsonFieldType.ARRAY).description("장소들 정보"),
