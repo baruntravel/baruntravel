@@ -23,3 +23,17 @@ include::{snippets}/route-put/request-fields.adoc[]
 
 성공 응답 HTTP
 include::{snippets}/route-put/http-response.adoc[]
+
+=== 경로 가져오기
+
+`GET /route/{id}`
+
+요청 HTTP
+
+- Body
+include::{snippets}/route-getOne/http-request.adoc[]
+include::{snippets}/route-getOne/path-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-getOne/http-response.adoc[]
+include::{snippets}/route-getOne/response-fields.adoc[]
