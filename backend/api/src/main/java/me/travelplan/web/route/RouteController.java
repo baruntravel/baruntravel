@@ -5,6 +5,7 @@ import me.travelplan.security.userdetails.CurrentUser;
 import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.service.route.RouteMapper;
 import me.travelplan.service.route.RouteService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -15,11 +16,13 @@ public class RouteController {
     private final RouteMapper routeMapper;
 
     @PostMapping("/empty")
+    @ResponseStatus(HttpStatus.CREATED)
     public void createEmpty(@RequestBody RouteRequest.CreateEmpty request) {
         routeService.createEmpty(routeMapper.toEntity(request));
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody RouteRequest.CreateOrUpdate request) {
         routeService.create(routeMapper.toEntity(request, 0L));
     }
