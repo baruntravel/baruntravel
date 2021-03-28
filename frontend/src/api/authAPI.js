@@ -5,7 +5,6 @@ export const onLogin = (email, password) => {
     email,
     password,
   };
-  console.log(data);
   axios
     .post("/auth/login", data)
     .then((res) => {
@@ -14,22 +13,27 @@ export const onLogin = (email, password) => {
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("expiredTime", expiredTime);
     })
+    .then(
+      axios
+        .get("/auth/me")
+        .then((res) => console.log(res.data.email, res.data.name))
+    )
     .catch((error) => {
       console.error(error);
       throw new Error(`Unexpected Login Error ${error}`);
     });
 };
 
-export const onRegister = (nickname, email, password) => {
+export const onRegister = (name, email, password) => {
   const data = {
-    nickname,
+    name,
     email,
     password,
   };
   axios
     .post("/auth/register", data)
     .then((res) => {
-      return res.data.result;
+      console.log(res);
     })
     .catch((error) => {
       console.error(error);
