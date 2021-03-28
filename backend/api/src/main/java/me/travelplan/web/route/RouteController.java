@@ -1,6 +1,8 @@
 package me.travelplan.web.route;
 
 import lombok.RequiredArgsConstructor;
+import me.travelplan.security.userdetails.CurrentUser;
+import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.service.route.RouteMapper;
 import me.travelplan.service.route.RouteService;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,11 @@ import org.springframework.web.bind.annotation.*;
 public class RouteController {
     private final RouteService routeService;
     private final RouteMapper routeMapper;
+
+    @PostMapping("/empty")
+    public void createEmpty(@RequestBody RouteRequest.CreateEmpty request) {
+        routeService.createEmpty(routeMapper.toEntity(request));
+    }
 
     @PostMapping
     public void create(@RequestBody RouteRequest.CreateOrUpdate request) {
@@ -24,6 +31,6 @@ public class RouteController {
 
     @GetMapping("/{id}")
     public RouteResponse.GetOne getOne(@PathVariable Long id) {
-        return routeMapper.toResponse(routeService.getOne(id));
+        return routeMapper.toGetOneResponse(routeService.getOne(id));
     }
 }

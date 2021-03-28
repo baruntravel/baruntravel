@@ -8,6 +8,12 @@ import java.util.List;
 public class RouteRequest {
     @Getter
     @NoArgsConstructor
+    public static class CreateEmpty {
+        private String name;
+    }
+
+    @Getter
+    @NoArgsConstructor
     public static class CreateOrUpdate {
         private String name;
         private List<RouteDto.RoutePlace> places;

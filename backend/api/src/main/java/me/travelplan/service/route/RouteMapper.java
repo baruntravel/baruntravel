@@ -12,12 +12,15 @@ import org.mapstruct.Mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(
         componentModel = "spring",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR
 )
 public interface RouteMapper {
+    Route toEntity(RouteRequest.CreateEmpty request);
+
     default Route toEntity(RouteRequest.CreateOrUpdate request, Long id) {
         var routeBuilder = Route.builder()
                 .name(request.getName())
@@ -56,7 +59,7 @@ public interface RouteMapper {
         return route;
     }
 
-    default RouteResponse.GetOne toResponse(Route route) {
+    default RouteResponse.GetOne toGetOneResponse(Route route) {
         var response = RouteResponse.GetOne.builder();
 
         response.name(route.getName());
@@ -82,5 +85,15 @@ public interface RouteMapper {
         response.places(routePlaces);
 
         return response.build();
+    }
+
+    default RouteResponse.GetsWithOnlyName toGetsWithOnlyNameResponse(List<Route> routes) {
+        return RouteResponse.GetsWithOnlyName.builder()
+                .routes(routes.stream().map(route -> RouteDto.RouteWithOnlyName.builder()
+                        .id(route.getId())
+                        .name(route.getName())
+                        .build()
+                ).collect(Collectors.toList()))
+                .build();
     }
 }
