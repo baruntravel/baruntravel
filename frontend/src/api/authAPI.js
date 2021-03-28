@@ -1,23 +1,21 @@
 import axios from "axios";
 
-export const onLogin = (email, password) => {
+export const onLogin = async (email, password) => {
   const data = {
     email,
     password,
   };
-  axios
+  return axios
     .post("/auth/login", data)
     .then((res) => {
       const { accessToken, refreshToken, expiredTime } = res.data;
       axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("expiredTime", expiredTime);
-    })
-    .then(
-      axios
+      return axios
         .get("/auth/me")
-        .then((res) => console.log(res.data.email, res.data.name))
-    )
+        .then((res) => [true, res.data.email, res.data.name]);
+    })
     .catch((error) => {
       console.error(error);
       throw new Error(`Unexpected Login Error ${error}`);

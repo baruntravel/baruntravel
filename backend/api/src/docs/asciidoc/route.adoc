@@ -49,6 +49,21 @@ include::{snippets}/route-update/request-fields.adoc[]
 성공 응답 HTTP
 include::{snippets}/route-update/http-response.adoc[]
 
+=== 경로에 장소 추가하기
+
+`PUT /route/{id}/place`
+
+요청 HTTP
+
+- Body
+include::{snippets}/route-addPlace/http-request.adoc[]
+include::{snippets}/route-addPlace/path-parameters.adoc[]
+include::{snippets}/route-addPlace/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-addPlace/http-response.adoc[]
+
+
 === 내 경로 가져오기 (이름만)
 
 `POST /routes/my`

@@ -36,4 +36,9 @@ public class RouteController {
     public RouteResponse.GetOne getOne(@PathVariable Long id) {
         return routeMapper.toGetOneResponse(routeService.getOne(id));
     }
+
+    @PutMapping("/{id}/place")
+    public void addPlace(@PathVariable Long id, @RequestBody RouteRequest.AddPlace request) {
+        routeService.addPlace(id, routeMapper.toPlace(request));
+    }
 }
