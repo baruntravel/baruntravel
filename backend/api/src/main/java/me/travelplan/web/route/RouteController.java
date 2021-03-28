@@ -17,14 +17,14 @@ public class RouteController {
 
     @PostMapping("/empty")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createEmpty(@RequestBody RouteRequest.CreateEmpty request) {
-        routeService.createEmpty(routeMapper.toEntity(request));
+    public RouteResponse.RouteId createEmpty(@RequestBody RouteRequest.CreateEmpty request) {
+        return routeMapper.toRouteIdResponse(routeService.createEmpty(routeMapper.toEntity(request)));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody RouteRequest.CreateOrUpdate request) {
-        routeService.create(routeMapper.toEntity(request, 0L));
+    public RouteResponse.RouteId create(@RequestBody RouteRequest.CreateOrUpdate request) {
+        return routeMapper.toRouteIdResponse(routeService.create(routeMapper.toEntity(request, 0L)));
     }
 
     @PutMapping("/{id}")

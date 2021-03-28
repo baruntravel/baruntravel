@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import me.travelplan.security.jwt.Token;
 import me.travelplan.security.userdetails.CustomUserDetails;
+import me.travelplan.service.exception.ResponsibleClientException;
 import me.travelplan.web.auth.AuthResponse;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +30,7 @@ public class AuthService {
         User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("찾을 수 없는 사용자입니다"));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("잘못된 비밀번호입니다");
+            throw new ResponsibleClientException("잘못된 비밀번호입니다");
         }
 
         // TODO RefreshToken 처리 필요
