@@ -25,9 +25,9 @@ const CartModal = () => {
 
   return (
     <>
-      <Button type="primary" onClick={showModal} className={styles.cartButton}>
+      <button className={styles.cartButton} onClick={showModal}>
         <FontAwesomeIcon icon={faShoppingCart} size={"sm"} />
-      </Button>
+      </button>
       <Modal
         title="Basic Modal"
         visible={isModalVisible}

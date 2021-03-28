@@ -6,9 +6,11 @@ import { usersRouteItems } from "../../recoil/routeAtom";
 import RouteList from "../../components/routeList/routeList";
 import Navbar from "../../components/common/navbar/navbar";
 
+import { getRoute, postRoute } from "../../api/routeAPI";
+
 const UsersRoutePage = () => {
   //Todo: 한글로 변경해야함
-  const area = window.location.href.split("/")[3];
+  const areaID = window.location.href.split("/")[3];
 
   const [clickedCardName, setClickedCardName] = useState("");
   const [routeItems, setRouteItems] = useRecoilState(usersRouteItems);
@@ -17,9 +19,12 @@ const UsersRoutePage = () => {
   const handleMarkers = (places) => setMarkers(places);
   const updateCardName = (name) => setClickedCardName(name);
 
+  // getRoute(areaID);
+  // postRoute(areaID);
+
   return (
     <div className={styles.wrapper}>
-      <Navbar title={`${area} 추천 루트`} />
+      <Navbar title={`${areaID} 추천 루트`} />
       <div className={styles.mainContainer}>
         <RouteList
           handleMarkers={handleMarkers}
