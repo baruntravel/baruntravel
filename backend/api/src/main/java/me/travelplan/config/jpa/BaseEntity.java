@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
     @CreatedDate
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
@@ -32,7 +32,7 @@ public class BaseEntity {
 
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by", referencedColumnName = "id")
+    @JoinColumn(name = "created_by", referencedColumnName = "id", updatable = false)
     private User createdBy;
 
     @LastModifiedBy

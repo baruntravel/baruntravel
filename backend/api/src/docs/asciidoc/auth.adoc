@@ -1,4 +1,4 @@
-= TravelPlan API 문서 (Auth)
+= 바른여행길잡이 API 문서 (Auth)
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -17,10 +17,34 @@
 
 요청 HTTP
 
-- Body
 include::{snippets}/auth-register/http-request.adoc[]
 include::{snippets}/auth-register/request-fields.adoc[]
 
 성공 응답 HTTP
 include::{snippets}/auth-register/http-response.adoc[]
 
+
+=== 로그인
+
+`POST /auth/login`
+
+요청 HTTP
+
+include::{snippets}/auth-login/http-request.adoc[]
+include::{snippets}/auth-login/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/auth-login/http-response.adoc[]
+include::{snippets}/auth-login/response-fields.adoc[]
+
+=== 내 정보 가져오기
+
+`GET /auth/me`
+
+요청 HTTP
+
+include::{snippets}/auth-me/http-request.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/auth-me/http-response.adoc[]
+include::{snippets}/auth-me/response-fields.adoc[]

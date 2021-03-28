@@ -1,0 +1,52 @@
+= 바른여행길잡이 API 문서 (Route)
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:snippets: ../../../build/generated-snippets
+
+= Route
+---
+== 기본 API
+
+=== 경로 생성
+
+`POST /route`
+
+요청 HTTP
+\
+include::{snippets}/route-create/http-request.adoc[]
+include::{snippets}/route-create/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-create/http-response.adoc[]
+
+=== 경로 수정
+
+`PUT /route/{id}`
+
+요청 HTTP
+
+include::{snippets}/route-update/http-request.adoc[]
+include::{snippets}/route-update/path-parameters.adoc[]
+include::{snippets}/route-update/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-update/http-response.adoc[]
+
+
+=== 경로 가져오기
+
+`GET /route/{id}`
+
+요청 HTTP
+
+- Body
+include::{snippets}/route-getOne/http-request.adoc[]
+include::{snippets}/route-getOne/path-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-getOne/http-response.adoc[]
+include::{snippets}/route-getOne/response-fields.adoc[]

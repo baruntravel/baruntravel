@@ -17,11 +17,21 @@
   margin: auto;
   background-color: transparent;
 }
+.header {
+  height: 15%;
+}
 .closeBtn {
   background-color: transparent;
   border: none;
   font-size: 2em;
   float: right;
+}
+
+.carousel {
+  height: 65%;
+}
+.carousel__Body {
+  height: 50vh;
 }
 .img {
   margin: auto;

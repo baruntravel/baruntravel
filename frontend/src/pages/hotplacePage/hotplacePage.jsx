@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import styles from "./hotplacePage.module.css";
 import HotplaceMap from "../../components/map/hotplaceMap/hotplaceMap";
 import PortalCart from "../../containers/portalCart/portalCart";
-import styles from "./hotplacePage.module.css";
 
-const HotplacePage = (props) => {
+const HotplacePage = () => {
   const [cartPortal, setCartPortal] = useState(false);
   const [place, setPlace] = useState({});
   const handleCartPortal = () => {
