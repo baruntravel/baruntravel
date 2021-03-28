@@ -1,3 +1,13 @@
+POST {{apiUrl}}/route/empty
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+{
+  "name": "Test Name Route"
+}
+
+###
+
 POST {{apiUrl}}/route
 Content-Type: application/json
 Authorization: {{ authorizationToken }}
@@ -59,4 +69,9 @@ Authorization: {{ authorizationToken }}
 ###
 
 GET {{apiUrl}}/route/1
+Authorization: {{ authorizationToken }}
+
+###
+
+GET {{apiUrl}}/routes/my
 Authorization: {{ authorizationToken }}

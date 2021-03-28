@@ -11,6 +11,19 @@
 ---
 == 기본 API
 
+=== 이름만 있는 빈 경로 생성
+
+`POST /route/empty`
+
+요청 HTTP
+\
+include::{snippets}/route-createEmpty/http-request.adoc[]
+include::{snippets}/route-createEmpty/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-createEmpty/http-response.adoc[]
+
+
 === 경로 생성
 
 `POST /route`
@@ -36,6 +49,16 @@ include::{snippets}/route-update/request-fields.adoc[]
 성공 응답 HTTP
 include::{snippets}/route-update/http-response.adoc[]
 
+=== 내 경로 가져오기 (이름만)
+
+`POST /routes/my`
+
+요청 HTTP
+include::{snippets}/routes-getMy/http-request.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/routes-getMy/http-response.adoc[]
+include::{snippets}/routes-getMy/response-fields.adoc[]
 
 === 경로 가져오기
 

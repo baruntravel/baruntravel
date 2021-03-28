@@ -17,4 +17,13 @@ public class RouteDto {
         private Double y;
         private Integer order;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class RouteWithOnlyName {
+        private Long id;
+        private String name;
+    }
 }

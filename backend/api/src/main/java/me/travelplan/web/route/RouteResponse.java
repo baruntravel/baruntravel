@@ -18,4 +18,11 @@ public class RouteResponse {
         private Double y;
         private List<RouteDto.RoutePlace> places;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class GetsWithOnlyName {
+        List<RouteDto.RouteWithOnlyName> routes;
+    }
 }

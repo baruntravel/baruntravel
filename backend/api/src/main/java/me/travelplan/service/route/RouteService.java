@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import me.travelplan.service.file.FileRepository;
 import me.travelplan.service.place.Place;
 import me.travelplan.service.place.PlaceRepository;
+import me.travelplan.service.user.User;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,6 +18,15 @@ public class RouteService {
     private final RoutePlaceRepository routePlaceRepository;
     private final PlaceRepository placeRepository;
     private final FileRepository fileRepository;
+
+    @Transactional
+    public Route createEmpty(Route route) {
+        return routeRepository.save(route);
+    }
+
+    public List<Route> getByUser(User user) {
+        return routeRepository.findByCreatedBy(user);
+    }
 
     @Transactional
     public Route create(Route route) {
