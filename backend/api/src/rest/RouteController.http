@@ -68,6 +68,24 @@ Authorization: {{ authorizationToken }}
 
 ###
 
+PUT {{apiUrl}}/route/1/place
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+{
+  "place": {
+      "id" : 123,
+      "image" : "https://www.gn.go.kr/tour/images/tour/main_new/mvisual_img07.jpg",
+      "name" : "강남",
+      "url" : "https://www.gn.go.kr/tour/index.do",
+      "x" : 37.748125,
+      "y" : 128.878996,
+      "order" : 1
+    }
+}
+
+###
+
 GET {{apiUrl}}/route/1
 Authorization: {{ authorizationToken }}
 

@@ -20,6 +20,24 @@ import java.util.stream.Collectors;
 )
 public interface RouteMapper {
     Route toEntity(RouteRequest.CreateEmpty request);
+    default Place toPlace(RouteRequest.AddPlace request) {
+        return Place.builder()
+                .id(request.getPlace().getId())
+                .name(request.getPlace().getName())
+                .url(request.getPlace().getName())
+                .image(File.builder()
+                        .name(request.getPlace().getName())
+                        .extension("")
+                        .height(0)
+                        .width(0)
+                        .server(FileServer.EXTERNAL)
+                        .size(0L).type(FileType.IMAGE)
+                        .url(request.getPlace().getImage())
+                        .build())
+                .x(request.getPlace().getX())
+                .y(request.getPlace().getY())
+                .build();
+    }
 
     default Route toEntity(RouteRequest.CreateOrUpdate request, Long id) {
         var routeBuilder = Route.builder()

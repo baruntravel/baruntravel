@@ -18,4 +18,10 @@ public class RouteRequest {
         private String name;
         private List<RouteDto.RoutePlace> places;
     }
+
+    @Getter
+    @NoArgsConstructor
+    public static class AddPlace {
+        private RouteDto.RoutePlace place;
+    }
 }
