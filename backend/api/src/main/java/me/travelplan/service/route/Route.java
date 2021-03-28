@@ -20,7 +20,7 @@ public class Route extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "route", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
     private final List<RoutePlace> places = new ArrayList<>();
 
     private String name;

@@ -14,11 +14,20 @@ import java.util.stream.Collectors;
 @Service
 public class RouteService {
     private final RouteRepository routeRepository;
+    private final RoutePlaceRepository routePlaceRepository;
     private final PlaceRepository placeRepository;
     private final FileRepository fileRepository;
 
     @Transactional
-    public Route put(Route route) {
+    public Route create(Route route) {
+        fileRepository.saveAll(route.getPlaces().stream().map(RoutePlace::getPlace).map(Place::getImage).collect(Collectors.toList()));
+        placeRepository.saveAll(route.getPlaces().stream().map(RoutePlace::getPlace).collect(Collectors.toList()));
+        return routeRepository.save(route);
+    }
+
+    @Transactional
+    public Route update(Route route) {
+        routePlaceRepository.deleteAllByRoute(route);
         fileRepository.saveAll(route.getPlaces().stream().map(RoutePlace::getPlace).map(Place::getImage).collect(Collectors.toList()));
         placeRepository.saveAll(route.getPlaces().stream().map(RoutePlace::getPlace).collect(Collectors.toList()));
         return routeRepository.save(route);

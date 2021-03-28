@@ -17,7 +17,6 @@
 
 요청 HTTP
 
-- Body
 include::{snippets}/auth-register/http-request.adoc[]
 include::{snippets}/auth-register/request-fields.adoc[]
 
@@ -31,7 +30,6 @@ include::{snippets}/auth-register/http-response.adoc[]
 
 요청 HTTP
 
-- Body
 include::{snippets}/auth-login/http-request.adoc[]
 include::{snippets}/auth-login/request-fields.adoc[]
 
@@ -45,7 +43,6 @@ include::{snippets}/auth-login/response-fields.adoc[]
 
 요청 HTTP
 
-- Body
 include::{snippets}/auth-me/http-request.adoc[]
 
 성공 응답 HTTP

@@ -6,7 +6,6 @@ import UsersRoutePage from "./pages/usersRoutePage/usersRoutePage";
 import HotplacePage from "./pages/hotplacePage/hotplacePage";
 import { RecoilRoot } from "recoil";
 import MyRoutePage from "./pages/myRoutePage/myRoutePage";
-import ReviewList from "./components/reviewComponents/reviewList/reviewList";
 import SideMyProfile from "./components/sideMyProfile/sideMyProfile";
 
 function App() {
