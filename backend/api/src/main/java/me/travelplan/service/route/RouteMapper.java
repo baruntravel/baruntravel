@@ -19,7 +19,9 @@ import java.util.stream.Collectors;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR
 )
 public interface RouteMapper {
+    RouteResponse.RouteId toRouteIdResponse(Route route);
     Route toEntity(RouteRequest.CreateEmpty request);
+
     default Place toPlace(RouteRequest.AddPlace request) {
         return Place.builder()
                 .id(request.getPlace().getId())
