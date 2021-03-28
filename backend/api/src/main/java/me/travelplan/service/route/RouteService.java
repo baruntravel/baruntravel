@@ -46,4 +46,12 @@ public class RouteService {
     public Route getOne(Long id) {
         return routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
     }
+
+    public Route addPlace(Long id, Place place) {
+        Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
+        fileRepository.save(place.getImage());
+        route.addPlace(RoutePlace.builder().order(0).route(route).place(placeRepository.save(place)).build());
+        route.calculateCenterCoordinate();
+        return routeRepository.save(route);
+    }
 }

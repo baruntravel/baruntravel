@@ -31,4 +31,11 @@ public class Route extends BaseEntity {
         this.places.add(place);
         place.setRoute(this);
     }
+
+    public void calculateCenterCoordinate() {
+        if (!this.places.isEmpty()) {
+            this.x = this.places.stream().map(RoutePlace::getPlace).mapToDouble(Place::getX).average().orElseThrow();
+            this.y = this.places.stream().map(RoutePlace::getPlace).mapToDouble(Place::getY).average().orElseThrow();
+        }
+    }
 }
