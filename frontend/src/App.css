@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap");
+
 .placeinfo_wrap {
   position: absolute;
   bottom: 28px;
@@ -71,4 +73,47 @@
   float: right;
   margin-top: -15%;
   margin-right: 5%;
+}
+
+li {
+  list-style: none;
+}
+.search__container {
+  display: flex;
+  width: 100%;
+  padding: 5%;
+  background-color: transparent;
+  border-bottom: 2px solid wheat;
+}
+.search__card {
+  margin-top: 2%;
+  width: 100%;
+}
+.search__placeInfo {
+  margin-bottom: 2%;
+}
+.search__icon {
+  color: pink;
+}
+.search__placeName {
+  padding-left: 3%;
+  font-size: 110%;
+  font-family: "Do Hyeon", sans-serif;
+}
+.search__address {
+  color: gray;
+}
+.search__bottom {
+  display: flex;
+  margin-right: 5%;
+  flex-direction: row-reverse;
+}
+.search__more,
+.search__review {
+  margin-right: 5%;
+  margin-left: 5%;
+  color: #25b8f8;
+}
+.search__review:hover {
+  cursor: pointer;
 }
