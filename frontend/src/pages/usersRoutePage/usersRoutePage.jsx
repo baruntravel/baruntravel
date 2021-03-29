@@ -6,7 +6,7 @@ import { usersRouteItems } from "../../recoil/routeAtom";
 import RouteList from "../../components/routeList/routeList";
 import Navbar from "../../components/common/navbar/navbar";
 
-import { getRoute, postRoute } from "../../api/routeAPI";
+import { getRoute, postRoute, postEmpty } from "../../api/routeAPI";
 
 const UsersRoutePage = () => {
   //Todo: 한글로 변경해야함
@@ -19,8 +19,9 @@ const UsersRoutePage = () => {
   const handleMarkers = (places) => setMarkers(places);
   const updateCardName = (name) => setClickedCardName(name);
 
-  // getRoute(areaID);
+  getRoute(areaID);
   // postRoute(areaID);
+  postEmpty();
 
   return (
     <div className={styles.wrapper}>
