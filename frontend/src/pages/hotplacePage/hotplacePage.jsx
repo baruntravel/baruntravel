@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import styles from "./hotplacePage.module.css";
 import HotplaceMap from "../../components/map/hotplaceMap/hotplaceMap";
 import PortalCart from "../../containers/portalCart/portalCart";
@@ -9,6 +9,8 @@ const HotplacePage = () => {
   const [place, setPlace] = useState({});
   const [inputKeyword, handleInputKeyword] = useInput();
   const [searchPlace, setSearchPlace] = useState("");
+  const placeListRef = useRef();
+
   const handleCartPortal = useCallback(() => {
     setCartPortal(!cartPortal);
   }, []);
@@ -42,11 +44,12 @@ const HotplacePage = () => {
             </form>
           </div>
           <div className={styles.searchList}>
-            <ul></ul>
+            <ul ref={placeListRef} className={styles.placeList}></ul>
           </div>
         </div>
         <div className={styles.mapContainer}>
           <HotplaceMap
+            placeListRef={placeListRef}
             handleCartPortal={handleCartPortal}
             clickedPlace={clickedPlace}
             searchPlace={searchPlace}

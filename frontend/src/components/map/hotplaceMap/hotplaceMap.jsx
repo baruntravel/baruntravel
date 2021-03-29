@@ -4,7 +4,15 @@ import styles from "./hotplaceMap.module.css";
 
 const { kakao } = window;
 
-const HotplaceMap = ({ handleCartPortal, clickedPlace, searchPlace }) => {
+const HotplaceMap = ({
+  placeListRef,
+  handleCartPortal,
+  clickedPlace,
+  searchPlace,
+}) => {
+  const [placeOverlay, setPlaceOverlay] = useState(
+    new kakao.maps.CustomOverlay({ zIndex: 1 })
+  );
   const insertToCart = useCallback(
     (place) => {
       console.log(place);
@@ -13,10 +21,14 @@ const HotplaceMap = ({ handleCartPortal, clickedPlace, searchPlace }) => {
     },
     [clickedPlace, handleCartPortal]
   );
-  const [placeOverlay, setPlaceOverlay] = useState(
-    new kakao.maps.CustomOverlay({ zIndex: 1 })
-  );
-
+  // 엘리먼트에 이벤트 핸들러를 등록하는 함수입니다
+  const addEventHandle = useCallback((target, type, callback) => {
+    if (target.addEventListener) {
+      target.addEventListener(type, callback);
+    } else {
+      target.attachEvent("on" + type, callback);
+    }
+  }, []);
   useEffect(() => {
     const contentNode = document.createElement("div");
     contentNode.className = "placeinfo_wrap";
@@ -38,9 +50,10 @@ const HotplaceMap = ({ handleCartPortal, clickedPlace, searchPlace }) => {
 
     // 커스텀 오버레이 컨텐츠를 설정합니다
     placeOverlay.setContent(contentNode);
-    addCategoryClickEvent();
     // 카테고리 검색을 요청하는 함수입니다
-    const placesSearchKeywordCB = (data, status, pagination) => {
+    addCategoryClickEvent();
+    searchPlacesWithKeyword();
+    function placesSearchKeywordCB(data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
         // 정상적으로 검색이 완료됐으면
         // 검색 목록과 마커를 표출합니다
@@ -54,8 +67,7 @@ const HotplaceMap = ({ handleCartPortal, clickedPlace, searchPlace }) => {
         alert("검색 결과 중 오류가 발생했습니다.");
         return;
       }
-    };
-    searchPlacesWithKeyword();
+    }
     function searchPlacesWithKeyword() {
       if (searchPlace) {
         //keyword로 검색했을 때,
@@ -67,10 +79,10 @@ const HotplaceMap = ({ handleCartPortal, clickedPlace, searchPlace }) => {
       }
     }
     function searchPlaces() {
+      // 카테고리로 검색했을 때,
       if (!currCategory) {
         return;
       } else {
-        // 카테고리로 검색했을 때,
         // 커스텀 오버레이를 숨깁니다
         placeOverlay.setMap(null);
         // 지도에 표시되고 있는 마커를 제거합니다
@@ -80,7 +92,30 @@ const HotplaceMap = ({ handleCartPortal, clickedPlace, searchPlace }) => {
         });
       }
     }
-
+    // 검색결과 항목을 Element로 반환하는 함수입니다
+    function getListItem(index, places) {
+      let el = document.createElement("li");
+      let addressName = places.road_address_name || places.address_name;
+      let itemStr = `
+      <div class="search__container">
+        <div class="search__card">
+          <div class="search__placeInfo">
+            <i class="search__icon fas fa-map-marker-alt"></i>
+            <span class="search__placeName">${places.place_name}</span>
+          </div>
+          <span class="search__address">${addressName}</span>
+          <div class="search__bottom">
+            <span class="search__review">리뷰</span>
+            <a href=${places.place_url} target="_blank" class="search__more">
+              상세보기
+            </a>
+          </div>
+        </div>
+      </div>`;
+      el.innerHTML = itemStr;
+      el.className = "item";
+      return el;
+    }
     // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
     function placesSearchCB(data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
@@ -119,11 +154,14 @@ const HotplaceMap = ({ handleCartPortal, clickedPlace, searchPlace }) => {
         }
       } else if (searchPlace) {
         const bounds = new kakao.maps.LatLngBounds();
+        const listStr = "";
         removeMarker();
         for (let i = 0; i < places.length; i++) {
           var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
             marker = addMarker(placePosition, i);
+          let itemEl = getListItem(i, places[i]);
           bounds.extend(placePosition);
+          placeListRef.current.appendChild(itemEl);
         }
         map.setBounds(bounds);
       }
@@ -258,15 +296,6 @@ const HotplaceMap = ({ handleCartPortal, clickedPlace, searchPlace }) => {
       }
     }
   }, [searchPlace]);
-
-  // 엘리먼트에 이벤트 핸들러를 등록하는 함수입니다
-  const addEventHandle = useCallback((target, type, callback) => {
-    if (target.addEventListener) {
-      target.addEventListener(type, callback);
-    } else {
-      target.attachEvent("on" + type, callback);
-    }
-  }, []);
 
   return (
     <div className={styles.HotplaceMap}>
