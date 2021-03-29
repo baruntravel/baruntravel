@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 import { myRouteCart } from "../../recoil/routeAtom";
 import RouteNameBox from "./routeNameBox/routeNameBox";
 
-const PortalCartBody = ({ place, handleCartPortal }) => {
+const PortalCartBody = ({ place, handleCartPortalClose }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [myRouteList, setMyRouteList] = useRecoilState(myRouteCart);
   const inputRef = useRef();
@@ -44,7 +44,6 @@ const PortalCartBody = ({ place, handleCartPortal }) => {
       x: place.x,
       y: place.y,
     };
-
     setMyRouteList((prev) => {
       const updated = { ...prev };
       updated[key] = {
@@ -54,7 +53,7 @@ const PortalCartBody = ({ place, handleCartPortal }) => {
       };
       return updated;
     });
-    handleCartPortal();
+    handleCartPortalClose();
   };
   return (
     <div className={styles.PortalCartBody}>
@@ -73,7 +72,7 @@ const PortalCartBody = ({ place, handleCartPortal }) => {
         <button className={styles.addBtn} onClick={handleOpen}>
           새로 추가
         </button>
-        <button className={styles.closeBtn} onClick={handleCartPortal}>
+        <button className={styles.closeBtn} onClick={handleCartPortalClose}>
           Close
         </button>
       </div>

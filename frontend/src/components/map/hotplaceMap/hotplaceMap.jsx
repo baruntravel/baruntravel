@@ -3,23 +3,19 @@ import CategoryBar from "./categoryBar/categoryBar";
 import styles from "./hotplaceMap.module.css";
 
 const { kakao } = window;
-
 const HotplaceMap = ({
   placeListRef,
-  handleCartPortal,
+  handleCartPortalOpen,
   clickedPlace,
   searchPlace,
 }) => {
-  const [placeOverlay, setPlaceOverlay] = useState(
-    new kakao.maps.CustomOverlay({ zIndex: 1 })
-  );
   const insertToCart = useCallback(
     (place) => {
       console.log(place);
       clickedPlace(place);
-      handleCartPortal();
+      handleCartPortalOpen();
     },
-    [clickedPlace, handleCartPortal]
+    [clickedPlace, handleCartPortalOpen]
   );
   // 엘리먼트에 이벤트 핸들러를 등록하는 함수입니다
   const addEventHandle = useCallback((target, type, callback) => {
@@ -30,33 +26,42 @@ const HotplaceMap = ({
     }
   }, []);
   useEffect(() => {
+    const placeOverlay = new kakao.maps.CustomOverlay({ zIndex: 1 });
     const contentNode = document.createElement("div");
     contentNode.className = "placeinfo_wrap";
     let markers = [];
+    let keyword = searchPlace;
     let currCategory = "";
     const mapContainer = document.getElementById("Map"), // 지도를 표시할 div
       mapOption = {
+        // center: centerLocation
+        //   ? new kakao.maps.LatLng(centerLocation[0], centerLocation[1])
+        //   : new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
         center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
         level: 5, // 지도의 확대 레벨
       };
     const map = new kakao.maps.Map(mapContainer, mapOption);
     const ps = new kakao.maps.services.Places(map);
-    kakao.maps.event.addListener(map, "idle", searchPlaces);
+
+    kakao.maps.event.addListener(map, "idle", () => {
+      searchPlaces();
+    });
+    kakao.maps.event.addListener(map, "dragend", function () {
+      searchPlacesWithKeyword();
+    });
 
     // 커스텀 오버레이의 컨텐츠 노드에 mousedown, touchstart 이벤트가 발생했을때
     // 지도 객체에 이벤트가 전달되지 않도록 이벤트 핸들러로 kakao.maps.event.preventMap 메소드를 등록합니다
     addEventHandle(contentNode, "mousedown", kakao.maps.event.preventMap);
     addEventHandle(contentNode, "touchstart", kakao.maps.event.preventMap);
-
     // 커스텀 오버레이 컨텐츠를 설정합니다
     placeOverlay.setContent(contentNode);
     // 카테고리 검색을 요청하는 함수입니다
     addCategoryClickEvent();
     searchPlacesWithKeyword();
+
     function placesSearchKeywordCB(data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
-        // 정상적으로 검색이 완료됐으면
-        // 검색 목록과 마커를 표출합니다
         displayPlaces(data);
         // 페이지 번호를 표출합니다
         // displayPagination(pagination);
@@ -69,11 +74,13 @@ const HotplaceMap = ({
       }
     }
     function searchPlacesWithKeyword() {
-      if (searchPlace) {
+      if (!currCategory && keyword) {
         //keyword로 검색했을 때,
         placeOverlay.setMap(null);
         removeMarker();
-        ps.keywordSearch(searchPlace, placesSearchKeywordCB);
+        ps.keywordSearch(keyword, placesSearchKeywordCB, {
+          useMapBounds: true,
+        });
       } else {
         return;
       }
@@ -93,26 +100,33 @@ const HotplaceMap = ({
       }
     }
     // 검색결과 항목을 Element로 반환하는 함수입니다
-    function getListItem(index, places) {
+    function getListItem(index, place) {
       let el = document.createElement("li");
-      let addressName = places.road_address_name || places.address_name;
+      let addressName = place.road_address_name || place.address_name;
       let itemStr = `
       <div class="search__container">
         <div class="search__card">
           <div class="search__placeInfo">
             <i class="search__icon fas fa-map-marker-alt"></i>
-            <span class="search__placeName">${places.place_name}</span>
+            <span class="search__placeName">${place.place_name}</span>
           </div>
           <span class="search__address">${addressName}</span>
           <div class="search__bottom">
             <span class="search__review">리뷰</span>
-            <a href=${places.place_url} target="_blank" class="search__more">
+            <a href=${place.place_url} target="_blank" class="search__more">
               상세보기
             </a>
           </div>
         </div>
       </div>`;
+      const addBtn = document.createElement("button");
+      addBtn.className = "search__addBtn";
+      addBtn.innerHTML = "담기";
+      addBtn.addEventListener("click", () => {
+        insertToCart(place);
+      });
       el.innerHTML = itemStr;
+      el.appendChild(addBtn);
       el.className = "item";
       return el;
     }
@@ -127,7 +141,11 @@ const HotplaceMap = ({
         // 에러로 인해 검색결과가 나오지 않은 경우 해야할 처리가 있다면 이곳에 작성해 주세요
       }
     }
-
+    function overlayClickEvent(marker, place) {
+      kakao.maps.event.addListener(marker, "click", function () {
+        displayPlaceInfo(place);
+      });
+    }
     // 지도에 마커를 표출하는 함수입니다
     function displayPlaces(places) {
       // 몇번째 카테고리가 선택되어 있는지 얻어옵니다
@@ -143,27 +161,23 @@ const HotplaceMap = ({
             new kakao.maps.LatLng(places[i].y, places[i].x),
             order
           );
-
           // 마커와 검색결과 항목을 클릭 했을 때
           // 장소정보를 표출하도록 클릭 이벤트를 등록합니다
-          (function (marker, place) {
-            kakao.maps.event.addListener(marker, "click", function () {
-              displayPlaceInfo(place);
-            });
-          })(marker, places[i]);
+          overlayClickEvent(marker, places[i]);
         }
       } else if (searchPlace) {
-        const bounds = new kakao.maps.LatLngBounds();
-        const listStr = "";
         removeMarker();
+        placeListRef.current.innerHTML = "";
         for (let i = 0; i < places.length; i++) {
           var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
             marker = addMarker(placePosition, i);
           let itemEl = getListItem(i, places[i]);
-          bounds.extend(placePosition);
+          itemEl.onmouseover = () => {
+            displayPlaceInfo(places[i]);
+          };
           placeListRef.current.appendChild(itemEl);
+          overlayClickEvent(marker, places[i]);
         }
-        map.setBounds(bounds);
       }
     }
 

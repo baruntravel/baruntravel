@@ -11,8 +11,11 @@ const HotplacePage = () => {
   const [searchPlace, setSearchPlace] = useState("");
   const placeListRef = useRef();
 
-  const handleCartPortal = useCallback(() => {
-    setCartPortal(!cartPortal);
+  const handleCartPortalClose = useCallback(() => {
+    setCartPortal(false);
+  }, []);
+  const handleCartPortalOpen = useCallback(() => {
+    setCartPortal(true);
   }, []);
   const clickedPlace = useCallback((place) => {
     setPlace(place);
@@ -50,14 +53,17 @@ const HotplacePage = () => {
         <div className={styles.mapContainer}>
           <HotplaceMap
             placeListRef={placeListRef}
-            handleCartPortal={handleCartPortal}
+            handleCartPortalOpen={handleCartPortalOpen}
             clickedPlace={clickedPlace}
             searchPlace={searchPlace}
           />
         </div>
       </div>
       {cartPortal && (
-        <PortalCart place={place} handleCartPortal={handleCartPortal} />
+        <PortalCart
+          place={place}
+          handleCartPortalClose={handleCartPortalClose}
+        />
       )}
     </div>
   );
