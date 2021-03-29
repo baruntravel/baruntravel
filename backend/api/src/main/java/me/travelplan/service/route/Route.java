@@ -20,7 +20,7 @@ public class Route extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "route", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
     private final List<RoutePlace> places = new ArrayList<>();
 
     private String name;
@@ -30,5 +30,12 @@ public class Route extends BaseEntity {
     public void addPlace(RoutePlace place) {
         this.places.add(place);
         place.setRoute(this);
+    }
+
+    public void calculateCenterCoordinate() {
+        if (!this.places.isEmpty()) {
+            this.x = this.places.stream().map(RoutePlace::getPlace).mapToDouble(Place::getX).average().orElseThrow();
+            this.y = this.places.stream().map(RoutePlace::getPlace).mapToDouble(Place::getY).average().orElseThrow();
+        }
     }
 }

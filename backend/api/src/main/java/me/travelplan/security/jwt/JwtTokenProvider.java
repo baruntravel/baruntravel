@@ -8,6 +8,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.travelplan.service.exception.ResponsibleClientException;
 import me.travelplan.service.user.User;
 import org.springframework.stereotype.Service;
 
@@ -61,7 +62,7 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token);
         } catch (JwtException ex) {
             log.error(ex.getMessage());
-            throw new RuntimeException("다시 로그인 해주세요");
+            throw new ResponsibleClientException("다시 로그인 해주세요");
         }
 
         return claims;

@@ -1,10 +1,17 @@
+import Modal from "antd/lib/modal/Modal";
 import React, { useEffect, useRef } from "react";
 import LoginBody from "../../components/loginBody/loginBody";
 import RegisterBody from "../../components/registerBody/registerBody";
 import styles from "./portalAuth.module.css";
 
-const PortalAuth = ({ loginClicked, onClose, onClickChange }) => {
+const PortalAuth = ({
+  loginClicked,
+  onClose,
+  onClickChange,
+  handleLoading,
+}) => {
   const portalRef = useRef();
+
   const handleClose = (event) => {
     if (
       portalRef.current &&

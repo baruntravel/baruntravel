@@ -8,6 +8,10 @@ import lombok.Getter;
 import java.util.List;
 
 public class RouteResponse {
+    public static class RouteId {
+        Long id;
+        private String name;
+    }
 
     @Getter
     @Builder
@@ -17,5 +21,12 @@ public class RouteResponse {
         private Double x;
         private Double y;
         private List<RouteDto.RoutePlace> places;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class GetsWithOnlyName {
+        List<RouteDto.RouteWithOnlyName> routes;
     }
 }

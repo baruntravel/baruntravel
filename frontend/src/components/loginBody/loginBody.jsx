@@ -1,19 +1,43 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import styles from "./loginBody.module.css";
+import { onLogin } from "../../api/authAPI";
+import { Spin } from "antd";
+import { useRecoilState } from "recoil";
+import { userState } from "../../recoil/userState";
+import { useHistory } from "react-router-dom";
 
 const LoginBody = ({ onClickRegister }) => {
   const formRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
-  // const successLogin = () => { }
+  const [loading, setLoading] = useState(false);
+  const [userStates, setUserStates] = useRecoilState(userState);
+  const history = useHistory();
 
-  const handleSubmit = useCallback((event) => {
+  console.log(userStates);
+  const updateUserLogin = (isLogin, email, name) => {
+    setUserStates((prev) => {
+      const updated = { ...prev };
+      updated["isLogin"] = isLogin;
+      updated["email"] = email;
+      updated["name"] = name;
+      return updated;
+    });
+  };
+
+  const handleSubmit = useCallback(async (event) => {
     event.preventDefault();
+    setLoading(true);
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    // axios를 통해서 email, password를 서버에 보낸다.
-
+    const [isLogin, userEmail, userName] = await onLogin(email, password);
+    await updateUserLogin(isLogin, userEmail, userName);
+    setLoading(false);
     formRef.current.reset();
+    if (isLogin) {
+      console.log("okay");
+      history.push("/start");
+    }
   }, []);
 
   return (
@@ -40,6 +64,11 @@ const LoginBody = ({ onClickRegister }) => {
           회원가입
         </span>
       </div>
+      {loading && (
+        <div className={styles.loadingBody}>
+          <Spin tip="Logging in..."></Spin>
+        </div>
+      )}
     </form>
   );
 };

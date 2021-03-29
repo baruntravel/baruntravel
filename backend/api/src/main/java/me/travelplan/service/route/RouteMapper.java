@@ -12,18 +12,46 @@ import org.mapstruct.Mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(
         componentModel = "spring",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR
 )
 public interface RouteMapper {
-    default Route toEntity(RouteRequest.Put request) {
-        Route route = Route.builder()
+    RouteResponse.RouteId toRouteIdResponse(Route route);
+    Route toEntity(RouteRequest.CreateEmpty request);
+
+    default Place toPlace(RouteRequest.AddPlace request) {
+        return Place.builder()
+                .id(request.getPlace().getId())
+                .name(request.getPlace().getName())
+                .url(request.getPlace().getName())
+                .image(File.builder()
+                        .name(request.getPlace().getName())
+                        .extension("")
+                        .height(0)
+                        .width(0)
+                        .server(FileServer.EXTERNAL)
+                        .size(0L).type(FileType.IMAGE)
+                        .url(request.getPlace().getImage())
+                        .build())
+                .x(request.getPlace().getX())
+                .y(request.getPlace().getY())
+                .build();
+    }
+
+    default Route toEntity(RouteRequest.CreateOrUpdate request, Long id) {
+        var routeBuilder = Route.builder()
                 .name(request.getName())
                 .x(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getX).average().getAsDouble())
-                .y(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getY).average().getAsDouble())
-                .build();
+                .y(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getY).average().getAsDouble());
+
+        if (id != 0L) {
+            routeBuilder.id(id);
+        }
+
+        Route route = routeBuilder.build();
 
         request.getPlaces().forEach((place) -> {
             route.addPlace(RoutePlace.builder().order(place.getOrder()).place(
@@ -51,7 +79,7 @@ public interface RouteMapper {
         return route;
     }
 
-    default RouteResponse.GetOne toResponse(Route route) {
+    default RouteResponse.GetOne toGetOneResponse(Route route) {
         var response = RouteResponse.GetOne.builder();
 
         response.name(route.getName());
@@ -77,5 +105,15 @@ public interface RouteMapper {
         response.places(routePlaces);
 
         return response.build();
+    }
+
+    default RouteResponse.GetsWithOnlyName toGetsWithOnlyNameResponse(List<Route> routes) {
+        return RouteResponse.GetsWithOnlyName.builder()
+                .routes(routes.stream().map(route -> RouteDto.RouteWithOnlyName.builder()
+                        .id(route.getId())
+                        .name(route.getName())
+                        .build()
+                ).collect(Collectors.toList()))
+                .build();
     }
 }

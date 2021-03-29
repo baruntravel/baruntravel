@@ -1,6 +1,5 @@
 package me.travelplan.web;
 
-import io.jsonwebtoken.lang.Collections;
 import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
 import me.travelplan.service.file.File;
@@ -14,21 +13,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.request.PathParametersSnippet;
 import org.springframework.test.web.servlet.ResultActions;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static me.travelplan.ApiDocumentUtils.getDocumentRequest;
 import static me.travelplan.ApiDocumentUtils.getDocumentResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -42,11 +34,8 @@ public class RouteControllerTest extends MvcTest {
     @MockBean
     RouteService routeService;
 
-    @Test
-    @WithMockCustomUser
-    @DisplayName("경로 생성 테스트")
-    public void putTest() throws Exception {
-        String request = "{\n" +
+    private String getCreateOrUpdateRequest() {
+        return "{\n" +
                 "  \"name\": \"나의 테스트 경로\",\n" +
                 "  \"places\": [\n" +
                 "    {\n" +
@@ -69,16 +58,46 @@ public class RouteControllerTest extends MvcTest {
                 "    }\n" +
                 "  ]\n" +
                 "}";
+    }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("이름만 있는 빈 경로 생성 테스트")
+    public void createEmptyTest() throws Exception {
+        String request = "{\"name\" : \"Test Name\"}";
 
         ResultActions results = mockMvc.perform(
-                put("/route")
+                post("/route/empty")
                     .content(request)
                     .contentType(MediaType.APPLICATION_JSON)
                     .characterEncoding("UTF-8")
         );
 
-        results.andExpect(status().isOk())
-                .andDo(document("route-put",
+        results.andExpect(status().isCreated())
+                .andDo(document("route-createEmpty",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestFields(
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("경로 이름")
+                        )
+                ));
+    }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("경로 생성 테스트")
+    public void createTest() throws Exception {
+        String request = getCreateOrUpdateRequest();
+
+        ResultActions results = mockMvc.perform(
+                post("/route")
+                    .content(request)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .characterEncoding("UTF-8")
+        );
+
+        results.andExpect(status().isCreated())
+                .andDo(document("route-create",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
@@ -91,6 +110,83 @@ public class RouteControllerTest extends MvcTest {
                                 fieldWithPath("places[].x").type(JsonFieldType.NUMBER).description("장소 X값"),
                                 fieldWithPath("places[].y").type(JsonFieldType.NUMBER).description("장소 Y값"),
                                 fieldWithPath("places[].order").type(JsonFieldType.NUMBER).description("장소들 정렬 순서 (사용할 필요가 있는지 검토 필요)")
+                        )
+                ));
+    }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("경로 생성 테스트")
+    public void updateTest() throws Exception {
+        String request = getCreateOrUpdateRequest();
+
+        ResultActions results = mockMvc.perform(
+                put("/route/{id}", 1)
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(document("route-update",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("id").description("경로 식별자")
+                        ),
+                        requestFields(
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("경로 이륾"),
+                                fieldWithPath("places").type(JsonFieldType.ARRAY).description("장소들 정보"),
+                                fieldWithPath("places[].id").type(JsonFieldType.NUMBER).description("카카오톡에서 제공한 장소 식별자"),
+                                fieldWithPath("places[].image").type(JsonFieldType.STRING).description("장소 이미지 URL"),
+                                fieldWithPath("places[].name").type(JsonFieldType.STRING).description("장소 이름"),
+                                fieldWithPath("places[].url").type(JsonFieldType.STRING).description("장소 URL"),
+                                fieldWithPath("places[].x").type(JsonFieldType.NUMBER).description("장소 X값"),
+                                fieldWithPath("places[].y").type(JsonFieldType.NUMBER).description("장소 Y값"),
+                                fieldWithPath("places[].order").type(JsonFieldType.NUMBER).description("장소들 정렬 순서 (사용할 필요가 있는지 검토 필요)")
+                        )
+                ));
+    }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("경로에 장소 추가 테스트")
+    public void addPlaceTest() throws Exception {
+        String request = "{\n" +
+                "  \"place\": {\n" +
+                "      \"id\" : 123,\n" +
+                "      \"image\" : \"https://www.gn.go.kr/tour/images/tour/main_new/mvisual_img07.jpg\",\n" +
+                "      \"name\" : \"강남\",\n" +
+                "      \"url\" : \"https://www.gn.go.kr/tour/index.do\",\n" +
+                "      \"x\" : 37.748125,\n" +
+                "      \"y\" : 128.878996,\n" +
+                "      \"order\" : 1\n" +
+                "    }\n" +
+                "}";
+
+        ResultActions results = mockMvc.perform(
+                put("/route/{id}/place", 1L)
+                    .content(request)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .characterEncoding("UTF-8")
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(document("route-addPlace",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("id").description("경로 식별자")
+                        ),
+                        requestFields(
+                                fieldWithPath("place").type(JsonFieldType.OBJECT).description("경로의 장소들"),
+                                fieldWithPath("place.id").type(JsonFieldType.NUMBER).description("장소 식별자"),
+                                fieldWithPath("place.url").type(JsonFieldType.STRING).description("장소 URL"),
+                                fieldWithPath("place.image").type(JsonFieldType.STRING).description("장소 이미지 URL"),
+                                fieldWithPath("place.name").type(JsonFieldType.STRING).description("장소 이름"),
+                                fieldWithPath("place.x").type(JsonFieldType.NUMBER).description("장소 X값"),
+                                fieldWithPath("place.y").type(JsonFieldType.NUMBER).description("장소 Y값"),
+                                fieldWithPath("place.order").type(JsonFieldType.NUMBER).description("장소들 정렬 순서 (사용할 필요가 있는지 검토 필요)")
                         )
                 ));
     }
