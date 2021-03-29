@@ -27,10 +27,10 @@ const PlaceNameBox = ({ item, usersRoutePage }) => {
         </div>
         <span className={styles.address}>{item.addressName}</span>
         <div className={styles.bottom}>
-          <span className={styles.more} onClick={openReviewList}>
+          <span className={styles.review} onClick={openReviewList}>
             리뷰
           </span>
-          <a href={item.placeUrl} target="_blank" className={styles.review}>
+          <a href={item.placeUrl} target="_blank" className={styles.more}>
             상세 보기
           </a>
         </div>

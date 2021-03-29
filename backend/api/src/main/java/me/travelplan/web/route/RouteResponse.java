@@ -8,6 +8,10 @@ import lombok.Getter;
 import java.util.List;
 
 public class RouteResponse {
+    public static class RouteId {
+        Long id;
+        private String name;
+    }
 
     @Getter
     @Builder
