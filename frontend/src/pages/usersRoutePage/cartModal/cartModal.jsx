@@ -9,6 +9,8 @@ import { useRecoilState } from "recoil";
 import { myRouteCart } from "../../../recoil/routeAtom";
 
 const CartModal = ({ isRoute }) => {
+  //TODO : 루트 추가 기능 구현
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [myRouteList, setMyRouteList] = useRecoilState(myRouteCart);
 
@@ -44,16 +46,20 @@ const CartModal = ({ isRoute }) => {
         {isRoute ? (
           //Route의 Cart 버튼 누를시
           <>
-            <h1 className={styles.title}>루트 추가하기</h1>
+            <h1 className={styles.title}>나의 루트에 담기</h1>
             {Object.keys(myRouteList).map((item) => {
               console.log(item);
               return <li className={styles.routeName}>{item}</li>;
             })}
+            <input
+              className={styles.newRoute}
+              placeholder="루트 이름을 입력 해주세요"
+            ></input>
           </>
         ) : (
           //Place의 Cart 버튼 누를시
           <>
-            <h1 className={styles.title}>장소 추가하기</h1>
+            <h1 className={styles.title}>기존 루트에 장소 추가하기</h1>
             {Object.keys(myRouteList).map((item) => {
               console.log(item);
               return <li className={styles.routeName}>{item}</li>;
