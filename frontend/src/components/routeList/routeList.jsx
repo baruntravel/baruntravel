@@ -29,6 +29,7 @@ const RouteList = ({
                   usersRoutePage={usersRoutePage}
                   key={index}
                   item={v}
+                  isRoute={false}
                 />
               ))}
             </div>

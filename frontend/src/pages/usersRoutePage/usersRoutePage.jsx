@@ -1,27 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./usersRoutePage.module.css";
 import UsersRouteMap from "../../components/map/usersRouteMap/usersRouteMap";
-import { useRecoilState } from "recoil";
-import { usersRouteItems } from "../../recoil/routeAtom";
 import RouteList from "../../components/routeList/routeList";
 import Navbar from "../../components/common/navbar/navbar";
 
-import { getRoute, postRoute, postEmpty } from "../../api/routeAPI";
+import { useRecoilState } from "recoil";
+import { usersRouteItems } from "../../recoil/routeAtom";
 
 const UsersRoutePage = () => {
   //Todo: 한글로 변경해야함
+
   const areaID = window.location.href.split("/")[3];
 
   const [clickedCardName, setClickedCardName] = useState("");
   const [routeItems, setRouteItems] = useRecoilState(usersRouteItems);
+
   const [markers, setMarkers] = useState([]);
 
   const handleMarkers = (places) => setMarkers(places);
   const updateCardName = (name) => setClickedCardName(name);
-
-  getRoute(areaID);
-  // postRoute(areaID);
-  postEmpty();
 
   return (
     <div className={styles.wrapper}>

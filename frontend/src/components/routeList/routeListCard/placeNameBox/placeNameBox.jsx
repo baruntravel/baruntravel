@@ -6,7 +6,7 @@ import Portal from "../../../portal/portal";
 import PortalReview from "../../../../containers/portalReview/portalReview";
 import CartModal from "../../../../pages/usersRoutePage/cartModal/cartModal";
 
-const PlaceNameBox = ({ item, usersRoutePage }) => {
+const PlaceNameBox = ({ item, usersRoutePage, isRoute }) => {
   const [reviewVisible, setReviewVisible] = useState(false);
   const closeReviewList = useCallback(() => {
     setReviewVisible(false);
@@ -37,7 +37,7 @@ const PlaceNameBox = ({ item, usersRoutePage }) => {
       </div>
       <div className={styles.deleteBox}>
         {usersRoutePage ? (
-          <CartModal />
+          <CartModal isRoute={isRoute} />
         ) : (
           <button className={styles.deleteBtn} onClick={handleClick}>
             X

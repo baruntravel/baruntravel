@@ -1,5 +1,4 @@
 import React from "react";
-import PlaceNameBox from "./placeNameBox/placeNameBox.jsx";
 import styles from "./routeListCard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
@@ -40,7 +39,7 @@ const RouteListCard = ({
             </div>
           </div>
           <div className={styles.cartButton}>
-            {usersRoutePage && <CartModal />}
+            {usersRoutePage && <CartModal isRoute={true} />}
           </div>
         </div>
       </div>
