@@ -20,11 +20,17 @@ const RouteList = ({
             handleMarkers={handleMarkers}
             clickedCardName={clickedCardName}
             updateCardName={updateCardName}
+            usersRoutePage={usersRoutePage}
           />
           {clickedCardName === routeItems[v].routeName && (
             <div className={styles.places}>
               {routeItems[v].places.map((v, index) => (
-                <PlaceNameBox key={index} item={v} />
+                <PlaceNameBox
+                  usersRoutePage={usersRoutePage}
+                  key={index}
+                  item={v}
+                  isRoute={false}
+                />
               ))}
             </div>
           )}

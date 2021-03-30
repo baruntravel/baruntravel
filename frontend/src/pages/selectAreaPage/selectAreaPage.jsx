@@ -25,11 +25,12 @@ const SelectAreaPage = () => {
           {/* 지역 클릭 전 */}
           {!area ? (
             <ul className={styles.areaList}>
-              {areaList.map((item) => {
+              {areaList.map((item, index) => {
                 return (
                   <li
                     className={styles.area}
                     id={item.eng}
+                    key={index}
                     onClick={(e) => handleAreaClick(e)}
                   >
                     {item.kor}

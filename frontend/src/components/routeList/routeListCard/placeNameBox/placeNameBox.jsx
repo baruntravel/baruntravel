@@ -3,10 +3,10 @@ import styles from "./placeNameBox.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import Portal from "../../../portal/portal";
-import ReviewList from "../../../reviewComponents/reviewList/reviewList";
 import PortalReview from "../../../../containers/portalReview/portalReview";
+import CartModal from "../../../../pages/usersRoutePage/cartModal/cartModal";
 
-const PlaceNameBox = ({ item }) => {
+const PlaceNameBox = ({ item, usersRoutePage, isRoute }) => {
   const [reviewVisible, setReviewVisible] = useState(false);
   const closeReviewList = useCallback(() => {
     setReviewVisible(false);
@@ -36,9 +36,13 @@ const PlaceNameBox = ({ item }) => {
         </div>
       </div>
       <div className={styles.deleteBox}>
-        <button className={styles.deleteBtn} onClick={handleClick}>
-          X
-        </button>
+        {usersRoutePage ? (
+          <CartModal isRoute={isRoute} />
+        ) : (
+          <button className={styles.deleteBtn} onClick={handleClick}>
+            X
+          </button>
+        )}
       </div>
       {reviewVisible && (
         <Portal>
