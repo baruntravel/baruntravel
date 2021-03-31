@@ -1,12 +1,5 @@
 import axios from "axios";
 
-export const getAuthorized = () => {
-  const accessToken =
-    "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0IiwiYXVkIjoibnRoOTcwOEBuYXZlci5jb20iLCJleHAiOjE2MTcwODI5MTB9.IOb7yZPnrYdaFdSF9IzgiE6_bxdzJIIG7hTe1jmQqX8CJ1V_1-Q8re98GRma9bxCc7iC7yu6_s35e8h7theHAA";
-  axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-  return accessToken;
-};
-
 export const getRoute = (areaID) => {
   axios
     .get(`/route/123`)

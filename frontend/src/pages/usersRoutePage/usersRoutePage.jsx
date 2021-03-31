@@ -8,20 +8,12 @@ import { useRecoilState } from "recoil";
 import { userState } from "../../recoil/userState";
 import { usersRouteItems } from "../../recoil/routeAtom";
 
-import {
-  getRoute,
-  postRoute,
-  postEmpty,
-  getAuthorized,
-} from "../../api/routeAPI";
+import { getRoute, postRoute, postEmpty } from "../../api/routeAPI";
 
 const UsersRoutePage = () => {
   //Todo: 한글로 변경해야함
 
-  useEffect(() => {
-    const accessToken = getAuthorized();
-    console.log(myState);
-  }, []);
+  useEffect(() => {}, []);
 
   const areaID = window.location.href.split("/")[3];
 
