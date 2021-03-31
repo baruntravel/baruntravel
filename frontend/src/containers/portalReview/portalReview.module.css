@@ -15,5 +15,5 @@
   transform: translate(-50%, -50%);
   height: 90%;
   width: 50%;
-  overflow-y: auto;
+  overflow-y: hidden;
 }

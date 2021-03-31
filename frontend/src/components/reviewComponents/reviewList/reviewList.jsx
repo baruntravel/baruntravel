@@ -2,8 +2,10 @@ import React from "react";
 import ReviewCard from "./reviewCard/reviewCard";
 import styles from "./reviewList.module.css";
 import { CloseOutlined } from "@ant-design/icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 
-const ReviewList = ({ item: { id }, closeList }) => {
+const ReviewList = ({ item, closeList, onOpenWriteReview }) => {
   // id를 통해서 -> 데이터를 받아와 recoil에 대입해주는 식으로? 무한스크롤로 구현을 해보자.
 
   const data = {
@@ -34,13 +36,24 @@ const ReviewList = ({ item: { id }, closeList }) => {
   const datas = [data, data2, data, data, data, data2, data2];
   return (
     <div className={styles.ReviewList}>
-      {closeList && (
+      {/* {closeList && ( */}
+      <div className={styles.header}>
+        <div className={styles.placeNameBox}>
+          <FontAwesomeIcon icon={faMapMarkerAlt} className={styles.icon} />
+          <span className={styles.placeName}>{item.placeName}</span>
+        </div>
+        <span className={styles.reviewWrite} onClick={onOpenWriteReview}>
+          리뷰 작성
+        </span>
         <button className={styles.closeBtn} onClick={closeList}>
           <CloseOutlined />
         </button>
-      )}
-      {datas &&
-        datas.map((data, index) => <ReviewCard key={index} data={data} />)}
+      </div>
+      {/* )} */}
+      <div className={styles.list}>
+        {datas &&
+          datas.map((data, index) => <ReviewCard key={index} data={data} />)}
+      </div>
     </div>
   );
 };

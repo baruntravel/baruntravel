@@ -24,7 +24,7 @@ const PortalReview = ({ item, closeReviewList }) => {
           <ReviewList
             item={item}
             closeList={closeReviewList}
-            writeReviewOpen={writeReviewOpen}
+            onOpenWriteReview={writeReviewOpen}
           />
         )}
       </div>
