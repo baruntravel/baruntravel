@@ -4,9 +4,6 @@ export const getRoute = (areaID) => {
   axios
     .get(`/route/123`)
     .then((res) => {
-      const { accessToken, refreshToken, expiredTime } = res.data;
-      localStorage.setItem("refreshToken", refreshToken);
-      localStorage.setItem("expiredTime", expiredTime);
       console.log(res);
     })
     .catch((error) => {
@@ -20,12 +17,7 @@ export const postEmpty = () => {
       name: "Test1234",
     })
     .then((res) => {
-      const { accessToken, refreshToken, expiredTime } = res.data;
-      localStorage.setItem("refreshToken", refreshToken);
-      localStorage.setItem("expiredTime", expiredTime);
-
       console.log(res);
-      console.log(accessToken, refreshToken, expiredTime);
     })
     .catch((error) => {
       console.error(error);
@@ -33,9 +25,6 @@ export const postEmpty = () => {
 };
 
 export const postRoute = (areaID) => {
-  const accessToken =
-    "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI0IiwiYXVkIjoibnRoOTcwOEBuYXZlci5jb20iLCJleHAiOjE2MTcwMDA5ODJ9.XhRlxDabhAcGD8_2bFfqRCB-JoNGKgwOLx4dVRGo1Kgspg_Si6s9DOhAVsHEOvzjkQvSlno1_dMYnmL_dcqGvA";
-  axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
   axios
     .post(`/route`, {
       name: "TEST1",
@@ -64,9 +53,6 @@ export const postRoute = (areaID) => {
       ],
     })
     .then((res) => {
-      const { accessToken, refreshToken, expiredTime } = res.data;
-      localStorage.setItem("refreshToken", refreshToken);
-      localStorage.setItem("expiredTime", expiredTime);
       console.log(res);
     })
     .catch((error) => {
