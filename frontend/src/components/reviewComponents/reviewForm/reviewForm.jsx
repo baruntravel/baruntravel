@@ -1,7 +1,7 @@
+import styles from "./reviewForm.module.css";
 import { Card, Rate } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import React, { useCallback, useRef, useState } from "react";
-import styles from "./reviewForm.module.css";
 import { getYear, getMonth, getDate } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages } from "@fortawesome/free-solid-svg-icons";
