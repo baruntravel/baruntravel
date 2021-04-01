@@ -1,6 +1,6 @@
 .ReviewForm {
-  width: 60%;
-  height: 90vh;
+  width: 100%;
+  height: 100%;
 }
 .card {
   display: flex;
@@ -11,10 +11,55 @@
 .rate > li {
   border-right: none;
 }
+.title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.rate {
+  margin-left: 3%;
+}
+.extra {
+}
+.reviewBtn {
+  margin-right: 20px;
+  color: #25b8f8;
+}
+.closeBtn {
+  background-color: transparent;
+  border: none;
+}
 
 .imageBox {
-  margin-top: 5%;
+  margin-top: 3vh;
   display: flex;
   width: 100%;
-  height: 15vh;
+  height: 10%;
+  margin-bottom: 5vh;
+}
+.imageUpload {
+  border: none;
+  background-color: transparent;
+  height: 100%;
+  width: 20%;
+  margin-right: 5%;
+}
+.uploadIcon {
+  font-size: 2em;
+}
+.submitBtn {
+  float: right;
+  margin-right: 5%;
+  color: #25b8f8;
+  background-color: transparent;
+  border: none;
+  font-size: 1.2em;
+}
+.imageUpload:hover,
+.submitBtn:hover,
+.reviewBtn:hover,
+.closeBtn:hover {
+  opacity: 0.8;
+  cursor: pointer;
+  transform: scale(1.05);
 }
