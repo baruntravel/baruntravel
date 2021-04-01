@@ -4,6 +4,7 @@ import me.travelplan.service.file.File;
 import me.travelplan.service.file.FileServer;
 import me.travelplan.service.file.FileType;
 import me.travelplan.service.place.Place;
+import me.travelplan.service.place.PlaceCategory;
 import me.travelplan.web.route.RouteDto;
 import me.travelplan.web.route.RouteRequest;
 import me.travelplan.web.route.RouteResponse;
@@ -27,6 +28,7 @@ public interface RouteMapper {
                 .id(request.getPlace().getId())
                 .name(request.getPlace().getName())
                 .url(request.getPlace().getName())
+                .category(PlaceCategory.builder().id(request.getPlace().getCategory()).build())
                 .image(File.builder()
                         .name(request.getPlace().getName())
                         .extension("")
@@ -67,6 +69,7 @@ public interface RouteMapper {
                                             .url(place.getImage())
                                             .build()
                             )
+                            .category(PlaceCategory.builder().id(place.getCategory()).build())
                             .id(place.getId())
                             .url(place.getUrl())
                             .name(place.getName())
@@ -99,6 +102,7 @@ public interface RouteMapper {
                     .image(place.getImage().getUrl())
                     .x(place.getX())
                     .y(place.getY())
+                    .category(place.getCategory().getId())
                     .url(place.getUrl())
                     .build());
         });

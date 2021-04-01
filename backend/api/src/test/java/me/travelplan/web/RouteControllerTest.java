@@ -4,6 +4,7 @@ import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
 import me.travelplan.service.file.File;
 import me.travelplan.service.place.Place;
+import me.travelplan.service.place.PlaceCategory;
 import me.travelplan.service.route.*;
 import me.travelplan.web.route.RouteController;
 import org.junit.jupiter.api.DisplayName;
@@ -45,6 +46,7 @@ public class RouteControllerTest extends MvcTest {
                 "      \"url\" : \"https://www.gn.go.kr/tour/index.do\",\n" +
                 "      \"x\" : 37.748125,\n" +
                 "      \"y\" : 128.878996,\n" +
+                "      \"category\" : \"CE7\",\n" +
                 "      \"order\" : 1\n" +
                 "    },\n" +
                 "    {\n" +
@@ -54,6 +56,7 @@ public class RouteControllerTest extends MvcTest {
                 "      \"url\" : \"https://kr.hotels.com/go/south-korea/kr-best-gangneung-things-to-do\",\n" +
                 "      \"x\" : 37.748130,\n" +
                 "      \"y\" : 128.8789333,\n" +
+                "      \"category\" : \"CE7\",\n" +
                 "      \"order\" : 2\n" +
                 "    }\n" +
                 "  ]\n" +
@@ -109,6 +112,7 @@ public class RouteControllerTest extends MvcTest {
                                 fieldWithPath("places[].url").type(JsonFieldType.STRING).description("장소 URL"),
                                 fieldWithPath("places[].x").type(JsonFieldType.NUMBER).description("장소 X값"),
                                 fieldWithPath("places[].y").type(JsonFieldType.NUMBER).description("장소 Y값"),
+                                fieldWithPath("places[].category").type(JsonFieldType.STRING).description("카테고리 분류 코드"),
                                 fieldWithPath("places[].order").type(JsonFieldType.NUMBER).description("장소들 정렬 순서 (사용할 필요가 있는지 검토 필요)")
                         )
                 ));
@@ -143,6 +147,7 @@ public class RouteControllerTest extends MvcTest {
                                 fieldWithPath("places[].url").type(JsonFieldType.STRING).description("장소 URL"),
                                 fieldWithPath("places[].x").type(JsonFieldType.NUMBER).description("장소 X값"),
                                 fieldWithPath("places[].y").type(JsonFieldType.NUMBER).description("장소 Y값"),
+                                fieldWithPath("places[].category").type(JsonFieldType.STRING).description("카테고리 분류 코드"),
                                 fieldWithPath("places[].order").type(JsonFieldType.NUMBER).description("장소들 정렬 순서 (사용할 필요가 있는지 검토 필요)")
                         )
                 ));
@@ -160,6 +165,7 @@ public class RouteControllerTest extends MvcTest {
                 "      \"url\" : \"https://www.gn.go.kr/tour/index.do\",\n" +
                 "      \"x\" : 37.748125,\n" +
                 "      \"y\" : 128.878996,\n" +
+                "      \"category\" : \"CE7\",\n" +
                 "      \"order\" : 1\n" +
                 "    }\n" +
                 "}";
@@ -186,6 +192,7 @@ public class RouteControllerTest extends MvcTest {
                                 fieldWithPath("place.name").type(JsonFieldType.STRING).description("장소 이름"),
                                 fieldWithPath("place.x").type(JsonFieldType.NUMBER).description("장소 X값"),
                                 fieldWithPath("place.y").type(JsonFieldType.NUMBER).description("장소 Y값"),
+                                fieldWithPath("place.category").type(JsonFieldType.STRING).description("카테고리 분류 코드"),
                                 fieldWithPath("place.order").type(JsonFieldType.NUMBER).description("장소들 정렬 순서 (사용할 필요가 있는지 검토 필요)")
                         )
                 ));
@@ -208,6 +215,7 @@ public class RouteControllerTest extends MvcTest {
                         .x(97.123)
                         .y(124.124)
                         .url("https://www.naver.com")
+                        .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
                         .build()
         ).build());
@@ -217,6 +225,7 @@ public class RouteControllerTest extends MvcTest {
                         .name("강릉 해돋이 마을")
                         .x(97.124)
                         .y(124.124)
+                        .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .url("https://www.naver.com")
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
                         .build()
@@ -246,6 +255,7 @@ public class RouteControllerTest extends MvcTest {
                                 fieldWithPath("places[].name").type(JsonFieldType.STRING).description("장소 이름"),
                                 fieldWithPath("places[].x").type(JsonFieldType.NUMBER).description("장소 X값"),
                                 fieldWithPath("places[].y").type(JsonFieldType.NUMBER).description("장소 Y값"),
+                                fieldWithPath("places[].category").type(JsonFieldType.STRING).description("장소 분류 코드"),
                                 fieldWithPath("places[].order").type(JsonFieldType.NUMBER).description("장소 정렬 값 (사용할 필요가 있는지 검토해봐야함)")
                         )
                 ));
