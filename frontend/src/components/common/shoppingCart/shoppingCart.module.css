@@ -16,5 +16,7 @@
 .addRouteBtn {
   border-color: #00acee;
   color: #00acee;
+  width: 70%;
+  height: 5vh;
   margin-bottom: 10px;
 }
