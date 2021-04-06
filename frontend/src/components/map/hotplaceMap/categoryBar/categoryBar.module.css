@@ -1,31 +1,38 @@
 .CategoryBar {
-  display: inline-flex;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.CategoryBarList {
+  display: flex;
+  width: 100%;
+  height: 7vh;
   justify-content: center;
   align-items: center;
-  position: fixed;
   padding: 0;
-  width: 100%;
-  height: 10%;
-  border: 1px solid #909090;
+  margin: 0;
   background: #fff;
   z-index: 1;
   list-style: none;
 }
-.CategoryBar > li {
+.CategoryBarList > li {
   width: 25%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+}
+.CategoryBarList > li:not(:last-child) {
   border-right: 1px solid #909090;
 }
 
-.CategoryBar > li:hover {
+.CategoryBarList > li:hover {
   background-color: #e6e6e6;
 }
-
+.CategoryBarList > li > span {
+  font-size: 0.8em;
+}
 .icon {
   color: red;
-  font-size: 1.2em;
 }
