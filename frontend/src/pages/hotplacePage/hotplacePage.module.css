@@ -4,46 +4,45 @@
   width: 100%;
   height: 100vh;
 }
-.navbar {
-  height: 3%;
-  background-color: wheat;
-}
-.body {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-}
-.drawer {
-  width: 80vw;
-}
+
 .searchContainer {
   display: flex;
-  flex-direction: column;
-  width: 30%;
-  height: 100%;
+  position: absolute;
+  align-items: center;
+  top: 3%;
+  width: 90%;
+  height: 6vh;
+  margin-left: 5%;
+  z-index: 1002;
+  background-color: white;
 }
 .form {
-  width: 100%;
-  height: 100%;
-}
-.mapContainer {
-  width: 70%;
-  height: 100%;
-}
-.search {
-  width: 100%;
-}
-
-.searchList {
-  height: 100%;
-  background-color: #ebecec;
-}
-
-.placeList {
-  background-color: white;
   width: 80%;
+}
+.inputBar {
+  padding-left: 5%;
+  width: 100%;
+  border: none;
+}
+.inputBar:focus {
+  outline: none;
+}
+.toggle {
+  display: flex;
+  justify-content: center;
+  font-size: 1.3em;
+  width: 20%;
+  color: #00acee;
+}
+
+.mapContainer {
+  width: 100%;
   height: 100%;
-  margin: auto;
-  overflow-y: auto;
+}
+.categoryContainer {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 5vh;
 }
