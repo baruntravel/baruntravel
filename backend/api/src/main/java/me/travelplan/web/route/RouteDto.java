@@ -15,6 +15,7 @@ public class RouteDto {
         private String url;
         private Double x;
         private Double y;
+        private String category;
         private Integer order;
     }
 

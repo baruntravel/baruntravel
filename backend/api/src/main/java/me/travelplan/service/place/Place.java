@@ -20,6 +20,10 @@ public class Place extends BaseEntity {
     @JoinColumn(name = "image", referencedColumnName = "id")
     private File image;
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "category", referencedColumnName = "id")
+    private PlaceCategory category;
+
     private String name;
     private String url;
     private Double x;

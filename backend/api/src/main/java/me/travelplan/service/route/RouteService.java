@@ -3,6 +3,7 @@ package me.travelplan.service.route;
 import lombok.AllArgsConstructor;
 import me.travelplan.service.file.FileRepository;
 import me.travelplan.service.place.Place;
+import me.travelplan.service.place.PlaceCategoryRepository;
 import me.travelplan.service.place.PlaceRepository;
 import me.travelplan.service.user.User;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class RouteService {
     private final RoutePlaceRepository routePlaceRepository;
     private final PlaceRepository placeRepository;
     private final FileRepository fileRepository;
+    private final PlaceCategoryRepository placeCategoryRepository;
 
     @Transactional
     public Route createEmpty(Route route) {
@@ -50,7 +52,7 @@ public class RouteService {
     public Route addPlace(Long id, Place place) {
         Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
         fileRepository.save(place.getImage());
-        route.addPlace(RoutePlace.builder().order(0).route(route).place(placeRepository.save(place)).build());
+        route.addPlace(RoutePlace.builder().order(0).route(route).place(place).build());
         route.calculateCenterCoordinate();
         return routeRepository.save(route);
     }

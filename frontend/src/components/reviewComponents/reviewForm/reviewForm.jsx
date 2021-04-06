@@ -1,14 +1,14 @@
+import styles from "./reviewForm.module.css";
 import { Card, Rate } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import React, { useCallback, useRef, useState } from "react";
-import styles from "./reviewForm.module.css";
 import { getYear, getMonth, getDate } from "date-fns";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages } from "@fortawesome/free-solid-svg-icons";
+import { CloseOutlined } from "@ant-design/icons";
 import ReviewImageEdit from "./reviewImageEdit/reviewImageEdit";
 
-const ReviewForm = ({ placeName }) => {
+const ReviewForm = ({ item, onClose, onCloseReviewForm }) => {
   const [images, setImages] = useState({}); // 미리보기용 URL 저장소
   const [files, setFiles] = useState({});
   const imageInput = useRef();
@@ -58,24 +58,41 @@ const ReviewForm = ({ placeName }) => {
   return (
     <div className={styles.ReviewForm}>
       <Card
-        title={placeName}
+        title={
+          <div className={styles.title}>
+            <span>{item.placeName}</span>
+            <div className={styles.rate}>
+              <Rate
+                defaultValue={4}
+                allowClear={false}
+                className={styles.rate}
+                style={{ animation: "none" }}
+              />
+            </div>
+          </div>
+        }
         className={styles.card}
         extra={
-          <Rate
-            defaultValue={4}
-            allowClear={false}
-            className={styles.rate}
-            style={{ animation: "none" }}
-          />
+          <div className={styles.extra}>
+            <span className={styles.reviewBtn} onClick={onCloseReviewForm}>
+              리뷰 보기
+            </span>
+            <button className={styles.closeBtn} onClick={onClose}>
+              <CloseOutlined />
+            </button>
+          </div>
         }
         bodyStyle={{
           height: "100%",
         }}
       >
-        <TextArea className={styles.textArea} style={{ height: "70%" }} />
+        <TextArea
+          className={styles.textArea}
+          style={{ width: "100%", height: "70%" }}
+        />
         <div className={styles.imageBox}>
           <button className={styles.imageUpload} onClick={onClickImageUpload}>
-            <FontAwesomeIcon icon={faImages} />
+            <FontAwesomeIcon icon={faImages} className={styles.uploadIcon} />
           </button>
           {images &&
             Object.keys(images).map((v, index) => (
@@ -95,7 +112,11 @@ const ReviewForm = ({ placeName }) => {
           ref={imageInput}
           onChange={onChangeImages}
         />
-        <button onClick={onSubmit}>작성</button>
+        <div className={styles.bottom}>
+          <button className={styles.submitBtn} onClick={onSubmit}>
+            리뷰 등록
+          </button>
+        </div>
       </Card>
     </div>
   );

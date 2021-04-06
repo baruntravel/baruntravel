@@ -1,17 +1,58 @@
+@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap");
+
 .ReviewList {
-  padding-bottom: 2%;
+  margin-bottom: 2%;
   height: 100%;
+  width: 100%;
   background-color: white;
-  overflow-y: auto;
+}
+.header {
+  display: flex;
+  position: fixed;
+  align-items: center;
+  justify-content: flex-end;
+  height: 70px;
+  width: 100%;
+  border-bottom: 2px solid wheat;
+  background-color: white;
+  z-index: 1003;
+}
+.placeNameBox {
+  display: flex;
+  flex-basis: 70%;
+  justify-content: flex-start;
+  align-items: center;
+}
+.icon {
+  margin-right: 2%;
+  color: pink;
+}
+.placeName {
+  font-family: "Do Hyeon", sans-serif;
+  font-size: 130%;
+}
+.reviewWrite {
+  font-size: 1.1em;
+  color: #25b8f8;
+  margin-right: 2em;
 }
 .closeBtn {
-  position: fixed;
+  font-size: 1.1em;
   background-color: transparent;
   border: none;
-  left: 90%;
-  margin-right: 3%;
-  font-size: 120%;
+  margin-right: 7%;
+}
+.reviewWrite:hover,
+.closeBtn:hover {
+  opacity: 0.8;
+  cursor: pointer;
+  transform: scale(1.05);
 }
 .closeBtn:focus {
   outline: none;
+}
+.list {
+  height: 100%;
+  padding-top: 70px;
+  overflow-y: auto;
 }
