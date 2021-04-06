@@ -1,7 +1,6 @@
 buildscript {
     ext {
         springBootVersion = '2.3.3.RELEASE'
-        querydslPluginVersion = '1.0.10'
         mapstructVersion = "1.4.2.Final"
     }
     repositories {
@@ -10,7 +9,6 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslPluginVersion}")
     }
 }
 
@@ -18,11 +16,13 @@ plugins {
     id "idea"
     id "org.asciidoctor.convert" version "2.4.0"
     id "org.flywaydb.flyway" version "7.0.3"
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 }
 
 apply plugin: "org.springframework.boot"
 apply plugin: "io.spring.dependency-management"
-apply plugin: "com.ewerk.gradle.plugins.querydsl"
+
 
 configurations {
     compileOnly {
@@ -31,7 +31,6 @@ configurations {
     testCompileOnly {
         extendsFrom annotationProcessor
     }
-    querydsl.extendsFrom compileClasspath
     asciidoctor
 }
 
@@ -65,8 +64,12 @@ dependencies {
     /**
      * QueryDSL
      */
-    compile("com.querydsl:querydsl-jpa")
-    compile("com.querydsl:querydsl-apt")
+//    compile("com.querydsl:querydsl-core") // querydsl
+//    compile("com.querydsl:querydsl-jpa") // querydsl
+//    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa" // querydsl JPAAnnotationProcessor 사용 지정
+//    annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+//    annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+    implementation 'com.querydsl:querydsl-jpa'
 
     /**
      * MapStruct
@@ -122,22 +125,18 @@ test {
 /*************************
  * Query DSL
  *************************/
-def querydslSrcDir = 'src/main/generated'
-
+def querydslDir = "/src/main/generated"
 querydsl {
-    library = "com.querydsl:querydsl-apt"
     jpa = true
-    querydslSourcesDir = querydslSrcDir
+    querydslSourcesDir = querydslDir
 }
-
-idea {
-    module {
-        sourceDirs = sourceSets.main.java.srcDirs
-        generatedSourceDirs += file("src/main/generated")
-    }
+sourceSets {
+    main.java.srcDir querydslDir
 }
-
-compileQuerydsl{
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
 }
 

@@ -5,6 +5,7 @@ import me.travelplan.security.userdetails.CurrentUser;
 import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.service.route.RouteMapper;
 import me.travelplan.service.route.RouteService;
+import me.travelplan.web.common.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,4 +42,5 @@ public class RouteController {
     public void addPlace(@PathVariable Long id, @RequestBody RouteRequest.AddPlace request) {
         routeService.addPlace(id, routeMapper.toPlace(request));
     }
+
 }
