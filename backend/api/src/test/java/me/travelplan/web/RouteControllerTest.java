@@ -9,6 +9,9 @@ import me.travelplan.service.route.*;
 import me.travelplan.web.route.RouteController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -53,7 +56,7 @@ public class RouteControllerTest extends MvcTest {
                 "      \"id\" : 124,\n" +
                 "      \"image\" : \"https://cf.bstatic.com/xdata/images/hotel/270x200/129750773.jpg?k=d338049190ff48b19261ee5f516ee563aaeb8aeb97c4774c1e171e402cf25891&o=\",\n" +
                 "      \"name\" : \"강릉 어린이집\",\n" +
-                "      \"url\" : \"https://kr.hotels.com/go/south-korea/kr-best-gangneung-things-to-do\",\n" +
+                "      \"url\" : \"https://kr.hotels.cㅅ8ㅑㅕㅓom/go/south-korea/kr-best-gangneung-things-to-do\",\n" +
                 "      \"x\" : 37.748130,\n" +
                 "      \"y\" : 128.8789333,\n" +
                 "      \"category\" : \"CE7\",\n" +
@@ -205,15 +208,13 @@ public class RouteControllerTest extends MvcTest {
         Route route = Route.builder()
                 .id(1L)
                 .name("테스트 경로")
-                .x(97.123)
-                .y(124.124)
+                .point((new GeometryFactory()).createPoint(new Coordinate(97.123, 124.124)))
                 .build();
         route.addPlace(RoutePlace.builder().order(1).place(
                 Place.builder()
                         .id(12L)
                         .name("테스트 장소 이름")
-                        .x(97.123)
-                        .y(124.124)
+                        .point((new GeometryFactory()).createPoint(new Coordinate(97.123, 124.124)))
                         .url("https://www.naver.com")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
@@ -223,8 +224,7 @@ public class RouteControllerTest extends MvcTest {
                 Place.builder()
                         .id(12L)
                         .name("강릉 해돋이 마을")
-                        .x(97.124)
-                        .y(124.124)
+                        .point((new GeometryFactory()).createPoint(new Coordinate(97.123, 124.124)))
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .url("https://www.naver.com")
                         .image(File.builder().url("http://loremflickr.com/440/440").build())

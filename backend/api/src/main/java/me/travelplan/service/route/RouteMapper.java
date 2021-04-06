@@ -8,8 +8,11 @@ import me.travelplan.service.place.PlaceCategory;
 import me.travelplan.web.route.RouteDto;
 import me.travelplan.web.route.RouteRequest;
 import me.travelplan.web.route.RouteResponse;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.springframework.data.geo.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,16 +41,23 @@ public interface RouteMapper {
                         .size(0L).type(FileType.IMAGE)
                         .url(request.getPlace().getImage())
                         .build())
-                .x(request.getPlace().getX())
-                .y(request.getPlace().getY())
+                .point(
+                        (new GeometryFactory()).createPoint(new Coordinate(
+                                request.getPlace().getX(),
+                                request.getPlace().getX()
+                        ))
+                )
                 .build();
     }
 
     default Route toEntity(RouteRequest.CreateOrUpdate request, Long id) {
         var routeBuilder = Route.builder()
                 .name(request.getName())
-                .x(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getX).average().getAsDouble())
-                .y(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getY).average().getAsDouble());
+                .point(
+                        (new GeometryFactory()).createPoint(new Coordinate(
+                                request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getX).average().getAsDouble(),
+                                request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getY).average().getAsDouble()
+                        )));
 
         if (id != 0L) {
             routeBuilder.id(id);
@@ -73,8 +83,12 @@ public interface RouteMapper {
                             .id(place.getId())
                             .url(place.getUrl())
                             .name(place.getName())
-                            .x(place.getX())
-                            .y(place.getY())
+                            .point(
+
+                                    (new GeometryFactory()).createPoint(new Coordinate(
+                                            place.getX(), place.getY()
+                                    ))
+                            )
                             .build()
             ).build());
         });
@@ -86,8 +100,8 @@ public interface RouteMapper {
         var response = RouteResponse.GetOne.builder();
 
         response.name(route.getName());
-        response.x(route.getX());
-        response.y(route.getY());
+        response.x(route.getPoint().getX());
+        response.y(route.getPoint().getY());
 
         List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
 
@@ -100,8 +114,8 @@ public interface RouteMapper {
                     .id(place.getId())
                     .name(place.getName())
                     .image(place.getImage().getUrl())
-                    .x(place.getX())
-                    .y(place.getY())
+                    .x(place.getPoint().getX())
+                    .y(place.getPoint().getY())
                     .category(place.getCategory().getId())
                     .url(place.getUrl())
                     .build());

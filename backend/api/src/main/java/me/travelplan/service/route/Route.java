@@ -3,12 +3,13 @@ package me.travelplan.service.route;
 import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
 import me.travelplan.service.place.Place;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Builder
@@ -24,8 +25,8 @@ public class Route extends BaseEntity {
     private final List<RoutePlace> places = new ArrayList<>();
 
     private String name;
-    private Double x;
-    private Double y;
+    @Column(name = "`point`")
+    private Point point;
 
     public void addPlace(RoutePlace place) {
         this.places.add(place);
@@ -34,8 +35,10 @@ public class Route extends BaseEntity {
 
     public void calculateCenterCoordinate() {
         if (!this.places.isEmpty()) {
-            this.x = this.places.stream().map(RoutePlace::getPlace).mapToDouble(Place::getX).average().orElseThrow();
-            this.y = this.places.stream().map(RoutePlace::getPlace).mapToDouble(Place::getY).average().orElseThrow();
+            this.point = (new GeometryFactory()).createPoint(new Coordinate(
+                this.places.stream().map(RoutePlace::getPlace).map(Place::getPoint).mapToDouble(Point::getX).average().orElseThrow(),
+                this.places.stream().map(RoutePlace::getPlace).map(Place::getPoint).mapToDouble(Point::getY).average().orElseThrow()
+            ));
         }
     }
 }
