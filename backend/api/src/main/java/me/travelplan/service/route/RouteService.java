@@ -6,6 +6,9 @@ import me.travelplan.service.place.Place;
 import me.travelplan.service.place.PlaceCategoryRepository;
 import me.travelplan.service.place.PlaceRepository;
 import me.travelplan.service.user.User;
+import me.travelplan.web.route.RouteRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,7 +22,7 @@ public class RouteService {
     private final RoutePlaceRepository routePlaceRepository;
     private final PlaceRepository placeRepository;
     private final FileRepository fileRepository;
-    private final PlaceCategoryRepository placeCategoryRepository;
+    private final RouteQueryRepository routeQueryRepository;
 
     @Transactional
     public Route createEmpty(Route route) {
@@ -32,6 +35,9 @@ public class RouteService {
 
     @Transactional
     public Route create(Route route) {
+        List<RoutePlace> places = route.getPlaces();
+        route.calculateCoordinate(places);
+
         fileRepository.saveAll(route.getPlaces().stream().map(RoutePlace::getPlace).map(Place::getImage).collect(Collectors.toList()));
         placeRepository.saveAll(route.getPlaces().stream().map(RoutePlace::getPlace).collect(Collectors.toList()));
         return routeRepository.save(route);
@@ -53,7 +59,11 @@ public class RouteService {
         Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
         fileRepository.save(place.getImage());
         route.addPlace(RoutePlace.builder().order(0).route(route).place(place).build());
-        route.calculateCenterCoordinate();
+        route.calculateCoordinate(route.getPlaces());
         return routeRepository.save(route);
+    }
+
+    public Page<Route> getList(Double maxX, Double minX, Double maxY, Double minY, Pageable pageable) {
+        return routeQueryRepository.findAllByCoordinate(maxX, minX, maxY, minY, pageable);
     }
 }

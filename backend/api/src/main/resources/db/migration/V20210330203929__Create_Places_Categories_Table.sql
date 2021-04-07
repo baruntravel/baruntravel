@@ -5,7 +5,7 @@ CREATE TABLE `places_categories` (
   PRIMARY KEY (`id`)
 );
 
-INSERT INTO `places_categories` (id, name) VALUE
+INSERT INTO `places_categories` (id, name) VALUES
 ('MT1', '대형마트'),
 ('CS2', '편의점'),
 ('PS3', '어린이집, 유치원'),
