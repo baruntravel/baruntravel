@@ -120,7 +120,7 @@ test {
 /*************************
  * Query DSL
  *************************/
-def querydslDir = "/src/main/generated"
+def querydslDir = "src/main/generated"
 querydsl {
     jpa = true
     querydslSourcesDir = querydslDir
