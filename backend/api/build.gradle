@@ -16,7 +16,6 @@ plugins {
     id "idea"
     id "org.asciidoctor.convert" version "2.4.0"
     id "org.flywaydb.flyway" version "7.0.3"
-    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 }
 
@@ -65,7 +64,9 @@ dependencies {
     /**
      * QueryDSL
      */
+    implementation 'com.querydsl:querydsl-core'
     implementation 'com.querydsl:querydsl-jpa'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
 
     /**
      * MapStruct
@@ -122,18 +123,14 @@ test {
  * Query DSL
  *************************/
 def querydslDir = "src/main/generated"
-querydsl {
-    jpa = true
-    querydslSourcesDir = querydslDir
-}
 sourceSets {
-    main.java.srcDir querydslDir
+    main.java.srcDirs += [ querydslDir ]
 }
-configurations {
-    querydsl.extendsFrom compileClasspath
+tasks.withType(JavaCompile) {
+    options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
 }
-compileQuerydsl {
-    options.annotationProcessorPath = configurations.querydsl
+clean.doLast {
+    file(querydslDir).deleteDir()
 }
 
 /*************************
