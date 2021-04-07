@@ -22,7 +22,7 @@ public class RouteService {
     private final RoutePlaceRepository routePlaceRepository;
     private final PlaceRepository placeRepository;
     private final FileRepository fileRepository;
-    private final PlaceCategoryRepository placeCategoryRepository;
+    private final RouteQueryRepository routeQueryRepository;
 
     @Transactional
     public Route createEmpty(Route route) {
@@ -59,12 +59,11 @@ public class RouteService {
         Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
         fileRepository.save(place.getImage());
         route.addPlace(RoutePlace.builder().order(0).route(route).place(place).build());
-//        route.calculateCenterCoordinate();
         route.calculateCoordinate(route.getPlaces());
         return routeRepository.save(route);
     }
 
     public Page<Route> getList(Double maxX, Double minX, Double maxY, Double minY, Pageable pageable) {
-        return routeRepository.findAllByCoordinate(maxX, minX, maxY, minY, pageable);
+        return routeQueryRepository.findAllByCoordinate(maxX, minX, maxY, minY, pageable);
     }
 }

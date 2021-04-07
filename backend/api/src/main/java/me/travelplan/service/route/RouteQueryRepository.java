@@ -2,24 +2,23 @@ package me.travelplan.service.route;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import static me.travelplan.service.route.QRoute.route;
 
-public class RouteRepositoryImpl implements RouteCustomRepository {
-    private final JPAQueryFactory query;
+@RequiredArgsConstructor
+@Repository
+public class RouteQueryRepository {
+    private final JPAQueryFactory queryFactory;
 
-    public RouteRepositoryImpl(JPAQueryFactory query) {
-        this.query = query;
-    }
-
-    @Override
     public Page<Route> findAllByCoordinate(Double maxX, Double minX, Double maxY, Double minY, Pageable pageable) {
-        QueryResults<Route> results = query.selectFrom(route)
+        QueryResults<Route> results = queryFactory.selectFrom(route)
                 .where(route.minX.goe(minX)
                         .and(route.maxX.loe(maxX))
                         .and(route.minY.goe(minY))

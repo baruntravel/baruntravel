@@ -25,8 +25,6 @@ public interface RouteMapper {
 
     Route toEntity(RouteRequest.CreateEmpty request);
 
-//    List<RouteResponse.GetList> toGetListResponse(List<Route> routes);
-
     default Place toPlace(RouteRequest.AddPlace request) {
         return Place.builder()
                 .id(request.getPlace().getId())
@@ -135,6 +133,7 @@ public interface RouteMapper {
                 routePlaces.add(RouteDto.RoutePlace.builder()
                         .id(routePlace.getPlace().getId())
                         .name(routePlace.getPlace().getName())
+                        .order(routePlace.getOrder())
                         .image(routePlace.getPlace().getImage().getUrl())
                         .x(routePlace.getPlace().getX())
                         .y(routePlace.getPlace().getY())

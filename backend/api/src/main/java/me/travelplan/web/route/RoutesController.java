@@ -28,21 +28,11 @@ public class RoutesController {
                                                @RequestParam("maxX") Double maxX,
                                                @RequestParam("maxY") Double maxY,
                                                @RequestParam("minX") Double minX,
-                                               @RequestParam("minY") Double minY,
-                                               RouteRequest.GetList request) {
-        System.out.println(pageRequest.getPage());
-        System.out.println(pageRequest.getSize());
-        System.out.println("maxX" + maxX);
-        System.out.println("maxX" + request.getMaxX());
-        System.out.println("minX" + request.getMinX());
-        System.out.println("maxY" + request.getMaxY());
-        System.out.println("minY" + request.getMinY());
-        Page<Route> list = routeService.getList(maxX, minX, maxY, minY, pageRequest.of());
-        List<Route> content = list.getContent();
+                                               @RequestParam("minY") Double minY) {
+        List<Route> content = routeService.getList(maxX, minX, maxY, minY, pageRequest.of()).getContent();
         List<RouteResponse.GetList> getList = routeMapper.toGetListResponse(content);
 
-        return new PageImpl<>(getList, pageRequest.of(), list.getTotalElements());
-//        return null;
+        return new PageImpl<>(getList, pageRequest.of(), content.size());
     }
 
     @GetMapping("my")
