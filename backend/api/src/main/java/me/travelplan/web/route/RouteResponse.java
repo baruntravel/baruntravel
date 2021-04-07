@@ -21,8 +21,10 @@ public class RouteResponse {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class GetOne {
         private String name;
-        private Double x;
-        private Double y;
+        private Double minX;
+        private Double maxX;
+        private Double minY;
+        private Double maxY;
         private List<RouteDto.RoutePlace> places;
     }
 
@@ -31,5 +33,13 @@ public class RouteResponse {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class GetsWithOnlyName {
         List<RouteDto.RouteWithOnlyName> routes;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class GetList {
+        private String name;
+        private List<RouteDto.RoutePlace> places;
     }
 }
