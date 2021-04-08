@@ -159,7 +159,8 @@ export const usersRouteItems = atom({
   key: "userRouteCart",
   default: {
     TEST1: {
-      routeName: "nth9708님의 루트",
+      routeName: "레트로 데이트",
+      creator: "nth9708",
       places: [
         {
           id: "688578118",
@@ -188,7 +189,8 @@ export const usersRouteItems = atom({
       ],
     },
     TEST2: {
-      routeName: "kiki123님의 루트",
+      routeName: "여친과 데이트",
+      creator: "kiki123",
       places: [
         {
           id: "10144798",

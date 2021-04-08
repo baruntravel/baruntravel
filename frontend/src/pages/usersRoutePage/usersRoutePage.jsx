@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import styles from "./usersRoutePage.module.css";
 import UsersRouteMap from "../../components/map/usersRouteMap/usersRouteMap";
-
 import { useRecoilState } from "recoil";
 import { userState } from "../../recoil/userState";
 import { usersRouteItems } from "../../recoil/routeAtom";
@@ -13,16 +12,11 @@ const UsersRoutePage = () => {
   const [myState, setMyState] = useRecoilState(userState);
   const [markers, setMarkers] = useState([]);
 
-  console.log(routeItems);
-
-  const routeCardArray = Object.values(routeItems);
-  // console.log(routeCardArray);
-
   useEffect(() => {
     // setMarkers(routeItems);
   }, []);
-  // const areaID = window.location.href.split("/")[3];
 
+  // const areaID = window.location.href.split("/")[3];
   // getRoute(areaID);
   // postRoute(areaID);
   // postEmpty();
@@ -31,7 +25,7 @@ const UsersRoutePage = () => {
     <div className={styles.wrapper}>
       <UsersRouteMap markers={markers} />
       <div className={styles.routeCarousel}>
-        <RouteCarousel />
+        <RouteCarousel routeItems={routeItems} />
       </div>
     </div>
   );
