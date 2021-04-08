@@ -13,8 +13,9 @@ import { Carousel } from "react-responsive-carousel";
 import PlaceCard from "../../components/placeCard/placeCard";
 
 const HotplacePage = () => {
-  const carouselRef = useRef();
   const placeListRef = useRef();
+  const mapRef = useRef();
+
   const [cartVisible, setCartVisible] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [confirmPortal, setConfirmPortal] = useState(false);
@@ -23,6 +24,8 @@ const HotplacePage = () => {
   const [inputKeyword, handleInputKeyword] = useInput();
   const [searchPlace, setSearchPlace] = useState("");
   const [searchPlaces, setSearchPlaces] = useState([]);
+  const [markerIndex, setMarkerIndex] = useState();
+
   const setCartVisibleTrue = () => {
     setCartVisible(true);
   };
@@ -44,10 +47,13 @@ const HotplacePage = () => {
   const handleCartPortalOpen = useCallback(() => {
     setCartPortal(true);
   }, []);
-  const clickedPlace = useCallback((place) => {
+  const updateClickedPlace = useCallback((place) => {
     setPlace(place);
   }, []);
   const updateSearchPlaces = useCallback((places) => {
+    if (places.length > 0) {
+      placeListRef.current.style.display = "initial";
+    }
     setSearchPlaces(places);
   }, []);
   const handleSubmit = useCallback(
@@ -61,12 +67,6 @@ const HotplacePage = () => {
     },
     [inputKeyword, searchPlace]
   );
-
-  const test = document.createElement("div");
-  test.addEventListener("click", function test2() {
-    console.log("hi");
-  });
-  test.click();
 
   return (
     <div className={styles.HotplacePage}>
@@ -88,19 +88,17 @@ const HotplacePage = () => {
       </div>
       <div className={styles.mapContainer}>
         <HotplaceMap
-          carouselRef={carouselRef}
-          placeListRef={placeListRef}
           handleCartPortalOpen={handleCartPortalOpen}
-          clickedPlace={clickedPlace}
+          updateClickedPlace={updateClickedPlace}
           searchPlace={searchPlace}
           updateSearchPlaces={updateSearchPlaces}
           place={place}
+          markerIndex={markerIndex}
         />
       </div>
-      <div className={styles.carouselContainer}>
+      <div ref={placeListRef} className={styles.carouselContainer}>
         <Carousel
           calssName={styles.carousel}
-          ref={carouselRef}
           infiniteLoop={true}
           autoPlay={false}
           showThumbs={false}
@@ -108,12 +106,13 @@ const HotplacePage = () => {
           showStatus={false}
           showArrows={window.innerWidth >= 1280 ? true : false}
           onChange={(index, item) => {
-            clickedPlace(item);
+            updateClickedPlace(searchPlaces[index]);
+            setMarkerIndex(index);
           }}
         >
-          {searchPlaces.map((item, index) => (
+          {searchPlaces.map((place, index) => (
             <div key={index} className={styles.placeCardContainer}>
-              <PlaceCard />
+              <PlaceCard place={place} onHandleDelete={handleDeleteItem} />
             </div>
           ))}
         </Carousel>
