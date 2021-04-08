@@ -6,8 +6,7 @@ import UsersRoutePage from "./pages/usersRoutePage/usersRoutePage";
 import HotplacePage from "./pages/hotplacePage/hotplacePage";
 import { RecoilRoot } from "recoil";
 import MyRoutePage from "./pages/myRoutePage/myRoutePage";
-import SideMyProfile from "./components/sideMyProfile/sideMyProfile";
-import ShoppingCart from "./components/common/shoppingCart/shoppingCart";
+import PlaceCard from "./components/placeCard/placeCard";
 
 function App() {
   return (
@@ -30,7 +29,7 @@ function App() {
         </Route>
         {/* 테스트 */}
         <Route exact path="/test">
-          <ShoppingCart />
+          <PlaceCard />
         </Route>
       </Router>
     </RecoilRoot>

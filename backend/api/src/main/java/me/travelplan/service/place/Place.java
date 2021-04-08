@@ -3,6 +3,7 @@ package me.travelplan.service.place;
 import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
 import me.travelplan.service.file.File;
+import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
 
@@ -26,6 +27,7 @@ public class Place extends BaseEntity {
 
     private String name;
     private String url;
-    private Double x;
-    private Double y;
+
+    @Column(name = "`point`")
+    private Point point;
 }
