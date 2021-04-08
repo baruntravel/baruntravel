@@ -8,11 +8,21 @@ import { Drawer } from "antd";
 import ShoppingCart from "../../components/common/shoppingCart/shoppingCart";
 import DeleteConfirm from "../../components/common/deleteConfirm/deleteConfirm";
 import CategoryBar from "../../components/map/hotplaceMap/categoryBar/categoryBar";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from "react-responsive-carousel";
+import PlaceCard from "../../components/placeCard/placeCard";
 
 const HotplacePage = () => {
+  const carouselRef = useRef();
+  const placeListRef = useRef();
   const [cartVisible, setCartVisible] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [confirmPortal, setConfirmPortal] = useState(false);
+  const [cartPortal, setCartPortal] = useState(false);
+  const [place, setPlace] = useState({});
+  const [inputKeyword, handleInputKeyword] = useInput();
+  const [searchPlace, setSearchPlace] = useState("");
+  const [searchPlaces, setSearchPlaces] = useState([]);
   const setCartVisibleTrue = () => {
     setCartVisible(true);
   };
@@ -26,14 +36,8 @@ const HotplacePage = () => {
     setConfirmPortal(false);
   };
   const handleDeleteItem = (id) => {
-    //
     console.log("삭제");
   };
-  const [cartPortal, setCartPortal] = useState(false);
-  const [place, setPlace] = useState({});
-  const [inputKeyword, handleInputKeyword] = useInput();
-  const [searchPlace, setSearchPlace] = useState("");
-  const placeListRef = useRef();
   const handleCartPortalClose = useCallback(() => {
     setCartPortal(false);
   }, []);
@@ -42,6 +46,9 @@ const HotplacePage = () => {
   }, []);
   const clickedPlace = useCallback((place) => {
     setPlace(place);
+  }, []);
+  const updateSearchPlaces = useCallback((places) => {
+    setSearchPlaces(places);
   }, []);
   const handleSubmit = useCallback(
     (e) => {
@@ -54,6 +61,13 @@ const HotplacePage = () => {
     },
     [inputKeyword, searchPlace]
   );
+
+  const test = document.createElement("div");
+  test.addEventListener("click", function test2() {
+    console.log("hi");
+  });
+  test.click();
+
   return (
     <div className={styles.HotplacePage}>
       <div className={styles.searchContainer}>
@@ -74,11 +88,35 @@ const HotplacePage = () => {
       </div>
       <div className={styles.mapContainer}>
         <HotplaceMap
+          carouselRef={carouselRef}
           placeListRef={placeListRef}
           handleCartPortalOpen={handleCartPortalOpen}
           clickedPlace={clickedPlace}
           searchPlace={searchPlace}
+          updateSearchPlaces={updateSearchPlaces}
+          place={place}
         />
+      </div>
+      <div className={styles.carouselContainer}>
+        <Carousel
+          calssName={styles.carousel}
+          ref={carouselRef}
+          infiniteLoop={true}
+          autoPlay={false}
+          showThumbs={false}
+          showIndicators={false}
+          showStatus={false}
+          showArrows={window.innerWidth >= 1280 ? true : false}
+          onChange={(index, item) => {
+            clickedPlace(item);
+          }}
+        >
+          {searchPlaces.map((item, index) => (
+            <div key={index} className={styles.placeCardContainer}>
+              <PlaceCard />
+            </div>
+          ))}
+        </Carousel>
       </div>
       <div className={styles.categoryContainer}>
         <CategoryBar />
