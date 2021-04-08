@@ -3,7 +3,7 @@ import { atom } from "recoil";
 export const myRouteCart = atom({
   key: "myRouteCart",
   default: {
-    bank1: {
+    route1: {
       routeName: "은행 여기저기 탐방",
       location: "중구",
       year: "2021",
@@ -36,7 +36,7 @@ export const myRouteCart = atom({
         },
       ],
     },
-    bank2: {
+    route2: {
       routeName: "bank2",
       places: [
         {
@@ -65,7 +65,7 @@ export const myRouteCart = atom({
         },
       ],
     },
-    bank3: {
+    route3: {
       routeName: "bank3",
       places: [
         {
@@ -94,7 +94,7 @@ export const myRouteCart = atom({
         },
       ],
     },
-    bank4: {
+    route4: {
       routeName: "bank4",
       places: [
         {
@@ -123,7 +123,7 @@ export const myRouteCart = atom({
         },
       ],
     },
-    bank5: {
+    route5: {
       routeName: "bank5",
       places: [
         {

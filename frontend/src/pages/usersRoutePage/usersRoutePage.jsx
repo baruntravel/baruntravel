@@ -9,13 +9,19 @@ import RouteCarousel from "./routeCarousel/routeCarousel";
 
 // import { getRoute, postRoute, postEmpty } from "../../api/routeAPI";
 const UsersRoutePage = () => {
-  useEffect(() => {}, []);
-
-  // const areaID = window.location.href.split("/")[3];
-
   const [routeItems, setRouteItems] = useRecoilState(usersRouteItems);
   const [myState, setMyState] = useRecoilState(userState);
   const [markers, setMarkers] = useState([]);
+
+  console.log(routeItems);
+
+  const routeCardArray = Object.values(routeItems);
+  // console.log(routeCardArray);
+
+  useEffect(() => {
+    // setMarkers(routeItems);
+  }, []);
+  // const areaID = window.location.href.split("/")[3];
 
   // getRoute(areaID);
   // postRoute(areaID);
