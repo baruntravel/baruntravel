@@ -1,9 +1,17 @@
 .wrapper {
   width: 100vw;
   height: 100vh;
+  display: flex;
+  justify-content: center;
 }
 
-.mainContainer {
-  width: 100vw;
-  height: 100vh;
+.routeCarousel {
+  position: fixed;
+  z-index: 10;
+
+  max-width: 768px;
+  max-height: 128px;
+  width: 80%;
+  height: 20%;
+  bottom: 5%;
 }

@@ -5,6 +5,7 @@ import UsersRouteMap from "../../components/map/usersRouteMap/usersRouteMap";
 import { useRecoilState } from "recoil";
 import { userState } from "../../recoil/userState";
 import { usersRouteItems } from "../../recoil/routeAtom";
+import RouteCarousel from "./routeCarousel/routeCarousel";
 
 // import { getRoute, postRoute, postEmpty } from "../../api/routeAPI";
 const UsersRoutePage = () => {
@@ -22,8 +23,9 @@ const UsersRoutePage = () => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.mainContainer}>
-        <UsersRouteMap markers={markers} />
+      <UsersRouteMap markers={markers} />
+      <div className={styles.routeCarousel}>
+        <RouteCarousel />
       </div>
     </div>
   );
