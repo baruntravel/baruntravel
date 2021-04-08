@@ -88,3 +88,15 @@ include::{snippets}/route-getOne/path-parameters.adoc[]
 성공 응답 HTTP
 include::{snippets}/route-getOne/http-response.adoc[]
 include::{snippets}/route-getOne/response-fields.adoc[]
+
+=== 현재 지도에 포함되어 있는 경로 리스트 가져오기
+
+`GET /routes`
+
+요청 HTTP
+include::{snippets}/routes-getList/http-request.adoc[]
+include::{snippets}/routes-getList/request-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/routes-getList/http-response.adoc[]
+include::{snippets}/routes-getList/response-fields.adoc[]

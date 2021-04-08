@@ -6,6 +6,7 @@ import me.travelplan.service.file.File;
 import me.travelplan.service.place.Place;
 import me.travelplan.service.place.PlaceCategory;
 import me.travelplan.service.route.*;
+import me.travelplan.service.route.RouteMapperImpl;
 import me.travelplan.web.route.RouteController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(RouteController.class)
@@ -204,16 +206,18 @@ public class RouteControllerTest extends MvcTest {
     public void getOneTest() throws Exception {
         Route route = Route.builder()
                 .id(1L)
+                .maxX(97.123)
+                .minX(97.124)
+                .maxY(124.124)
+                .minY(124.123)
                 .name("테스트 경로")
-                .x(97.123)
-                .y(124.124)
                 .build();
         route.addPlace(RoutePlace.builder().order(1).place(
                 Place.builder()
                         .id(12L)
                         .name("테스트 장소 이름")
                         .x(97.123)
-                        .y(124.124)
+                        .y(124.123)
                         .url("https://www.naver.com")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
@@ -238,6 +242,7 @@ public class RouteControllerTest extends MvcTest {
         );
 
         results.andExpect(status().isOk())
+                .andDo(print())
                 .andDo(document("route-getOne",
                         getDocumentRequest(),
                         getDocumentResponse(),
@@ -246,8 +251,10 @@ public class RouteControllerTest extends MvcTest {
                         ),
                         responseFields(
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("경로 이름"),
-                                fieldWithPath("x").type(JsonFieldType.NUMBER).description("경로의 x (장소들의 중심좌표 x)"),
-                                fieldWithPath("y").type(JsonFieldType.NUMBER).description("경로의 y (장소들의 중심좌표 y)"),
+                                fieldWithPath("minX").type(JsonFieldType.NUMBER).description("경로에 포함된 장소중 가장 왼쪽 x 좌표"),
+                                fieldWithPath("maxX").type(JsonFieldType.NUMBER).description("경로에 포함된 장소중 가장 오른쪽 x 좌표"),
+                                fieldWithPath("minY").type(JsonFieldType.NUMBER).description("경로에 포함된 장소중 가장 왼쪽 y 좌표"),
+                                fieldWithPath("maxY").type(JsonFieldType.NUMBER).description("경로에 포함된 장소중 가장 오른쪽 y 좌표"),
                                 fieldWithPath("places").type(JsonFieldType.ARRAY).description("경로의 장소들"),
                                 fieldWithPath("places[].id").type(JsonFieldType.NUMBER).description("장소 식별자"),
                                 fieldWithPath("places[].url").type(JsonFieldType.STRING).description("장소 URL"),

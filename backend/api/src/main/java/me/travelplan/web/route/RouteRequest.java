@@ -24,4 +24,13 @@ public class RouteRequest {
     public static class AddPlace {
         private RouteDto.RoutePlace place;
     }
+
+    @Getter
+    @NoArgsConstructor
+    public static class GetList {
+        private Double maxX;
+        private Double minX;
+        private Double maxY;
+        private Double minY;
+    }
 }
