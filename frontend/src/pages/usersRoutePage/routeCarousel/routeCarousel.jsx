@@ -2,7 +2,7 @@ import styles from "./routeCarousel.module.css";
 import { Carousel } from "react-responsive-carousel";
 
 const routeCarousel = ({ routeItems }) => {
-  console.log(routeItems);
+  // console.log(routeItems);
 
   return (
     <div className={styles.container}>
