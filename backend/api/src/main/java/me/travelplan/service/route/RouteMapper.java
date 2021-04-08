@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 )
 public interface RouteMapper {
     RouteResponse.RouteId toRouteIdResponse(Route route);
-
     Route toEntity(RouteRequest.CreateEmpty request);
+    RouteReview toRouteReview(RouteRequest.CreateReview request);
 
     default Place toPlace(RouteRequest.AddPlace request) {
         return Place.builder()
@@ -147,10 +147,5 @@ public interface RouteMapper {
         return getList;
     }
 
-    default RouteReview toRouteReview(RouteRequest.CreateReview request){
-        return RouteReview.builder()
-                .content(request.getContent())
-                .score(request.getScore())
-                .build();
-    }
+
 }
