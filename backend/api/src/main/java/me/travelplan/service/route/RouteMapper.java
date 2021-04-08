@@ -10,6 +10,7 @@ import me.travelplan.web.route.RouteRequest;
 import me.travelplan.web.route.RouteResponse;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 )
 public interface RouteMapper {
     RouteResponse.RouteId toRouteIdResponse(Route route);
+
     Route toEntity(RouteRequest.CreateEmpty request);
 
     default Place toPlace(RouteRequest.AddPlace request) {
@@ -45,9 +47,9 @@ public interface RouteMapper {
 
     default Route toEntity(RouteRequest.CreateOrUpdate request, Long id) {
         var routeBuilder = Route.builder()
-                .name(request.getName())
-                .x(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getX).average().getAsDouble())
-                .y(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getY).average().getAsDouble());
+                .name(request.getName());
+//                .x(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getX).average().getAsDouble())
+//                .y(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getY).average().getAsDouble());
 
         if (id != 0L) {
             routeBuilder.id(id);
@@ -86,8 +88,10 @@ public interface RouteMapper {
         var response = RouteResponse.GetOne.builder();
 
         response.name(route.getName());
-        response.x(route.getX());
-        response.y(route.getY());
+        response.maxX(route.getMaxX());
+        response.minX(route.getMinX());
+        response.maxY(route.getMaxY());
+        response.minY(route.getMinY());
 
         List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
 
@@ -119,5 +123,27 @@ public interface RouteMapper {
                         .build()
                 ).collect(Collectors.toList()))
                 .build();
+    }
+
+    default List<RouteResponse.GetList> toGetListResponse(List<Route> routes) {
+        List<RouteResponse.GetList> getList = new ArrayList<>();
+        routes.stream().forEach(route -> {
+            List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
+            route.getPlaces().stream().forEach(routePlace -> {
+                routePlaces.add(RouteDto.RoutePlace.builder()
+                        .id(routePlace.getPlace().getId())
+                        .name(routePlace.getPlace().getName())
+                        .order(routePlace.getOrder())
+                        .image(routePlace.getPlace().getImage().getUrl())
+                        .x(routePlace.getPlace().getX())
+                        .y(routePlace.getPlace().getY())
+                        .category(routePlace.getPlace().getCategory().getId())
+                        .url(routePlace.getPlace().getUrl())
+                        .build());
+            });
+            getList.add(RouteResponse.GetList.builder().name(route.getName())
+                    .places(routePlaces).build());
+        });
+        return getList;
     }
 }

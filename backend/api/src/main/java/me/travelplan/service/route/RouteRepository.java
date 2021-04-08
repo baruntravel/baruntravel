@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface RouteRepository extends JpaRepository<Route, Long> {
     List<Route> findByCreatedBy(User user);
+
 }
