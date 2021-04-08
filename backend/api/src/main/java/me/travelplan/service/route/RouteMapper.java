@@ -146,4 +146,11 @@ public interface RouteMapper {
         });
         return getList;
     }
+
+    default RouteReview toRouteReview(RouteRequest.CreateReview request){
+        return RouteReview.builder()
+                .content(request.getContent())
+                .score(request.getScore())
+                .build();
+    }
 }

@@ -21,6 +21,9 @@ public class Route extends BaseEntity {
     @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
     private final List<RoutePlace> places = new ArrayList<>();
 
+    @OneToMany(mappedBy = "route", cascade = CascadeType.REMOVE)
+    private final List<RouteReview> routeReviews = new ArrayList<>();
+
     private String name;
     @Column(name = "min_x")
     private Double minX;
@@ -34,6 +37,11 @@ public class Route extends BaseEntity {
     public void addPlace(RoutePlace place) {
         this.places.add(place);
         place.setRoute(this);
+    }
+
+    public void addReview(RouteReview routeReview){
+        this.routeReviews.add(routeReview);
+        routeReview.setRoute(this);
     }
 
     public void calculateCoordinate(List<RoutePlace> routePlaces) {

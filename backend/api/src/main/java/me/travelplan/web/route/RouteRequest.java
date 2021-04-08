@@ -1,5 +1,7 @@
 package me.travelplan.web.route;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,6 +28,15 @@ public class RouteRequest {
     }
 
     @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CreateReview {
+        private String content;
+        private Double score;
+    }
+
+    @Getter
     @NoArgsConstructor
     public static class GetList {
         private Double maxX;
@@ -33,4 +44,6 @@ public class RouteRequest {
         private Double maxY;
         private Double minY;
     }
+
+
 }
