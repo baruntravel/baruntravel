@@ -1,5 +1,5 @@
 import styles from "./usersRouteMap.module.css";
-import {useEffect} from "react";
+import { useEffect } from "react";
 
 const { kakao } = window;
 
@@ -12,7 +12,7 @@ const UsersRouteMap = ({ markers }) => {
 
     const options = {
       center: new kakao.maps.LatLng(37.566826, 126.9786567),
-      level: 3,
+      level: 5,
     };
     const map = new kakao.maps.Map(container, options);
     // --
@@ -50,10 +50,7 @@ const UsersRouteMap = ({ markers }) => {
     polyline.setMap(map);
   }, [markers]);
 
-
-  return (
-        <div className={styles.map}id="Map"/>
-  );
+  return <div className={styles.map} id="Map" />;
 };
 
 export default UsersRouteMap;

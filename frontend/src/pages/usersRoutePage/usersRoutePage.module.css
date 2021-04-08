@@ -1,13 +1,9 @@
 .wrapper {
+  width: 100vw;
+  height: 100vh;
 }
 
 .mainContainer {
-  width: 100%;
-  display: flex;
-  margin-top: 24px;
-}
-
-.mapContainer {
-  /* margin-right: 128px; */
-  margin-top: 10px;
+  width: 100vw;
+  height: 100vh;
 }
