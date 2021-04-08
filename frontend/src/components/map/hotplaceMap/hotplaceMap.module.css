@@ -3,8 +3,10 @@
   width: 100%;
   height: 100%;
 }
+
 .searchContainer {
-  width: 30%;
+  display: flex;
+  position: fixed;
 }
 .map {
   width: 100%;
@@ -12,5 +14,5 @@
 }
 .mapContainer {
   width: 100%;
-  height: 90%;
+  height: 100%;
 }

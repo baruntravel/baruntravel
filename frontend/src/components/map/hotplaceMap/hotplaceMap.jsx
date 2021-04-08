@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
-import CategoryBar from "./categoryBar/categoryBar";
+import React, { useCallback, useEffect } from "react";
 import styles from "./hotplaceMap.module.css";
 
 const { kakao } = window;
@@ -314,7 +313,6 @@ const HotplaceMap = ({
   return (
     <div className={styles.HotplaceMap}>
       <div className={styles.mapContainer}>
-        <CategoryBar />
         <div id="Map" className={styles.map} />
       </div>
     </div>
