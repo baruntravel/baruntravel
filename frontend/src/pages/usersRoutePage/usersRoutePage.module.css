@@ -13,5 +13,15 @@
   max-height: 128px;
   width: 80%;
   height: 20%;
-  bottom: 5%;
+  bottom: 6%;
+}
+
+.drawerButton {
+  /* /* width: 24px; */
+}
+
+.bottomDrawer {
+  position: fixed;
+  z-index: 10;
+  bottom: 1%;
 }

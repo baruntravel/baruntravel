@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "../../recoil/userState";
 import { usersRouteItems } from "../../recoil/routeAtom";
 import RouteCarousel from "./routeCarousel/routeCarousel";
+import BottomDrawer from "./bottomDrawer/bottomDrawer";
 
 // import { getRoute, postRoute, postEmpty } from "../../api/routeAPI";
 const UsersRoutePage = () => {
@@ -32,7 +33,7 @@ const UsersRoutePage = () => {
         />
       </div>
       <div className={styles.bottomDrawer}>
-        <button className={styles.drawerButton}></button>
+        <BottomDrawer routeItems={routeItems} index={index} />
       </div>
     </div>
   );

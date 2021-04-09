@@ -1,7 +1,7 @@
 import styles from "./routeCarousel.module.css";
 import { Carousel } from "react-responsive-carousel";
 
-const routeCarousel = ({ routeItems, handleChange }) => {
+const RouteCarousel = ({ routeItems, handleChange }) => {
   return (
     <div className={styles.container}>
       <Carousel infiniteLoop onChange={(e) => handleChange(e)}>
@@ -33,4 +33,4 @@ const routeCarousel = ({ routeItems, handleChange }) => {
   );
 };
 
-export default routeCarousel;
+export default RouteCarousel;
