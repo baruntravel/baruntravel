@@ -24,8 +24,8 @@ import java.util.stream.Collectors;
 )
 public interface RouteMapper {
     RouteResponse.RouteId toRouteIdResponse(Route route);
-
     Route toEntity(RouteRequest.CreateEmpty request);
+    RouteReview toRouteReview(RouteRequest.CreateReview request);
 
     default Place toPlace(RouteRequest.AddPlace request) {
         return Place.builder()
@@ -54,8 +54,6 @@ public interface RouteMapper {
     default Route toEntity(RouteRequest.CreateOrUpdate request, Long id) {
         var routeBuilder = Route.builder()
                 .name(request.getName());
-//                .x(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getX).average().getAsDouble())
-//                .y(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getY).average().getAsDouble());
 
         if (id != 0L) {
             routeBuilder.id(id);
@@ -156,4 +154,6 @@ public interface RouteMapper {
         });
         return getList;
     }
+
+
 }

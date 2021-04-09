@@ -100,3 +100,16 @@ include::{snippets}/routes-getList/request-parameters.adoc[]
 성공 응답 HTTP
 include::{snippets}/routes-getList/http-response.adoc[]
 include::{snippets}/routes-getList/response-fields.adoc[]
+
+=== 경로 리뷰 생성
+
+`POST /route/{id}/review`
+
+요청 HTTP
+include::{snippets}/route-review-create/http-request.adoc[]
+include::{snippets}/route-review-create/path-parameters.adoc[]
+include::{snippets}/route-review-create/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-review-create/http-response.adoc[]
+
