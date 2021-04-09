@@ -3,7 +3,7 @@ package me.travelplan.web.common;
 import lombok.Getter;
 
 @Getter
-public final class PageRequest {
+public class PageRequest {
     private int page;
     private int size;
 

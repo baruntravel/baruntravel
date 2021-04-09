@@ -3,10 +3,8 @@ package me.travelplan.service.route;
 import lombok.AllArgsConstructor;
 import me.travelplan.service.file.FileRepository;
 import me.travelplan.service.place.Place;
-import me.travelplan.service.place.PlaceCategoryRepository;
 import me.travelplan.service.place.PlaceRepository;
 import me.travelplan.service.user.User;
-import me.travelplan.web.route.RouteRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,6 +21,7 @@ public class RouteService {
     private final PlaceRepository placeRepository;
     private final FileRepository fileRepository;
     private final RouteQueryRepository routeQueryRepository;
+    private final RouteReviewRepository routeReviewRepository;
 
     @Transactional
     public Route createEmpty(Route route) {
@@ -55,6 +54,7 @@ public class RouteService {
         return routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
     }
 
+
     public Route addPlace(Long id, Place place) {
         Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
         fileRepository.save(place.getImage());
@@ -65,5 +65,12 @@ public class RouteService {
 
     public Page<Route> getList(Double maxX, Double minX, Double maxY, Double minY, Pageable pageable) {
         return routeQueryRepository.findAllByCoordinate(maxX, minX, maxY, minY, pageable);
+    }
+
+    @Transactional
+    public void createReview(RouteReview routeReview, Long id) {
+        Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
+        route.addReview(routeReview);
+        routeReviewRepository.save(routeReview);
     }
 }

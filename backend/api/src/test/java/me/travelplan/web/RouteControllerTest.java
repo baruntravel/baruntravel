@@ -5,9 +5,12 @@ import me.travelplan.WithMockCustomUser;
 import me.travelplan.service.file.File;
 import me.travelplan.service.place.Place;
 import me.travelplan.service.place.PlaceCategory;
-import me.travelplan.service.route.*;
+import me.travelplan.service.route.Route;
 import me.travelplan.service.route.RouteMapperImpl;
+import me.travelplan.service.route.RoutePlace;
+import me.travelplan.service.route.RouteService;
 import me.travelplan.web.route.RouteController;
+import me.travelplan.web.route.RouteRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Coordinate;
@@ -75,9 +78,9 @@ public class RouteControllerTest extends MvcTest {
 
         ResultActions results = mockMvc.perform(
                 post("/route/empty")
-                    .content(request)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .characterEncoding("UTF-8")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
         );
 
         results.andExpect(status().isCreated())
@@ -98,9 +101,9 @@ public class RouteControllerTest extends MvcTest {
 
         ResultActions results = mockMvc.perform(
                 post("/route")
-                    .content(request)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .characterEncoding("UTF-8")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
         );
 
         results.andExpect(status().isCreated())
@@ -124,7 +127,7 @@ public class RouteControllerTest extends MvcTest {
 
     @Test
     @WithMockCustomUser
-    @DisplayName("경로 생성 테스트")
+    @DisplayName("경로 수정 테스트")
     public void updateTest() throws Exception {
         String request = getCreateOrUpdateRequest();
 
@@ -176,9 +179,9 @@ public class RouteControllerTest extends MvcTest {
 
         ResultActions results = mockMvc.perform(
                 put("/route/{id}/place", 1L)
-                    .content(request)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .characterEncoding("UTF-8")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
         );
 
         results.andExpect(status().isOk())
@@ -271,4 +274,36 @@ public class RouteControllerTest extends MvcTest {
                         )
                 ));
     }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("경로에 대한 리뷰생성 테스트")
+    public void createRouteReviewTest() throws Exception {
+        RouteRequest.CreateReview request = RouteRequest.CreateReview.builder()
+                .content("리뷰테스트 내용")
+                .score(4.5)
+                .build();
+
+        ResultActions results = mockMvc.perform(
+                post("/route/{id}/review", 1)
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+        );
+
+        results.andExpect(status().isCreated())
+                .andDo(print())
+                .andDo(document("route-review-create",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("id").description("경로 식별자")
+                        ),
+                        requestFields(
+                                fieldWithPath("content").type(JsonFieldType.STRING).description("경로 리뷰 내용"),
+                                fieldWithPath("score").type(JsonFieldType.NUMBER).description("경로 점수")
+                        )
+                ));
+    }
+
 }

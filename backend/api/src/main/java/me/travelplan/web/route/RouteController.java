@@ -1,11 +1,8 @@
 package me.travelplan.web.route;
 
 import lombok.RequiredArgsConstructor;
-import me.travelplan.security.userdetails.CurrentUser;
-import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.service.route.RouteMapper;
 import me.travelplan.service.route.RouteService;
-import me.travelplan.web.common.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +23,12 @@ public class RouteController {
     @ResponseStatus(HttpStatus.CREATED)
     public RouteResponse.RouteId create(@RequestBody RouteRequest.CreateOrUpdate request) {
         return routeMapper.toRouteIdResponse(routeService.create(routeMapper.toEntity(request, 0L)));
+    }
+
+    @PostMapping("/{id}/review")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createReview(@PathVariable Long id, @RequestBody RouteRequest.CreateReview request) {
+        routeService.createReview(routeMapper.toRouteReview(request),id);
     }
 
     @PutMapping("/{id}")
