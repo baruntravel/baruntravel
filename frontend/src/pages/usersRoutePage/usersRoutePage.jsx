@@ -31,6 +31,9 @@ const UsersRoutePage = () => {
           handleChange={(e) => handleChange(e)}
         />
       </div>
+      <div className={styles.bottomDrawer}>
+        <button className={styles.drawerButton}></button>
+      </div>
     </div>
   );
 };
