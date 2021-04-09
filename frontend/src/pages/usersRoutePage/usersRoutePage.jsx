@@ -11,21 +11,25 @@ const UsersRoutePage = () => {
   const [routeItems, setRouteItems] = useRecoilState(usersRouteItems);
   const [myState, setMyState] = useRecoilState(userState);
   const [markers, setMarkers] = useState([]);
+  const [index, setIndex] = useState(0);
+
+  const handleChange = (index) => {
+    setIndex(index);
+  };
 
   useEffect(() => {
-    // setMarkers(routeItems);
-  }, []);
-
-  // const areaID = window.location.href.split("/")[3];
-  // getRoute(areaID);
-  // postRoute(areaID);
-  // postEmpty();
+    const places = Object.values(routeItems)[index].places;
+    setMarkers(places);
+  }, [index]);
 
   return (
     <div className={styles.wrapper}>
       <UsersRouteMap markers={markers} />
       <div className={styles.routeCarousel}>
-        <RouteCarousel routeItems={routeItems} />
+        <RouteCarousel
+          routeItems={routeItems}
+          handleChange={(e) => handleChange(e)}
+        />
       </div>
     </div>
   );
