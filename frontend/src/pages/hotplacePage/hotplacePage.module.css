@@ -38,15 +38,12 @@
 .carouselContainer {
   position: absolute;
   bottom: 8%;
-  height: 17vh;
+  /* height: 17vh; */
   width: 95%;
   z-index: 1001;
   background-color: white;
   border-radius: 12px;
   display: none;
-}
-.carousel {
-  height: 100%;
 }
 .placeCardContainer {
   height: 17vh;
@@ -65,7 +62,7 @@
   height: 7vh;
 }
 
-@media screen and (max-width: 1280px) {
+@media screen and (max-width: 768px) {
   .placeCardContainer {
     width: 100%;
   }
