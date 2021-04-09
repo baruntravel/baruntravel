@@ -14,14 +14,11 @@ const CartModal = ({ isRoute }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [myRouteList, setMyRouteList] = useRecoilState(myRouteCart);
 
-  useEffect(() => {
-    // console.log(myRouteList);
-  }, []);
+  useEffect(() => {}, []);
 
   const showModal = (e) => {
     setIsModalVisible(true);
     e.stopPropagation();
-    console.log(e.target);
   };
 
   const handleOk = () => {
@@ -48,7 +45,6 @@ const CartModal = ({ isRoute }) => {
           <>
             <h1 className={styles.title}>나의 루트에 담기</h1>
             {Object.keys(myRouteList).map((item) => {
-              console.log(item);
               return <li className={styles.routeName}>{item}</li>;
             })}
             <input
@@ -61,7 +57,6 @@ const CartModal = ({ isRoute }) => {
           <>
             <h1 className={styles.title}>기존 루트에 장소 추가하기</h1>
             {Object.keys(myRouteList).map((item) => {
-              console.log(item);
               return <li className={styles.routeName}>{item}</li>;
             })}
           </>
