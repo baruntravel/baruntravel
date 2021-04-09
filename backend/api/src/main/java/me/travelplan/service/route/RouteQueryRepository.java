@@ -1,6 +1,7 @@
 package me.travelplan.service.route;
 
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -54,8 +54,6 @@ public interface RouteMapper {
     default Route toEntity(RouteRequest.CreateOrUpdate request, Long id) {
         var routeBuilder = Route.builder()
                 .name(request.getName());
-//                .x(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getX).average().getAsDouble())
-//                .y(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getY).average().getAsDouble());
 
         if (id != 0L) {
             routeBuilder.id(id);
