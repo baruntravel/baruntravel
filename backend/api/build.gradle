@@ -56,7 +56,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile group: 'org.hibernate', name: 'hibernate-spatial', version: '5.4.20.Final'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+//    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
     // Yaml Resource Resolver
     implementation 'net.rakugakibox.util:yaml-resource-bundle:1.1'
@@ -69,6 +69,8 @@ dependencies {
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa" // querydsl JPAAnnotationProcessor 사용 지정
     annotationProcessor("jakarta.persistence:jakarta.persistence-api")
     annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+//    annotationProcessor("javax.annotation:javax.annotation-api:1.3.2")
+//    annotationProcessor("org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final")
 
     /**
      * MapStruct
@@ -81,7 +83,6 @@ dependencies {
      */
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
 
