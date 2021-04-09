@@ -43,6 +43,7 @@
   z-index: 1001;
   background-color: white;
   border-radius: 12px;
+  display: none;
 }
 .carousel {
   height: 100%;
