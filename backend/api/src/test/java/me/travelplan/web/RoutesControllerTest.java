@@ -12,6 +12,8 @@ import me.travelplan.service.route.RouteService;
 import me.travelplan.web.route.RoutesController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -78,18 +80,24 @@ public class RoutesControllerTest extends MvcTest {
         routes.add(Route.builder().id(2L).name("두번째 경로").build());
         Route route = Route.builder()
                 .id(1L)
-                .maxX(97.123)
-                .minX(97.124)
-                .maxY(124.124)
-                .minY(124.123)
+                .maxPoint((new GeometryFactory()).createPoint(new Coordinate(
+                        97.123,
+                        124.124
+                )))
+                .minPoint((new GeometryFactory()).createPoint(new Coordinate(
+                        97.124,
+                        124.123
+                )))
                 .name("세번째 경로")
                 .build();
         route.addPlace(RoutePlace.builder().order(1).place(
                 Place.builder()
                         .id(12L)
                         .name("테스트 장소 이름")
-                        .x(97.123)
-                        .y(124.123)
+                        .point((new GeometryFactory()).createPoint(new Coordinate(
+                                97.123,
+                                124.123
+                        )))
                         .url("https://www.naver.com")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
@@ -99,8 +107,10 @@ public class RoutesControllerTest extends MvcTest {
                 Place.builder()
                         .id(12L)
                         .name("강릉 해돋이 마을")
-                        .x(97.124)
-                        .y(124.124)
+                        .point((new GeometryFactory()).createPoint(new Coordinate(
+                                97.124,
+                                124.124
+                        )))
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .url("https://www.naver.com")
                         .image(File.builder().url("http://loremflickr.com/440/440").build())

@@ -1,14 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
-import CategoryBar from "./categoryBar/categoryBar";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./hotplaceMap.module.css";
 
 const { kakao } = window;
 const HotplaceMap = ({
+  carouselRef,
   placeListRef,
   handleCartPortalOpen,
   clickedPlace,
   searchPlace,
+  updateSearchPlaces,
+  place,
 }) => {
+  const [mapHooks, setMapHooks] = useState();
+  console.log(mapHooks);
   const insertToCart = useCallback(
     (place) => {
       console.log(place);
@@ -25,6 +29,7 @@ const HotplaceMap = ({
       target.attachEvent("on" + type, callback);
     }
   }, []);
+
   useEffect(() => {
     const placeOverlay = new kakao.maps.CustomOverlay({ zIndex: 1 });
     const contentNode = document.createElement("div");
@@ -34,16 +39,14 @@ const HotplaceMap = ({
     let currCategory = "";
     const mapContainer = document.getElementById("Map"), // 지도를 표시할 div
       mapOption = {
-        // center: centerLocation
-        //   ? new kakao.maps.LatLng(centerLocation[0], centerLocation[1])
-        //   : new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
         center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
         level: 5, // 지도의 확대 레벨
       };
     const map = new kakao.maps.Map(mapContainer, mapOption);
+    setMapHooks(map);
     const ps = new kakao.maps.services.Places(map);
 
-    kakao.maps.event.addListener(map, "idle", () => {
+    kakao.maps.event.addListener(map, "dragend", () => {
       searchPlaces();
     });
     kakao.maps.event.addListener(map, "dragend", function () {
@@ -63,8 +66,7 @@ const HotplaceMap = ({
     function placesSearchKeywordCB(data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
         displayPlaces(data);
-        // 페이지 번호를 표출합니다
-        // displayPagination(pagination);
+        updateSearchPlaces(data);
       } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
         alert("검색 결과가 존재하지 않습니다.");
         return;
@@ -135,6 +137,7 @@ const HotplaceMap = ({
       if (status === kakao.maps.services.Status.OK) {
         // 정상적으로 검색이 완료됐으면 지도에 마커를 표출합니다
         displayPlaces(data);
+        updateSearchPlaces(data);
       } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
         // 검색결과가 없는경우 해야할 처리가 있다면 이곳에 작성해 주세요
       } else if (status === kakao.maps.services.Status.ERROR) {
@@ -144,6 +147,7 @@ const HotplaceMap = ({
     function overlayClickEvent(marker, place) {
       kakao.maps.event.addListener(marker, "click", function () {
         displayPlaceInfo(place);
+        clickedPlace(place);
       });
     }
     // 지도에 마커를 표출하는 함수입니다
@@ -235,7 +239,6 @@ const HotplaceMap = ({
       }
       markers = [];
     }
-
     // 클릭한 마커에 대한 장소 상세정보를 커스텀 오버레이로 표시하는 함수입니다
     function displayPlaceInfo(place) {
       var content =
@@ -310,11 +313,9 @@ const HotplaceMap = ({
       }
     }
   }, [searchPlace]);
-
   return (
     <div className={styles.HotplaceMap}>
       <div className={styles.mapContainer}>
-        <CategoryBar />
         <div id="Map" className={styles.map} />
       </div>
     </div>

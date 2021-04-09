@@ -8,6 +8,8 @@ import me.travelplan.service.place.PlaceCategory;
 import me.travelplan.web.route.RouteDto;
 import me.travelplan.web.route.RouteRequest;
 import me.travelplan.web.route.RouteResponse;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
@@ -40,8 +42,12 @@ public interface RouteMapper {
                         .size(0L).type(FileType.IMAGE)
                         .url(request.getPlace().getImage())
                         .build())
-                .x(request.getPlace().getX())
-                .y(request.getPlace().getY())
+                .point(
+                        (new GeometryFactory()).createPoint(new Coordinate(
+                                request.getPlace().getX(),
+                                request.getPlace().getY()
+                        ))
+                )
                 .build();
     }
 
@@ -75,8 +81,12 @@ public interface RouteMapper {
                             .id(place.getId())
                             .url(place.getUrl())
                             .name(place.getName())
-                            .x(place.getX())
-                            .y(place.getY())
+                            .point(
+                                    (new GeometryFactory()).createPoint(new Coordinate(
+                                            place.getX(),
+                                            place.getY()
+                                    ))
+                            )
                             .build()
             ).build());
         });
@@ -88,10 +98,10 @@ public interface RouteMapper {
         var response = RouteResponse.GetOne.builder();
 
         response.name(route.getName());
-        response.maxX(route.getMaxX());
-        response.minX(route.getMinX());
-        response.maxY(route.getMaxY());
-        response.minY(route.getMinY());
+        response.maxX(route.getMaxPoint().getX());
+        response.minX(route.getMinPoint().getX());
+        response.maxY(route.getMaxPoint().getY());
+        response.minY(route.getMinPoint().getY());
 
         List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
 
@@ -104,8 +114,8 @@ public interface RouteMapper {
                     .id(place.getId())
                     .name(place.getName())
                     .image(place.getImage().getUrl())
-                    .x(place.getX())
-                    .y(place.getY())
+                    .x(place.getPoint().getX())
+                    .y(place.getPoint().getY())
                     .category(place.getCategory().getId())
                     .url(place.getUrl())
                     .build());
@@ -135,8 +145,8 @@ public interface RouteMapper {
                         .name(routePlace.getPlace().getName())
                         .order(routePlace.getOrder())
                         .image(routePlace.getPlace().getImage().getUrl())
-                        .x(routePlace.getPlace().getX())
-                        .y(routePlace.getPlace().getY())
+                        .x(routePlace.getPlace().getPoint().getX())
+                        .y(routePlace.getPlace().getPoint().getY())
                         .category(routePlace.getPlace().getCategory().getId())
                         .url(routePlace.getPlace().getUrl())
                         .build());

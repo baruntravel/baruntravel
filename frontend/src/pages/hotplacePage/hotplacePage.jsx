@@ -3,14 +3,41 @@ import styles from "./hotplacePage.module.css";
 import HotplaceMap from "../../components/map/hotplaceMap/hotplaceMap";
 import PortalCart from "../../containers/portalCart/portalCart";
 import useInput from "../../hooks/useInput";
+import { ShoppingCartOutlined } from "@ant-design/icons";
+import { Drawer } from "antd";
+import ShoppingCart from "../../components/common/shoppingCart/shoppingCart";
+import DeleteConfirm from "../../components/common/deleteConfirm/deleteConfirm";
+import CategoryBar from "../../components/map/hotplaceMap/categoryBar/categoryBar";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from "react-responsive-carousel";
+import PlaceCard from "../../components/placeCard/placeCard";
 
 const HotplacePage = () => {
+  const carouselRef = useRef();
+  const placeListRef = useRef();
+  const [cartVisible, setCartVisible] = useState(false);
+  const [deleteItemId, setDeleteItemId] = useState(null);
+  const [confirmPortal, setConfirmPortal] = useState(false);
   const [cartPortal, setCartPortal] = useState(false);
   const [place, setPlace] = useState({});
   const [inputKeyword, handleInputKeyword] = useInput();
   const [searchPlace, setSearchPlace] = useState("");
-  const placeListRef = useRef();
-
+  const [searchPlaces, setSearchPlaces] = useState([]);
+  const setCartVisibleTrue = () => {
+    setCartVisible(true);
+  };
+  const setCartVisibleFalse = () => {
+    setCartVisible(false);
+  };
+  const setConfirmPortalTrue = () => {
+    setConfirmPortal(true);
+  };
+  const setConfirmPortalFalse = () => {
+    setConfirmPortal(false);
+  };
+  const handleDeleteItem = (id) => {
+    console.log("삭제");
+  };
   const handleCartPortalClose = useCallback(() => {
     setCartPortal(false);
   }, []);
@@ -19,6 +46,9 @@ const HotplacePage = () => {
   }, []);
   const clickedPlace = useCallback((place) => {
     setPlace(place);
+  }, []);
+  const updateSearchPlaces = useCallback((places) => {
+    setSearchPlaces(places);
   }, []);
   const handleSubmit = useCallback(
     (e) => {
@@ -31,34 +61,87 @@ const HotplacePage = () => {
     },
     [inputKeyword, searchPlace]
   );
+
+  const test = document.createElement("div");
+  test.addEventListener("click", function test2() {
+    console.log("hi");
+  });
+  test.click();
+
   return (
     <div className={styles.HotplacePage}>
-      <header className={styles.navbar}>navbar</header>
-      <div className={styles.body}>
-        <div className={styles.searchContainer}>
-          <div className={styles.search}>
-            <form className={styles.form} onSubmit={handleSubmit}>
-              <input
-                placeholder="Search place..."
-                onChange={handleInputKeyword}
-                value={inputKeyword || ""}
-              />
-              <button type="submit">검색</button>
-            </form>
-          </div>
-          <div className={styles.searchList}>
-            <ul ref={placeListRef} className={styles.placeList}></ul>
-          </div>
-        </div>
-        <div className={styles.mapContainer}>
-          <HotplaceMap
-            placeListRef={placeListRef}
-            handleCartPortalOpen={handleCartPortalOpen}
-            clickedPlace={clickedPlace}
-            searchPlace={searchPlace}
+      <div className={styles.searchContainer}>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <input
+            className={styles.inputBar}
+            placeholder="Search place..."
+            onChange={handleInputKeyword}
+            value={inputKeyword || ""}
+          />
+        </form>
+        <div className={styles.toggle}>
+          <ShoppingCartOutlined
+            className={styles.cartIcon}
+            onClick={setCartVisibleTrue}
           />
         </div>
       </div>
+      <div className={styles.mapContainer}>
+        <HotplaceMap
+          carouselRef={carouselRef}
+          placeListRef={placeListRef}
+          handleCartPortalOpen={handleCartPortalOpen}
+          clickedPlace={clickedPlace}
+          searchPlace={searchPlace}
+          updateSearchPlaces={updateSearchPlaces}
+          place={place}
+        />
+      </div>
+      <div className={styles.carouselContainer}>
+        <Carousel
+          calssName={styles.carousel}
+          ref={carouselRef}
+          infiniteLoop={true}
+          autoPlay={false}
+          showThumbs={false}
+          showIndicators={false}
+          showStatus={false}
+          showArrows={window.innerWidth >= 1280 ? true : false}
+          onChange={(index, item) => {
+            clickedPlace(item);
+          }}
+        >
+          {searchPlaces.map((item, index) => (
+            <div key={index} className={styles.placeCardContainer}>
+              <PlaceCard />
+            </div>
+          ))}
+        </Carousel>
+      </div>
+      <div className={styles.categoryContainer}>
+        <CategoryBar />
+      </div>
+      <Drawer
+        title={`${"장소"}의 담은 목록`}
+        placement="right"
+        closable={true}
+        onClose={setCartVisibleFalse}
+        visible={cartVisible}
+        width={window.innerWidth > 768 ? "36vw" : "80vw"}
+        bodyStyle={{
+          backgroundColor: "#ebecec",
+          padding: 0,
+        }}
+        zIndex={1004}
+      >
+        <ShoppingCart setConfirmPortalTrue={setConfirmPortalTrue} />
+      </Drawer>
+      {confirmPortal && (
+        <DeleteConfirm
+          onDeleteItem={handleDeleteItem}
+          onClose={setConfirmPortalFalse}
+        />
+      )}
       {cartPortal && (
         <PortalCart
           place={place}
