@@ -8,13 +8,15 @@ import { Drawer } from "antd";
 import ShoppingCart from "../../components/common/shoppingCart/shoppingCart";
 import DeleteConfirm from "../../components/common/deleteConfirm/deleteConfirm";
 import CategoryBar from "../../components/map/hotplaceMap/categoryBar/categoryBar";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from "react-responsive-carousel";
 import PlaceCard from "../../components/placeCard/placeCard";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const HotplacePage = () => {
   const placeListRef = useRef();
-  const mapRef = useRef();
 
   const [cartVisible, setCartVisible] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
@@ -67,7 +69,13 @@ const HotplacePage = () => {
     },
     [inputKeyword, searchPlace]
   );
-
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
   return (
     <div className={styles.HotplacePage}>
       <div className={styles.searchContainer}>
@@ -97,15 +105,9 @@ const HotplacePage = () => {
         />
       </div>
       <div ref={placeListRef} className={styles.carouselContainer}>
-        <Carousel
-          calssName={styles.carousel}
-          infiniteLoop={true}
-          autoPlay={false}
-          showThumbs={false}
-          showIndicators={false}
-          showStatus={false}
-          showArrows={window.innerWidth >= 1280 ? true : false}
-          onChange={(index, item) => {
+        <Slider
+          {...settings}
+          afterChange={(index) => {
             updateClickedPlace(searchPlaces[index]);
             setMarkerIndex(index);
           }}
@@ -115,7 +117,7 @@ const HotplacePage = () => {
               <PlaceCard place={place} onHandleDelete={handleDeleteItem} />
             </div>
           ))}
-        </Carousel>
+        </Slider>
       </div>
       <div className={styles.categoryContainer}>
         <CategoryBar />
