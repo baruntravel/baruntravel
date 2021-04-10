@@ -30,8 +30,14 @@ public class Route extends BaseEntity {
 
     private String name;
 
-    private Point minPoint;
-    private Point maxPoint;
+    @Column(name = "min_x")
+    private Double minX;
+    @Column(name = "min_y")
+    private Double minY;
+    @Column(name = "max_x")
+    private Double maxX;
+    @Column(name = "max_y")
+    private Double maxY;
 
     public void addPlace(RoutePlace place) {
         this.places.add(place);
@@ -46,17 +52,12 @@ public class Route extends BaseEntity {
     public void calculateCoordinate(List<RoutePlace> routePlaces) {
         List<Place> places = routePlaces.stream().map(RoutePlace::getPlace).collect(Collectors.toList());
 
-        DoubleStream xList = places.stream().map(Place::getPoint).mapToDouble(Point::getX);
-        DoubleStream yList = places.stream().map(Place::getPoint).mapToDouble(Point::getY);
+        DoubleStream xList = places.stream().mapToDouble(Place::getX);
+        DoubleStream yList = places.stream().mapToDouble(Place::getY);
 
-        this.minPoint = (new GeometryFactory()).createPoint(new Coordinate(
-                xList.min().orElseThrow(),
-                yList.min().orElseThrow()
-        ));
-
-        this.maxPoint = (new GeometryFactory()).createPoint(new Coordinate(
-                xList.max().orElseThrow(),
-                yList.max().orElseThrow()
-        ));
+        this.minX = xList.min().getAsDouble();
+        this.minY = yList.min().getAsDouble();
+        this.maxX = xList.max().getAsDouble();
+        this.maxY = yList.max().getAsDouble();
     }
 }
