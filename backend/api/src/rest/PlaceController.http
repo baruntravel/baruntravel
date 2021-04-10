@@ -1,0 +1,10 @@
+POST {{apiUrl}}/place/123/review
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+{
+  "review": {
+    "content": "Hello, My Review",
+    "score": 3.5
+  }
+}

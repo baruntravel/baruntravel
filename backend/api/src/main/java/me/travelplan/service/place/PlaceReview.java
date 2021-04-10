@@ -21,4 +21,8 @@ public class PlaceReview extends BaseEntity {
 
     private Double score;
     private String content;
+
+    public void setPlace(Place place) {
+        this.place = place;
+    }
 }
