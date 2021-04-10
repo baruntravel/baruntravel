@@ -52,12 +52,9 @@ public class Route extends BaseEntity {
     public void calculateCoordinate(List<RoutePlace> routePlaces) {
         List<Place> places = routePlaces.stream().map(RoutePlace::getPlace).collect(Collectors.toList());
 
-        DoubleStream xList = places.stream().mapToDouble(Place::getX);
-        DoubleStream yList = places.stream().mapToDouble(Place::getY);
-
-        this.minX = xList.min().getAsDouble();
-        this.minY = yList.min().getAsDouble();
-        this.maxX = xList.max().getAsDouble();
-        this.maxY = yList.max().getAsDouble();
+        this.minX = places.stream().mapToDouble(Place::getX).min().getAsDouble();
+        this.minY = places.stream().mapToDouble(Place::getY).min().getAsDouble();
+        this.maxX = places.stream().mapToDouble(Place::getX).max().getAsDouble();
+        this.maxY = places.stream().mapToDouble(Place::getY).max().getAsDouble();
     }
 }
