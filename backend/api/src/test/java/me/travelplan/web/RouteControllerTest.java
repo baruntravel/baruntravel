@@ -211,21 +211,18 @@ public class RouteControllerTest extends MvcTest {
     public void getOneTest() throws Exception {
         Route route = Route.builder()
                 .id(1L)
-                .minPoint((new GeometryFactory()).createPoint(new Coordinate(
-                        97.123,
-                        97.124
-                )))
-                .maxPoint((new GeometryFactory()).createPoint(new Coordinate(
-                        124.124,
-                        124.123
-                )))
+                .minX(97.123)
+                .minY(97.124)
+                .maxX(124.124)
+                .maxY(124.123)
                 .name("테스트 경로")
                 .build();
         route.addPlace(RoutePlace.builder().order(1).place(
                 Place.builder()
                         .id(12L)
                         .name("테스트 장소 이름")
-                        .point((new GeometryFactory()).createPoint(new Coordinate(97.123, 124.123)))
+                        .x(97.123)
+                        .y(124.123)
                         .url("https://www.naver.com")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
@@ -235,7 +232,8 @@ public class RouteControllerTest extends MvcTest {
                 Place.builder()
                         .id(12L)
                         .name("강릉 해돋이 마을")
-                        .point((new GeometryFactory()).createPoint(new Coordinate(97.123, 124.123)))
+                        .x(97.123)
+                        .y(124.123)
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .url("https://www.naver.com")
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
