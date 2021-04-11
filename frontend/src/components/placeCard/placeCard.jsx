@@ -22,6 +22,7 @@ const PlaceCard = ({ place, onHandleDelete }) => {
             "https://blog.hmgjournal.com/images_n/contents/171013_N1.png"
           }
           alt="placeImg"
+          draggable={false}
         />
       </div>
       <div className={styles.contentBox}>
@@ -41,7 +42,7 @@ const PlaceCard = ({ place, onHandleDelete }) => {
             />
           )}
         </div>
-        <span className={styles.categoryName}>{place.category_group_name}</span>
+        <span className={styles.categoryName}>카테고리 이름</span>
         <div className={styles.placeRateBox}>
           <Rate
             className={styles.rate}
