@@ -1,15 +1,20 @@
 package me.travelplan.service.route;
 
 import lombok.AllArgsConstructor;
+import me.travelplan.service.file.File;
 import me.travelplan.service.file.FileRepository;
+import me.travelplan.service.file.FileS3Uploader;
 import me.travelplan.service.place.Place;
 import me.travelplan.service.place.PlaceRepository;
 import me.travelplan.service.user.User;
+import me.travelplan.web.common.SavedFile;
+import me.travelplan.web.route.RouteRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +27,8 @@ public class RouteService {
     private final FileRepository fileRepository;
     private final RouteQueryRepository routeQueryRepository;
     private final RouteReviewRepository routeReviewRepository;
+    private final FileS3Uploader fileService;
+    private final RouteMapper routeMapper;
 
     @Transactional
     public Route createEmpty(Route route) {
@@ -68,9 +75,16 @@ public class RouteService {
     }
 
     @Transactional
-    public void createReview(RouteReview routeReview, Long id) {
+    public void createReview(RouteRequest.CreateReview request, Long id) {
         Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
-        route.addReview(routeReview);
+        List<SavedFile> files = new ArrayList<>();
+        if (request.getFiles() != null) {
+            files = fileService.uploadFileList(request.getFiles());
+        }
+        List<File> fileList = fileRepository.saveAll(files.stream().map(File::create).collect(Collectors.toList()));
+        List<RouteReviewFile> routeReviewFiles = fileList.stream().map(RouteReviewFile::create).collect(Collectors.toList());
+        RouteReview routeReview = RouteReview.create(request.getScore(), request.getContent(), routeReviewFiles, route);
+
         routeReviewRepository.save(routeReview);
     }
 }

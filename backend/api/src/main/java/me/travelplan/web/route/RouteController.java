@@ -5,6 +5,9 @@ import me.travelplan.service.route.RouteMapper;
 import me.travelplan.service.route.RouteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,8 +30,8 @@ public class RouteController {
 
     @PostMapping("/{id}/review")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createReview(@PathVariable Long id, @RequestBody RouteRequest.CreateReview request) {
-        routeService.createReview(routeMapper.toRouteReview(request),id);
+    public void createReview(@PathVariable Long id, RouteRequest.CreateReview request) {
+        routeService.createReview(request,id);
     }
 
     @PutMapping("/{id}")

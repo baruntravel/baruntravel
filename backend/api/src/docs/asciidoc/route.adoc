@@ -106,9 +106,11 @@ include::{snippets}/routes-getList/response-fields.adoc[]
 `POST /route/{id}/review`
 
 요청 HTTP
-include::{snippets}/route-review-create/http-request.adoc[]
+
 include::{snippets}/route-review-create/path-parameters.adoc[]
-include::{snippets}/route-review-create/request-fields.adoc[]
+include::{snippets}/route-review-create/request-parts.adoc[]
+include::{snippets}/route-review-create/request-parameters.adoc[]
+
 
 성공 응답 HTTP
 include::{snippets}/route-review-create/http-response.adoc[]

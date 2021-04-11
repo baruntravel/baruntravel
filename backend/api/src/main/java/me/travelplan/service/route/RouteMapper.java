@@ -8,11 +8,8 @@ import me.travelplan.service.place.PlaceCategory;
 import me.travelplan.web.route.RouteDto;
 import me.travelplan.web.route.RouteRequest;
 import me.travelplan.web.route.RouteResponse;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
-import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +22,7 @@ import java.util.stream.Collectors;
 public interface RouteMapper {
     RouteResponse.RouteId toRouteIdResponse(Route route);
     Route toEntity(RouteRequest.CreateEmpty request);
-    RouteReview toRouteReview(RouteRequest.CreateReview request);
+    RouteReview toRouteReview(RouteRequest.CreateReview request, List<File> fileList);
 
     default Place toPlace(RouteRequest.AddPlace request) {
         return Place.builder()

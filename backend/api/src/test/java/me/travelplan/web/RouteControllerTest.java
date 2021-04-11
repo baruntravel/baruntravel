@@ -18,9 +18,14 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.InputStream;
 
 import static me.travelplan.ApiDocumentUtils.getDocumentRequest;
 import static me.travelplan.ApiDocumentUtils.getDocumentResponse;
@@ -29,8 +34,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -277,15 +281,18 @@ public class RouteControllerTest extends MvcTest {
     @WithMockCustomUser
     @DisplayName("경로에 대한 리뷰생성 테스트")
     public void createRouteReviewTest() throws Exception {
-        RouteRequest.CreateReview request = RouteRequest.CreateReview.builder()
-                .content("리뷰테스트 내용")
-                .score(4.5)
-                .build();
+        InputStream is1 = new ClassPathResource("mock/images/enjoy.png").getInputStream();
+        InputStream is2 = new ClassPathResource("mock/images/enjoy2.png").getInputStream();
+        MockMultipartFile mockFile1 = new MockMultipartFile("file1", "mock_file1.jpg", "image/jpg", is1.readAllBytes());
+        MockMultipartFile mockFile2 = new MockMultipartFile("file2", "mock_file2.jpg", "image/jpg", is2.readAllBytes());
 
         ResultActions results = mockMvc.perform(
-                post("/route/{id}/review", 1)
-                        .content(objectMapper.writeValueAsString(request))
-                        .contentType(MediaType.APPLICATION_JSON)
+                fileUpload("/route/{id}/review", 1)
+                        .file(mockFile1)
+                        .file(mockFile2)
+                        .param("content", "테스트 리뷰 내용")
+                        .param("score", "5")
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
                         .characterEncoding("UTF-8")
         );
 
@@ -297,9 +304,13 @@ public class RouteControllerTest extends MvcTest {
                         pathParameters(
                                 parameterWithName("id").description("경로 식별자")
                         ),
-                        requestFields(
-                                fieldWithPath("content").type(JsonFieldType.STRING).description("경로 리뷰 내용"),
-                                fieldWithPath("score").type(JsonFieldType.NUMBER).description("경로 점수")
+                        requestParts(
+                                partWithName("file1").description("리뷰에 추가할 파일"),
+                                partWithName("file2").description("리뷰에 추가할 파일")
+                        ),
+                        requestParameters(
+                                parameterWithName("content").description("경로 리뷰 내용"),
+                                parameterWithName("score").description("경로 점수")
                         )
                 ));
     }
