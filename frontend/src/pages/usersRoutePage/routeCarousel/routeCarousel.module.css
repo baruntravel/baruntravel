@@ -7,7 +7,7 @@
 
 .top {
   display: flex;
-  margin: 0 12%;
+  margin: 8px 12%;
   justify-content: space-around;
   align-items: center;
 }
@@ -20,4 +20,28 @@
 .creator {
   font-size: 15px;
   color: #6aafe6;
+}
+
+.bottom {
+  margin: 24px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.places {
+  border: none;
+  outline: none;
+  background-color: #19a0fb;
+  color: white;
+  border-radius: 6px;
+  width: 25%;
+  height: 32px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.places:hover {
+  transform: scale(1.2);
+  cursor: pointer;
 }

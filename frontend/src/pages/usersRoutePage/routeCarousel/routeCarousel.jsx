@@ -25,9 +25,9 @@ const RouteCarousel = ({ routeItems, handleChange }) => {
               <div className={styles.bottom}>
                 {routeItems[value].places.map((value, index) => {
                   return (
-                    <div className={styles.places} key={index}>
+                    <button className={styles.places} key={index}>
                       {value.placeName}
-                    </div>
+                    </button>
                   );
                 })}
               </div>
