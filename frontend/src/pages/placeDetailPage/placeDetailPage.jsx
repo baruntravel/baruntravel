@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DetailHeader from "../../components/detailHeader/detailHeader";
 import styles from "./placeDetailPage.module.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { StarFilled } from "@ant-design/icons";
+import ReviewList from "../../components/reviewComponents/reviewList/reviewList";
+import ReviewCard from "../../components/reviewComponents/reviewList/reviewCard/reviewCard";
 
+const { kakao } = window;
 const PlaceDetailPage = (props) => {
   const testImages = [
     "https://blog.hmgjournal.com/images_n/contents/171013_N1.png",
@@ -19,7 +23,22 @@ const PlaceDetailPage = (props) => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
-
+  useEffect(() => {
+    let markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
+    let marker = {
+      position: markerPosition,
+    };
+    let staticMapContainer = document.getElementById("staticMap"),
+      staticMapOption = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        level: 4,
+        marker: marker,
+      };
+    let staticMap = new kakao.maps.StaticMap(
+      staticMapContainer,
+      staticMapOption
+    );
+  }, []);
   return (
     <div className={styles.PlaceDetailPage}>
       <DetailHeader />
@@ -33,6 +52,42 @@ const PlaceDetailPage = (props) => {
         </Slider>
         <div className={styles.imageCounter}>
           <span> 1 / 21 </span>
+        </div>
+      </div>
+      <div className={styles.body}>
+        <div className={styles.body__header}>
+          <h1 className={styles.body__placeName}>Place이름</h1>
+          <div className={styles.body__placeInfo}>
+            <div className={styles.body__rate}>
+              <StarFilled style={{ color: "#eb2f96" }} />
+              <span className={styles.body__score}>4</span>
+              <span className={styles.body__reviewCount}>(6)</span>
+            </div>
+            <span className={styles.body__address}>장소 주소</span>
+          </div>
+        </div>
+        <div className={styles.body__placeLocation}>
+          <div className={styles.body__titleContainer}>
+            <h2 className={styles.body__locationTitle}>위치</h2>
+          </div>
+          <div className={styles.body__addressContainer}>
+            <span className={styles.body__placeAddress}>서울시 ~~~구 ~~~</span>
+          </div>
+          <div className={styles.body__mapContainer}>
+            <div id="staticMap" className={styles.body__map}></div>
+          </div>
+        </div>
+        <div className={styles.reviewList}>
+          <div className={styles.reviewList__header}>
+            <h2>리뷰</h2>
+            <h2>6</h2>
+            <h2>쓰기</h2>
+          </div>
+          <div className={styles.reviewList__body}>
+            <div className={styles.reviewContainer}>
+              <ReviewCard />
+            </div>
+          </div>
         </div>
       </div>
     </div>

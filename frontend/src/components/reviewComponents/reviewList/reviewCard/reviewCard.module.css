@@ -1,46 +1,44 @@
 .ReviewCard {
-  border-bottom: 2px solid pink;
   display: flex;
-  padding: 3%;
-  margin-right: 10%;
-  margin-left: 10%;
-  height: 20%;
+  flex-direction: column;
+}
+.userProfile {
+  display: flex;
+}
+.userName {
+  display: flex;
+  flex-direction: column;
+  margin-left: 12px;
+  justify-content: center;
 }
 .content {
   display: flex;
   flex-direction: row;
-  margin-left: 4%;
-  width: 80%;
-  height: 15vh;
 }
-
 .info {
   display: flex;
   flex-direction: column;
   align-items: baseline;
 }
-.score {
-  font-size: 120%;
-  padding: 0.8em;
+.info__first {
 }
-.reviewInfo {
-  padding-top: 0.5em;
+.score {
+  margin-left: 6px;
 }
 .nickname {
-  margin-right: 0.25em;
-  padding-right: 0.25em;
-  border-right: 1px solid lightgray;
 }
-.date {
-  margin-right: 0.25em;
-  padding-right: 0.25em;
-  border-right: 1px solid lightgray;
-}
+
 .imageContainer {
-  float: right;
-  width: 13%;
-  padding: 10px;
 }
 .context {
   font-size: 1.2em;
+}
+
+.review__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.date {
+  color: grey;
 }
