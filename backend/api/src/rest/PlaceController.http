@@ -8,3 +8,16 @@ Authorization: {{ authorizationToken }}
     "score": 3.5
   }
 }
+
+###
+
+PUT {{apiUrl}}/place/123/review/1
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+{
+  "review": {
+    "content": "Updated, My Review",
+    "score": 5.0
+  }
+}

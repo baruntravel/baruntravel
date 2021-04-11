@@ -7,7 +7,7 @@ public class PlaceRequest {
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     @NoArgsConstructor
-    public static class CreateReview {
-        PlaceDto.Review review;
+    public static class PutReview {
+        PlaceDto.ReviewRequest review;
     }
 }

@@ -25,4 +25,9 @@ public class PlaceReview extends BaseEntity {
     public void setPlace(Place place) {
         this.place = place;
     }
+
+    public void update(PlaceReview changed) {
+        this.score = changed.getScore();
+        this.content = changed.getContent();
+    }
 }
