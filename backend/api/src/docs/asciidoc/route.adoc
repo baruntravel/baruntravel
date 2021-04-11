@@ -115,3 +115,16 @@ include::{snippets}/route-review-create/request-parameters.adoc[]
 성공 응답 HTTP
 include::{snippets}/route-review-create/http-response.adoc[]
 
+=== 경로 리뷰 삭제
+
+`DELETE /route/review/{id}`
+
+요청 HTTP
+
+- Body
+include::{snippets}/route-review-delete/http-request.adoc[]
+include::{snippets}/route-review-delete/path-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-review-delete/http-response.adoc[]
+

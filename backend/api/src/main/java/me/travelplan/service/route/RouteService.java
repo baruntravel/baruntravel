@@ -28,7 +28,6 @@ public class RouteService {
     private final RouteQueryRepository routeQueryRepository;
     private final RouteReviewRepository routeReviewRepository;
     private final FileS3Uploader fileService;
-    private final RouteMapper routeMapper;
 
     @Transactional
     public Route createEmpty(Route route) {
@@ -86,5 +85,10 @@ public class RouteService {
         RouteReview routeReview = RouteReview.create(request.getScore(), request.getContent(), routeReviewFiles, route);
 
         routeReviewRepository.save(routeReview);
+    }
+
+    @Transactional
+    public void deleteReview(Long id) {
+        routeReviewRepository.deleteById(id);
     }
 }

@@ -28,11 +28,6 @@ public class RouteController {
         return routeMapper.toRouteIdResponse(routeService.create(routeMapper.toEntity(request, 0L)));
     }
 
-    @PostMapping("/{id}/review")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createReview(@PathVariable Long id, RouteRequest.CreateReview request) {
-        routeService.createReview(request,id);
-    }
 
     @PutMapping("/{id}")
     public void update(@PathVariable Long id, @RequestBody RouteRequest.CreateOrUpdate request) {
@@ -49,4 +44,14 @@ public class RouteController {
         routeService.addPlace(id, routeMapper.toPlace(request));
     }
 
+    @PostMapping("/{id}/review")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createReview(@PathVariable Long id, RouteRequest.CreateReview request) {
+        routeService.createReview(request,id);
+    }
+
+    @DeleteMapping("/review/{id}")
+    public void deleteReview(@PathVariable Long id){
+        routeService.deleteReview(id);
+    }
 }

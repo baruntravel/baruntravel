@@ -10,11 +10,8 @@ import me.travelplan.service.route.RouteMapperImpl;
 import me.travelplan.service.route.RoutePlace;
 import me.travelplan.service.route.RouteService;
 import me.travelplan.web.route.RouteController;
-import me.travelplan.web.route.RouteRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -23,7 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 
@@ -311,6 +307,25 @@ public class RouteControllerTest extends MvcTest {
                         requestParameters(
                                 parameterWithName("content").description("경로 리뷰 내용"),
                                 parameterWithName("score").description("경로 점수")
+                        )
+                ));
+    }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("경로에 대한 리뷰삭제 테스트")
+    public void deleteRouteReviewTest() throws Exception {
+        ResultActions results = mockMvc.perform(
+                delete("/route/review/{id}", 1)
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("route-review-delete",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("id").description("경로 리뷰 식별자")
                         )
                 ));
     }

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Configuration
 @ConfigurationProperties("storage")
-public class StorageProps {
+public class S3Props {
     String s3Bucket;
     String s3Public;
 }

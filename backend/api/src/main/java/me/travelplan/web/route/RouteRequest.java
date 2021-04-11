@@ -26,8 +26,8 @@ public class RouteRequest {
         private RouteDto.RoutePlace place;
     }
 
-    @Data
-    @Builder
+    @Getter
+    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateReview {
@@ -44,6 +44,4 @@ public class RouteRequest {
         private Double maxY;
         private Double minY;
     }
-
-
 }

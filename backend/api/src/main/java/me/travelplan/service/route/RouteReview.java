@@ -22,7 +22,7 @@ public class RouteReview extends BaseEntity {
 
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id")
     private Route route;
 

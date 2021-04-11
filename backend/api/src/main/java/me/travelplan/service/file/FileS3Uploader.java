@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FileS3Uploader {
     private final S3Client s3client;
-    private final StorageProps storageProps;
+    private final S3Props storageProps;
 
     public List<SavedFile> uploadFileList(List<MultipartFile> files) {
         return files.stream().map(this::upload).collect(Collectors.toList());
