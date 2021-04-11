@@ -29,9 +29,9 @@ const BottomDrawer = ({ routeItems, index }) => {
         {places.map(({ placeName, placeUrl, addressName }, index) => {
           return (
             <div className={styles.drawerCard} key={index}>
-              <h1>{placeName}</h1>
-              <h2>{placeUrl}</h2>
-              <h2>{addressName}</h2>
+              <h2>{placeName}</h2>
+              <h3>{placeUrl}</h3>
+              <h3>{addressName}</h3>
             </div>
           );
         })}
