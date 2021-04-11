@@ -28,6 +28,6 @@ public class Place extends BaseEntity {
     private String name;
     private String url;
 
-    @Column(name = "`point`")
-    private Point point;
+    private Double x;
+    private Double y;
 }

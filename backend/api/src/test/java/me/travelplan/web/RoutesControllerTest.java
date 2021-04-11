@@ -80,24 +80,18 @@ public class RoutesControllerTest extends MvcTest {
         routes.add(Route.builder().id(2L).name("두번째 경로").build());
         Route route = Route.builder()
                 .id(1L)
-                .maxPoint((new GeometryFactory()).createPoint(new Coordinate(
-                        97.123,
-                        124.124
-                )))
-                .minPoint((new GeometryFactory()).createPoint(new Coordinate(
-                        97.124,
-                        124.123
-                )))
+                .maxX(97.123)
+                .maxY(124.124)
+                .minX(97.124)
+                .minY(124.123)
                 .name("세번째 경로")
                 .build();
         route.addPlace(RoutePlace.builder().order(1).place(
                 Place.builder()
                         .id(12L)
                         .name("테스트 장소 이름")
-                        .point((new GeometryFactory()).createPoint(new Coordinate(
-                                97.123,
-                                124.123
-                        )))
+                        .x(97.123)
+                        .y(124.123)
                         .url("https://www.naver.com")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
@@ -107,10 +101,8 @@ public class RoutesControllerTest extends MvcTest {
                 Place.builder()
                         .id(12L)
                         .name("강릉 해돋이 마을")
-                        .point((new GeometryFactory()).createPoint(new Coordinate(
-                                97.124,
-                                124.124
-                        )))
+                        .x(97.124)
+                        .y(124.124)
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .url("https://www.naver.com")
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
