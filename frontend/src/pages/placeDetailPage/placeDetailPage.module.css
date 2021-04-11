@@ -68,6 +68,9 @@
   height: 100%;
   border-radius: 12px;
 }
+.reviewList {
+  padding-top: 24px;
+}
 .reviewList__header {
   display: flex;
   align-items: center;
