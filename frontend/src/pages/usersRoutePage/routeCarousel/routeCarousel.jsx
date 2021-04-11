@@ -1,10 +1,16 @@
 import styles from "./routeCarousel.module.css";
 import { Carousel } from "react-responsive-carousel";
 
-const routeCarousel = ({ routeItems, handleChange }) => {
+const RouteCarousel = ({ routeItems, handleChange }) => {
   return (
     <div className={styles.container}>
-      <Carousel showArrows infiniteLoop onChange={(e) => handleChange(e)}>
+      <Carousel
+        infiniteLoop
+        renderIndicator={false}
+        autoPlay={false}
+        showStatus={false}
+        onChange={(e) => handleChange(e)}
+      >
         {Object.keys(routeItems).map((value, index) => {
           return (
             <div className={styles.routeCard} key={index}>
@@ -33,4 +39,4 @@ const routeCarousel = ({ routeItems, handleChange }) => {
   );
 };
 
-export default routeCarousel;
+export default RouteCarousel;
