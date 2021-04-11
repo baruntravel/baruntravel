@@ -4,7 +4,13 @@ import { Carousel } from "react-responsive-carousel";
 const RouteCarousel = ({ routeItems, handleChange }) => {
   return (
     <div className={styles.container}>
-      <Carousel infiniteLoop onChange={(e) => handleChange(e)}>
+      <Carousel
+        infiniteLoop
+        renderIndicator={false}
+        autoPlay={false}
+        showStatus={false}
+        onChange={(e) => handleChange(e)}
+      >
         {Object.keys(routeItems).map((value, index) => {
           return (
             <div className={styles.routeCard} key={index}>

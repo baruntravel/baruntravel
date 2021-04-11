@@ -13,7 +13,7 @@ const BottomDrawer = ({ routeItems, index }) => {
   return (
     <div className={styles.container}>
       <button
-        className={styles.drawerButton}
+        className={[styles.drawerButton, styles.up].join(" ")}
         onClick={(e) => {
           handleDrawer(e);
         }}
@@ -26,6 +26,14 @@ const BottomDrawer = ({ routeItems, index }) => {
         onOpen={() => handleDrawer()}
         onClose={() => handleDrawer()}
       >
+        <button
+          className={[styles.drawerButton, styles.down].join(" ")}
+          onClick={(e) => {
+            handleDrawer(e);
+          }}
+        >
+          ▼
+        </button>
         {places.map(({ placeName, placeUrl, addressName }, index) => {
           return (
             <div className={styles.drawerCard} key={index}>
