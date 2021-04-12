@@ -1,6 +1,7 @@
 package me.travelplan.service.route;
 
 import lombok.AllArgsConstructor;
+import me.travelplan.service.exception.PermissionDeniedException;
 import me.travelplan.service.file.File;
 import me.travelplan.service.file.FileRepository;
 import me.travelplan.service.file.FileS3Uploader;
@@ -57,12 +58,12 @@ public class RouteService {
     }
 
     public Route getOne(Long id) {
-        return routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
+        return routeRepository.findById(id).orElseThrow(() -> new RouteNotFoundException("찾을 수 없는 경로입니다."));
     }
 
-
+    @Transactional
     public Route addPlace(Long id, Place place) {
-        Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
+        Route route = routeRepository.findById(id).orElseThrow(() -> new RouteNotFoundException("찾을 수 없는 경로입니다."));
         fileRepository.save(place.getImage());
         route.addPlace(RoutePlace.builder().order(0).route(route).place(place).build());
         route.calculateCoordinate(route.getPlaces());
@@ -75,7 +76,7 @@ public class RouteService {
 
     @Transactional
     public void createReview(RouteRequest.CreateReview request, Long id) {
-        Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
+        Route route = routeRepository.findById(id).orElseThrow(() -> new RouteNotFoundException("찾을 수 없는 경로입니다."));
         List<SavedFile> files = new ArrayList<>();
         if (request.getFiles() != null) {
             files = fileService.uploadFileList(request.getFiles());
@@ -88,7 +89,12 @@ public class RouteService {
     }
 
     @Transactional
-    public void deleteReview(Long id) {
+    public void deleteReview(Long id, User user) {
+        RouteReview routeReview = routeReviewRepository.findById(id).orElseThrow(() -> new RouteReviewNotFoundException("찾을 수 없는 경로 리뷰입니다."));
+        //TODO PermissionDeniedException 처리해줘야함
+        if (!routeReview.getCreatedBy().getId().equals(user.getId())) {
+            throw new PermissionDeniedException("삭제할 권한이 없습니다.");
+        }
         routeReviewRepository.deleteById(id);
     }
 }

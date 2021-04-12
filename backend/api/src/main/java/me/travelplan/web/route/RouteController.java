@@ -1,13 +1,12 @@
 package me.travelplan.web.route;
 
 import lombok.RequiredArgsConstructor;
+import me.travelplan.security.userdetails.CurrentUser;
+import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.service.route.RouteMapper;
 import me.travelplan.service.route.RouteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -47,11 +46,11 @@ public class RouteController {
     @PostMapping("/{id}/review")
     @ResponseStatus(HttpStatus.CREATED)
     public void createReview(@PathVariable Long id, RouteRequest.CreateReview request) {
-        routeService.createReview(request,id);
+        routeService.createReview(request, id);
     }
 
     @DeleteMapping("/review/{id}")
-    public void deleteReview(@PathVariable Long id){
-        routeService.deleteReview(id);
+    public void deleteReview(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
+        routeService.deleteReview(id, userDetails.getUser());
     }
 }
