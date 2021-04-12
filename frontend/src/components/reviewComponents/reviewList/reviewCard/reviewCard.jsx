@@ -21,6 +21,8 @@ const ReviewCard = ({}) => {
     images: [
       "https://i.pinimg.com/236x/1a/3f/63/1a3f63dacc72b9ce7a0f41d771068c48.jpg",
       "https://i.pinimg.com/236x/f0/8d/5b/f08d5b455ae78f7c89b99b0354a49b7d.jpg",
+      "https://i.pinimg.com/236x/f0/8d/5b/f08d5b455ae78f7c89b99b0354a49b7d.jpg",
+      "https://i.pinimg.com/236x/f0/8d/5b/f08d5b455ae78f7c89b99b0354a49b7d.jpg",
     ],
     likeCount: 5,
   };
@@ -41,6 +43,7 @@ const ReviewCard = ({}) => {
               disabled={true}
               style={{
                 fontSize: "0.9em",
+                marginBottom: "12px",
               }}
             />
             <span className={styles.score}>{data.score}</span>
