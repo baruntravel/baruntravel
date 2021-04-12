@@ -32,6 +32,7 @@ public class RouteReview extends BaseEntity {
 
     public void setRoute(Route route) {
         this.route = route;
+        route.getRouteReviews().add(this);
     }
 
     public void addRouteReviewFiles(List<RouteReviewFile> routeReviewFiles) {
@@ -41,7 +42,12 @@ public class RouteReview extends BaseEntity {
         });
     }
 
-    public static RouteReview create(Double score, String content, List<RouteReviewFile> routeReviewFiles,Route route) {
+    public void update(Double score, String content) {
+        this.score = score;
+        this.content = content;
+    }
+
+    public static RouteReview create(Double score, String content, List<RouteReviewFile> routeReviewFiles, Route route) {
         RouteReview routeReview = RouteReview.builder()
                 .score(score)
                 .content(content)

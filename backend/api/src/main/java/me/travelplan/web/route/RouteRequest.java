@@ -30,7 +30,7 @@ public class RouteRequest {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class CreateReview {
+    public static class CreateOrUpdateReview {
         private String content;
         private Double score;
         List<MultipartFile> files;

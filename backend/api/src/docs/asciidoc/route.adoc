@@ -111,9 +111,21 @@ include::{snippets}/route-review-create/path-parameters.adoc[]
 include::{snippets}/route-review-create/request-parts.adoc[]
 include::{snippets}/route-review-create/request-parameters.adoc[]
 
-
 성공 응답 HTTP
 include::{snippets}/route-review-create/http-response.adoc[]
+
+=== 경로 리뷰 수정
+
+`POST /route/review/{id}`
+
+요청 HTTP
+
+include::{snippets}/route-review-update/path-parameters.adoc[]
+include::{snippets}/route-review-update/request-parts.adoc[]
+include::{snippets}/route-review-update/request-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-review-update/http-response.adoc[]
 
 === 경로 리뷰 삭제
 

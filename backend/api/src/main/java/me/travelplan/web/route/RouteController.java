@@ -45,8 +45,16 @@ public class RouteController {
 
     @PostMapping("/{id}/review")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createReview(@PathVariable Long id, RouteRequest.CreateReview request) {
+    public void createReview(@PathVariable Long id, RouteRequest.CreateOrUpdateReview request) {
         routeService.createReview(request, id);
+    }
+
+
+    //test에서 file을 처리할 때 fileUpload가 post형식임
+    //PutMapping을 사용할 방법은??
+    @PostMapping("/review/{id}")
+    public void updateReview(@PathVariable Long id, RouteRequest.CreateOrUpdateReview request, @CurrentUser CustomUserDetails userDetails) {
+        routeService.updateReview(id, request, userDetails.getUser());
     }
 
     @DeleteMapping("/review/{id}")

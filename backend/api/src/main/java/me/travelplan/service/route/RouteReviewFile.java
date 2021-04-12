@@ -26,10 +26,12 @@ public class RouteReviewFile {
 
     public void setFile(File file) {
         this.file = file;
+        file.getRouteReviewFiles().add(this);
     }
 
     public void setRouteReview(RouteReview routeReview) {
         this.routeReview = routeReview;
+        routeReview.getRouteReviewFiles().add(this);
     }
 
     public static RouteReviewFile create(File file) {

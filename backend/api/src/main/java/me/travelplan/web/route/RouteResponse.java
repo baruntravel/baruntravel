@@ -42,4 +42,12 @@ public class RouteResponse {
         private String name;
         private List<RouteDto.RoutePlace> places;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class ReviewOne {
+        private RouteDto.ReviewResponse review;
+    }
+
 }

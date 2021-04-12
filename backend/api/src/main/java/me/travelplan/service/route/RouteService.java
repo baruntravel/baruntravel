@@ -28,7 +28,9 @@ public class RouteService {
     private final FileRepository fileRepository;
     private final RouteQueryRepository routeQueryRepository;
     private final RouteReviewRepository routeReviewRepository;
+    private final RouteReviewFileRepository routeReviewFileRepository;
     private final FileS3Uploader fileService;
+
 
     @Transactional
     public Route createEmpty(Route route) {
@@ -75,17 +77,38 @@ public class RouteService {
     }
 
     @Transactional
-    public void createReview(RouteRequest.CreateReview request, Long id) {
+    public void createReview(RouteRequest.CreateOrUpdateReview request, Long id) {
+        //TODO RouteNotFoundException 처리
         Route route = routeRepository.findById(id).orElseThrow(() -> new RouteNotFoundException("찾을 수 없는 경로입니다."));
-        List<SavedFile> files = new ArrayList<>();
-        if (request.getFiles() != null) {
-            files = fileService.uploadFileList(request.getFiles());
-        }
+        List<SavedFile> files = s3FileUpload(request);
         List<File> fileList = fileRepository.saveAll(files.stream().map(File::create).collect(Collectors.toList()));
         List<RouteReviewFile> routeReviewFiles = fileList.stream().map(RouteReviewFile::create).collect(Collectors.toList());
         RouteReview routeReview = RouteReview.create(request.getScore(), request.getContent(), routeReviewFiles, route);
 
         routeReviewRepository.save(routeReview);
+    }
+
+    @Transactional
+    public RouteReview updateReview(Long id, RouteRequest.CreateOrUpdateReview request, User user) {
+        RouteReview routeReview = routeReviewRepository.findById(id).orElseThrow(() -> new RouteReviewNotFoundException("찾을 수 없는 경로 리뷰입니다."));
+        if (!routeReview.getCreatedBy().getId().equals(user.getId())) {
+            throw new PermissionDeniedException("수정할 권한이 없습니다.");
+        }
+        //TODO 쿼리 최적화 방법 찾기
+        //cascade로 routeReviewFile이 삭제될 때 file도 삭제되게 해놨더니 select문이 너무 많이 나감.
+        routeReviewFileRepository.deleteAllByRouteReviewId(routeReview.getId());
+
+        List<SavedFile> files = s3FileUpload(request);
+        List<File> fileList = fileRepository.saveAll(files.stream().map(File::create).collect(Collectors.toList()));
+
+        List<RouteReviewFile> routeReviewFiles = fileList.stream()
+                .map(f -> RouteReviewFile.builder().file(f).routeReview(routeReview).build())
+                .collect(Collectors.toList());
+        routeReviewFileRepository.saveAll(routeReviewFiles);
+
+        routeReview.update(request.getScore(), request.getContent());
+
+        return routeReview;
     }
 
     @Transactional
@@ -96,5 +119,13 @@ public class RouteService {
             throw new PermissionDeniedException("삭제할 권한이 없습니다.");
         }
         routeReviewRepository.deleteById(id);
+    }
+
+    private List<SavedFile> s3FileUpload(RouteRequest.CreateOrUpdateReview request) {
+        List<SavedFile> files = new ArrayList<>();
+        if (request.getFiles() != null) {
+            files = fileService.uploadFileList(request.getFiles());
+        }
+        return files;
     }
 }

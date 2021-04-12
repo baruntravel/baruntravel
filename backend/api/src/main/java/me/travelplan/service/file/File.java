@@ -2,7 +2,6 @@ package me.travelplan.service.file;
 
 import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
-import me.travelplan.service.route.RouteReview;
 import me.travelplan.service.route.RouteReviewFile;
 import me.travelplan.web.common.SavedFile;
 

@@ -5,10 +5,7 @@ import me.travelplan.WithMockCustomUser;
 import me.travelplan.service.file.File;
 import me.travelplan.service.place.Place;
 import me.travelplan.service.place.PlaceCategory;
-import me.travelplan.service.route.Route;
-import me.travelplan.service.route.RouteMapperImpl;
-import me.travelplan.service.route.RoutePlace;
-import me.travelplan.service.route.RouteService;
+import me.travelplan.service.route.*;
 import me.travelplan.web.route.RouteController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -307,6 +304,44 @@ public class RouteControllerTest extends MvcTest {
                         requestParameters(
                                 parameterWithName("content").description("경로 리뷰 내용"),
                                 parameterWithName("score").description("경로 점수")
+                        )
+                ));
+    }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("경로에 대한 리뷰수정 테스트")
+    public void updateRouteReviewTest() throws Exception {
+        InputStream is1 = new ClassPathResource("mock/images/enjoy.png").getInputStream();
+        InputStream is2 = new ClassPathResource("mock/images/enjoy2.png").getInputStream();
+        MockMultipartFile mockFile1 = new MockMultipartFile("file1", "mock_file1.jpg", "image/jpg", is1.readAllBytes());
+        MockMultipartFile mockFile2 = new MockMultipartFile("file2", "mock_file2.jpg", "image/jpg", is2.readAllBytes());
+
+        ResultActions results = mockMvc.perform(
+                fileUpload("/route/review/{id}", 1)
+                        .file(mockFile1)
+                        .file(mockFile2)
+                        .param("content", "테스트 리뷰 내용 수정")
+                        .param("score", "5")
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .characterEncoding("UTF-8")
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("route-review-update",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("id").description("경로 리뷰 식별자")
+                        ),
+                        requestParts(
+                                partWithName("file1").description("리뷰수정에 추가할 파일"),
+                                partWithName("file2").description("리뷰수정에 추가할 파일")
+                        ),
+                        requestParameters(
+                                parameterWithName("content").description("경로 리뷰 수정 내용"),
+                                parameterWithName("score").description("경로 수정 점수")
                         )
                 ));
     }
