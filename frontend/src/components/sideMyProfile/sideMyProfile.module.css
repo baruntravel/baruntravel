@@ -37,3 +37,13 @@
 .nickname {
   font-size: 1.4em;
 }
+
+.section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.myRouteList {
+  width: 100%;
+}

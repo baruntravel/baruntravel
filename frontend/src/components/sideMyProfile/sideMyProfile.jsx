@@ -8,11 +8,15 @@ import { myRouteCart } from "../../recoil/routeAtom";
 import { v4 as uuidv4 } from "uuid";
 import Modal from "antd/lib/modal/Modal";
 import Avatar from "antd/lib/avatar/avatar";
+import { useHistory } from "react-router-dom";
 
 const SideMyProfile = (props) => {
   const [myRouteList, setMyRouteList] = useRecoilState(myRouteCart);
+  // myRouteList는 Navbar에서 받아오는 것으로?
   const [modalVisible, setModalVisible] = useState(false);
+  // visible에 관한 것도 -> navbar에서 받아오는 것으로?
   const inputRef = useRef();
+  const history = useHistory();
   const handleOpen = () => {
     setModalVisible(true);
   };
@@ -34,6 +38,13 @@ const SideMyProfile = (props) => {
     });
     inputRef.current.value = "";
     handleClose();
+  };
+  const onClickMyRouteItem = (item) => {
+    setModalVisible(false);
+    history.push({
+      pathname: "/myRoute",
+      state: { clickedCardName: item.routeName, places: item.places },
+    });
   };
   return (
     <div className={styles.SideMyProfile}>
@@ -59,25 +70,28 @@ const SideMyProfile = (props) => {
       </div>
       <section className={styles.section}>
         <div className={styles.homeBtnBox}>
-          <span></span>
-        </div>
-        <div className={styles.pinList}>
-          <span>찜 목록</span>
+          <span className={styles.menu}>시작하기</span>
         </div>
         <div className={styles.myRouteList}>
-          <span>나의 루트</span>
+          <span className={styles.menu}>담은 목록</span>
           {myRouteList &&
-            Object.keys(myRouteList).map((objKey, index) => (
-              <div key={index} item={myRouteList[objKey]} objKey={objKey}>
-                {myRouteList[objKey].routeName}
+            Object.keys(myRouteList).map((objkey, index) => (
+              <div key={index} item={myRouteList[objkey]} objkey={objkey}>
+                <span
+                  onClick={() => {
+                    onClickMyRouteItem(myRouteList[objkey]);
+                  }}
+                >
+                  {myRouteList[objkey].routeName}
+                </span>
               </div>
             ))}
           <button className={styles.addBtn} onClick={handleOpen}>
             + 추가하기
           </button>
-          <div className={styles.logoutBtn}>
-            <span>Logout</span>
-          </div>
+        </div>
+        <div className={styles.logoutBtn}>
+          <span>Logout</span>
         </div>
       </section>
       <Modal
