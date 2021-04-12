@@ -22,14 +22,6 @@
   margin-right: 20px;
   color: #25b8f8;
 }
-.closeBtn {
-  background-color: transparent;
-  border: none;
-}
-.extra {
-  float: right;
-  margin-right: 12px;
-}
 .imageBox {
   margin-top: 3vh;
   display: flex;

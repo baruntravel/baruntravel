@@ -16,6 +16,7 @@ const ReviewForm = ({ item, onClose, onCloseReviewForm }) => {
     Object.keys(files).forEach((key) => {
       imageFormData.append("images", files[key]);
     });
+    console.log(imageFormData);
     const date = new Date();
     const [nowYear, nowMonth, nowDate] = [
       getYear(date),
