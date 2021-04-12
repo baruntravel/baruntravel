@@ -1,15 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import DetailHeader from "../../components/detailHeader/detailHeader";
 import styles from "./placeDetailPage.module.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { StarFilled } from "@ant-design/icons";
-import ReviewList from "../../components/reviewComponents/reviewList/reviewList";
+import { EditTwoTone, StarFilled } from "@ant-design/icons";
 import ReviewCard from "../../components/reviewComponents/reviewList/reviewCard/reviewCard";
+import { Drawer } from "antd";
+import ReviewForm from "../../components/reviewComponents/reviewForm/reviewForm";
 
 const { kakao } = window;
 const PlaceDetailPage = (props) => {
+  const [reviewWrite, setReviewWrite] = useState(false);
+  const onClickReviewWrite = useCallback(() => {
+    setReviewWrite(true);
+  }, []);
+  const onCloseReviewWrite = useCallback(() => {
+    setReviewWrite(false);
+  }, []);
   const testImages = [
     "https://blog.hmgjournal.com/images_n/contents/171013_N1.png",
     "https://blog.hmgjournal.com/images_n/contents/171013_N1.png",
@@ -79,9 +87,13 @@ const PlaceDetailPage = (props) => {
         </div>
         <div className={styles.reviewList}>
           <div className={styles.reviewList__header}>
-            <h2>리뷰</h2>
-            <h2>6</h2>
-            <h2>쓰기</h2>
+            <div className={styles.reviewCountBox}>
+              <h2>리뷰</h2>
+              <h2 className={styles.reviewCount}>6</h2>
+            </div>
+            <h2 onClick={onClickReviewWrite}>
+              <EditTwoTone />
+            </h2>
           </div>
           <div className={styles.reviewList__body}>
             <div className={styles.reviewContainer}>
@@ -90,6 +102,15 @@ const PlaceDetailPage = (props) => {
           </div>
         </div>
       </div>
+      <Drawer
+        visible={reviewWrite}
+        placement="bottom"
+        height="100vh"
+        bodyStyle={{ padding: 0 }}
+        onClose={onCloseReviewWrite}
+      >
+        <ReviewForm />
+      </Drawer>
     </div>
   );
 };

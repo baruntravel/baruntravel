@@ -74,6 +74,15 @@
 .reviewList__header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+.reviewCountBox {
+  display: flex;
+  flex-direction: row;
+}
+.reviewCount {
+  margin-left: 12px;
+  color: #25b8f8;
 }
 .reviewContainer {
   padding-bottom: 2px;
