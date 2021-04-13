@@ -9,12 +9,18 @@ import me.travelplan.service.user.User;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class PlaceService {
     private final PlaceRepository placeRepository;
     private final PlaceReviewRepository placeReviewRepository;
+
+    public List<PlaceReview> getReviews(Long placeId) {
+        Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
+        return place.getReviews();
+    }
 
     @Transactional
     public PlaceReview createReview(Long placeId, PlaceReview placeReview) {

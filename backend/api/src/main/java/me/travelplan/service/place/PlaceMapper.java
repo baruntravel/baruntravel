@@ -1,12 +1,13 @@
 package me.travelplan.service.place;
 
-import me.travelplan.service.user.User;
 import me.travelplan.web.place.PlaceDto;
 import me.travelplan.web.place.PlaceRequest;
 import me.travelplan.web.place.PlaceResponse;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import java.util.List;
 
 @Mapper(
         componentModel = "spring",
@@ -24,7 +25,8 @@ public interface PlaceMapper {
     PlaceReview requestToEntity(Long reviewId, PlaceRequest.PutReview request);
 
     PlaceDto.ReviewResponse entityToDto(PlaceReview review);
+    List<PlaceDto.ReviewResponse> entityToDto(List<PlaceReview> reviews);
 
     @Mapping(source = ".", target = "review")
-    PlaceResponse.ReviewOne entityToResponseReviewOne(PlaceReview review);
+    PlaceResponse.Review entityToResponseReview(PlaceReview review);
 }

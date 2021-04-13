@@ -1,11 +1,23 @@
 package me.travelplan.web.place;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 public class PlaceResponse {
-    public static class ReviewOne {
-        public PlaceDto.ReviewResponse review;
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class Review {
+        private PlaceDto.ReviewResponse review;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class Reviews {
+        private List<PlaceDto.ReviewResponse> reviews;
     }
 }

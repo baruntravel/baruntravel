@@ -15,6 +15,12 @@ public class PlaceController {
     private final PlaceMapper placeMapper;
     private final PlaceService placeService;
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{placeId}/review")
+    public PlaceResponse.Reviews getReviews(@PathVariable Long placeId) {
+        return PlaceResponse.Reviews.builder().reviews(placeMapper.entityToDto(placeService.getReviews(placeId))).build();
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/{placeId}/review")
     public void createReview(@PathVariable Long placeId, @RequestBody PlaceRequest.PutReview request) {
@@ -23,8 +29,8 @@ public class PlaceController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{placeId}/review/{reviewId}")
-    public PlaceResponse.ReviewOne updateReview(@PathVariable Long reviewId, @RequestBody PlaceRequest.PutReview request, @CurrentUser CustomUserDetails userDetails) {
+    public PlaceResponse.Review updateReview(@PathVariable Long reviewId, @RequestBody PlaceRequest.PutReview request, @CurrentUser CustomUserDetails userDetails) {
         placeService.checkReviewUpdatable(reviewId, userDetails.getUser());
-        return placeMapper.entityToResponseReviewOne(placeService.updateReview(placeMapper.requestToEntity(reviewId, request)));
+        return placeMapper.entityToResponseReview(placeService.updateReview(placeMapper.requestToEntity(reviewId, request)));
     }
 }
