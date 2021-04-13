@@ -15,8 +15,7 @@ const ReviewForm = ({ item, onClose, onCloseReviewForm }) => {
     const imageFormData = new FormData();
     Object.keys(files).forEach((key) => {
       imageFormData.append("images", files[key]);
-    });
-    console.log(imageFormData);
+    }); // imageFormData.getAll("images") 를 하면 모두 담겨있는 것을 확인했다.
     const date = new Date();
     const [nowYear, nowMonth, nowDate] = [
       getYear(date),
@@ -68,7 +67,7 @@ const ReviewForm = ({ item, onClose, onCloseReviewForm }) => {
                 className={styles.rate}
                 style={{
                   animation: "none",
-                  fontSize: "0.7em",
+                  fontSize: "0.9em",
                   marginLeft: "12px",
                 }}
               />
@@ -88,21 +87,25 @@ const ReviewForm = ({ item, onClose, onCloseReviewForm }) => {
       >
         <TextArea
           className={styles.textArea}
-          style={{ width: "100%", height: "70%" }}
+          style={{ width: "100%", height: "50%" }}
         />
         <div className={styles.imageBox}>
           <button className={styles.imageUpload} onClick={onClickImageUpload}>
             <FontAwesomeIcon icon={faImages} className={styles.uploadIcon} />
           </button>
-          {images &&
-            Object.keys(images).map((v, index) => (
-              <ReviewImageEdit
-                key={index}
-                item={images[v]}
-                name={v}
-                onDeleteImages={onDeleteImages}
-              />
-            ))}
+          <div className={styles.imageUploadedBox}>
+            {images &&
+              Object.keys(images).map((v, index) => (
+                <div className={styles.imageUploaded} key={index}>
+                  <ReviewImageEdit
+                    key={index}
+                    item={images[v]}
+                    name={v}
+                    onDeleteImages={onDeleteImages}
+                  />
+                </div>
+              ))}
+          </div>
         </div>
         <input
           type="file"

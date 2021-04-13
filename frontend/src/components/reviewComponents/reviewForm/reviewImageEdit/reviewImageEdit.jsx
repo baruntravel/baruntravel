@@ -9,7 +9,7 @@ const ReviewImageEdit = ({ item, name, onDeleteImages }) => {
       <button className={styles.deleteImage} onClick={handleClick}>
         X
       </button>
-      <img className={styles.image} src={item} alt="upladed image" />
+      <img className={styles.image} src={item} alt="upladed" />
     </div>
   );
 };
