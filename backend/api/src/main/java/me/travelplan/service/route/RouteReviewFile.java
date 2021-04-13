@@ -16,7 +16,7 @@ public class RouteReviewFile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_id")
     private File file;
 
@@ -24,19 +24,18 @@ public class RouteReviewFile {
     @JoinColumn(name = "route_review_id")
     private RouteReview routeReview;
 
-    public void setFile(File file) {
+    public void setRouteReview(RouteReview routeReview) {
+        this.routeReview = routeReview;
+    }
+
+    public void addFile(File file) {
         this.file = file;
         file.getRouteReviewFiles().add(this);
     }
 
-    public void setRouteReview(RouteReview routeReview) {
-        this.routeReview = routeReview;
-        routeReview.getRouteReviewFiles().add(this);
-    }
-
     public static RouteReviewFile create(File file) {
         RouteReviewFile routeReviewFile = RouteReviewFile.builder().build();
-        routeReviewFile.setFile(file);
+        routeReviewFile.addFile(file);
 
         return routeReviewFile;
     }

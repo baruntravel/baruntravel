@@ -53,7 +53,7 @@ public class FileS3Uploader {
                 height = image.getHeight();
             }
         } catch (IOException e) {
-            throw new S3FileUploadException();
+            throw new S3FileUploadException("S3파일업로드에서 IOException이 발생했습니다.");
         }
         SavedFile.SavedFileBuilder savedFileBuilder = SavedFile.builder()
                 .name(s3FileName)

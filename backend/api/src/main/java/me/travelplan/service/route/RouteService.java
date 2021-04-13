@@ -94,9 +94,14 @@ public class RouteService {
         if (!routeReview.getCreatedBy().getId().equals(user.getId())) {
             throw new PermissionDeniedException("수정할 권한이 없습니다.");
         }
-        //TODO 쿼리 최적화 방법 찾기
-        //cascade로 routeReviewFile이 삭제될 때 file도 삭제되게 해놨더니 select문이 너무 많이 나감.
-        routeReviewFileRepository.deleteAllByRouteReviewId(routeReview.getId());
+
+        List<Long> fileIdList = routeReview.getRouteReviewFiles().stream()
+                .map(routeReviewFile -> routeReviewFile.getFile().getId())
+                .collect(Collectors.toList());
+        // 엔티티 하나하나 삭제하며 delete 쿼리가 나가는 것을 방지하기 위해 in 쿼리사용
+        //TODO 파일전체삭제후다시생성 -> 변경된 파일만 수정하기
+        routeReviewFileRepository.deleteAllByFileIds(fileIdList);
+        fileRepository.deleteAllByIds(fileIdList);
 
         List<SavedFile> files = s3FileUpload(request);
         List<File> fileList = fileRepository.saveAll(files.stream().map(File::create).collect(Collectors.toList()));
@@ -118,6 +123,15 @@ public class RouteService {
         if (!routeReview.getCreatedBy().getId().equals(user.getId())) {
             throw new PermissionDeniedException("삭제할 권한이 없습니다.");
         }
+        List<Long> fileIdList = routeReview.getRouteReviewFiles().stream()
+                .map(routeReviewFile -> routeReviewFile.getFile().getId())
+                .collect(Collectors.toList());
+        // cacade 옵션을 사용하여 Review가 삭제되었을 때 ReviewFile과 file을 지워주면
+        // 삭제 대상들을 전부 조회하는 쿼리가 1번 발생하고
+        // 삭제 대상들은 1건씩 삭제되어진다. cascade 옵션으로 연관되어진 엔티티들도 1건씩 삭제가 된다.
+        // 이 부분을 In 쿼리로 하면 한번에 삭제가 가능하고 제 대상들을 전부 조회하는 select 쿼리도 적게나간다
+        routeReviewFileRepository.deleteAllByFileIds(fileIdList);
+        fileRepository.deleteAllByIds(fileIdList);
         routeReviewRepository.deleteById(id);
     }
 

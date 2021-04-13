@@ -26,7 +26,7 @@ public class RouteReview extends BaseEntity {
     @JoinColumn(name = "route_id")
     private Route route;
 
-    @OneToMany(mappedBy = "routeReview", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "routeReview", cascade = CascadeType.PERSIST)
     @Builder.Default
     private List<RouteReviewFile> routeReviewFiles = new ArrayList<>();
 

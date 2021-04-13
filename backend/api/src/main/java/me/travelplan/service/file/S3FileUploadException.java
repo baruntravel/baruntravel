@@ -1,9 +1,8 @@
 package me.travelplan.service.file;
 
-public class S3FileUploadException extends RuntimeException{
-    public S3FileUploadException() {
-        super();
-    }
+import me.travelplan.exception.BusinessException;
+
+public class S3FileUploadException extends BusinessException {
 
     public S3FileUploadException(String message) {
         super(message);
