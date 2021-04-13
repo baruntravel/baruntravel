@@ -35,6 +35,10 @@ public class PlaceService {
         return placeReviewRepository.save(before);
     }
 
+    public void delete(Long reviewId) {
+        placeReviewRepository.deleteById(reviewId);
+    }
+
     public void checkUpdatable(Long placeId, User user) {
         Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
 

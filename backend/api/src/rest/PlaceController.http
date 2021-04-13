@@ -17,7 +17,7 @@ Authorization: {{ authorizationToken }}
 
 ###
 
-PUT {{apiUrl}}/place/123/review/1
+PUT {{apiUrl}}/place/123/review/2
 Content-Type: application/json
 Authorization: {{ authorizationToken }}
 
@@ -27,3 +27,9 @@ Authorization: {{ authorizationToken }}
     "score": 5.0
   }
 }
+
+###
+
+DELETE {{apiUrl}}/place/123/review/2
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
