@@ -6,6 +6,7 @@ import me.travelplan.service.file.File;
 import me.travelplan.service.place.Place;
 import me.travelplan.service.place.PlaceCategory;
 import me.travelplan.service.route.*;
+import me.travelplan.service.user.User;
 import me.travelplan.web.route.RouteController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,11 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.InputStream;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 import static me.travelplan.ApiDocumentUtils.getDocumentRequest;
 import static me.travelplan.ApiDocumentUtils.getDocumentResponse;
@@ -27,6 +33,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -306,6 +313,56 @@ public class RouteControllerTest extends MvcTest {
                                 parameterWithName("score").description("경로 점수")
                         )
                 ));
+    }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("경로 리뷰 리스트 조회 테스트")
+    public void getRouteReviewListTest() throws Exception {
+        List<RouteReview> routeReviews = LongStream.range(1, 6).mapToObj(i -> {
+            RouteReview routeReview = RouteReview.builder()
+                    .id(i)
+                    .content("경로리뷰내용" + i)
+                    .score(0.5 + i)
+                    .routeReviewFiles(
+                            IntStream.range(0, 2).mapToObj(j -> RouteReviewFile
+                                    .create(File.builder().url("https://www.naver.com " + j).name("파일이름 " + j).build()))
+                                    .collect(Collectors.toList())
+                    )
+                    .build();
+            routeReview.setCreatedAt(LocalDateTime.of(2021, 4, 14, 9, 0));
+            routeReview.setUpdatedAt(LocalDateTime.of(2021, 4, 14, 9, 0).plusDays(5));
+            routeReview.setCreatedBy(User.builder().name("테스트유저").build());
+            return routeReview;
+        }).collect(Collectors.toList());
+
+        given(routeService.getReviewList(any())).willReturn(routeReviews);
+
+
+        ResultActions results = mockMvc.perform(
+                get("/route/{id}/reviews", 1)
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("route-review-list",
+                getDocumentRequest(),
+                getDocumentResponse(),
+                pathParameters(
+                        parameterWithName("id").description("경로 식별자")
+                ),
+                responseFields(
+                        fieldWithPath("reviews[].id").description("경로 리뷰 식별자"),
+                        fieldWithPath("reviews[].content").description("경로 리뷰 내용"),
+                        fieldWithPath("reviews[].score").description("경로 리뷰 점수"),
+                        fieldWithPath("reviews[].createdBy").description("경로 리뷰 작성자"),
+                        fieldWithPath("reviews[].files[].name").description("경로 리뷰에 첨부되어 있는 파일 이름"),
+                        fieldWithPath("reviews[].files[].url").description("경로 리뷰에 첨부되어 있는 파일 url"),
+                        fieldWithPath("reviews[].createdAt").description("경로 리뷰 생성날짜"),
+                        fieldWithPath("reviews[].updatedAt").description("경로 리뷰 수정날짜")
+
+                )
+        ));
     }
 
     @Test

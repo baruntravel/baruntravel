@@ -31,7 +31,6 @@ public class RouteService {
     private final RouteReviewFileRepository routeReviewFileRepository;
     private final FileS3Uploader fileService;
 
-
     @Transactional
     public Route createEmpty(Route route) {
         return routeRepository.save(route);
@@ -141,5 +140,14 @@ public class RouteService {
             files = fileService.uploadFileList(request.getFiles());
         }
         return files;
+    }
+
+    public List<RouteReview> getReviewList(Long id) {
+        //TODO 쿼리 개선 필요  RouteReview -> Dto 변환 과정에서 N+1 문제, fetchjoin이나 batchsize 설정
+        // RouteReview -> RouteReviewFile 조회 N+1 문제
+        // RouteReviewFile -> File 조회  N+1 문제
+        // RouteReview 조회시 RouteReviewFile fetch join 하면 RouteReviewFile이 존재하는 RouteReview만 조회하는 문제 발생
+
+        return routeReviewRepository.findAllByRouteId(id);
     }
 }

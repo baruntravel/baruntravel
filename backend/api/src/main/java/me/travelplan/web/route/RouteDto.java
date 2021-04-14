@@ -52,11 +52,13 @@ public class RouteDto {
         private Long id;
         private String content;
         private Double score;
+        private String createdBy;
         private List<FileDto> files;
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         public LocalDateTime createdAt;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         public LocalDateTime updatedAt;
+
     }
 }

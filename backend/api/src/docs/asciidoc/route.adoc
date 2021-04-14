@@ -114,6 +114,18 @@ include::{snippets}/route-review-create/request-parameters.adoc[]
 성공 응답 HTTP
 include::{snippets}/route-review-create/http-response.adoc[]
 
+=== 경로 리뷰 목록 조회
+
+`GET /route/{id}/reviews`
+
+요청 HTTP
+
+include::{snippets}/route-review-list/path-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-review-list/http-response.adoc[]
+include::{snippets}/route-review-list/response-fields.adoc[]
+
 === 경로 리뷰 수정
 
 `POST /route/review/{id}`

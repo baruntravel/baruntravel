@@ -49,6 +49,10 @@ public class RouteController {
         routeService.createReview(request, id);
     }
 
+    @GetMapping("/{id}/reviews")
+    public RouteResponse.ReviewList getReviewList(@PathVariable Long id) {
+        return routeMapper.entityToResponseReviewList(routeService.getReviewList(id));
+    }
 
     //test에서 file을 처리할 때 fileUpload가 post형식임
     //PutMapping을 사용할 방법은??

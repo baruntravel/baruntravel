@@ -46,8 +46,7 @@ public class RouteResponse {
     @Getter
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class ReviewOne {
-        private RouteDto.ReviewResponse review;
+    public static class ReviewList {
+        private List<RouteDto.ReviewResponse> reviews;
     }
-
 }

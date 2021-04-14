@@ -145,21 +145,22 @@ public interface RouteMapper {
         return getList;
     }
 
-    //조회할 때 사용 예정
-    default RouteResponse.ReviewOne entityToResponseReviewOne(RouteReview review) {
-        return RouteResponse.ReviewOne.builder()
-                .review(RouteDto.ReviewResponse.builder()
-                        .content(review.getContent())
-                        .score(review.getScore())
-                        .createdAt(review.getCreatedAt())
-                        .files(review.getRouteReviewFiles().stream().map(routeReviewFile -> FileDto.builder()
-                                .name(routeReviewFile.getFile().getName())
-                                .url(routeReviewFile.getFile().getUrl())
-                                .build())
+    default RouteResponse.ReviewList entityToResponseReviewList(List<RouteReview> reviews) {
+        return RouteResponse.ReviewList.builder()
+                .reviews(reviews.stream().map(routeReview -> RouteDto.ReviewResponse.builder()
+                        .id(routeReview.getId())
+                        .content(routeReview.getContent())
+                        .score(routeReview.getScore())
+                        .createdBy(routeReview.getCreatedBy().getName())
+                        .files(routeReview.getRouteReviewFiles().stream()
+                                .map(routeReviewFile -> FileDto.builder()
+                                        .name(routeReviewFile.getFile().getName())
+                                        .url(routeReviewFile.getFile().getUrl())
+                                        .build())
                                 .collect(Collectors.toList()))
-                        .updatedAt(review.getUpdatedAt())
-                        .build())
+                        .createdAt(routeReview.getCreatedAt())
+                        .updatedAt(routeReview.getUpdatedAt())
+                        .build()).collect(Collectors.toList()))
                 .build();
-
     }
 }
