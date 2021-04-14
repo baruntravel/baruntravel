@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from "./routeDetailPage.module.css";
+import DetailHeader from "../../components/detailHeader/detailHeader";
 
 const RouteDetailPage = (props) => {
   const settings = {
@@ -20,7 +21,8 @@ const RouteDetailPage = (props) => {
   ];
   return (
     <div className={styles.RouteDetailPage}>
-      <div className={styles.carouselContainer}>
+      <DetailHeader />
+      <div className={styles.sliderContainer}>
         <Slider {...settings}>
           {images.map((v, index) => (
             <div key={index} className={styles.imageContainer}>
@@ -28,6 +30,12 @@ const RouteDetailPage = (props) => {
             </div>
           ))}
         </Slider>
+        <div className={styles.imageCounter}>
+          <span> 1 / 21 </span>
+        </div>
+      </div>
+      <div className={styles.titleBox}>
+        <h2 className={styles.title}>#해시태그 #제목</h2>
       </div>
     </div>
   );
