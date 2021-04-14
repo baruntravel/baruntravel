@@ -21,7 +21,13 @@ const RouteDetailPage = (props) => {
   return (
     <div className={styles.RouteDetailPage}>
       <div className={styles.carouselContainer}>
-        <Slider {...settings}></Slider>
+        <Slider {...settings}>
+          {images.map((v, index) => (
+            <div key={index} className={styles.imageContainer}>
+              <img className={styles.img} src={v} alt={"placeImage"} />
+            </div>
+          ))}
+        </Slider>
       </div>
     </div>
   );
