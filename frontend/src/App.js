@@ -7,6 +7,8 @@ import HotplacePage from "./pages/hotplacePage/hotplacePage";
 import { RecoilRoot } from "recoil";
 import MyRoutePage from "./pages/myRoutePage/myRoutePage";
 import PlaceCard from "./components/placeCard/placeCard";
+import PlaceDetailPage from "./pages/placeDetailPage/placeDetailPage";
+import ReviewForm from "./components/reviewComponents/reviewForm/reviewForm";
 
 function App() {
   return (
@@ -27,9 +29,12 @@ function App() {
         <Route exact path="/myRoute">
           <MyRoutePage />
         </Route>
+        <Route exact path="/:id/place/detail">
+          <PlaceDetailPage />
+        </Route>
         {/* 테스트 */}
         <Route exact path="/test">
-          <PlaceCard />
+          <ReviewForm />
         </Route>
       </Router>
     </RecoilRoot>

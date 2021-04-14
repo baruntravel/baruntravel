@@ -65,17 +65,16 @@ const HotplaceMap = ({
     addEventHandle(contentNode, "touchstart", kakao.maps.event.preventMap);
     // 커스텀 오버레이 컨텐츠를 설정합니다
     placeOverlay.setContent(contentNode);
+    searchRef.current.addEventListener("submit", addSubmitKeyword);
 
-    searchRef.current.addEventListener("submit", () => {
-      // keyword 검색을 할 때,
-      currCategory = "";
-      keyword = inputRef.current.value;
-      searchPlacesWithKeyword();
-    });
     // 카테고리 검색을 요청하는 함수입니다
     addCategoryClickEvent();
     searchPlacesWithKeyword();
-
+    function addSubmitKeyword() {
+      currCategory = "";
+      keyword = inputRef.current.value;
+      searchPlacesWithKeyword();
+    }
     function placesSearchKeywordCB(data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
         displayPlaces(data);
@@ -322,6 +321,9 @@ const HotplaceMap = ({
         searchPlaces();
       }
     }
+    return () => {
+      searchRef.current.removeEventListener("submit", addSubmitKeyword);
+    };
   }, []);
   return (
     <div className={styles.HotplaceMap}>
