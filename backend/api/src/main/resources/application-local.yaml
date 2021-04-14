@@ -53,6 +53,7 @@ spring:
       hibernate:
         format_sql: true
         dialect: me.travelplan.component.custommysqldialect.CustomMySqlDialect
+        default_batch_fetch_size: 100
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false

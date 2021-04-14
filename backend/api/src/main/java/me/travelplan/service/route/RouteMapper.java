@@ -22,10 +22,7 @@ import java.util.stream.Collectors;
 )
 public interface RouteMapper {
     RouteResponse.RouteId toRouteIdResponse(Route route);
-
     Route toEntity(RouteRequest.CreateEmpty request);
-
-    RouteReview toRouteReview(RouteRequest.CreateOrUpdateReview request, List<File> fileList);
 
     default Place toPlace(RouteRequest.AddPlace request) {
         return Place.builder()
