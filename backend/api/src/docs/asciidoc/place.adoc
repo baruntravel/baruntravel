@@ -1,0 +1,68 @@
+= 바른여행길잡이 API 문서 (Place)
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:snippets: ../../../build/generated-snippets
+
+= Place
+---
+== 리뷰 관련 API
+
+=== 리뷰 가져오기
+
+요청 HTTP
+include::{snippets}/place-getReviews/http-request.adoc[]
+
+Path Variable
+include::{snippets}/place-getReviews/path-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/place-getReviews/http-response.adoc[]
+include::{snippets}/place-getReviews/response-fields.adoc[]
+
+=== 리뷰 생성
+
+요청 HTTP
+include::{snippets}/place-createReview/http-request.adoc[]
+
+Path Variable
+include::{snippets}/place-createReview/path-parameters.adoc[]
+
+Request Body
+include::{snippets}/place-createReview/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/place-createReview/http-response.adoc[]
+
+=== 리뷰 수정
+
+요청 HTTP
+include::{snippets}/place-updateReviews/http-request.adoc[]
+
+Path Variable
+include::{snippets}/place-updateReviews/path-parameters.adoc[]
+
+Request Body
+include::{snippets}/place-updateReviews/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/place-updateReviews/http-response.adoc[]
+include::{snippets}/place-updateReviews/response-fields.adoc[]
+
+=== 리뷰 삭제
+
+요청 HTTP
+include::{snippets}/place-updateReviews/http-request.adoc[]
+
+Path Variable
+include::{snippets}/place-updateReviews/path-parameters.adoc[]
+
+Request Body
+include::{snippets}/place-updateReviews/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/place-updateReviews/http-response.adoc[]
+include::{snippets}/place-updateReviews/response-fields.adoc[]

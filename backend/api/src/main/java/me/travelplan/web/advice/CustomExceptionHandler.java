@@ -1,5 +1,6 @@
 package me.travelplan.web.advice;
 
+import me.travelplan.exception.BusinessException;
 import me.travelplan.service.exception.ResponsibleClientException;
 import me.travelplan.service.exception.ResponsibleServerException;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,15 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class CustomExceptionHandler {
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity businessExceptionHandler(BusinessException ex) {
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("status", 400);
+        response.put("error", "Bad request");
+        response.put("message", ex.getMessage());
+        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(ResponsibleClientException.class)
     public ResponseEntity responsibleClientException(ResponsibleClientException ex) {
