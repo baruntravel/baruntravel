@@ -1,0 +1,16 @@
+.DetailHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 64px;
+}
+.navigationBtn {
+  padding-left: 8px;
+  display: flex;
+  flex-direction: row;
+}
+.heartBtn {
+  font-size: 18px;
+  padding-right: 8px;
+}

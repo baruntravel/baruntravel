@@ -3,17 +3,16 @@ import styles from "./hotplaceMap.module.css";
 
 const { kakao } = window;
 const HotplaceMap = ({
-  placeListRef,
   handleCartPortalOpen,
   updateClickedPlace,
-  searchPlace,
   updateSearchPlaces,
   place,
   markerIndex,
+  searchRef,
+  inputRef,
 }) => {
-  const [mapHooks, setMapHooks] = useState();
+  const [mapHooks, setMapHooks] = useState(null);
   const [markersHooks, setMarkersHooks] = useState();
-
   const insertToCart = useCallback(
     (place) => {
       console.log(place);
@@ -43,7 +42,7 @@ const HotplaceMap = ({
     const contentNode = document.createElement("div");
     contentNode.className = "placeinfo_wrap";
     let markers = [];
-    let keyword = searchPlace;
+    let keyword;
     let currCategory = "";
     const mapContainer = document.getElementById("Map"), // 지도를 표시할 div
       mapOption = {
@@ -57,20 +56,25 @@ const HotplaceMap = ({
     kakao.maps.event.addListener(map, "dragend", () => {
       searchPlaces();
     });
-    kakao.maps.event.addListener(map, "dragend", function () {
+    kakao.maps.event.addListener(map, "dragend", () => {
       searchPlacesWithKeyword();
     });
-
     // 커스텀 오버레이의 컨텐츠 노드에 mousedown, touchstart 이벤트가 발생했을때
     // 지도 객체에 이벤트가 전달되지 않도록 이벤트 핸들러로 kakao.maps.event.preventMap 메소드를 등록합니다
     addEventHandle(contentNode, "mousedown", kakao.maps.event.preventMap);
     addEventHandle(contentNode, "touchstart", kakao.maps.event.preventMap);
     // 커스텀 오버레이 컨텐츠를 설정합니다
     placeOverlay.setContent(contentNode);
+    searchRef.current.addEventListener("submit", addSubmitKeyword);
+
     // 카테고리 검색을 요청하는 함수입니다
     addCategoryClickEvent();
     searchPlacesWithKeyword();
-
+    function addSubmitKeyword() {
+      currCategory = "";
+      keyword = inputRef.current.value;
+      searchPlacesWithKeyword();
+    }
     function placesSearchKeywordCB(data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
         displayPlaces(data);
@@ -177,7 +181,7 @@ const HotplaceMap = ({
           // 장소정보를 표출하도록 클릭 이벤트를 등록합니다
           overlayClickEvent(marker, places[i]);
         }
-      } else if (searchPlace) {
+      } else if (keyword) {
         removeMarker();
         for (let i = 0; i < places.length; i++) {
           var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
@@ -317,7 +321,10 @@ const HotplaceMap = ({
         searchPlaces();
       }
     }
-  }, [searchPlace]);
+    return () => {
+      searchRef.current.removeEventListener("submit", addSubmitKeyword);
+    };
+  }, []);
   return (
     <div className={styles.HotplaceMap}>
       <div className={styles.mapContainer}>
