@@ -22,6 +22,12 @@
   color: #6aafe6;
 }
 
+.heartButton {
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+
 .bottom {
   margin: 24px;
   display: flex;
@@ -30,18 +36,14 @@
 }
 
 .places {
-  border: none;
-  outline: none;
-  background-color: #19a0fb;
-  color: white;
-  border-radius: 6px;
-  width: 25%;
+  color: black;
+  width: 24%;
   height: 32px;
   font-size: 16px;
   font-weight: 500;
 }
 
-.places:hover {
-  transform: scale(1.2);
+/* .places:hover {
+  transform: scale(1.1);
   cursor: pointer;
-}
+} */
