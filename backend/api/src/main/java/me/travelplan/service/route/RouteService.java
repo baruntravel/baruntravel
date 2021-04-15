@@ -125,13 +125,15 @@ public class RouteService {
         List<Long> fileIdList = routeReview.getRouteReviewFiles().stream()
                 .map(routeReviewFile -> routeReviewFile.getFile().getId())
                 .collect(Collectors.toList());
-        // cacade 옵션을 사용하여 Review가 삭제되었을 때 ReviewFile과 file을 지워주면
-        // 삭제 대상들을 전부 조회하는 쿼리가 1번 발생하고
-        // 삭제 대상들은 1건씩 삭제되어진다. cascade 옵션으로 연관되어진 엔티티들도 1건씩 삭제가 된다.
-        // 이 부분을 In 쿼리로 하면 한번에 삭제가 가능하고 제 대상들을 전부 조회하는 select 쿼리도 적게나간다
+
         routeReviewFileRepository.deleteAllByFileIds(fileIdList);
-        fileRepository.deleteAllByIds(fileIdList);
+        //softdelete @SQLDelte 를 적용시키기 위해 in 쿼리 대신 건당 삭제하도록 수정
+        fileIdList.forEach(fileRepository::deleteById);
         routeReviewRepository.deleteById(id);
+    }
+
+    public List<RouteReview> getReviewList(Long id) {
+        return routeReviewRepository.findAllByRouteId(id);
     }
 
     private List<SavedFile> s3FileUpload(RouteRequest.CreateOrUpdateReview request) {
@@ -142,12 +144,4 @@ public class RouteService {
         return files;
     }
 
-    public List<RouteReview> getReviewList(Long id) {
-        //TODO 쿼리 개선 필요  RouteReview -> Dto 변환 과정에서 N+1 문제, fetchjoin이나 batchsize 설정
-        // RouteReview -> RouteReviewFile 조회 N+1 문제
-        // RouteReviewFile -> File 조회  N+1 문제
-        // RouteReview 조회시 RouteReviewFile fetch join 하면 RouteReviewFile이 존재하는 RouteReview만 조회하는 문제 발생
-
-        return routeReviewRepository.findAllByRouteId(id);
-    }
 }

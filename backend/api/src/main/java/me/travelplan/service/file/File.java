@@ -4,11 +4,16 @@ import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
 import me.travelplan.service.route.RouteReviewFile;
 import me.travelplan.web.common.SavedFile;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Where(clause = "deleted_at IS NULL")
+@SQLDelete(sql = "UPDATE files SET deleted_at=CURRENT_TIMESTAMP WHERE `id`=?")
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
