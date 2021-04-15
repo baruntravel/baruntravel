@@ -1,4 +1,4 @@
-package me.travelplan.service.route;
+package me.travelplan.service.route.exception;
 
 import me.travelplan.exception.EntityNotFoundException;
 

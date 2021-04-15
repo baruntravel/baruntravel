@@ -39,7 +39,6 @@ public class FileS3Uploader {
         boolean isImage = this.isImage(extension);
         Integer width = null;
         Integer height = null;
-        //TODO S3FileUploadException 핸들링 해줘야함.
         try {
             PutObjectResponse response = s3client.putObject(
                     PutObjectRequest.builder()

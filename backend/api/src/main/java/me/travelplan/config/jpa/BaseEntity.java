@@ -40,16 +40,4 @@ public class BaseEntity {
     @JoinColumn(name = "updated_by", referencedColumnName = "id")
     private User updatedBy;
 
-    //test 용 임시 생성
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-    //test 용 임시 생성
-    public void setCreatedBy(User user){
-        this.createdBy=user;
-    }
-    //test 용 임시 생성
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }
