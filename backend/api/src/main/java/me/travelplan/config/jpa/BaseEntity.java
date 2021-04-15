@@ -39,4 +39,5 @@ public class BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by", referencedColumnName = "id")
     private User updatedBy;
+
 }

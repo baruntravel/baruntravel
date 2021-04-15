@@ -48,13 +48,12 @@ spring:
     password: pass
   jpa:
     hibernate:
-
       ddl-auto: validate
-    show-sql: true
     properties:
       hibernate:
         format_sql: true
         dialect: me.travelplan.component.custommysqldialect.CustomMySqlDialect
+        default_batch_fetch_size: 100
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
@@ -74,3 +73,7 @@ spring:
   flyway:
     baseline-version: 0
     out-of-order: true
+
+storage:
+  s3Bucket: s3.baruntravel.me
+  s3Public: https://s3.ap-northeast-2.amazonaws.com/s3.baruntravel.me

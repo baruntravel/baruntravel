@@ -1,9 +1,8 @@
 package me.travelplan.web.route;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
+
 
 import java.util.List;
 
@@ -28,12 +27,13 @@ public class RouteRequest {
     }
 
     @Getter
-    @Builder
+    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class CreateReview {
+    public static class CreateOrUpdateReview {
         private String content;
         private Double score;
+        List<MultipartFile> files;
     }
 
     @Getter
@@ -44,6 +44,4 @@ public class RouteRequest {
         private Double maxY;
         private Double minY;
     }
-
-
 }

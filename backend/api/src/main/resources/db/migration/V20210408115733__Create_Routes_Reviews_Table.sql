@@ -1,9 +1,9 @@
-DROP TABLE IF EXISTS `routes_review`;
-CREATE TABLE `routes_review`
+DROP TABLE IF EXISTS `routes_reviews`;
+CREATE TABLE `routes_reviews`
 (
     `id`         BIGINT       NOT NULL AUTO_INCREMENT,
     `score`      DOUBLE,
-    `content`    VARCHAR(255) NOT NULL,
+    `content`    VARCHAR(1000) NOT NULL,
     `route_id`   BIGINT       NOT NULL,
     `created_at` DATETIME     NOT NULL,
     `updated_at` DATETIME DEFAULT NULL,
