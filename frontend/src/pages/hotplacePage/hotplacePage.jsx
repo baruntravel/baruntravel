@@ -17,6 +17,8 @@ import "slick-carousel/slick/slick-theme.css";
 
 const HotplacePage = () => {
   const placeListRef = useRef();
+  const searchRef = useRef();
+  const inputRef = useRef();
 
   const [cartVisible, setCartVisible] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
@@ -69,6 +71,7 @@ const HotplacePage = () => {
     },
     [inputKeyword, searchPlace]
   );
+
   const settings = {
     dots: false,
     infinite: true,
@@ -79,8 +82,9 @@ const HotplacePage = () => {
   return (
     <div className={styles.HotplacePage}>
       <div className={styles.searchContainer}>
-        <form className={styles.form} onSubmit={handleSubmit}>
+        <form ref={searchRef} className={styles.form} onSubmit={handleSubmit}>
           <input
+            ref={inputRef}
             className={styles.inputBar}
             placeholder="Search place..."
             onChange={handleInputKeyword}
@@ -98,10 +102,11 @@ const HotplacePage = () => {
         <HotplaceMap
           handleCartPortalOpen={handleCartPortalOpen}
           updateClickedPlace={updateClickedPlace}
-          searchPlace={searchPlace}
           updateSearchPlaces={updateSearchPlaces}
           place={place}
           markerIndex={markerIndex}
+          searchRef={searchRef}
+          inputRef={inputRef}
         />
       </div>
       <div ref={placeListRef} className={styles.carouselContainer}>

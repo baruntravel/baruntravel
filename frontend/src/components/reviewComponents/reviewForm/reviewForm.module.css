@@ -8,42 +8,56 @@
   width: 100%;
   height: 100%;
 }
-.rate > li {
-  border-right: none;
-}
+
 .title {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-.rate {
-  margin-left: 3%;
+.rateBox {
+  display: flex;
 }
 .reviewBtn {
   margin-right: 20px;
   color: #25b8f8;
 }
-.closeBtn {
-  background-color: transparent;
-  border: none;
-}
-
 .imageBox {
-  margin-top: 3vh;
   display: flex;
-  width: 100%;
-  height: 10%;
-  margin-bottom: 5vh;
+  margin-top: 3vh;
+  height: 20%;
+  margin-bottom: 3vh;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.uploadIcon {
+  font-size: 2em;
 }
 .imageUpload {
   border: none;
   background-color: transparent;
   height: 100%;
-  width: 20%;
-  margin-right: 5%;
+  width: 15%;
+  margin-right: 5px;
 }
-.uploadIcon {
-  font-size: 2em;
+.imageUploadedBox {
+  display: flex;
+}
+
+.imageUploaded {
+  display: flex;
+  position: relative;
+  border: none;
+  background-color: transparent;
+  height: 100%;
+  width: 25vw;
+  margin-right: 5px;
+  object-fit: cover;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
 }
 .submitBtn {
   float: right;

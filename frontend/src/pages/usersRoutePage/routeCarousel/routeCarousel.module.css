@@ -1,11 +1,23 @@
 .container {
-  background-color: pink;
+  background-color: white;
+  border-radius: 12px;
   width: 100%;
   height: 100%;
 }
 
 .top {
   display: flex;
-  margin: 0 25%;
+  margin: 0 12%;
   justify-content: space-around;
+  align-items: center;
+}
+
+.routeName {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.creator {
+  font-size: 15px;
+  color: #6aafe6;
 }
