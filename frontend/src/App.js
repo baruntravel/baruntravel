@@ -29,9 +29,15 @@ function App() {
         <Route exact path="/myRoute">
           <MyRoutePage />
         </Route>
+
+        <Route path="/:id/routes/:id">
+          <RouteDetailPage />
+        </Route>
+
         <Route exact path="/:id/place/detail">
           <PlaceDetailPage />
         </Route>
+
         {/* 테스트 */}
         <Route exact path="/test">
           <RouteDetailPage />

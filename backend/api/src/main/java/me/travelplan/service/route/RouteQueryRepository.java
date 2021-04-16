@@ -20,6 +20,10 @@ public class RouteQueryRepository {
 
     public Page<Route> findAllByCoordinate(Double maxX, Double minX, Double maxY, Double minY, Pageable pageable) {
         QueryResults<Route> results = queryFactory.selectFrom(route)
+                .where(route.minX.goe(minX)
+                        .and(route.maxX.loe(maxX))
+                        .and(route.minY.goe(minY))
+                        .and(route.maxY.loe(maxY)))
                 .orderBy(route.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

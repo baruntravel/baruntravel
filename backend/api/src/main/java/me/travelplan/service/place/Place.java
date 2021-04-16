@@ -6,6 +6,7 @@ import me.travelplan.service.file.File;
 import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Builder
@@ -24,6 +25,9 @@ public class Place extends BaseEntity {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category", referencedColumnName = "id")
     private PlaceCategory category;
+
+    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
+    private List<PlaceReview> reviews;
 
     private String name;
     private String url;

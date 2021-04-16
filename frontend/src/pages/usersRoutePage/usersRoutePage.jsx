@@ -11,7 +11,7 @@ import BottomDrawer from "./bottomDrawer/bottomDrawer";
 const UsersRoutePage = () => {
   const [routeItems, setRouteItems] = useRecoilState(usersRouteItems);
   const [myState, setMyState] = useRecoilState(userState);
-  const [markers, setMarkers] = useState([]);
+  const [places, setPlaces] = useState([]);
   const [index, setIndex] = useState(0);
 
   const handleChange = (index) => {
@@ -20,12 +20,12 @@ const UsersRoutePage = () => {
 
   useEffect(() => {
     const places = Object.values(routeItems)[index].places;
-    setMarkers(places);
+    setPlaces(places);
   }, [index]);
 
   return (
     <div className={styles.wrapper}>
-      <UsersRouteMap markers={markers} />
+      <UsersRouteMap places={places} />
       <div className={styles.routeCarousel}>
         <RouteCarousel
           routeItems={routeItems}

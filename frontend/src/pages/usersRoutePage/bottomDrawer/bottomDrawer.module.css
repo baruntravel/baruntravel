@@ -4,3 +4,8 @@
   outline: none;
   background-color: transparent;
 }
+
+.drawerButton:hover {
+  transform: scale(1.3);
+  cursor: pointer;
+}

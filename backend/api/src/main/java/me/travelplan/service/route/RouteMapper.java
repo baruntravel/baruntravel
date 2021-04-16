@@ -5,14 +5,12 @@ import me.travelplan.service.file.FileServer;
 import me.travelplan.service.file.FileType;
 import me.travelplan.service.place.Place;
 import me.travelplan.service.place.PlaceCategory;
+import me.travelplan.web.common.FileDto;
 import me.travelplan.web.route.RouteDto;
 import me.travelplan.web.route.RouteRequest;
 import me.travelplan.web.route.RouteResponse;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
-import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +23,6 @@ import java.util.stream.Collectors;
 public interface RouteMapper {
     RouteResponse.RouteId toRouteIdResponse(Route route);
     Route toEntity(RouteRequest.CreateEmpty request);
-    RouteReview toRouteReview(RouteRequest.CreateReview request);
 
     default Place toPlace(RouteRequest.AddPlace request) {
         return Place.builder()
@@ -129,23 +126,38 @@ public interface RouteMapper {
         List<RouteResponse.GetList> getList = new ArrayList<>();
         routes.stream().forEach(route -> {
             List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
-            route.getPlaces().stream().forEach(routePlace -> {
-                routePlaces.add(RouteDto.RoutePlace.builder()
-                        .id(routePlace.getPlace().getId())
-                        .name(routePlace.getPlace().getName())
-                        .order(routePlace.getOrder())
-                        .image(routePlace.getPlace().getImage().getUrl())
-                        .x(routePlace.getPlace().getX())
-                        .y(routePlace.getPlace().getY())
-                        .category(routePlace.getPlace().getCategory().getId())
-                        .url(routePlace.getPlace().getUrl())
-                        .build());
-            });
+            route.getPlaces().stream().forEach(routePlace -> routePlaces.add(RouteDto.RoutePlace.builder()
+                    .id(routePlace.getPlace().getId())
+                    .name(routePlace.getPlace().getName())
+                    .order(routePlace.getOrder())
+                    .image(routePlace.getPlace().getImage().getUrl())
+                    .x(routePlace.getPlace().getX())
+                    .y(routePlace.getPlace().getY())
+                    .category(routePlace.getPlace().getCategory().getId())
+                    .url(routePlace.getPlace().getUrl())
+                    .build()));
             getList.add(RouteResponse.GetList.builder().name(route.getName())
                     .places(routePlaces).build());
         });
         return getList;
     }
 
-
+    default RouteResponse.ReviewList entityToResponseReviewList(List<RouteReview> reviews) {
+        return RouteResponse.ReviewList.builder()
+                .reviews(reviews.stream().map(routeReview -> RouteDto.ReviewResponse.builder()
+                        .id(routeReview.getId())
+                        .content(routeReview.getContent())
+                        .score(routeReview.getScore())
+                        .createdBy(routeReview.getCreatedBy().getName())
+                        .files(routeReview.getRouteReviewFiles().stream()
+                                .map(routeReviewFile -> FileDto.builder()
+                                        .name(routeReviewFile.getFile().getName())
+                                        .url(routeReviewFile.getFile().getUrl())
+                                        .build())
+                                .collect(Collectors.toList()))
+                        .createdAt(routeReview.getCreatedAt())
+                        .updatedAt(routeReview.getUpdatedAt())
+                        .build()).collect(Collectors.toList()))
+                .build();
+    }
 }

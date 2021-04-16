@@ -1,6 +1,7 @@
 package me.travelplan.config.jpa;
 
 import lombok.Getter;
+import lombok.Setter;
 import me.travelplan.service.user.User;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -13,8 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@SQLDelete(sql = "UPDATE users SET deleted_at=CURRENT_TIMESTAMP WHERE `id`=?")
-@Where(clause = "deleted_at IS NULL")
+@Setter
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
@@ -39,4 +39,5 @@ public class BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by", referencedColumnName = "id")
     private User updatedBy;
+
 }

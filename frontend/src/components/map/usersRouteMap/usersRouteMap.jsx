@@ -1,54 +1,82 @@
 import styles from "./usersRouteMap.module.css";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
-const { kakao } = window;
+const UsersRouteMap = ({ places }) => {
+  const { kakao } = window;
+  const [map, setMap] = useState();
+  const [markers, setMarkers] = useState([]);
 
-const UsersRouteMap = ({ markers }) => {
+  const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+
+  //map init
   useEffect(() => {
-    const dummy = markers.map((place) => {
-      return [place.x, place.y];
-    });
+    document.querySelector("body").style.overflow = "hidden"; // mobile에서 스크롤 막음
     let container = document.getElementById("Map");
-
     const options = {
       center: new kakao.maps.LatLng(37.566826, 126.9786567),
-      level: 5,
+      level: 4,
     };
     const map = new kakao.maps.Map(container, options);
-    // --
-    const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+    setMap(map);
+  }, []);
 
+  useEffect(() => {
+    displayMarker(infowindow);
+  }, [places]);
+
+  function displayMarker(infowindow) {
+    removeMarker();
+    let bounds = new kakao.maps.LatLngBounds();
+    for (let i = 0; i < places.length; i++) {
+      let placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
+      let marker = addMarker(placePosition, i);
+      setMarkers((markers) => [...markers, marker]);
+      bounds.extend(placePosition);
+      (function (marker, title) {
+        kakao.maps.event.addListener(marker, "mouseover", function () {
+          displayInfowindow(marker, title);
+        });
+
+        kakao.maps.event.addListener(marker, "mouseout", function () {
+          infowindow.close();
+        });
+      })(marker, places[i].placeName);
+    }
+  }
+
+  function addMarker(position, index) {
     var imageSrc =
-      "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-    for (var i = 0; i < dummy.length; i++) {
-      // 마커 이미지의 이미지 크기 입니다
-      var imageSize = new kakao.maps.Size(24, 35);
-
-      // 마커 이미지를 생성합니다
-      var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
-      // 마커를 생성합니다
-      var marker = new kakao.maps.Marker({
-        map: map, // 마커를 표시할 지도
-        position: new kakao.maps.LatLng(dummy[i][1], dummy[i][0]), // 마커를 표시할 위치
-        image: markerImage, // 마커 이미지
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
+      imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
+      imgOptions = {
+        spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+        spriteOrigin: new kakao.maps.Point(0, index * 46 + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+        offset: new kakao.maps.Point(13, 37), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+      },
+      markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+      marker = new kakao.maps.Marker({
+        position: position, // 마커의 위치
+        image: markerImage,
       });
-    }
-    const linePath = [];
-    for (let i = 0; i < dummy.length; i++) {
-      linePath.push(new kakao.maps.LatLng(dummy[i][1], dummy[i][0]));
-    }
-    var polyline = new kakao.maps.Polyline({
-      path: linePath, // 선을 구성하는 좌표배열 입니다
-      strokeWeight: 5, // 선의 두께 입니다
-      strokeColor: "#FFAE00", // 선의 색깔입니다
-      strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-      strokeStyle: "solid", // 선의 스타일입니다
-    });
 
-    // 지도에 선을 표시합니다
-    polyline.setMap(map);
-  }, [markers]);
+    marker.setMap(map); // 지도 위에 마커를 표출합니다
+    setMarkers((markers) => [...markers, marker]);
+
+    return marker;
+  }
+
+  function removeMarker() {
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(null);
+    }
+    setMarkers([]);
+  }
+
+  function displayInfowindow(marker, title) {
+    var content = '<div style="padding:5px;z-index:1;">' + title + "</div>";
+    infowindow.setContent(content);
+    infowindow.open(map, marker);
+  }
 
   return <div className={styles.map} id="Map" />;
 };
