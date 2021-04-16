@@ -1,4 +1,30 @@
-.slideContainer {
+.sliderContainer {
+  width: 100%;
+}
+.imageContainer {
   width: 100%;
   height: 35vh;
+}
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.slider__placeNameBox {
+  display: flex;
+  top: calc(35vh + 25px);
+  position: absolute;
+  right: 10px;
+  z-index: 1;
+  height: 25px;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: #00000080;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.titleBox {
+  margin-bottom: 14px;
 }
