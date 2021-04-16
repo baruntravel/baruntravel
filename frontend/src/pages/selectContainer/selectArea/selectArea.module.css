@@ -1,0 +1,31 @@
+.container {
+  margin: 0;
+  padding: 0;
+  width: 560px;
+}
+
+.areaList {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  overflow-x: scroll;
+}
+
+.areaBox {
+}
+
+.area {
+  white-space: nowrap;
+  width: 100px;
+  height: 100px;
+  background-color: thistle;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  margin: 4px;
+}
+
+.area:hover {
+  background-color: skyblue;
+}

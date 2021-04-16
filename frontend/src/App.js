@@ -1,6 +1,6 @@
 import "./App.css";
 import MainPage from "./pages/mainPage/mainPage";
-import SelectAreaPage from "./pages/selectAreaPage/selectAreaPage";
+import SelectContainer from "./pages/selectContainer/selectContainer";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import UsersRoutePage from "./pages/usersRoutePage/usersRoutePage";
 import HotplacePage from "./pages/hotplacePage/hotplacePage";
@@ -17,7 +17,7 @@ function App() {
           <MainPage />
         </Route>
         <Route path="/start">
-          <SelectAreaPage />
+          <SelectContainer />
         </Route>
         <Route exact path="/:id/places">
           <HotplacePage />
