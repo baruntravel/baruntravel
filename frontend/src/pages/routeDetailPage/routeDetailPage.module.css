@@ -28,3 +28,11 @@
 .titleBox {
   margin-bottom: 14px;
 }
+.authorBox {
+  display: flex;
+  align-items: center;
+}
+.nicknameBox {
+  display: flex;
+  flex-direction: column;
+}

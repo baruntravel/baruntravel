@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import styles from "./imageMap.module.css";
 const { kakao } = window;
 
-const ImageMap = (props) => {
+const ImageMap = ({ places }) => {
   useEffect(() => {
     let markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
     let marker = {
