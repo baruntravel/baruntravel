@@ -13,11 +13,14 @@
   left: 50%;
   transform: translate(-50%, -50%);
   height: 90%;
-  width: 50%;
+  width: 90%;
   margin: auto;
   background-color: transparent;
 }
 .header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   height: 15%;
 }
 .closeBtn {
@@ -31,12 +34,15 @@
   height: 65%;
 }
 .carousel__Body {
-  height: 50vh;
+  height: 60vh;
+}
+.imgContainer {
+  max-height: 60vh;
 }
 .img {
   margin: auto;
+  height: 100%;
 }
-
 .btnBox {
   display: flex;
   justify-content: center;

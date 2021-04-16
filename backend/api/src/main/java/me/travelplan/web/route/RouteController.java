@@ -1,6 +1,8 @@
 package me.travelplan.web.route;
 
 import lombok.RequiredArgsConstructor;
+import me.travelplan.security.userdetails.CurrentUser;
+import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.service.route.RouteMapper;
 import me.travelplan.service.route.RouteService;
 import org.springframework.http.HttpStatus;
@@ -25,11 +27,6 @@ public class RouteController {
         return routeMapper.toRouteIdResponse(routeService.create(routeMapper.toEntity(request, 0L)));
     }
 
-    @PostMapping("/{id}/review")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createReview(@PathVariable Long id, @RequestBody RouteRequest.CreateReview request) {
-        routeService.createReview(routeMapper.toRouteReview(request),id);
-    }
 
     @PutMapping("/{id}")
     public void update(@PathVariable Long id, @RequestBody RouteRequest.CreateOrUpdate request) {
@@ -46,4 +43,26 @@ public class RouteController {
         routeService.addPlace(id, routeMapper.toPlace(request));
     }
 
+    @PostMapping("/{id}/review")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createReview(@PathVariable Long id, RouteRequest.CreateOrUpdateReview request) {
+        routeService.createReview(request, id);
+    }
+
+    @GetMapping("/{id}/reviews")
+    public RouteResponse.ReviewList getReviewList(@PathVariable Long id) {
+        return routeMapper.entityToResponseReviewList(routeService.getReviewList(id));
+    }
+
+    //test에서 file을 처리할 때 fileUpload가 post형식임
+    //PutMapping을 사용할 방법은??
+    @PostMapping("/review/{id}")
+    public void updateReview(@PathVariable Long id, RouteRequest.CreateOrUpdateReview request, @CurrentUser CustomUserDetails userDetails) {
+        routeService.updateReview(id, request, userDetails.getUser());
+    }
+
+    @DeleteMapping("/review/{id}")
+    public void deleteReview(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
+        routeService.deleteReview(id, userDetails.getUser());
+    }
 }

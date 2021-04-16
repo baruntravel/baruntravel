@@ -44,11 +44,6 @@ public class Route extends BaseEntity {
         place.setRoute(this);
     }
 
-    public void addReview(RouteReview routeReview){
-        this.routeReviews.add(routeReview);
-        routeReview.setRoute(this);
-    }
-
     public void calculateCoordinate(List<RoutePlace> routePlaces) {
         List<Place> places = routePlaces.stream().map(RoutePlace::getPlace).collect(Collectors.toList());
 

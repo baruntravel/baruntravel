@@ -99,6 +99,11 @@ dependencies {
     runtime 'io.jsonwebtoken:jjwt-impl:0.11.1', 'io.jsonwebtoken:jjwt-jackson:0.11.1'
 
     /**
+     * AWS Dependencies
+     */
+    implementation platform('software.amazon.awssdk:bom:2.13.33')
+    implementation 'software.amazon.awssdk:s3'
+    /**
      * Test Dependencies
      */
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

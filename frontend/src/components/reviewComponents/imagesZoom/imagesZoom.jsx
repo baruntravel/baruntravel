@@ -24,7 +24,11 @@ const ImagesZoom = ({ images, onClose }) => {
           </button>
         </header>
         <div className={styles.carousel}>
-          <Carousel ref={arrowRef} className={styles.carousel__Body}>
+          <Carousel
+            ref={arrowRef}
+            className={styles.carousel__Body}
+            dots={false}
+          >
             {images.map((v, index) => (
               <div className={styles.imgContainer} key={index}>
                 <img

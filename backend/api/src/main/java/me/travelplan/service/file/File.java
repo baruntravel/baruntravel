@@ -2,9 +2,18 @@ package me.travelplan.service.file;
 
 import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
+import me.travelplan.service.route.RouteReviewFile;
+import me.travelplan.web.common.SavedFile;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
+
+@Where(clause = "deleted_at IS NULL")
+@SQLDelete(sql = "UPDATE files SET deleted_at=CURRENT_TIMESTAMP WHERE `id`=?")
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -12,7 +21,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "files")
 public class File extends BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -28,4 +38,21 @@ public class File extends BaseEntity {
 
     private Integer width;
     private Integer height;
+
+    @OneToMany(mappedBy = "file", cascade = CascadeType.PERSIST)
+    @Builder.Default
+    private List<RouteReviewFile> routeReviewFiles = new ArrayList<>();
+
+    public static File create(SavedFile file) {
+        return File.builder()
+                .name(file.getName())
+                .type(file.getFileType())
+                .server(file.getFileServer())
+                .extension(file.getExtension())
+                .height(file.getHeight())
+                .width(file.getWidth())
+                .size(file.getSize())
+                .url(file.getPublicUrl())
+                .build();
+    }
 }
