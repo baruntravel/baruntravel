@@ -7,10 +7,8 @@ import HotplacePage from "./pages/hotplacePage/hotplacePage";
 import { RecoilRoot } from "recoil";
 import MyRoutePage from "./pages/myRoutePage/myRoutePage";
 import PlaceCard from "./components/placeCard/placeCard";
-import RouteDetailPage from "./pages/usersRoutePage/routeDetailPage/routeDetailPage";
+import RouteDetailPage from "./pages/routeDetailPage/routeDetailPage";
 import PlaceDetailPage from "./pages/placeDetailPage/placeDetailPage";
-import ReviewForm from "./components/reviewComponents/reviewForm/reviewForm";
-
 
 function App() {
   return (
@@ -42,7 +40,7 @@ function App() {
 
         {/* 테스트 */}
         <Route exact path="/test">
-          <ReviewForm />
+          <RouteDetailPage />
         </Route>
       </Router>
     </RecoilRoot>
