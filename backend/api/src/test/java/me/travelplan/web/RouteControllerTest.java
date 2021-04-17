@@ -422,4 +422,23 @@ public class RouteControllerTest extends MvcTest {
                 ));
     }
 
+    @Test
+    @WithMockCustomUser
+    @DisplayName("경로에 즐겨찾기 테스트")
+    public void createRouteLikeTest() throws Exception {
+        ResultActions results = mockMvc.perform(
+                post("/route/{id}/like", 1)
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("route-like-create-update",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("id").description("경로 식별자")
+                        )
+                ));
+    }
+
 }

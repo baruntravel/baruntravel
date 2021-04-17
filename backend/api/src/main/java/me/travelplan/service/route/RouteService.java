@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -32,6 +33,7 @@ public class RouteService {
     private final RouteReviewRepository routeReviewRepository;
     private final RouteReviewFileRepository routeReviewFileRepository;
     private final FileS3Uploader fileService;
+    private final RouteLikeRepository routeLikeRepository;
 
     @Transactional
     public Route createEmpty(Route route) {
@@ -127,9 +129,22 @@ public class RouteService {
                 .collect(Collectors.toList());
 
         routeReviewFileRepository.deleteAllByFileIds(fileIdList);
-        //softdelete @SQLDelte 를 적용시키기 위해 in 쿼리 대신 건당 삭제하도록 수정
+        //softdelete @SQLDelete 를 적용시키기 위해 in 쿼리 대신 건당 삭제하도록 수정
         fileIdList.forEach(fileRepository::deleteById);
         routeReviewRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void createOrUpdateLike(Long id, User user) {
+        Route route = routeRepository.findById(id).orElseThrow(() -> new RouteNotFoundException("찾을 수 없는 경로입니다."));
+        Optional<RouteLike> optionalRouteLike = routeLikeRepository.findByRouteIdAndCreatedBy(id, user);
+        if (optionalRouteLike.isEmpty()) {
+            routeLikeRepository.save(RouteLike.create(route));
+        }
+        if(optionalRouteLike.isPresent()){
+            RouteLike routeLike = optionalRouteLike.get();
+            routeLike.updateLikeCheck(routeLike.isLikeCheck());
+        }
     }
 
     public List<RouteReview> getReviewList(Long id) {
@@ -143,5 +158,4 @@ public class RouteService {
         }
         return files;
     }
-
 }

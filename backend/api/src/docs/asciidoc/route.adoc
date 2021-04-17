@@ -94,6 +94,8 @@ include::{snippets}/route-getOne/response-fields.adoc[]
 `GET /routes`
 
 요청 HTTP
+
+- Body
 include::{snippets}/routes-getList/http-request.adoc[]
 include::{snippets}/routes-getList/request-parameters.adoc[]
 
@@ -152,3 +154,15 @@ include::{snippets}/route-review-delete/path-parameters.adoc[]
 성공 응답 HTTP
 include::{snippets}/route-review-delete/http-response.adoc[]
 
+=== 경로 즐겨찾기(좋아요) 생성 or 수정
+
+`POST /route/{id}/like`
+
+요청 HTTP
+
+- Body
+include::{snippets}/route-like-create-update/http-request.adoc[]
+include::{snippets}/route-like-create-update/path-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-like-create-update/http-response.adoc[]
