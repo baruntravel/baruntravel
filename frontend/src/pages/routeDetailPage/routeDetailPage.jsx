@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -7,8 +7,20 @@ import DetailHeader from "../../components/detailHeader/detailHeader";
 import ImageMap from "../../components/map/imageMap/imageMap";
 import PlaceCard from "../../components/placeCard/placeCard";
 import Avatar from "antd/lib/avatar/avatar";
+import ReviewList from "../../components/reviewComponents/reviewList/reviewList";
+import ImagesZoom from "../../components/reviewComponents/imagesZoom/imagesZoom";
 
 const RouteDetailPage = (props) => {
+  const [showImagesZoom, setShowImagesZoom] = useState(false);
+  const [imageIndex, setImageIndex] = useState(0);
+  const [imagePlaceName, setImagePlaceName] = useState("첫");
+  const onZoom = useCallback(() => {
+    setShowImagesZoom(true);
+  }, []);
+  const onClose = useCallback(() => {
+    setShowImagesZoom(false);
+  }, []);
+
   const settings = {
     dots: false,
     infinite: true,
@@ -47,12 +59,27 @@ const RouteDetailPage = (props) => {
       x: "126.979476558519",
       y: "37.5658314512941",
     },
+    {
+      id: "7975883",
+      place_name: "신한은행 서울광장출장소",
+      placeUrl: "http://place.map.kakao.com/7975883",
+      address_name: "서울 중구 을지로 16",
+      x: "126.979476558519",
+      y: "37.5658314512941",
+    },
   ];
+  const afterSliderChange = useCallback(
+    (index) => {
+      setImageIndex(index);
+      setImagePlaceName(places[index].place_name);
+    },
+    [places]
+  );
   return (
     <div className={styles.RouteDetailPage}>
       <DetailHeader />
-      <div className={styles.sliderContainer}>
-        <Slider {...settings}>
+      <div className={styles.sliderContainer} onClick={onZoom}>
+        <Slider {...settings} afterChange={(index) => afterSliderChange(index)}>
           {images.map((v, index) => (
             <div key={index} className={styles.imageContainer}>
               <img className={styles.img} src={v} alt={"placeImage"} />
@@ -60,7 +87,7 @@ const RouteDetailPage = (props) => {
           ))}
         </Slider>
         <div className={styles.slider__placeNameBox}>
-          <span className={styles.slider__placeName}> placeName </span>
+          <span className={styles.slider__placeName}>{imagePlaceName}</span>
         </div>
       </div>
       <div className={styles.authorBox}>
@@ -84,7 +111,7 @@ const RouteDetailPage = (props) => {
       <div className={styles.contentBox}>
         <span className={styles.content}>이 장소를 다녀왔어요</span>
       </div>
-      <div className={styles.mapImage}>
+      <div className={styles.imageMap}>
         <ImageMap places={places} />
       </div>
       <div className={styles.placesBox}>
@@ -95,6 +122,18 @@ const RouteDetailPage = (props) => {
             </div>
           ))}
       </div>
+      <div className={styles.routeAddBox}>
+        <div>
+          <button>일정으로 담기</button>
+          <span>5명이 좋아해요</span>
+        </div>
+      </div>
+      <div className={styles.reviewList}>
+        <ReviewList />
+      </div>
+      {showImagesZoom && (
+        <ImagesZoom images={images} onClose={onClose} index={imageIndex} />
+      )}
     </div>
   );
 };

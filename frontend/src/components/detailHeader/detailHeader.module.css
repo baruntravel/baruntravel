@@ -2,8 +2,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: sticky;
   padding: 0 16px;
   height: 64px;
+  z-index: 3;
+  background-color: white;
 }
 .navigationBtn {
   padding-left: 8px;
