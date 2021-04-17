@@ -1,0 +1,76 @@
+h1,
+h2,
+h3,
+ul,
+li {
+  margin: 0px;
+  padding: 0px;
+}
+
+.container {
+  padding: 0px 12px;
+  width: 100vw;
+}
+
+/* Search Box */
+.searchBox {
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+}
+
+input {
+  border: none;
+  flex: 1;
+}
+
+.backButton {
+  margin-right: 24px;
+  cursor: pointer;
+}
+
+.searchButton {
+  margin-left: 24px;
+  cursor: pointer;
+}
+
+/* title */
+.title {
+  margin: 16px 0;
+  font-weight: 600;
+}
+
+/* Route Box */
+.box_left {
+  margin: 8px 8px 8px 0;
+}
+
+.logo {
+  width: 44px;
+  height: 44px;
+  background-color: steelblue;
+  /* border-radius: 50%; */
+}
+
+.routeList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+
+.routeBox {
+  display: flex;
+  align-items: center;
+}
+
+.routeTitle {
+  font-weight: 600;
+}
+
+.routeSubtitle {
+  font-weight: 400;
+  color: gray;
+}
+
+/* @media only screen and (max-width: 768px) {
+
+} */

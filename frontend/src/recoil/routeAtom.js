@@ -185,7 +185,7 @@ export const myRouteCart = atom({
 });
 
 export const usersRouteItems = atom({
-  key: "userRouteCart",
+  key: "userRoute",
   default: {
     TEST1: {
       routeName: "레트로 데이트",
