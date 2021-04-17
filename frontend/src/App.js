@@ -1,6 +1,6 @@
 import "./App.css";
 import MainPage from "./pages/mainPage/mainPage";
-import SelectAreaPage from "./pages/selectAreaPage/selectAreaPage";
+import SelectContainer from "./pages/selectContainer/selectContainer";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import UsersRoutePage from "./pages/usersRoutePage/usersRoutePage";
 import HotplacePage from "./pages/hotplacePage/hotplacePage";
@@ -9,6 +9,8 @@ import MyRoutePage from "./pages/myRoutePage/myRoutePage";
 import PlaceCard from "./components/placeCard/placeCard";
 import RouteDetailPage from "./pages/routeDetailPage/routeDetailPage";
 import PlaceDetailPage from "./pages/placeDetailPage/placeDetailPage";
+import AllRoute from "./pages/selectContainer/selectRoute/allRoute/allRoute";
+import AllArea from "./pages/selectContainer/selectArea/allArea/allArea";
 
 function App() {
   return (
@@ -18,19 +20,26 @@ function App() {
           <MainPage />
         </Route>
         <Route path="/start">
-          <SelectAreaPage />
+          <SelectContainer />
         </Route>
+
         <Route exact path="/:id/places">
           <HotplacePage />
         </Route>
-        <Route exact path="/:id/routes">
+        <Route exact path="/all-place">
+          <AllArea />
+        </Route>
+
+        <Route exact path="/routes">
           <UsersRoutePage />
+        </Route>
+        <Route exact path="/all-route">
+          <AllRoute />
         </Route>
         <Route exact path="/myRoute">
           <MyRoutePage />
         </Route>
-
-        <Route path="/:id/routes/:id">
+        <Route path="/routes/:id">
           <RouteDetailPage />
         </Route>
 

@@ -3,7 +3,6 @@ import { Carousel } from "react-responsive-carousel";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"; // empty heart icon
 import FavoriteIcon from "@material-ui/icons/Favorite"; // filled heart icon
 import { Link } from "react-router-dom";
-import RouteDetailPage from "../routeDetailPage/routeDetailPage";
 
 const RouteCarousel = ({ routeItems, handleChange }) => {
   return (
