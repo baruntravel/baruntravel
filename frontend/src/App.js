@@ -14,45 +14,47 @@ import AllArea from "./pages/selectContainer/selectArea/allArea/allArea";
 
 function App() {
   return (
-    <RecoilRoot>
-      <Router>
-        <Route exact path="/">
-          <MainPage />
-        </Route>
-        <Route path="/start">
-          <SelectContainer />
-        </Route>
+    <div>
+      <RecoilRoot>
+        <Router>
+          <Route exact path="/">
+            <MainPage />
+          </Route>
+          <Route path="/start">
+            <SelectContainer />
+          </Route>
 
-        <Route exact path="/:id/places">
-          <HotplacePage />
-        </Route>
-        <Route exact path="/all-place">
-          <AllArea />
-        </Route>
+          <Route exact path="/:id/places">
+            <HotplacePage />
+          </Route>
+          <Route exact path="/all-place">
+            <AllArea />
+          </Route>
 
-        <Route exact path="/routes">
-          <UsersRoutePage />
-        </Route>
-        <Route exact path="/all-route">
-          <AllRoute />
-        </Route>
-        <Route exact path="/myRoute">
-          <MyRoutePage />
-        </Route>
-        <Route path="/routes/:id">
-          <RouteDetailPage />
-        </Route>
+          <Route exact path="/routes">
+            <UsersRoutePage />
+          </Route>
+          <Route exact path="/all-route">
+            <AllRoute />
+          </Route>
+          <Route exact path="/myRoute">
+            <MyRoutePage />
+          </Route>
+          <Route path="/routes/:id">
+            <RouteDetailPage />
+          </Route>
 
-        <Route exact path="/:id/place/detail">
-          <PlaceDetailPage />
-        </Route>
+          <Route exact path="/:id/place/detail">
+            <PlaceDetailPage />
+          </Route>
 
-        {/* 테스트 */}
-        <Route exact path="/test">
-          <RouteDetailPage />
-        </Route>
-      </Router>
-    </RecoilRoot>
+          {/* 테스트 */}
+          <Route exact path="/test">
+            <RouteDetailPage />
+          </Route>
+        </Router>
+      </RecoilRoot>
+    </div>
   );
 }
 
