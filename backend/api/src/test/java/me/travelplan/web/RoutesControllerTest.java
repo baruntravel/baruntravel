@@ -137,7 +137,10 @@ public class RoutesControllerTest extends MvcTest {
                                 parameterWithName("minY").description("현지도에서 가장 작은 y좌표(가장 아래의 y좌표)")
                         ),
                         relaxedResponseFields(
+                                fieldWithPath("content[].id").type(JsonFieldType.NUMBER).description("경로 식별자"),
                                 fieldWithPath("content[].name").type(JsonFieldType.STRING).description("경로 이름"),
+                                fieldWithPath("content[].likeCount").type(JsonFieldType.NUMBER).description("경로의 좋아요 개수"),
+                                fieldWithPath("content[].likeCheck").type(JsonFieldType.BOOLEAN).description("로그인 유저가 해당 경로에 좋아요를 눌렀다면 true"),
                                 fieldWithPath("content[].places").type(JsonFieldType.ARRAY).description("장소들 정보"),
                                 fieldWithPath("content[].places[].id").type(JsonFieldType.NUMBER).description("카카오톡에서 제공한 장소 식별자"),
                                 fieldWithPath("content[].places[].image").type(JsonFieldType.STRING).description("장소 이미지 URL"),

@@ -141,7 +141,7 @@ public class RouteService {
         if (optionalRouteLike.isEmpty()) {
             routeLikeRepository.save(RouteLike.create(route));
         }
-        if(optionalRouteLike.isPresent()){
+        if (optionalRouteLike.isPresent()) {
             RouteLike routeLike = optionalRouteLike.get();
             routeLike.updateLikeCheck(routeLike.isLikeCheck());
         }

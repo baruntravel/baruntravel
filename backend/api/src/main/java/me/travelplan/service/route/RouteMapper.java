@@ -5,6 +5,7 @@ import me.travelplan.service.file.FileServer;
 import me.travelplan.service.file.FileType;
 import me.travelplan.service.place.Place;
 import me.travelplan.service.place.PlaceCategory;
+import me.travelplan.service.user.User;
 import me.travelplan.web.common.FileDto;
 import me.travelplan.web.route.RouteDto;
 import me.travelplan.web.route.RouteRequest;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 )
 public interface RouteMapper {
     RouteResponse.RouteId toRouteIdResponse(Route route);
+
     Route toEntity(RouteRequest.CreateEmpty request);
 
     default Place toPlace(RouteRequest.AddPlace request) {
@@ -122,7 +124,7 @@ public interface RouteMapper {
                 .build();
     }
 
-    default List<RouteResponse.GetList> toGetListResponse(List<Route> routes) {
+    default List<RouteResponse.GetList> toGetListResponse(List<Route> routes, User user) {
         List<RouteResponse.GetList> getList = new ArrayList<>();
         routes.stream().forEach(route -> {
             List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
@@ -136,8 +138,17 @@ public interface RouteMapper {
                     .category(routePlace.getPlace().getCategory().getId())
                     .url(routePlace.getPlace().getUrl())
                     .build()));
-            getList.add(RouteResponse.GetList.builder().name(route.getName())
-                    .places(routePlaces).build());
+            RouteResponse.GetList list = RouteResponse.GetList.builder()
+                    .id(route.getId())
+                    .name(route.getName())
+                    .likeCount(route.getLikes().size())
+                    .places(routePlaces)
+                    .build();
+
+            route.getLikes().forEach(routeLike ->
+                    list.setLikeCheck(routeLike.getCreatedBy().getId().equals(user.getId()) && routeLike.isLikeCheck()));
+
+            getList.add(list);
         });
         return getList;
     }

@@ -3,14 +3,11 @@ package me.travelplan.service.route;
 import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
 import me.travelplan.service.place.Place;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 
 @Getter
 @Builder
@@ -19,7 +16,8 @@ import java.util.stream.DoubleStream;
 @Entity
 @Table(name = "routes")
 public class Route extends BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
@@ -27,6 +25,9 @@ public class Route extends BaseEntity {
 
     @OneToMany(mappedBy = "route", cascade = CascadeType.REMOVE)
     private final List<RouteReview> routeReviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "route", cascade = CascadeType.REMOVE)
+    private final List<RouteLike> likes = new ArrayList<>();
 
     private String name;
 

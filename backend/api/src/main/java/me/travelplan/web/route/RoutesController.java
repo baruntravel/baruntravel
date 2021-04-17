@@ -25,12 +25,13 @@ public class RoutesController {
 
     @GetMapping
     public Page<RouteResponse.GetList> getList(PageRequest pageRequest,
+                                               @CurrentUser CustomUserDetails customUserDetails,
                                                @RequestParam("maxX") Double maxX,
                                                @RequestParam("maxY") Double maxY,
                                                @RequestParam("minX") Double minX,
                                                @RequestParam("minY") Double minY) {
         List<Route> content = routeService.getList(maxX, minX, maxY, minY, pageRequest.of()).getContent();
-        List<RouteResponse.GetList> getList = routeMapper.toGetListResponse(content);
+        List<RouteResponse.GetList> getList = routeMapper.toGetListResponse(content,customUserDetails.getUser());
 
         return new PageImpl<>(getList, pageRequest.of(), content.size());
     }
