@@ -40,7 +40,7 @@ input {
   font-weight: 600;
 }
 
-/* Area Box */
+/* Route Box */
 .box_left {
   margin: 8px 8px 8px 0;
 }
@@ -48,25 +48,25 @@ input {
 .logo {
   width: 44px;
   height: 44px;
-  background-color: thistle;
-  border-radius: 50%;
+  background-color: steelblue;
+  /* border-radius: 50%; */
 }
 
-.areaList {
+.routeList {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 }
 
-.areaBox {
+.routeBox {
   display: flex;
   align-items: center;
 }
 
-.areaTitle {
+.routeTitle {
   font-weight: 600;
 }
 
-.areaSubtitle {
+.routeSubtitle {
   font-weight: 400;
   color: gray;
 }

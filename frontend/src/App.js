@@ -8,6 +8,8 @@ import { RecoilRoot } from "recoil";
 import MyRoutePage from "./pages/myRoutePage/myRoutePage";
 import PlaceCard from "./components/placeCard/placeCard";
 import RouteDetailPage from "./pages/usersRoutePage/routeDetailPage/routeDetailPage";
+import AllRoute from "./pages/selectContainer/selectRoute/allRoute/allRoute";
+import AllArea from "./pages/selectContainer/selectArea/allArea/allArea";
 
 function App() {
   return (
@@ -19,16 +21,24 @@ function App() {
         <Route path="/start">
           <SelectContainer />
         </Route>
+
         <Route exact path="/:id/places">
           <HotplacePage />
         </Route>
-        <Route exact path="/:id/routes">
+        <Route exact path="/all-place">
+          <AllArea />
+        </Route>
+
+        <Route exact path="/routes">
           <UsersRoutePage />
+        </Route>
+        <Route exact path="/all-route">
+          <AllRoute />
         </Route>
         <Route exact path="/myRoute">
           <MyRoutePage />
         </Route>
-        <Route path="/:id/routes/:id">
+        <Route path="/routes/:id">
           <RouteDetailPage />
         </Route>
 

@@ -1,10 +1,13 @@
-import styles from "./allArea.module.css";
-import { Link, useHistory } from "react-router-dom";
-import areaList from "../../../../assets/areaList.json";
+import styles from "./allRoute.module.css";
+import { Link, useHistory, useHitory } from "react-router-dom";
+import { usersRouteItems } from "../../../../recoil/routeAtom";
+import { useRecoilState } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
-const AllArea = () => {
+const AllRoute = () => {
+  const [routeItems, setRouteItems] = useRecoilState(usersRouteItems);
+  const routeList = Object.values(routeItems);
   let history = useHistory();
 
   return (
@@ -25,17 +28,17 @@ const AllArea = () => {
           />
         </div>
         <h3 className={styles.title}>전체 여행지</h3>
-        <ul className={styles.areaList}>
-          {areaList.map((area, index) => {
+        <ul className={styles.routeList}>
+          {routeList.map((route, index) => {
             return (
-              <Link to={`${area.eng}/places`} key={index}>
-                <li className={styles.areaBox}>
+              <Link to={`/routes`} key={index}>
+                <li className={styles.routeBox}>
                   <div className={styles.box_left}>
                     <div className={styles.logo}></div>
                   </div>
                   <div className={styles.box_right}>
-                    <h4 className={styles.areaTitle}>{area.kor}</h4>
-                    <h5 className={styles.areaSubtitle}>{area.kor}</h5>
+                    <h4 className={styles.areaTitle}>{route.routeName}</h4>
+                    <h5 className={styles.areaSubtitle}>{route.creator}</h5>
                   </div>
                 </li>
               </Link>
@@ -47,4 +50,4 @@ const AllArea = () => {
   );
 };
 
-export default AllArea;
+export default AllRoute;
