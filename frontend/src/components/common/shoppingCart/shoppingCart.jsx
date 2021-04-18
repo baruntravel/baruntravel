@@ -5,7 +5,12 @@ import { testPlaces } from "../../../recoil/routeAtom";
 import styles from "./shoppingCart.module.css";
 import ShoppingItem from "./shoppingItem/shoppingItem";
 
-const ShoppingCart = ({ items, setConfirmPortalTrue, updateShoppingCart }) => {
+const ShoppingCart = ({
+  items,
+  setConfirmPortalTrue,
+  updateShoppingCart,
+  deleteClickedItemId,
+}) => {
   const onDragEnd = (result) => {
     const { destination, source, reason } = result;
     if (!destination || reason === "CANCEL") {
@@ -52,6 +57,7 @@ const ShoppingCart = ({ items, setConfirmPortalTrue, updateShoppingCart }) => {
                           key={index}
                           item={item}
                           setConfirmPortalTrue={setConfirmPortalTrue}
+                          deleteClickedItemId={deleteClickedItemId}
                         />
                       </div>
                     )}

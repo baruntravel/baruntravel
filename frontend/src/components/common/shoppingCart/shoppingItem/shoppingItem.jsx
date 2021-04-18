@@ -3,9 +3,10 @@ import { Rate } from "antd";
 import React, { useCallback } from "react";
 import PlaceCard from "../../../placeCard/placeCard";
 import styles from "./shoppingItem.module.css";
-const ShoppingItem = ({ item, setConfirmPortalTrue }) => {
+const ShoppingItem = ({ item, setConfirmPortalTrue, deleteClickedItemId }) => {
   const onHandleDelete = useCallback(() => {
     setConfirmPortalTrue();
+    deleteClickedItemId(item.id);
   }, []);
   return (
     <div className={styles.shoppingItem}>

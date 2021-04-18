@@ -9,7 +9,7 @@ const PlaceCard = ({ place, onHandleDelete, addShoppingCart, isLiked }) => {
   const onClickDelete = useCallback(() => {
     onHandleDelete(place.id);
   }, []);
-  const onHandleLike = useCallback(() => {
+  const onHandleLike = () => {
     const data = {
       id: place.id,
       category_name: place.category_group_name,
@@ -20,7 +20,7 @@ const PlaceCard = ({ place, onHandleDelete, addShoppingCart, isLiked }) => {
       url: place.place_url,
     };
     addShoppingCart(data);
-  }, []);
+  };
   const onClickCard = useCallback((event) => {
     if (
       likeIconRef.current.contains(event.target) ||

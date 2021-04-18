@@ -31,24 +31,24 @@ const HotplacePage = () => {
   const [markerIndex, setMarkerIndex] = useState();
   const [shoppingItems, setShoppingItems] = useState([]);
 
-  const setCartVisibleTrue = () => {
+  const setCartVisibleTrue = useCallback(() => {
     setCartVisible(true);
-  };
-  const setCartVisibleFalse = () => {
+  }, []);
+  const setCartVisibleFalse = useCallback(() => {
     setCartVisible(false);
-  };
-  const setConfirmPortalTrue = () => {
+  }, []);
+  const setConfirmPortalTrue = useCallback(() => {
     setConfirmPortal(true);
-  };
-  const setConfirmPortalFalse = () => {
+  }, []);
+  const setConfirmPortalFalse = useCallback(() => {
     setConfirmPortal(false);
-  };
-  const handleDeleteItem = (id) => {
+  }, []);
+  const handleDeleteItem = useCallback((id) => {
     setShoppingItems((prev) => {
       const updated = prev.filter((item) => item.id !== id);
       return updated;
     });
-  };
+  }, []);
   const updateClickedPlace = useCallback((place) => {
     setPlace(place);
   }, []);
@@ -71,6 +71,9 @@ const HotplacePage = () => {
   );
   const clickedMarker = useCallback((index) => {
     sliderRef.current.slickGoTo(index);
+  }, []);
+  const deleteClickedItemId = useCallback((id) => {
+    setDeleteItemId(id);
   }, []);
   const addShoppingCart = useCallback((place) => {
     setShoppingItems((prev) => {
@@ -158,6 +161,7 @@ const HotplacePage = () => {
         zIndex={1004}
       >
         <ShoppingCart
+          deleteClickedItemId={deleteClickedItemId}
           setConfirmPortalTrue={setConfirmPortalTrue}
           updateShoppingCart={updateShoppingCart}
           items={shoppingItems}
