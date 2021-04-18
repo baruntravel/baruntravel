@@ -12,8 +12,6 @@ import me.travelplan.service.route.RouteService;
 import me.travelplan.web.route.RoutesController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -109,7 +107,7 @@ public class RoutesControllerTest extends MvcTest {
                         .build()
         ).build());
         routes.add(route);
-        given(routeService.getList(any(), any(), any(), any(), any())).willReturn(new PageImpl<>(routes, PageRequest.of(0, 10), routes.size()));
+        given(routeService.getList(any(), any())).willReturn(new PageImpl<>(routes, PageRequest.of(0, 10), routes.size()));
 
         ResultActions results = mockMvc.perform(
                 get("/routes")

@@ -75,8 +75,8 @@ public class RouteService {
         return routeRepository.save(route);
     }
 
-    public Page<Route> getList(Double maxX, Double minX, Double maxY, Double minY, Pageable pageable) {
-        return routeQueryRepository.findAllByCoordinate(maxX, minX, maxY, minY, pageable);
+    public Page<Route> getList(RouteRequest.GetList request, Pageable pageable) {
+        return routeQueryRepository.findAllByCoordinate(request.getMaxX(), request.getMinX(), request.getMaxY(), request.getMinY(), pageable);
     }
 
     @Transactional
