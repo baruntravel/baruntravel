@@ -19,6 +19,7 @@ const HotplacePage = () => {
   const placeListRef = useRef();
   const searchRef = useRef();
   const inputRef = useRef();
+  const sliderRef = useRef();
 
   const [cartVisible, setCartVisible] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
@@ -71,7 +72,9 @@ const HotplacePage = () => {
     },
     [inputKeyword, searchPlace]
   );
-
+  const clickedMarker = useCallback((index) => {
+    sliderRef.current.slickGoTo(index);
+  }, []);
   const settings = {
     dots: false,
     infinite: true,
@@ -100,17 +103,19 @@ const HotplacePage = () => {
       </div>
       <div className={styles.mapContainer}>
         <HotplaceMap
+          searchRef={searchRef}
+          inputRef={inputRef}
           handleCartPortalOpen={handleCartPortalOpen}
           updateClickedPlace={updateClickedPlace}
           updateSearchPlaces={updateSearchPlaces}
           place={place}
           markerIndex={markerIndex}
-          searchRef={searchRef}
-          inputRef={inputRef}
+          clickedMarker={clickedMarker}
         />
       </div>
       <div ref={placeListRef} className={styles.carouselContainer}>
         <Slider
+          ref={sliderRef}
           {...settings}
           afterChange={(index) => {
             updateClickedPlace(searchPlaces[index]);

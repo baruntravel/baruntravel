@@ -3,24 +3,17 @@ import styles from "./hotplaceMap.module.css";
 
 const { kakao } = window;
 const HotplaceMap = ({
-  handleCartPortalOpen,
+  searchRef,
+  inputRef,
   updateClickedPlace,
   updateSearchPlaces,
   place,
   markerIndex,
-  searchRef,
-  inputRef,
+  clickedMarker,
 }) => {
   const [mapHooks, setMapHooks] = useState(null);
   const [markersHooks, setMarkersHooks] = useState();
-  const insertToCart = useCallback(
-    (place) => {
-      console.log(place);
-      updateClickedPlace(place);
-      handleCartPortalOpen();
-    },
-    [updateClickedPlace, handleCartPortalOpen]
-  );
+
   // 엘리먼트에 이벤트 핸들러를 등록하는 함수입니다
   const addEventHandle = useCallback((target, type, callback) => {
     if (target.addEventListener) {
@@ -32,8 +25,8 @@ const HotplaceMap = ({
   useEffect(() => {
     if (mapHooks) {
       mapHooks.panTo(new kakao.maps.LatLng(place.y, place.x));
-      // markersHooks[markerIndex].o.click();
-      console.log(markersHooks[markerIndex]);
+      // markersHooks[markerIndex].T.Xj =
+      markersHooks[markerIndex].setOpacity(0.5);
     }
   }, [place]);
 
@@ -113,37 +106,7 @@ const HotplaceMap = ({
         });
       }
     }
-    // 검색결과 항목을 Element로 반환하는 함수입니다
-    function getListItem(index, place) {
-      let el = document.createElement("li");
-      let addressName = place.road_address_name || place.address_name;
-      let itemStr = `
-      <div class="search__container">
-        <div class="search__card">
-          <div class="search__placeInfo">
-            <i class="search__icon fas fa-map-marker-alt"></i>
-            <span class="search__placeName">${place.place_name}</span>
-          </div>
-          <span class="search__address">${addressName}</span>
-          <div class="search__bottom">
-            <span class="search__review">리뷰</span>
-            <a href=${place.place_url} target="_blank" class="search__more">
-              상세보기
-            </a>
-          </div>
-        </div>
-      </div>`;
-      const addBtn = document.createElement("button");
-      addBtn.className = "search__addBtn";
-      addBtn.innerHTML = "담기";
-      addBtn.addEventListener("click", () => {
-        insertToCart(place);
-      });
-      el.innerHTML = itemStr;
-      el.appendChild(addBtn);
-      el.className = "item";
-      return el;
-    }
+
     // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
     function placesSearchCB(data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
@@ -156,10 +119,10 @@ const HotplaceMap = ({
         // 에러로 인해 검색결과가 나오지 않은 경우 해야할 처리가 있다면 이곳에 작성해 주세요
       }
     }
-    function overlayClickEvent(marker, place) {
+    function overlayClickEvent(marker, place, index) {
       kakao.maps.event.addListener(marker, "click", function () {
-        displayPlaceInfo(place);
         updateClickedPlace(place);
+        clickedMarker(index);
       });
     }
     // 지도에 마커를 표출하는 함수입니다
@@ -179,14 +142,14 @@ const HotplaceMap = ({
           );
           // 마커와 검색결과 항목을 클릭 했을 때
           // 장소정보를 표출하도록 클릭 이벤트를 등록합니다
-          overlayClickEvent(marker, places[i]);
+          overlayClickEvent(marker, places[i], i);
         }
       } else if (keyword) {
         removeMarker();
         for (let i = 0; i < places.length; i++) {
           var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
             marker = addMarker(placePosition, i);
-          overlayClickEvent(marker, places[i]);
+          overlayClickEvent(marker, place[i], i);
         }
       }
     }
@@ -248,54 +211,6 @@ const HotplaceMap = ({
       markers = [];
       setMarkersHooks(markers);
     }
-    // 클릭한 마커에 대한 장소 상세정보를 커스텀 오버레이로 표시하는 함수입니다
-    function displayPlaceInfo(place) {
-      var content =
-        '<div class="placeinfo">' +
-        '   <a class="title" href="' +
-        place.place_url +
-        '" target="_blank" title="' +
-        place.place_name +
-        '">' +
-        place.place_name +
-        "</a>";
-      if (place.road_address_name) {
-        content +=
-          '    <span title="' +
-          place.road_address_name +
-          '">' +
-          place.road_address_name +
-          "</span>" +
-          '  <span class="jibun" title="' +
-          place.address_name +
-          '">(지번 : ' +
-          place.address_name +
-          ")</span>";
-      } else {
-        content +=
-          '    <span title="' +
-          place.address_name +
-          '">' +
-          place.address_name +
-          "</span>";
-      }
-      content +=
-        '    <span class="tel">' +
-        place.phone +
-        "</span>" +
-        "</div>" +
-        '<div class="after"></div>';
-      const newBtn = document.createElement("button");
-      newBtn.className = "shoppingBtn";
-      newBtn.innerHTML = "담기";
-      newBtn.addEventListener("click", () => {
-        insertToCart(place);
-      });
-      contentNode.innerHTML = content;
-      contentNode.appendChild(newBtn);
-      placeOverlay.setPosition(new kakao.maps.LatLng(place.y, place.x));
-      placeOverlay.setMap(map);
-    }
 
     // 각 카테고리에 클릭 이벤트를 등록합니다
     function addCategoryClickEvent() {
@@ -309,9 +224,8 @@ const HotplaceMap = ({
 
     // 카테고리를 클릭했을 때 호출되는 함수입니다
     function onClickCategory() {
-      var id = this.id,
-        className = this.className;
-
+      let id = this.id;
+      let className = this.className;
       placeOverlay.setMap(null);
 
       if (className === "on") {
@@ -322,7 +236,8 @@ const HotplaceMap = ({
       }
     }
     return () => {
-      searchRef.current.removeEventListener("submit", addSubmitKeyword);
+      searchRef.current &&
+        searchRef.current.removeEventListener("submit", addSubmitKeyword);
     };
   }, []);
   return (
