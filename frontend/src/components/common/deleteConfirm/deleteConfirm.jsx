@@ -3,6 +3,10 @@ import Portal from "../../portal/portal";
 import styles from "./deleteConfirm.module.css";
 const DeleteConfirm = ({ onDeleteItem, onClose }) => {
   const portalRef = useRef();
+  const deleteItem = () => {
+    onDeleteItem();
+    onClose();
+  };
   const handleClose = (event) => {
     if (
       portalRef.current &&
@@ -34,7 +38,7 @@ const DeleteConfirm = ({ onDeleteItem, onClose }) => {
               <span onClick={onClose}>취소</span>
             </div>
             <div className={styles.confirmBtnBox}>
-              <span onClick={onDeleteItem}>확인</span>
+              <span onClick={deleteItem}>확인</span>
             </div>
           </div>
         </div>

@@ -1,8 +1,11 @@
 import { HeartOutlined, HeartTwoTone } from "@ant-design/icons";
 import { Rate } from "antd";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useHistory } from "react-router-dom";
 import styles from "./placeCard.module.css";
 const PlaceCard = ({ place, onHandleDelete, addShoppingCart, isLiked }) => {
+  const history = useHistory();
+  const likeIconRef = useRef();
   const onClickDelete = useCallback(() => {
     onHandleDelete(place.id);
   }, []);
@@ -18,12 +21,21 @@ const PlaceCard = ({ place, onHandleDelete, addShoppingCart, isLiked }) => {
     };
     addShoppingCart(data);
   }, []);
+  const onClickCard = useCallback((event) => {
+    if (
+      likeIconRef.current.contains(event.target) ||
+      event.target.nodeName === "A"
+    ) {
+      return;
+    }
+    history.push(`/${place.id}/place/detail`);
+  }, []);
   useEffect(() => {
     // isLiked && setLiked(true);
   });
   const placeAddress = place.road_address_name || place.address_name;
   return (
-    <div className={styles.PlaceCard}>
+    <div className={styles.PlaceCard} onClick={onClickCard}>
       <div className={styles.imageBox}>
         <img
           className={styles.placeImage}
@@ -42,12 +54,14 @@ const PlaceCard = ({ place, onHandleDelete, addShoppingCart, isLiked }) => {
           </span>
           {isLiked ? (
             <HeartTwoTone
+              ref={likeIconRef}
               className={styles.delete}
               twoToneColor="#eb2f96"
               onClick={onClickDelete}
             />
           ) : (
             <HeartOutlined
+              ref={likeIconRef}
               className={styles.delete}
               style={{ color: "grey" }}
               onClick={onHandleLike}
@@ -72,7 +86,13 @@ const PlaceCard = ({ place, onHandleDelete, addShoppingCart, isLiked }) => {
         </div> */}
         <div className={styles.bottom}>
           <span className={styles.placeAddress}>{placeAddress}</span>
-          <span className={styles.morePage}>상세 보기</span>
+          <a
+            href={place.place_url || place.url}
+            target="_blank"
+            className={styles.morePage}
+          >
+            카카오
+          </a>
         </div>
       </div>
     </div>
