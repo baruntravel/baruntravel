@@ -26,7 +26,7 @@ const HotplaceMap = ({
     if (mapHooks) {
       mapHooks.panTo(new kakao.maps.LatLng(place.y, place.x));
       // markersHooks[markerIndex].T.Xj =
-      markersHooks[markerIndex].setOpacity(0.5);
+      markerIndex && markersHooks[markerIndex].setOpacity(0.5);
     }
   }, [place]);
 
@@ -147,9 +147,9 @@ const HotplaceMap = ({
       } else if (keyword) {
         removeMarker();
         for (let i = 0; i < places.length; i++) {
-          var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
-            marker = addMarker(placePosition, i);
-          overlayClickEvent(marker, place[i], i);
+          let placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
+          let marker = addMarker(placePosition, i);
+          overlayClickEvent(marker, places[i], i);
         }
       }
     }
@@ -227,7 +227,6 @@ const HotplaceMap = ({
       let id = this.id;
       let className = this.className;
       placeOverlay.setMap(null);
-
       if (className === "on") {
         currCategory = "";
       } else {
