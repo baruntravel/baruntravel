@@ -10,7 +10,11 @@ const ShoppingItem = ({ item, setConfirmPortalTrue }) => {
   return (
     <div className={styles.shoppingItem}>
       <div className={styles.placeInfo}>
-        <PlaceCard place={item} onHandleDelete={onHandleDelete} />
+        <PlaceCard
+          place={item}
+          onHandleDelete={onHandleDelete}
+          isLiked={true}
+        />
       </div>
       <div className={styles.card__bottom}>
         <div className={styles.memoBox}>
