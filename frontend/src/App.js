@@ -12,6 +12,7 @@ import AllRoute from "./pages/selectContainer/selectRoute/allRoute/allRoute";
 import AllArea from "./pages/selectContainer/selectArea/allArea/allArea";
 import SideMyProfile from "./components/sideMyProfile/sideMyProfile";
 import { Drawer } from "antd";
+import ProfileEdit from "./components/profileEdit/profileEdit";
 
 function App() {
   return (
@@ -54,11 +55,21 @@ function App() {
             placement="right"
             closable={true}
             visible={true}
+            width={window.innerWidth > 768 ? "36vw" : "100vw"}
+            bodyStyle={{ padding: 0 }}
+          >
+            <ProfileEdit />
+          </Drawer>
+
+          {/* <Drawer
+            placement="right"
+            closable={true}
+            visible={true}
             width={window.innerWidth > 768 ? "36vw" : "80vw"}
             bodyStyle={{ padding: 0 }}
           >
             <SideMyProfile />
-          </Drawer>
+          </Drawer> */}
         </Route>
       </Router>
     </RecoilRoot>
