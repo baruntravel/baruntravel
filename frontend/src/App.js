@@ -6,11 +6,12 @@ import UsersRoutePage from "./pages/usersRoutePage/usersRoutePage";
 import HotplacePage from "./pages/hotplacePage/hotplacePage";
 import { RecoilRoot } from "recoil";
 import MyRoutePage from "./pages/myRoutePage/myRoutePage";
-import PlaceCard from "./components/placeCard/placeCard";
 import RouteDetailPage from "./pages/routeDetailPage/routeDetailPage";
 import PlaceDetailPage from "./pages/placeDetailPage/placeDetailPage";
 import AllRoute from "./pages/selectContainer/selectRoute/allRoute/allRoute";
 import AllArea from "./pages/selectContainer/selectArea/allArea/allArea";
+import SideMyProfile from "./components/sideMyProfile/sideMyProfile";
+import { Drawer } from "antd";
 
 function App() {
   return (
@@ -49,7 +50,15 @@ function App() {
 
         {/* 테스트 */}
         <Route exact path="/test">
-          <RouteDetailPage />
+          <Drawer
+            placement="right"
+            closable={true}
+            visible={true}
+            width={window.innerWidth > 768 ? "36vw" : "80vw"}
+            bodyStyle={{ padding: 0 }}
+          >
+            <SideMyProfile />
+          </Drawer>
         </Route>
       </Router>
     </RecoilRoot>
