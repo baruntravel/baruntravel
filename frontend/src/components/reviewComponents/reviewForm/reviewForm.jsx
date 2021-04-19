@@ -5,7 +5,6 @@ import React, { useCallback, useRef, useState } from "react";
 import { getYear, getMonth, getDate } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages } from "@fortawesome/free-solid-svg-icons";
-import { CloseOutlined } from "@ant-design/icons";
 import ReviewImageEdit from "./reviewImageEdit/reviewImageEdit";
 
 const ReviewForm = ({ item, onClose, onCloseReviewForm }) => {
@@ -16,7 +15,7 @@ const ReviewForm = ({ item, onClose, onCloseReviewForm }) => {
     const imageFormData = new FormData();
     Object.keys(files).forEach((key) => {
       imageFormData.append("images", files[key]);
-    });
+    }); // imageFormData.getAll("images") 를 하면 모두 담겨있는 것을 확인했다.
     const date = new Date();
     const [nowYear, nowMonth, nowDate] = [
       getYear(date),
@@ -60,49 +59,53 @@ const ReviewForm = ({ item, onClose, onCloseReviewForm }) => {
       <Card
         title={
           <div className={styles.title}>
-            <span>{item.placeName}</span>
-            <div className={styles.rate}>
+            <span>{"장소 이름"}</span>
+            <div className={styles.rateBox}>
               <Rate
                 defaultValue={4}
                 allowClear={false}
                 className={styles.rate}
-                style={{ animation: "none" }}
+                style={{
+                  animation: "none",
+                  fontSize: "0.9em",
+                  marginLeft: "12px",
+                }}
               />
             </div>
           </div>
         }
         className={styles.card}
-        extra={
-          <div className={styles.extra}>
-            <span className={styles.reviewBtn} onClick={onCloseReviewForm}>
-              리뷰 보기
-            </span>
-            <button className={styles.closeBtn} onClick={onClose}>
-              <CloseOutlined />
-            </button>
-          </div>
-        }
+        headStyle={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          height: "15vh",
+        }}
         bodyStyle={{
-          height: "100%",
+          height: "85vh",
         }}
       >
         <TextArea
           className={styles.textArea}
-          style={{ width: "100%", height: "70%" }}
+          style={{ width: "100%", height: "50%" }}
         />
         <div className={styles.imageBox}>
           <button className={styles.imageUpload} onClick={onClickImageUpload}>
             <FontAwesomeIcon icon={faImages} className={styles.uploadIcon} />
           </button>
-          {images &&
-            Object.keys(images).map((v, index) => (
-              <ReviewImageEdit
-                key={index}
-                item={images[v]}
-                name={v}
-                onDeleteImages={onDeleteImages}
-              />
-            ))}
+          <div className={styles.imageUploadedBox}>
+            {images &&
+              Object.keys(images).map((v, index) => (
+                <div className={styles.imageUploaded} key={index}>
+                  <ReviewImageEdit
+                    key={index}
+                    item={images[v]}
+                    name={v}
+                    onDeleteImages={onDeleteImages}
+                  />
+                </div>
+              ))}
+          </div>
         </div>
         <input
           type="file"

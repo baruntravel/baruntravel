@@ -5,6 +5,8 @@ import me.travelplan.service.file.FileServer;
 import me.travelplan.service.file.FileType;
 import me.travelplan.service.place.Place;
 import me.travelplan.service.place.PlaceCategory;
+import me.travelplan.service.user.User;
+import me.travelplan.web.common.FileDto;
 import me.travelplan.web.route.RouteDto;
 import me.travelplan.web.route.RouteRequest;
 import me.travelplan.web.route.RouteResponse;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 )
 public interface RouteMapper {
     RouteResponse.RouteId toRouteIdResponse(Route route);
+
     Route toEntity(RouteRequest.CreateEmpty request);
 
     default Place toPlace(RouteRequest.AddPlace request) {
@@ -45,9 +48,7 @@ public interface RouteMapper {
 
     default Route toEntity(RouteRequest.CreateOrUpdate request, Long id) {
         var routeBuilder = Route.builder()
-                .name(request.getName())
-                .x(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getX).average().getAsDouble())
-                .y(request.getPlaces().stream().mapToDouble(RouteDto.RoutePlace::getY).average().getAsDouble());
+                .name(request.getName());
 
         if (id != 0L) {
             routeBuilder.id(id);
@@ -86,8 +87,10 @@ public interface RouteMapper {
         var response = RouteResponse.GetOne.builder();
 
         response.name(route.getName());
-        response.x(route.getX());
-        response.y(route.getY());
+        response.maxX(route.getMaxX());
+        response.maxY(route.getMaxY());
+        response.minX(route.getMinX());
+        response.minY(route.getMinY());
 
         List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
 
@@ -118,6 +121,52 @@ public interface RouteMapper {
                         .name(route.getName())
                         .build()
                 ).collect(Collectors.toList()))
+                .build();
+    }
+
+    default List<RouteResponse.GetList> toGetListResponse(List<Route> routes, User loginUser) {
+        List<RouteResponse.GetList> getList = new ArrayList<>();
+        routes.forEach(route -> {
+            List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
+            route.getPlaces().forEach(routePlace -> routePlaces.add(RouteDto.RoutePlace.builder()
+                    .id(routePlace.getPlace().getId())
+                    .name(routePlace.getPlace().getName())
+                    .order(routePlace.getOrder())
+                    .image(routePlace.getPlace().getImage().getUrl())
+                    .x(routePlace.getPlace().getX())
+                    .y(routePlace.getPlace().getY())
+                    .category(routePlace.getPlace().getCategory().getId())
+                    .url(routePlace.getPlace().getUrl())
+                    .build()));
+            RouteResponse.GetList list = RouteResponse.GetList.builder()
+                    .id(route.getId())
+                    .name(route.getName())
+                    .likeCheck(route.isLike(loginUser))
+                    .likeCount(route.getRouteLikes().size())
+                    .places(routePlaces)
+                    .build();
+
+            getList.add(list);
+        });
+        return getList;
+    }
+
+    default RouteResponse.ReviewList entityToResponseReviewList(List<RouteReview> reviews) {
+        return RouteResponse.ReviewList.builder()
+                .reviews(reviews.stream().map(routeReview -> RouteDto.ReviewResponse.builder()
+                        .id(routeReview.getId())
+                        .content(routeReview.getContent())
+                        .score(routeReview.getScore())
+                        .createdBy(routeReview.getCreatedBy().getName())
+                        .files(routeReview.getRouteReviewFiles().stream()
+                                .map(routeReviewFile -> FileDto.builder()
+                                        .name(routeReviewFile.getFile().getName())
+                                        .url(routeReviewFile.getFile().getUrl())
+                                        .build())
+                                .collect(Collectors.toList()))
+                        .createdAt(routeReview.getCreatedAt())
+                        .updatedAt(routeReview.getUpdatedAt())
+                        .build()).collect(Collectors.toList()))
                 .build();
     }
 }

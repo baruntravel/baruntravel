@@ -3,8 +3,10 @@ package me.travelplan.service.place;
 import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
 import me.travelplan.service.file.File;
+import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Builder
@@ -24,8 +26,12 @@ public class Place extends BaseEntity {
     @JoinColumn(name = "category", referencedColumnName = "id")
     private PlaceCategory category;
 
+    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
+    private List<PlaceReview> reviews;
+
     private String name;
     private String url;
+
     private Double x;
     private Double y;
 }

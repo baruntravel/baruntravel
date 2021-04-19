@@ -1,13 +1,27 @@
 .wrapper {
-}
-
-.mainContainer {
-  width: 100%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  margin-top: 24px;
+  justify-content: center;
 }
 
-.mapContainer {
-  /* margin-right: 128px; */
-  margin-top: 10px;
+.routeCarousel {
+  position: fixed;
+  z-index: 10;
+
+  max-width: 768px;
+  max-height: 128px;
+  width: 80%;
+  height: 20%;
+  bottom: 6%;
+}
+
+.drawerButton {
+  /* /* width: 24px; */
+}
+
+.bottomDrawer {
+  position: fixed;
+  z-index: 10;
+  bottom: 1%;
 }

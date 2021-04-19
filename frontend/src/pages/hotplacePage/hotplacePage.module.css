@@ -3,44 +3,66 @@
   flex-direction: column;
   width: 100%;
   height: 100vh;
+  align-items: center;
 }
-.navbar {
-  height: 3%;
-  background-color: wheat;
-}
-.body {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-}
+
 .searchContainer {
   display: flex;
-  flex-direction: column;
-  width: 30%;
-  height: 100%;
+  position: absolute;
+  align-items: center;
+  top: 3%;
+  width: 90%;
+  height: 6vh;
+  z-index: 1002;
+  background-color: white;
 }
 .form {
+  width: 80%;
+}
+.inputBar {
+  padding-left: 5%;
   width: 100%;
-  height: 100%;
+  border: none;
+}
+.inputBar:focus {
+  outline: none;
+}
+.toggle {
+  display: flex;
+  justify-content: center;
+  font-size: 1.3em;
+  width: 20%;
+  color: #00acee;
+}
+.carouselContainer {
+  position: absolute;
+  bottom: 8%;
+  /* height: 17vh; */
+  width: 95%;
+  z-index: 1001;
+  background-color: white;
+  border-radius: 12px;
+  display: none;
+}
+.placeCardContainer {
+  height: 17vh;
+  width: 90%;
+  margin: auto;
 }
 .mapContainer {
-  width: 70%;
-  height: 100%;
-}
-.search {
   width: 100%;
+  height: 93%;
+}
+.categoryContainer {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 7vh;
 }
 
-.searchList {
-  height: 100%;
-  background-color: #ebecec;
-}
-
-.placeList {
-  background-color: white;
-  width: 80%;
-  height: 100%;
-  margin: auto;
-  overflow-y: auto;
+@media screen and (max-width: 768px) {
+  .placeCardContainer {
+    width: 100%;
+  }
 }

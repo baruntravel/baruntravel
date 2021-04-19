@@ -1,0 +1,29 @@
+.ShoppingCart {
+  background-color: #ebecec;
+}
+.list {
+  width: 100%;
+  height: 100%;
+}
+.ShoppingCart > ul {
+  padding: 0;
+}
+.itemContainer {
+  margin-bottom: 5%;
+}
+.bottom {
+  display: flex;
+  flex-direction: column;
+  color: grey;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 15%;
+}
+.addRouteBtn {
+  border-color: #00acee;
+  color: #00acee;
+  width: 70%;
+  height: 5vh;
+  margin-bottom: 10px;
+}

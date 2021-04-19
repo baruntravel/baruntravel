@@ -1,21 +1,25 @@
-import React, { useCallback, useEffect, useState } from "react";
-import CategoryBar from "./categoryBar/categoryBar";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./hotplaceMap.module.css";
 
 const { kakao } = window;
 const HotplaceMap = ({
-  placeListRef,
   handleCartPortalOpen,
-  clickedPlace,
-  searchPlace,
+  updateClickedPlace,
+  updateSearchPlaces,
+  place,
+  markerIndex,
+  searchRef,
+  inputRef,
 }) => {
+  const [mapHooks, setMapHooks] = useState(null);
+  const [markersHooks, setMarkersHooks] = useState();
   const insertToCart = useCallback(
     (place) => {
       console.log(place);
-      clickedPlace(place);
+      updateClickedPlace(place);
       handleCartPortalOpen();
     },
-    [clickedPlace, handleCartPortalOpen]
+    [updateClickedPlace, handleCartPortalOpen]
   );
   // 엘리먼트에 이벤트 핸들러를 등록하는 함수입니다
   const addEventHandle = useCallback((target, type, callback) => {
@@ -26,45 +30,55 @@ const HotplaceMap = ({
     }
   }, []);
   useEffect(() => {
+    if (mapHooks) {
+      mapHooks.panTo(new kakao.maps.LatLng(place.y, place.x));
+      // markersHooks[markerIndex].o.click();
+      console.log(markersHooks[markerIndex]);
+    }
+  }, [place]);
+
+  useEffect(() => {
     const placeOverlay = new kakao.maps.CustomOverlay({ zIndex: 1 });
     const contentNode = document.createElement("div");
     contentNode.className = "placeinfo_wrap";
     let markers = [];
-    let keyword = searchPlace;
+    let keyword;
     let currCategory = "";
     const mapContainer = document.getElementById("Map"), // 지도를 표시할 div
       mapOption = {
-        // center: centerLocation
-        //   ? new kakao.maps.LatLng(centerLocation[0], centerLocation[1])
-        //   : new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
         center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-        level: 5, // 지도의 확대 레벨
+        level: 4, // 지도의 확대 레벨
       };
     const map = new kakao.maps.Map(mapContainer, mapOption);
+    setMapHooks(map);
     const ps = new kakao.maps.services.Places(map);
 
-    kakao.maps.event.addListener(map, "idle", () => {
+    kakao.maps.event.addListener(map, "dragend", () => {
       searchPlaces();
     });
-    kakao.maps.event.addListener(map, "dragend", function () {
+    kakao.maps.event.addListener(map, "dragend", () => {
       searchPlacesWithKeyword();
     });
-
     // 커스텀 오버레이의 컨텐츠 노드에 mousedown, touchstart 이벤트가 발생했을때
     // 지도 객체에 이벤트가 전달되지 않도록 이벤트 핸들러로 kakao.maps.event.preventMap 메소드를 등록합니다
     addEventHandle(contentNode, "mousedown", kakao.maps.event.preventMap);
     addEventHandle(contentNode, "touchstart", kakao.maps.event.preventMap);
     // 커스텀 오버레이 컨텐츠를 설정합니다
     placeOverlay.setContent(contentNode);
+    searchRef.current.addEventListener("submit", addSubmitKeyword);
+
     // 카테고리 검색을 요청하는 함수입니다
     addCategoryClickEvent();
     searchPlacesWithKeyword();
-
+    function addSubmitKeyword() {
+      currCategory = "";
+      keyword = inputRef.current.value;
+      searchPlacesWithKeyword();
+    }
     function placesSearchKeywordCB(data, status, pagination) {
       if (status === kakao.maps.services.Status.OK) {
         displayPlaces(data);
-        // 페이지 번호를 표출합니다
-        // displayPagination(pagination);
+        updateSearchPlaces(data);
       } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
         alert("검색 결과가 존재하지 않습니다.");
         return;
@@ -135,6 +149,7 @@ const HotplaceMap = ({
       if (status === kakao.maps.services.Status.OK) {
         // 정상적으로 검색이 완료됐으면 지도에 마커를 표출합니다
         displayPlaces(data);
+        updateSearchPlaces(data);
       } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
         // 검색결과가 없는경우 해야할 처리가 있다면 이곳에 작성해 주세요
       } else if (status === kakao.maps.services.Status.ERROR) {
@@ -144,6 +159,7 @@ const HotplaceMap = ({
     function overlayClickEvent(marker, place) {
       kakao.maps.event.addListener(marker, "click", function () {
         displayPlaceInfo(place);
+        updateClickedPlace(place);
       });
     }
     // 지도에 마커를 표출하는 함수입니다
@@ -165,17 +181,11 @@ const HotplaceMap = ({
           // 장소정보를 표출하도록 클릭 이벤트를 등록합니다
           overlayClickEvent(marker, places[i]);
         }
-      } else if (searchPlace) {
+      } else if (keyword) {
         removeMarker();
-        placeListRef.current.innerHTML = "";
         for (let i = 0; i < places.length; i++) {
           var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
             marker = addMarker(placePosition, i);
-          let itemEl = getListItem(i, places[i]);
-          itemEl.onmouseover = () => {
-            displayPlaceInfo(places[i]);
-          };
-          placeListRef.current.appendChild(itemEl);
           overlayClickEvent(marker, places[i]);
         }
       }
@@ -203,6 +213,7 @@ const HotplaceMap = ({
           });
         marker.setMap(map); // 지도 위에 마커를 표출합니다
         markers.push(marker); // 배열에 생성된 마커를 추가합니다
+        setMarkersHooks(markers);
         return marker;
       } else {
         var imageSrc =
@@ -224,6 +235,7 @@ const HotplaceMap = ({
           });
         marker.setMap(map); // 지도 위에 마커를 표출합니다
         markers.push(marker); // 배열에 생성된 마커를 추가합니다
+        setMarkersHooks(markers);
         return marker;
       }
     }
@@ -234,8 +246,8 @@ const HotplaceMap = ({
         markers[i].setMap(null);
       }
       markers = [];
+      setMarkersHooks(markers);
     }
-
     // 클릭한 마커에 대한 장소 상세정보를 커스텀 오버레이로 표시하는 함수입니다
     function displayPlaceInfo(place) {
       var content =
@@ -309,12 +321,13 @@ const HotplaceMap = ({
         searchPlaces();
       }
     }
-  }, [searchPlace]);
-
+    return () => {
+      searchRef.current.removeEventListener("submit", addSubmitKeyword);
+    };
+  }, []);
   return (
     <div className={styles.HotplaceMap}>
       <div className={styles.mapContainer}>
-        <CategoryBar />
         <div id="Map" className={styles.map} />
       </div>
     </div>

@@ -88,3 +88,81 @@ include::{snippets}/route-getOne/path-parameters.adoc[]
 성공 응답 HTTP
 include::{snippets}/route-getOne/http-response.adoc[]
 include::{snippets}/route-getOne/response-fields.adoc[]
+
+=== 현재 지도에 포함되어 있는 경로 리스트 가져오기
+
+`GET /routes`
+
+요청 HTTP
+
+- Body
+include::{snippets}/routes-getList/http-request.adoc[]
+include::{snippets}/routes-getList/request-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/routes-getList/http-response.adoc[]
+include::{snippets}/routes-getList/response-fields.adoc[]
+
+=== 경로 리뷰 생성
+
+`POST /route/{id}/review`
+
+요청 HTTP
+
+include::{snippets}/route-review-create/path-parameters.adoc[]
+include::{snippets}/route-review-create/request-parts.adoc[]
+include::{snippets}/route-review-create/request-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-review-create/http-response.adoc[]
+
+=== 경로 리뷰 목록 조회
+
+`GET /route/{id}/reviews`
+
+요청 HTTP
+
+include::{snippets}/route-review-list/path-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-review-list/http-response.adoc[]
+include::{snippets}/route-review-list/response-fields.adoc[]
+
+=== 경로 리뷰 수정
+
+`POST /route/review/{id}`
+
+요청 HTTP
+
+include::{snippets}/route-review-update/path-parameters.adoc[]
+include::{snippets}/route-review-update/request-parts.adoc[]
+include::{snippets}/route-review-update/request-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-review-update/http-response.adoc[]
+
+=== 경로 리뷰 삭제
+
+`DELETE /route/review/{id}`
+
+요청 HTTP
+
+- Body
+include::{snippets}/route-review-delete/http-request.adoc[]
+include::{snippets}/route-review-delete/path-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-review-delete/http-response.adoc[]
+
+=== 경로 즐겨찾기(좋아요) 생성 or 수정
+
+`POST /route/{id}/like`
+
+요청 HTTP
+
+- Body
+include::{snippets}/route-like-create-update/http-request.adoc[]
+include::{snippets}/route-like-create-update/path-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-like-create-update/http-response.adoc[]

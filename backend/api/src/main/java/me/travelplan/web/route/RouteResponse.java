@@ -1,9 +1,6 @@
 package me.travelplan.web.route;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.List;
 
@@ -21,8 +18,10 @@ public class RouteResponse {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class GetOne {
         private String name;
-        private Double x;
-        private Double y;
+        private Double minX;
+        private Double maxX;
+        private Double minY;
+        private Double maxY;
         private List<RouteDto.RoutePlace> places;
     }
 
@@ -31,5 +30,24 @@ public class RouteResponse {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class GetsWithOnlyName {
         List<RouteDto.RouteWithOnlyName> routes;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class GetList {
+        private Long id;
+        private String name;
+        private Integer likeCount;
+        private boolean likeCheck;
+        private List<RouteDto.RoutePlace> places;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class ReviewList {
+        private List<RouteDto.ReviewResponse> reviews;
     }
 }
