@@ -134,6 +134,10 @@ public class RouteService {
         routeReviewRepository.deleteById(id);
     }
 
+    public List<RouteReview> getReviewList(Long id) {
+        return routeReviewRepository.findAllByRouteId(id);
+    }
+
     @Transactional
     public void createOrUpdateLike(Long id, User user) {
         Route route = routeRepository.findById(id).orElseThrow(() -> new RouteNotFoundException("찾을 수 없는 경로입니다."));
@@ -143,13 +147,10 @@ public class RouteService {
         }
         if (optionalRouteLike.isPresent()) {
             RouteLike routeLike = optionalRouteLike.get();
-            routeLike.updateLikeCheck(routeLike.isLikeCheck());
+            routeLikeRepository.delete(routeLike);
         }
     }
 
-    public List<RouteReview> getReviewList(Long id) {
-        return routeReviewRepository.findAllByRouteId(id);
-    }
 
     private List<SavedFile> s3FileUpload(RouteRequest.CreateOrUpdateReview request) {
         List<SavedFile> files = new ArrayList<>();

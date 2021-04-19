@@ -3,7 +3,6 @@ CREATE TABLE `routes_likes`
 (
     `id`         BIGINT   NOT NULL AUTO_INCREMENT,
     `route_id`   BIGINT   NOT NULL,
-    `like_check` BOOLEAN  NOT NULL,
     `created_at` DATETIME NOT NULL,
     `updated_at` DATETIME DEFAULT NULL,
     `deleted_at` DATETIME DEFAULT NULL,

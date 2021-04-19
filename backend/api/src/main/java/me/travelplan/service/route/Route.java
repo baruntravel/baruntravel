@@ -3,6 +3,7 @@ package me.travelplan.service.route;
 import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
 import me.travelplan.service.place.Place;
+import me.travelplan.service.user.User;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class Route extends BaseEntity {
     private final List<RouteReview> routeReviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "route", cascade = CascadeType.REMOVE)
-    private final List<RouteLike> likes = new ArrayList<>();
+    private final List<RouteLike> routeLikes = new ArrayList<>();
 
     private String name;
 
@@ -52,5 +53,9 @@ public class Route extends BaseEntity {
         this.minY = places.stream().mapToDouble(Place::getY).min().getAsDouble();
         this.maxX = places.stream().mapToDouble(Place::getX).max().getAsDouble();
         this.maxY = places.stream().mapToDouble(Place::getY).max().getAsDouble();
+    }
+
+    public boolean isLike(User user){
+        return this.routeLikes.stream().anyMatch(routeLike -> routeLike.getCreatedBy().getId().equals(user.getId()));
     }
 }

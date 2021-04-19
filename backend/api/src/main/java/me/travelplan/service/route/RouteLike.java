@@ -17,22 +17,18 @@ public class RouteLike extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean likeCheck;  //좋아요 체크 -> true 취소 -> false
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id")
     private Route route;
 
-    public void updateLikeCheck(boolean likeCheck){
-        this.likeCheck= !likeCheck;
+    private void setRoute(Route route) {
+        this.route = route;
+        route.getRouteLikes().add(this);
     }
 
     public static RouteLike create(Route route) {
-        return RouteLike.builder()
-                .route(route)
-                .likeCheck(true)
-                .build();
-
+        RouteLike routeLike = RouteLike.builder().build();
+        routeLike.setRoute(route);
+        return  routeLike;
     }
-
 }

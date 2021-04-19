@@ -126,9 +126,9 @@ public interface RouteMapper {
 
     default List<RouteResponse.GetList> toGetListResponse(List<Route> routes, User loginUser) {
         List<RouteResponse.GetList> getList = new ArrayList<>();
-        routes.stream().forEach(route -> {
+        routes.forEach(route -> {
             List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
-            route.getPlaces().stream().forEach(routePlace -> routePlaces.add(RouteDto.RoutePlace.builder()
+            route.getPlaces().forEach(routePlace -> routePlaces.add(RouteDto.RoutePlace.builder()
                     .id(routePlace.getPlace().getId())
                     .name(routePlace.getPlace().getName())
                     .order(routePlace.getOrder())
@@ -141,12 +141,10 @@ public interface RouteMapper {
             RouteResponse.GetList list = RouteResponse.GetList.builder()
                     .id(route.getId())
                     .name(route.getName())
-                    .likeCount(route.getLikes().size())
+                    .likeCheck(route.isLike(loginUser))
+                    .likeCount(route.getRouteLikes().size())
                     .places(routePlaces)
                     .build();
-
-            route.getLikes().forEach(routeLike ->
-                    list.setLikeCheck(routeLike.getCreatedBy().getId().equals(loginUser.getId()) && routeLike.isLikeCheck()));
 
             getList.add(list);
         });
