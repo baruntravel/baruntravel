@@ -166,6 +166,9 @@ const RouteDetailPage = (props) => {
         width="100vw"
         bodyStyle={{ padding: 0 }}
         closeIcon={false}
+        style={{
+          overflowY: "hidden",
+        }}
       >
         <MoreReviewList onCloseMoreReview={onCloseMoreReview} />
       </Drawer>
