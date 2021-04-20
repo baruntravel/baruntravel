@@ -18,6 +18,7 @@ const PlaceCard = ({ place, onHandleDelete, addShoppingCart, isLiked }) => {
       x: place.x,
       y: place.y,
       url: place.place_url,
+      memo: "",
     };
     addShoppingCart(data);
   };

@@ -1,0 +1,53 @@
+.MemoForm {
+  position: fixed;
+  z-index: 1005;
+  text-align: center;
+  background-color: #00000080;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.formBox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 60%;
+  width: 90%;
+  margin: auto;
+  background-color: white;
+  border-radius: 8px;
+}
+.titleBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 15%;
+  border: none;
+}
+.title {
+}
+.form {
+  height: 70%;
+}
+.textArea {
+  height: 100%;
+}
+.confirmBox {
+  display: flex;
+  height: 15%;
+}
+.close,
+.confirm {
+  display: flex;
+  flex-basis: 50%;
+  align-items: center;
+  justify-content: center;
+}
+.close {
+  border-right: 1px solid lightgrey;
+}
+.confirm {
+  color: #00acee;
+}

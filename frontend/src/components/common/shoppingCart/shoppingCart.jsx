@@ -66,6 +66,7 @@ const ShoppingCart = ({
                           item={item}
                           setConfirmPortalTrue={setConfirmPortalTrue}
                           deleteClickedItemId={deleteClickedItemId}
+                          updateShoppingCart={updateShoppingCart}
                         />
                       </div>
                     )}

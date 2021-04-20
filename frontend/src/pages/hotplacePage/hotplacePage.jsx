@@ -84,6 +84,11 @@ const HotplacePage = () => {
   const updateShoppingCart = useCallback((items) => {
     setShoppingItems(items);
   }, []);
+  const updateItemMemo = useCallback((item) => {
+    setShoppingItems((prev) => {
+      // const updated =
+    });
+  }, []);
   const settings = {
     dots: false,
     infinite: true,
