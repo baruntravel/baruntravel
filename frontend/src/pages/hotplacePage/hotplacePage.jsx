@@ -169,6 +169,7 @@ const HotplacePage = () => {
       </Drawer>
       {confirmPortal && (
         <DeleteConfirm
+          deleteItemId={deleteItemId}
           onDeleteItem={handleDeleteItem}
           onClose={setConfirmPortalFalse}
         />
