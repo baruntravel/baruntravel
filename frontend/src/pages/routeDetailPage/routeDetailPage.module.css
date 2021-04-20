@@ -1,8 +1,8 @@
 .sliderContainer {
   width: 100%;
+  margin-bottom: 12px;
 }
 .imageContainer {
-  width: 100%;
   height: 35vh;
 }
 .img {
@@ -25,14 +25,64 @@
   border-radius: 8px;
   font-weight: 600;
 }
+.body {
+  padding: 0 24px;
+}
 .titleBox {
   margin-bottom: 14px;
 }
 .authorBox {
   display: flex;
   align-items: center;
+  margin-bottom: 12px;
 }
 .nicknameBox {
   display: flex;
   flex-direction: column;
+  margin-left: 12px;
+}
+.nickname {
+  border-bottom: 2px solid wheat;
+}
+.dateReview {
+  font-size: 0.8em;
+  color: grey;
+}
+.titleBox {
+  border-bottom: 2px solid gray;
+}
+
+.contentBox {
+  margin-bottom: 24px;
+}
+.placesContainer {
+  padding-bottom: 12px;
+  border-bottom: 2px solid lightgray;
+  margin-bottom: 12px;
+}
+
+.buttonBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.button {
+  width: 90%;
+  border: none;
+  color: #25b8f8;
+  background-color: whitesmoke;
+  font-size: 1.1em;
+  font-weight: 500;
+  border-radius: 12px;
+  margin-bottom: 6px;
+}
+.wishCount {
+  font-size: 0.8em;
+  color: grey;
+}
+
+.reviewList {
+  margin-bottom: 24px;
 }
