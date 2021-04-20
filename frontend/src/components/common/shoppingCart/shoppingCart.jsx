@@ -4,14 +4,18 @@ import { useRecoilState } from "recoil";
 import { testPlaces } from "../../../recoil/routeAtom";
 import styles from "./shoppingCart.module.css";
 import ShoppingItem from "./shoppingItem/shoppingItem";
+import { postRoute } from "../../../api/routeAPI";
 
 const ShoppingCart = ({
   items,
   setConfirmPortalTrue,
   updateShoppingCart,
   deleteClickedItemId,
+  // routeName,
 }) => {
-  const onDragEnd = (result) => {
+  const routeName = "test경로"; // 경로 이름이 있을 경우 새로운 경로 이름 생성, (edit할 수도 있으니까?)
+
+  const onDragEnd = useCallback((result) => {
     const { destination, source, reason } = result;
     if (!destination || reason === "CANCEL") {
       return;
@@ -27,6 +31,10 @@ const ShoppingCart = ({
     updateItems.splice(source.index, 1);
     updateItems.splice(destination.index, 0, droppedItem);
     updateShoppingCart(updateItems);
+  }, []);
+  const onSaveRoute = () => {
+    console.log(items);
+    postRoute(items);
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -68,7 +76,9 @@ const ShoppingCart = ({
           )}
         </Droppable>
         <div className={styles.bottom}>
-          <button className={styles.addRouteBtn}>경로 저장하기</button>
+          <button className={styles.addRouteBtn} onClick={onSaveRoute}>
+            경로 저장하기
+          </button>
           <span>바른 여행 길잡이</span>
         </div>
       </div>
