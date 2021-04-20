@@ -4,21 +4,33 @@ import styles from "./placeDetailPage.module.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { EditTwoTone, StarFilled } from "@ant-design/icons";
-import ReviewCard from "../../components/reviewComponents/reviewList/reviewCard/reviewCard";
+import { StarFilled } from "@ant-design/icons";
 import { Drawer } from "antd";
 import ReviewForm from "../../components/reviewComponents/reviewForm/reviewForm";
+import ReviewList from "../../components/reviewComponents/reviewList/reviewList";
+import ImagesZoom from "../../components/reviewComponents/imagesZoom/imagesZoom";
 
 const { kakao } = window;
 const PlaceDetailPage = (props) => {
   const [reviewWrite, setReviewWrite] = useState(false);
+  const [showImagesZoom, setShowImagesZoom] = useState(false);
+  const [imageIndex, setImageIndex] = useState(0);
+  const onZoom = useCallback(() => {
+    setShowImagesZoom(true);
+  }, []);
+  const onCloseZoom = useCallback(() => {
+    setShowImagesZoom(false);
+  }, []);
   const onClickReviewWrite = useCallback(() => {
     setReviewWrite(true);
   }, []);
   const onCloseReviewWrite = useCallback(() => {
     setReviewWrite(false);
   }, []);
-  const testImages = [
+  const afterSliderChange = useCallback((index) => {
+    setImageIndex(index);
+  }, []);
+  const images = [
     "https://blog.hmgjournal.com/images_n/contents/171013_N1.png",
     "https://blog.hmgjournal.com/images_n/contents/171013_N1.png",
     "https://blog.hmgjournal.com/images_n/contents/171013_N1.png",
@@ -50,16 +62,16 @@ const PlaceDetailPage = (props) => {
   return (
     <div className={styles.PlaceDetailPage}>
       <DetailHeader />
-      <div className={styles.slideContainer}>
-        <Slider {...settings}>
-          {testImages.map((imgSrc) => (
+      <div className={styles.slideContainer} onClick={onZoom}>
+        <Slider {...settings} afterChange={(index) => afterSliderChange(index)}>
+          {images.map((imgSrc) => (
             <div className={styles.imageContainer}>
               <img className={styles.image} src={imgSrc} alt="placeImage" />
             </div>
           ))}
         </Slider>
         <div className={styles.imageCounter}>
-          <span> 1 / 21 </span>
+          <span> {imageIndex + 1} / 21 </span>
         </div>
       </div>
       <div className={styles.body}>
@@ -86,20 +98,7 @@ const PlaceDetailPage = (props) => {
           </div>
         </div>
         <div className={styles.reviewList}>
-          <div className={styles.reviewList__header}>
-            <div className={styles.reviewCountBox}>
-              <h2>리뷰</h2>
-              <h2 className={styles.reviewCount}>6</h2>
-            </div>
-            <h2 onClick={onClickReviewWrite}>
-              <EditTwoTone />
-            </h2>
-          </div>
-          <div className={styles.reviewList__body}>
-            <div className={styles.reviewContainer}>
-              <ReviewCard />
-            </div>
-          </div>
+          <ReviewList onClickReviewWrite={onClickReviewWrite} />
         </div>
       </div>
       <Drawer
@@ -111,6 +110,9 @@ const PlaceDetailPage = (props) => {
       >
         <ReviewForm />
       </Drawer>
+      {showImagesZoom && (
+        <ImagesZoom images={images} onClose={onCloseZoom} index={imageIndex} />
+      )}
     </div>
   );
 };

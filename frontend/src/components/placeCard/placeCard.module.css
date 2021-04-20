@@ -61,7 +61,8 @@
   font-size: 0.8em;
 }
 .placeAddress {
-  font-size: 0.8em;
+  width: 70%;
+  font-size: 0.7em;
   opacity: 0.9;
   text-overflow: ellipsis;
   white-space: nowrap;
