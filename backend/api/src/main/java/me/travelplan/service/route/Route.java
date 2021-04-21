@@ -3,14 +3,12 @@ package me.travelplan.service.route;
 import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
 import me.travelplan.service.place.Place;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
+import me.travelplan.service.user.User;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 
 @Getter
 @Builder
@@ -19,7 +17,8 @@ import java.util.stream.DoubleStream;
 @Entity
 @Table(name = "routes")
 public class Route extends BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
@@ -27,6 +26,9 @@ public class Route extends BaseEntity {
 
     @OneToMany(mappedBy = "route", cascade = CascadeType.REMOVE)
     private final List<RouteReview> routeReviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "route", cascade = CascadeType.REMOVE)
+    private final List<RouteLike> routeLikes = new ArrayList<>();
 
     private String name;
 
@@ -51,5 +53,9 @@ public class Route extends BaseEntity {
         this.minY = places.stream().mapToDouble(Place::getY).min().getAsDouble();
         this.maxX = places.stream().mapToDouble(Place::getX).max().getAsDouble();
         this.maxY = places.stream().mapToDouble(Place::getY).max().getAsDouble();
+    }
+
+    public boolean isLike(User user){
+        return this.routeLikes.stream().anyMatch(routeLike -> routeLike.getCreatedBy().getId().equals(user.getId()));
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,12 +24,10 @@ public class RoutesController {
 
     @GetMapping
     public Page<RouteResponse.GetList> getList(PageRequest pageRequest,
-                                               @RequestParam("maxX") Double maxX,
-                                               @RequestParam("maxY") Double maxY,
-                                               @RequestParam("minX") Double minX,
-                                               @RequestParam("minY") Double minY) {
-        List<Route> content = routeService.getList(maxX, minX, maxY, minY, pageRequest.of()).getContent();
-        List<RouteResponse.GetList> getList = routeMapper.toGetListResponse(content);
+                                               RouteRequest.GetList request,
+                                               @CurrentUser CustomUserDetails customUserDetails) {
+        List<Route> content = routeService.getList(request, pageRequest.of()).getContent();
+        List<RouteResponse.GetList> getList = routeMapper.toGetListResponse(content, customUserDetails.getUser());
 
         return new PageImpl<>(getList, pageRequest.of(), content.size());
     }
