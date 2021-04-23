@@ -64,8 +64,8 @@ const PlaceDetailPage = (props) => {
       <DetailHeader />
       <div className={styles.slideContainer} onClick={onZoom}>
         <Slider {...settings} afterChange={(index) => afterSliderChange(index)}>
-          {images.map((imgSrc) => (
-            <div className={styles.imageContainer}>
+          {images.map((imgSrc, index) => (
+            <div key={index} className={styles.imageContainer}>
               <img className={styles.image} src={imgSrc} alt="placeImage" />
             </div>
           ))}

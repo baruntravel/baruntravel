@@ -24,33 +24,30 @@ const HotplacePage = () => {
   const [cartVisible, setCartVisible] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [confirmPortal, setConfirmPortal] = useState(false);
-  const [cartPortal, setCartPortal] = useState(false);
   const [place, setPlace] = useState({});
   const [inputKeyword, handleInputKeyword] = useInput();
   const [searchPlace, setSearchPlace] = useState("");
   const [searchPlaces, setSearchPlaces] = useState([]);
   const [markerIndex, setMarkerIndex] = useState();
+  const [shoppingItems, setShoppingItems] = useState([]);
 
-  const setCartVisibleTrue = () => {
+  const setCartVisibleTrue = useCallback(() => {
     setCartVisible(true);
-  };
-  const setCartVisibleFalse = () => {
-    setCartVisible(false);
-  };
-  const setConfirmPortalTrue = () => {
-    setConfirmPortal(true);
-  };
-  const setConfirmPortalFalse = () => {
-    setConfirmPortal(false);
-  };
-  const handleDeleteItem = (id) => {
-    console.log("삭제");
-  };
-  const handleCartPortalClose = useCallback(() => {
-    setCartPortal(false);
   }, []);
-  const handleCartPortalOpen = useCallback(() => {
-    setCartPortal(true);
+  const setCartVisibleFalse = useCallback(() => {
+    setCartVisible(false);
+  }, []);
+  const setConfirmPortalTrue = useCallback(() => {
+    setConfirmPortal(true);
+  }, []);
+  const setConfirmPortalFalse = useCallback(() => {
+    setConfirmPortal(false);
+  }, []);
+  const handleDeleteItem = useCallback((id) => {
+    setShoppingItems((prev) => {
+      const updated = prev.filter((item) => item.id !== id);
+      return updated;
+    });
   }, []);
   const updateClickedPlace = useCallback((place) => {
     setPlace(place);
@@ -74,6 +71,23 @@ const HotplacePage = () => {
   );
   const clickedMarker = useCallback((index) => {
     sliderRef.current.slickGoTo(index);
+  }, []);
+  const deleteClickedItemId = useCallback((id) => {
+    setDeleteItemId(id);
+  }, []);
+  const addShoppingCart = useCallback((place) => {
+    setShoppingItems((prev) => {
+      const updated = [...prev, place];
+      return updated;
+    });
+  }, []);
+  const updateShoppingCart = useCallback((items) => {
+    setShoppingItems(items);
+  }, []);
+  const updateItemMemo = useCallback((item) => {
+    setShoppingItems((prev) => {
+      // const updated =
+    });
   }, []);
   const settings = {
     dots: false,
@@ -105,7 +119,6 @@ const HotplacePage = () => {
         <HotplaceMap
           searchRef={searchRef}
           inputRef={inputRef}
-          handleCartPortalOpen={handleCartPortalOpen}
           updateClickedPlace={updateClickedPlace}
           updateSearchPlaces={updateSearchPlaces}
           place={place}
@@ -124,7 +137,14 @@ const HotplacePage = () => {
         >
           {searchPlaces.map((place, index) => (
             <div key={index} className={styles.placeCardContainer}>
-              <PlaceCard place={place} onHandleDelete={handleDeleteItem} />
+              <PlaceCard
+                place={place}
+                onHandleDelete={handleDeleteItem}
+                addShoppingCart={addShoppingCart}
+                isLiked={
+                  shoppingItems.filter((item) => item.id === place.id).length
+                }
+              />
             </div>
           ))}
         </Slider>
@@ -145,18 +165,18 @@ const HotplacePage = () => {
         }}
         zIndex={1004}
       >
-        <ShoppingCart setConfirmPortalTrue={setConfirmPortalTrue} />
+        <ShoppingCart
+          deleteClickedItemId={deleteClickedItemId}
+          setConfirmPortalTrue={setConfirmPortalTrue}
+          updateShoppingCart={updateShoppingCart}
+          items={shoppingItems}
+        />
       </Drawer>
       {confirmPortal && (
         <DeleteConfirm
+          deleteItemId={deleteItemId}
           onDeleteItem={handleDeleteItem}
           onClose={setConfirmPortalFalse}
-        />
-      )}
-      {cartPortal && (
-        <PortalCart
-          place={place}
-          handleCartPortalClose={handleCartPortalClose}
         />
       )}
     </div>

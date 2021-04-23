@@ -5,6 +5,7 @@
   width: 100%;
   height: 100%;
   padding: 8px;
+  z-index: 2;
 }
 .imageBox {
   width: 40%;
@@ -43,7 +44,8 @@
   text-align: start;
 }
 .delete {
-  font-size: 1.2em;
+  font-size: 1.3em;
+  z-index: 3;
 }
 .categoryName {
   font-size: 0.7em;
@@ -76,8 +78,9 @@
   width: 100%;
 }
 .morePage {
-  font-size: 0.6em;
+  font-size: 0.7em;
   color: #25b8f8;
+  z-index: 3;
 }
 .morePage:hover {
   cursor: pointer;
