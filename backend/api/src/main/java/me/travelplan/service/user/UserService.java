@@ -3,7 +3,7 @@ package me.travelplan.service.user;
 import lombok.RequiredArgsConstructor;
 import me.travelplan.service.cart.Cart;
 import me.travelplan.service.cart.CartRepository;
-import me.travelplan.service.exception.ResponsibleClientException;
+import me.travelplan.service.user.exception.EmailExistedException;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -14,7 +14,7 @@ public class UserService {
 
     public User create(User user) {
         if (userRepository.findUserByEmail(user.getEmail()).isPresent()) {
-            throw new ResponsibleClientException("중복된 이메일입니다");
+            throw new EmailExistedException();
         }
         User savedUser = userRepository.save(user);
         cartRepository.save(Cart.createEmpty(user));
