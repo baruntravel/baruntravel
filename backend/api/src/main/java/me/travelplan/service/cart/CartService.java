@@ -9,7 +9,6 @@ import me.travelplan.web.cart.CartRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,16 +19,13 @@ public class CartService {
 
     @Transactional
     public void addPlace(CartRequest.AddPlace request, User user) {
-        Optional<Cart> optionalCart = cartRepository.findByCreatedBy(user);
+        Cart cart = cartRepository.findByCreatedBy(user);
         Place place = placeRepository.findById(request.getPlaceId()).orElseThrow(PlaceNotFoundException::new);
-        if(optionalCart.isEmpty()){
-            CartPlace cartPlace=CartPlace.create(place);
-            Cart cart= Cart.create(cartPlace);
-            cartRepository.save(cart);
-        }
-        if(optionalCart.isPresent()){
-            CartPlace cartPlace=CartPlace.createWithCart(place,optionalCart.get());
-            cartPlaceRepository.save(cartPlace);
-        }
+        CartPlace cartPlace = CartPlace.createWithCart(place, cart);
+        cartPlaceRepository.save(cartPlace);
+    }
+
+    public Cart getMyCart(User user) {
+        return cartRepository.findByCreatedBy(user);
     }
 }

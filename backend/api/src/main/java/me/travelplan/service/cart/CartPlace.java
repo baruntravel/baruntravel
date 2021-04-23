@@ -24,23 +24,17 @@ public class CartPlace {
     @JoinColumn(name = "place_id")
     private Place place;
 
-    public void addCart(Cart cart) {
+
+    public void setCart(Cart cart) {
         this.cart = cart;
-        cart.getCartPlaces().add(this);
     }
 
     public static CartPlace createWithCart(Place place, Cart cart) {
         CartPlace cartPlace = CartPlace.builder()
                 .place(place)
                 .build();
-        cartPlace.addCart(cart);
+        cart.addPlace(cartPlace);
 
         return cartPlace;
-    }
-
-    public static CartPlace create(Place place) {
-        return CartPlace.builder()
-                .place(place)
-                .build();
     }
 }

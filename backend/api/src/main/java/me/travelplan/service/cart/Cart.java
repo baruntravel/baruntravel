@@ -2,6 +2,7 @@ package me.travelplan.service.cart;
 
 import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
+import me.travelplan.service.user.User;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,13 +23,15 @@ public class Cart extends BaseEntity {
     @Builder.Default
     private List<CartPlace> cartPlaces = new ArrayList<>();
 
-    private void addCartPlace(CartPlace cartPlace) {
-        cartPlace.addCart(this);
+    public void addPlace(CartPlace cartPlace){
+        this.cartPlaces.add(cartPlace);
+        cartPlace.setCart(this);
     }
 
-    public static Cart create(CartPlace cartPlace) {
+    public static Cart createEmpty(User user) {
         Cart cart = Cart.builder().build();
-        cart.addCartPlace(cartPlace);
+        cart.setCreatedBy(user);
+        cart.setUpdatedBy(user);
         return cart;
     }
 }

@@ -360,7 +360,6 @@ public class RouteControllerTest extends MvcTest {
                         fieldWithPath("reviews[].files[].url").description("경로 리뷰에 첨부되어 있는 파일 url"),
                         fieldWithPath("reviews[].createdAt").description("경로 리뷰 생성날짜"),
                         fieldWithPath("reviews[].updatedAt").description("경로 리뷰 수정날짜")
-
                 )
         ));
     }

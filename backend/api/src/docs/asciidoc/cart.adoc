@@ -16,9 +16,21 @@
 `POST /cart`
 
 요청 HTTP
-\
+
 include::{snippets}/cart-addPlace/http-request.adoc[]
 include::{snippets}/cart-addPlace/request-fields.adoc[]
 
 성공 응답 HTTP
-include::{snippets}/route-createEmpty/http-response.adoc[]
+include::{snippets}/cart-addPlace/http-response.adoc[]
+
+=== 자신의 카트 조회
+
+`GET /cart/my`
+
+요청 HTTP
+
+include::{snippets}/cart-getMy/http-request.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/cart-getMy/http-response.adoc[]
+include::{snippets}/cart-getMy/response-fields.adoc[]
