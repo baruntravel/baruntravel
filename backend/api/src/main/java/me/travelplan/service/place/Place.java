@@ -3,7 +3,6 @@ package me.travelplan.service.place;
 import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
 import me.travelplan.service.file.File;
-import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,11 +17,11 @@ public class Place extends BaseEntity {
     @Id
     private Long id;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "image", referencedColumnName = "id")
     private File image;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "category", referencedColumnName = "id")
     private PlaceCategory category;
 

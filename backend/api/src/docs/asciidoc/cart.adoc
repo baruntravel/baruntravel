@@ -1,0 +1,24 @@
+= 바른여행길잡이 API 문서 (Cart)
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:snippets: ../../../build/generated-snippets
+
+= Cart
+---
+== 기본 API
+
+=== 카트에 장소 담기
+
+`POST /cart`
+
+요청 HTTP
+\
+include::{snippets}/cart-addPlace/http-request.adoc[]
+include::{snippets}/cart-addPlace/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-createEmpty/http-response.adoc[]
