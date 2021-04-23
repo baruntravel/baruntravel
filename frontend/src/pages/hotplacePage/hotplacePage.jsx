@@ -1,7 +1,6 @@
 import React, { useCallback, useRef, useState } from "react";
 import styles from "./hotplacePage.module.css";
 import HotplaceMap from "../../components/map/hotplaceMap/hotplaceMap";
-import PortalCart from "../../containers/portalCart/portalCart";
 import useInput from "../../hooks/useInput";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { Drawer } from "antd";
@@ -14,6 +13,9 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../recoil/userState";
+import PortalAuth from "../../containers/portalAuth/portalAuth";
 
 const HotplacePage = () => {
   const placeListRef = useRef();
@@ -21,6 +23,7 @@ const HotplacePage = () => {
   const inputRef = useRef();
   const sliderRef = useRef();
 
+  const userStates = useRecoilValue(userState);
   const [cartVisible, setCartVisible] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [confirmPortal, setConfirmPortal] = useState(false);
@@ -89,6 +92,7 @@ const HotplacePage = () => {
       // const updated =
     });
   }, []);
+
   const settings = {
     dots: false,
     infinite: true,
@@ -179,6 +183,7 @@ const HotplacePage = () => {
           onClose={setConfirmPortalFalse}
         />
       )}
+      {userStates.isLogin || <PortalAuth />}
     </div>
   );
 };

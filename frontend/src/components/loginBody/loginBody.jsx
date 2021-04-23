@@ -14,7 +14,6 @@ const LoginBody = ({ onClickRegister }) => {
   const [userStates, setUserStates] = useRecoilState(userState);
   const history = useHistory();
 
-  console.log(userStates);
   const updateUserLogin = (isLogin, email, name) => {
     setUserStates((prev) => {
       const updated = { ...prev };

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Portal from "../../components/portal/portal";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
 
 const MainPage = (props) => {
@@ -15,13 +14,11 @@ const MainPage = (props) => {
     <div>
       <button onClick={handlePortal}>로그인 버튼</button>
       {portalClicked && (
-        <Portal>
-          <PortalAuth
-            loginClicked={loginClicked}
-            onClose={handlePortal}
-            onClickChange={handleLoginClicked}
-          />
-        </Portal>
+        <PortalAuth
+          loginClicked={loginClicked}
+          onClose={handlePortal}
+          onClickChange={handleLoginClicked}
+        />
       )}
     </div>
   );
