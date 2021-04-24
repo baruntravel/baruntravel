@@ -2,7 +2,7 @@ package me.travelplan.web;
 
 import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
-import me.travelplan.service.cart.CartMapperImpl;
+import me.travelplan.service.cart.CartPlaceMapperImpl;
 import me.travelplan.service.cart.CartPlace;
 import me.travelplan.service.cart.CartPlaceService;
 import me.travelplan.service.file.File;
@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(CartController.class)
 @Import(
-        CartMapperImpl.class
+        CartPlaceMapperImpl.class
 )
 public class CartControllerTest extends MvcTest {
     @MockBean

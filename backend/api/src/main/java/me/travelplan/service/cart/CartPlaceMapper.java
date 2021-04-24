@@ -12,7 +12,7 @@ import java.util.List;
         componentModel = "spring",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR
 )
-public interface CartMapper {
+public interface CartPlaceMapper {
     default CartPlaceResponse.GetList toGetListResponse(List<CartPlace> cartPlaces) {
         List<CartPlaceDto.Place> cartPlaceList = new ArrayList<>();
         cartPlaces.forEach(cartPlace -> {
