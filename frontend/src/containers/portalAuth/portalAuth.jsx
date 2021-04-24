@@ -34,7 +34,7 @@ const PortalAuth = ({ onClose, handleLoading }) => {
             <span className={styles.title}>바른 여행 길잡이</span>
           </div>
           {loginClicked ? (
-            <LoginBody onClickRegister={onClickChange} />
+            <LoginBody onClickRegister={onClickChange} onClose={onClose} />
           ) : (
             <RegisterBody onClickLogin={onClickChange} />
           )}

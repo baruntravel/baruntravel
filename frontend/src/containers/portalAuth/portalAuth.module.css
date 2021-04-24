@@ -14,7 +14,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  height: 60%;
+  padding: 24px;
   width: 80%;
   margin: auto;
   background-color: white;
@@ -32,4 +32,5 @@
   font-size: 1.2em;
   font-weight: 600;
   color: indianred;
+  padding: 12px;
 }

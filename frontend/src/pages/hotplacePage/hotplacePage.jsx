@@ -33,10 +33,15 @@ const HotplacePage = () => {
   const [searchPlaces, setSearchPlaces] = useState([]);
   const [markerIndex, setMarkerIndex] = useState();
   const [shoppingItems, setShoppingItems] = useState([]);
+  const [checkLogin, setCheckLogin] = useState(false);
 
   const setCartVisibleTrue = useCallback(() => {
-    setCartVisible(true);
-  }, []);
+    if (userStates.isLogin) {
+      setCartVisible(true);
+    } else {
+      setCheckLogin(true);
+    }
+  }, [userStates]);
   const setCartVisibleFalse = useCallback(() => {
     setCartVisible(false);
   }, []);
@@ -78,12 +83,19 @@ const HotplacePage = () => {
   const deleteClickedItemId = useCallback((id) => {
     setDeleteItemId(id);
   }, []);
-  const addShoppingCart = useCallback((place) => {
-    setShoppingItems((prev) => {
-      const updated = [...prev, place];
-      return updated;
-    });
-  }, []);
+  const addShoppingCart = useCallback(
+    (place) => {
+      if (userStates.isLogin) {
+        setShoppingItems((prev) => {
+          const updated = [...prev, place];
+          return updated;
+        });
+      } else {
+        setCheckLogin(true);
+      }
+    },
+    [userStates]
+  );
   const updateShoppingCart = useCallback((items) => {
     setShoppingItems(items);
   }, []);
@@ -92,7 +104,9 @@ const HotplacePage = () => {
       // const updated =
     });
   }, []);
-
+  const portalAuthClose = useCallback(() => {
+    setCheckLogin(false);
+  }, []);
   const settings = {
     dots: false,
     infinite: true,
@@ -100,6 +114,7 @@ const HotplacePage = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+
   return (
     <div className={styles.HotplacePage}>
       <div className={styles.searchContainer}>
@@ -156,26 +171,28 @@ const HotplacePage = () => {
       <div className={styles.categoryContainer}>
         <CategoryBar />
       </div>
-      <Drawer
-        title={`${"장소"}의 담은 목록`}
-        placement="right"
-        closable={true}
-        onClose={setCartVisibleFalse}
-        visible={cartVisible}
-        width={window.innerWidth > 768 ? "36vw" : "80vw"}
-        bodyStyle={{
-          backgroundColor: "#ebecec",
-          padding: 0,
-        }}
-        zIndex={1004}
-      >
-        <ShoppingCart
-          deleteClickedItemId={deleteClickedItemId}
-          setConfirmPortalTrue={setConfirmPortalTrue}
-          updateShoppingCart={updateShoppingCart}
-          items={shoppingItems}
-        />
-      </Drawer>
+      {!checkLogin && (
+        <Drawer
+          title={`${"장소"}의 담은 목록`}
+          placement="right"
+          closable={true}
+          onClose={setCartVisibleFalse}
+          visible={cartVisible}
+          width={window.innerWidth > 768 ? "36vw" : "80vw"}
+          bodyStyle={{
+            backgroundColor: "#ebecec",
+            padding: 0,
+          }}
+          zIndex={1004}
+        >
+          <ShoppingCart
+            deleteClickedItemId={deleteClickedItemId}
+            setConfirmPortalTrue={setConfirmPortalTrue}
+            updateShoppingCart={updateShoppingCart}
+            items={shoppingItems}
+          />
+        </Drawer>
+      )}
       {confirmPortal && (
         <DeleteConfirm
           deleteItemId={deleteItemId}
@@ -183,7 +200,7 @@ const HotplacePage = () => {
           onClose={setConfirmPortalFalse}
         />
       )}
-      {userStates.isLogin || <PortalAuth />}
+      {checkLogin && <PortalAuth onClose={portalAuthClose} />}
     </div>
   );
 };
