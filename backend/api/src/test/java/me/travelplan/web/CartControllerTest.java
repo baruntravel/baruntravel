@@ -2,16 +2,14 @@ package me.travelplan.web;
 
 import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
-import me.travelplan.service.cart.Cart;
 import me.travelplan.service.cart.CartMapperImpl;
 import me.travelplan.service.cart.CartPlace;
-import me.travelplan.service.cart.CartService;
+import me.travelplan.service.cart.CartPlaceService;
 import me.travelplan.service.file.File;
 import me.travelplan.service.place.Place;
 import me.travelplan.service.place.PlaceCategory;
-import me.travelplan.service.place.PlaceMapperImpl;
 import me.travelplan.web.cart.CartController;
-import me.travelplan.web.cart.CartRequest;
+import me.travelplan.web.cart.CartPlaceRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,6 +18,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static me.travelplan.ApiDocumentUtils.getDocumentRequest;
 import static me.travelplan.ApiDocumentUtils.getDocumentResponse;
@@ -38,18 +39,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 )
 public class CartControllerTest extends MvcTest {
     @MockBean
-    private CartService cartService;
+    private CartPlaceService cartPlaceService;
 
     @Test
     @WithMockCustomUser
     @DisplayName("카트가 없다면 카트를 생성하고 장소를 담고 있다면 있는 카트에 장소담기")
     public void createCartAndAddPlace() throws Exception {
-        CartRequest.AddPlace request = CartRequest.AddPlace.builder()
+        CartPlaceRequest.AddPlace request = CartPlaceRequest.AddPlace.builder()
                 .placeId(1L)
                 .build();
 
         ResultActions results = mockMvc.perform(
-                post("/cart")
+                post("/cart/place")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8")
@@ -69,8 +70,8 @@ public class CartControllerTest extends MvcTest {
     @WithMockCustomUser
     @DisplayName("나의 카트 조회하기")
     public void getMyCart() throws Exception {
-        Cart cart= Cart.builder().build();
-        cart.addPlace(CartPlace.builder()
+        List<CartPlace> cartPlaceList = new ArrayList<>();
+        CartPlace cartPlace1 = CartPlace.builder()
                 .place(Place.builder()
                         .id(1L)
                         .name("테스트 장소 이름")
@@ -80,8 +81,9 @@ public class CartControllerTest extends MvcTest {
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
-                .build());
-        cart.addPlace(CartPlace.builder()
+                .build();
+        cartPlaceList.add(cartPlace1);
+        CartPlace cartPlace2 = CartPlace.builder()
                 .place(Place.builder()
                         .id(2L)
                         .name("강릉 해돋이 마을")
@@ -91,8 +93,9 @@ public class CartControllerTest extends MvcTest {
                         .url("https://www.naver.com")
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
-                .build());
-        cart.addPlace(CartPlace.builder()
+                .build();
+        cartPlaceList.add(cartPlace2);
+        CartPlace cartPlace3 = CartPlace.builder()
                 .place(Place.builder()
                         .id(3L)
                         .name("테스트장소2")
@@ -102,9 +105,10 @@ public class CartControllerTest extends MvcTest {
                         .url("https://www.naver.com")
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
-                .build());
+                .build();
+        cartPlaceList.add(cartPlace3);
 
-        given(cartService.getMyCart(any())).willReturn(cart);
+        given(cartPlaceService.getMyCart(any())).willReturn(cartPlaceList);
 
         ResultActions results = mockMvc.perform(
                 get("/cart/my")

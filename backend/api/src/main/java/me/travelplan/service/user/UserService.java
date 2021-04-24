@@ -1,8 +1,6 @@
 package me.travelplan.service.user;
 
 import lombok.RequiredArgsConstructor;
-import me.travelplan.service.cart.Cart;
-import me.travelplan.service.cart.CartRepository;
 import me.travelplan.service.user.exception.EmailExistedException;
 import org.springframework.stereotype.Service;
 
@@ -10,15 +8,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final CartRepository cartRepository;
 
     public User create(User user) {
         if (userRepository.findUserByEmail(user.getEmail()).isPresent()) {
             throw new EmailExistedException();
         }
-        User savedUser = userRepository.save(user);
-        cartRepository.save(Cart.createEmpty(user));
-
-        return savedUser;
+        return userRepository.save(user);
     }
 }

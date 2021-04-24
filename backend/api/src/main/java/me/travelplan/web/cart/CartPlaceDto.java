@@ -2,12 +2,12 @@ package me.travelplan.web.cart;
 
 import lombok.*;
 
-public class CartDto {
+public class CartPlaceDto {
     @Getter
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class CartPlace {
+    public static class Place {
         private Long id;
         private String name;
         private String category;

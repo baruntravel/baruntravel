@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-public class CartRequest {
+public class CartPlaceRequest {
     @Getter
     @Builder
     @NoArgsConstructor

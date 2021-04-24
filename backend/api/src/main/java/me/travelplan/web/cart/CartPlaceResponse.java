@@ -4,13 +4,13 @@ import lombok.*;
 
 import java.util.List;
 
-public class CartResponse {
+public class CartPlaceResponse {
 
     @Getter
     @Setter
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class GetList {
-        private List<CartDto.CartPlace> places;
+        private List<CartPlaceDto.Place> places;
     }
 }
