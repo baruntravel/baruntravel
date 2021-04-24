@@ -15,8 +15,8 @@ import me.travelplan.web.route.RouteRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,12 +63,12 @@ public class RouteService {
     }
 
     public Route getOne(Long id) {
-        return routeRepository.findById(id).orElseThrow(() -> new RouteNotFoundException("찾을 수 없는 경로입니다."));
+        return routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
     }
 
     @Transactional
     public Route addPlace(Long id, Place place) {
-        Route route = routeRepository.findById(id).orElseThrow(() -> new RouteNotFoundException("찾을 수 없는 경로입니다."));
+        Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
         fileRepository.save(place.getImage());
         route.addPlace(RoutePlace.builder().order(0).route(route).place(place).build());
         route.calculateCoordinate(route.getPlaces());
@@ -81,7 +81,7 @@ public class RouteService {
 
     @Transactional
     public void createReview(RouteRequest.CreateOrUpdateReview request, Long id) {
-        Route route = routeRepository.findById(id).orElseThrow(() -> new RouteNotFoundException("찾을 수 없는 경로입니다."));
+        Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
         List<SavedFile> files = s3FileUpload(request);
         List<File> fileList = fileRepository.saveAll(files.stream().map(File::create).collect(Collectors.toList()));
         List<RouteReviewFile> routeReviewFiles = fileList.stream().map(RouteReviewFile::create).collect(Collectors.toList());
@@ -92,7 +92,7 @@ public class RouteService {
 
     @Transactional
     public RouteReview updateReview(Long id, RouteRequest.CreateOrUpdateReview request, User user) {
-        RouteReview routeReview = routeReviewRepository.findById(id).orElseThrow(() -> new RouteReviewNotFoundException("찾을 수 없는 경로 리뷰입니다."));
+        RouteReview routeReview = routeReviewRepository.findById(id).orElseThrow(RouteReviewNotFoundException::new);
         if (!routeReview.getCreatedBy().getId().equals(user.getId())) {
             throw new PermissionDeniedException("수정할 권한이 없습니다.");
         }
@@ -120,7 +120,7 @@ public class RouteService {
 
     @Transactional
     public void deleteReview(Long id, User user) {
-        RouteReview routeReview = routeReviewRepository.findById(id).orElseThrow(() -> new RouteReviewNotFoundException("찾을 수 없는 경로 리뷰입니다."));
+        RouteReview routeReview = routeReviewRepository.findById(id).orElseThrow(RouteReviewNotFoundException::new);
         if (!routeReview.getCreatedBy().getId().equals(user.getId())) {
             throw new PermissionDeniedException("삭제할 권한이 없습니다.");
         }
@@ -140,7 +140,7 @@ public class RouteService {
 
     @Transactional
     public void createOrUpdateLike(Long id, User user) {
-        Route route = routeRepository.findById(id).orElseThrow(() -> new RouteNotFoundException("찾을 수 없는 경로입니다."));
+        Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
         Optional<RouteLike> optionalRouteLike = routeLikeRepository.findByRouteIdAndCreatedBy(id, user);
         if (optionalRouteLike.isEmpty()) {
             routeLikeRepository.save(RouteLike.create(route));
