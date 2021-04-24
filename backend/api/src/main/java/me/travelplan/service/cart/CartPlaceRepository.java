@@ -2,6 +2,7 @@ package me.travelplan.service.cart;
 
 import me.travelplan.service.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -15,4 +16,8 @@ public interface CartPlaceRepository extends JpaRepository<CartPlace, Long> {
     List<CartPlace> findAllByCreatedBy(@Param("user") User user);
 
     void deleteByPlaceIdAndCreatedBy(Long placeId, User user);
+
+    @Modifying
+    @Query("delete from CartPlace c where c.createdBy=:user")
+    void deleteAllByCreatedBy(@Param("user") User user);
 }

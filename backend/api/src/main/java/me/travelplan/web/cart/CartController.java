@@ -28,4 +28,9 @@ public class CartController {
     public void deleteOnePlace(@PathVariable Long placeId, @CurrentUser CustomUserDetails customUserDetails) {
         cartPlaceService.deleteOnePlace(placeId, customUserDetails.getUser());
     }
+
+    @DeleteMapping("/place")
+    public void deleteAllPlace(@CurrentUser CustomUserDetails customUserDetails) {
+        cartPlaceService.deleteAllPlace(customUserDetails.getUser());
+    }
 }

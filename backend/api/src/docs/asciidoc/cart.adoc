@@ -50,3 +50,15 @@ include::{snippets}/cart-deleteOnePlace/path-parameters.adoc[]
 성공 응답 HTTP
 include::{snippets}/cart-deleteOnePlace/http-response.adoc[]
 
+=== 카트에 있는 장소 전체 삭제
+
+`DELETE /cart/place`
+
+요청 HTTP
+
+- Body
+include::{snippets}/cart-deleteAllPlace/http-request.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/cart-deleteAllPlace/http-response.adoc[]
+

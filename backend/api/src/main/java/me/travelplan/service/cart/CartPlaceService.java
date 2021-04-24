@@ -19,7 +19,6 @@ public class CartPlaceService {
     private final PlaceRepository placeRepository;
     private final CartPlaceRepository cartPlaceRepository;
 
-
     public void addPlace(CartPlaceRequest.AddPlace request, User user) {
         if (cartPlaceRepository.findByPlaceIdAndCreatedBy(request.getPlaceId(), user).isPresent()) {
             throw new PlaceExistedException();
@@ -36,5 +35,9 @@ public class CartPlaceService {
 
     public void deleteOnePlace(Long placeId, User user) {
         cartPlaceRepository.deleteByPlaceIdAndCreatedBy(placeId, user);
+    }
+
+    public void deleteAllPlace(User user) {
+        cartPlaceRepository.deleteAllByCreatedBy(user);
     }
 }

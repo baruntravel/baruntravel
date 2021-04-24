@@ -69,7 +69,7 @@ public class CartControllerTest extends MvcTest {
 
     @Test
     @WithMockCustomUser
-    @DisplayName("나의 카트 조회하기")
+    @DisplayName("나의 카트 조회")
     public void getMyCart() throws Exception {
         List<CartPlace> cartPlaceList = new ArrayList<>();
         CartPlace cartPlace1 = CartPlace.builder()
@@ -134,9 +134,9 @@ public class CartControllerTest extends MvcTest {
 
     @Test
     @WithMockCustomUser
-    @DisplayName("카트에 있는 장소 한개 삭제하기")
+    @DisplayName("카트에 있는 장소 한개 삭제")
     public void deleteOneCartPlace() throws Exception {
-        ResultActions results = mockMvc.perform(delete("/cart/place/{placeId}",123));
+        ResultActions results = mockMvc.perform(delete("/cart/place/{placeId}", 123));
 
         results.andExpect(status().isOk())
                 .andDo(document("cart-deleteOnePlace",
@@ -145,6 +145,19 @@ public class CartControllerTest extends MvcTest {
                         pathParameters(
                                 parameterWithName("placeId").description("장소 식별자")
                         )
+                ));
+    }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("카트에 있는 장소 전체 삭제")
+    public void deleteAllCartPlace() throws Exception {
+        ResultActions results = mockMvc.perform(delete("/cart/place"));
+
+        results.andExpect(status().isOk())
+                .andDo(document("cart-deleteAllPlace",
+                        getDocumentRequest(),
+                        getDocumentResponse()
                 ));
     }
 }
