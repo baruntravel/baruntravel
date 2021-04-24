@@ -9,12 +9,19 @@ import { Drawer } from "antd";
 import ReviewForm from "../../components/reviewComponents/reviewForm/reviewForm";
 import ReviewList from "../../components/reviewComponents/reviewList/reviewList";
 import ImagesZoom from "../../components/reviewComponents/imagesZoom/imagesZoom";
+import { userState } from "../../recoil/userState";
+import { useRecoilValue } from "recoil";
+import PortalAuth from "../../containers/portalAuth/portalAuth";
 
 const { kakao } = window;
 const PlaceDetailPage = (props) => {
+  const userStates = useRecoilValue(userState);
+  const [needLogin, setNeedLogin] = useState(false);
+
   const [reviewWrite, setReviewWrite] = useState(false);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
+  const [liked, setLiked] = useState(false);
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);
   }, []);
@@ -22,13 +29,35 @@ const PlaceDetailPage = (props) => {
     setShowImagesZoom(false);
   }, []);
   const onClickReviewWrite = useCallback(() => {
-    setReviewWrite(true);
-  }, []);
+    if (userStates.isLogin) {
+      setReviewWrite(true);
+    } else {
+      setNeedLogin(true);
+    }
+  }, [userStates]);
   const onCloseReviewWrite = useCallback(() => {
     setReviewWrite(false);
   }, []);
   const afterSliderChange = useCallback((index) => {
     setImageIndex(index);
+  }, []);
+  const portalAuthClose = useCallback(() => {
+    setNeedLogin(false);
+  }, []);
+  const portalAuthOpen = useCallback(() => {
+    setNeedLogin(true);
+  }, []);
+  const onClickLike = useCallback(() => {
+    if (userStates.isLogin) {
+      console.log("좋아요 API 호출");
+      setLiked(true);
+    } else {
+      setNeedLogin(true);
+    }
+  }, [userStates]);
+  const onClickUnlike = useCallback(() => {
+    console.log("좋아요 취소 API 호출");
+    setLiked(false);
   }, []);
   const images = [
     "https://blog.hmgjournal.com/images_n/contents/171013_N1.png",
@@ -61,11 +90,17 @@ const PlaceDetailPage = (props) => {
   }, []);
   return (
     <div className={styles.PlaceDetailPage}>
-      <DetailHeader />
+      <DetailHeader
+        liked={liked}
+        needLogin={needLogin}
+        portalAuthOpen={portalAuthOpen}
+        onClickLike={onClickLike}
+        onClickUnlike={onClickUnlike}
+      />
       <div className={styles.slideContainer} onClick={onZoom}>
         <Slider {...settings} afterChange={(index) => afterSliderChange(index)}>
-          {images.map((imgSrc) => (
-            <div className={styles.imageContainer}>
+          {images.map((imgSrc, index) => (
+            <div key={index} className={styles.imageContainer}>
               <img className={styles.image} src={imgSrc} alt="placeImage" />
             </div>
           ))}
@@ -113,6 +148,7 @@ const PlaceDetailPage = (props) => {
       {showImagesZoom && (
         <ImagesZoom images={images} onClose={onCloseZoom} index={imageIndex} />
       )}
+      {needLogin && <PortalAuth onClose={portalAuthClose} />}
     </div>
   );
 };

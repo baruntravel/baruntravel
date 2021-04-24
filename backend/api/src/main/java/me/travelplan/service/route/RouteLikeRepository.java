@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface RouteLikeRepository extends JpaRepository<RouteLike,Long> {
-    Optional<RouteLike> findByRouteIdAndCreatedBy(Long route_id, User user);
+    Optional<RouteLike> findByRouteIdAndCreatedBy(Long routeId, User user);
 }

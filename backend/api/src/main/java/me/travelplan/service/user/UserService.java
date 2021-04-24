@@ -1,21 +1,18 @@
 package me.travelplan.service.user;
 
 import lombok.RequiredArgsConstructor;
-import me.travelplan.service.exception.ResponsibleClientException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import me.travelplan.service.user.exception.EmailExistedException;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
 public class UserService {
-    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
     public User create(User user) {
         if (userRepository.findUserByEmail(user.getEmail()).isPresent()) {
-            throw new ResponsibleClientException("중복된 이메일입니다");
+            throw new EmailExistedException();
         }
-
         return userRepository.save(user);
     }
 }
