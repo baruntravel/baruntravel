@@ -13,4 +13,6 @@ public interface CartPlaceRepository extends JpaRepository<CartPlace, Long> {
 
     @Query("select c from CartPlace c join fetch c.place where c.createdBy=:user")
     List<CartPlace> findAllByCreatedBy(@Param("user") User user);
+
+    void deleteByPlaceIdAndCreatedBy(Long placeId, User user);
 }

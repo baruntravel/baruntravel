@@ -23,4 +23,9 @@ public class CartController {
     public CartPlaceResponse.GetList getMyCart(@CurrentUser CustomUserDetails customUserDetails) {
         return cartMapper.toGetListResponse(cartPlaceService.getMyCart(customUserDetails.getUser()));
     }
+
+    @DeleteMapping("/place/{placeId}")
+    public void deleteOnePlace(@PathVariable Long placeId, @CurrentUser CustomUserDetails customUserDetails) {
+        cartPlaceService.deleteOnePlace(placeId, customUserDetails.getUser());
+    }
 }

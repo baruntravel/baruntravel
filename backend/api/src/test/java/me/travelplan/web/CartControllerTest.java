@@ -27,9 +27,10 @@ import static me.travelplan.ApiDocumentUtils.getDocumentResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -127,7 +128,22 @@ public class CartControllerTest extends MvcTest {
                                 fieldWithPath("places[].category").description("장소 카테고리"),
                                 fieldWithPath("places[].url").description("장소 URL"),
                                 fieldWithPath("places[].image").description("장소 이미지 URL")
+                        )
+                ));
+    }
 
+    @Test
+    @WithMockCustomUser
+    @DisplayName("카트에 있는 장소 한개 삭제하기")
+    public void deleteOneCartPlace() throws Exception {
+        ResultActions results = mockMvc.perform(delete("/cart/place/{placeId}",123));
+
+        results.andExpect(status().isOk())
+                .andDo(document("cart-deleteOnePlace",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("placeId").description("장소 식별자")
                         )
                 ));
     }
