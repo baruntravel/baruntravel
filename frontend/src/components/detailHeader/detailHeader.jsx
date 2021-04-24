@@ -1,10 +1,22 @@
-import { HeartOutlined, HeartTwoTone, LeftOutlined } from "@ant-design/icons";
+import {
+  HeartOutlined,
+  HeartTwoTone,
+  LeftOutlined,
+  LikeOutlined,
+  LikeTwoTone,
+} from "@ant-design/icons";
 import React from "react";
 import styles from "./detailHeader.module.css";
 
-const DetailHeader = ({ category, onSaveHandler }) => {
+const DetailHeader = ({
+  liked,
+  category,
+  needLogin,
+  portalAuthOpen,
+  onClickLike,
+  onClickUnlike,
+}) => {
   // onShareDetail은 만약 공유하기 기능이 추가된다면 공유
-  const liked = true;
   return (
     <div className={styles.DetailHeader}>
       <div className={styles.navigation} role="뒤로 가기">
@@ -20,16 +32,16 @@ const DetailHeader = ({ category, onSaveHandler }) => {
       <div className={styles.serviceIcons}>
         <div className={styles.heart}>
           {liked ? (
-            <HeartTwoTone
-              className={styles.heartBtn}
+            <LikeTwoTone
+              className={styles.likeBtn}
               twoToneColor="#eb2f96"
-              // onClick={onClickDelete}
+              onClick={onClickUnlike}
             />
           ) : (
-            <HeartOutlined
-              className={styles.heartBtn}
+            <LikeOutlined
+              className={styles.likeBtn}
               style={{ color: "grey" }}
-              // onClick={onHandleLike}
+              onClick={onClickLike}
             />
           )}
         </div>

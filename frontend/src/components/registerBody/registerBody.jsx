@@ -20,6 +20,7 @@ const RegisterBody = ({ onClickLogin }) => {
     // 회원 가입 api호출
     formRef.current.reset();
     setLoading(false);
+    onClickLogin();
   };
   return (
     <form ref={formRef} className={styles.RegisterBody} onSubmit={handleSubmit}>
@@ -41,7 +42,7 @@ const RegisterBody = ({ onClickLogin }) => {
         ref={passwordRef}
         type="password"
         className={styles.inputBar}
-        placeholder="비밀번호 (6자리 이상 입력해주세요.)"
+        placeholder="비밀번호 (6자리 이상 입력하세요.)"
         required
       />
 

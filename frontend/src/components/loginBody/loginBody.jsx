@@ -6,7 +6,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "../../recoil/userState";
 import { useHistory } from "react-router-dom";
 
-const LoginBody = ({ onClickRegister }) => {
+const LoginBody = ({ onClickRegister, onClose }) => {
   const formRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -14,7 +14,6 @@ const LoginBody = ({ onClickRegister }) => {
   const [userStates, setUserStates] = useRecoilState(userState);
   const history = useHistory();
 
-  console.log(userStates);
   const updateUserLogin = (isLogin, email, name) => {
     setUserStates((prev) => {
       const updated = { ...prev };
@@ -30,13 +29,15 @@ const LoginBody = ({ onClickRegister }) => {
     setLoading(true);
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    const [isLogin, userEmail, userName] = await onLogin(email, password);
-    await updateUserLogin(isLogin, userEmail, userName);
+    // const [isLogin, userEmail, userName] = await onLogin(email, password);
+    // await updateUserLogin(isLogin, userEmail, userName);
+    updateUserLogin(true, "test", "test");
     setLoading(false);
+    const isLogin = true;
     formRef.current.reset();
     if (isLogin) {
       console.log("okay");
-      history.push("/start");
+      onClose();
     }
   }, []);
 

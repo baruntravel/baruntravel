@@ -1,7 +1,6 @@
 import React, { useCallback, useRef, useState } from "react";
 import styles from "./hotplacePage.module.css";
 import HotplaceMap from "../../components/map/hotplaceMap/hotplaceMap";
-import PortalCart from "../../containers/portalCart/portalCart";
 import useInput from "../../hooks/useInput";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { Drawer } from "antd";
@@ -14,6 +13,9 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../recoil/userState";
+import PortalAuth from "../../containers/portalAuth/portalAuth";
 
 const HotplacePage = () => {
   const placeListRef = useRef();
@@ -21,6 +23,7 @@ const HotplacePage = () => {
   const inputRef = useRef();
   const sliderRef = useRef();
 
+  const userStates = useRecoilValue(userState);
   const [cartVisible, setCartVisible] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [confirmPortal, setConfirmPortal] = useState(false);
@@ -30,10 +33,15 @@ const HotplacePage = () => {
   const [searchPlaces, setSearchPlaces] = useState([]);
   const [markerIndex, setMarkerIndex] = useState();
   const [shoppingItems, setShoppingItems] = useState([]);
+  const [needLogin, setNeedLogin] = useState(false);
 
   const setCartVisibleTrue = useCallback(() => {
-    setCartVisible(true);
-  }, []);
+    if (userStates.isLogin) {
+      setCartVisible(true);
+    } else {
+      setNeedLogin(true);
+    }
+  }, [userStates]);
   const setCartVisibleFalse = useCallback(() => {
     setCartVisible(false);
   }, []);
@@ -75,12 +83,19 @@ const HotplacePage = () => {
   const deleteClickedItemId = useCallback((id) => {
     setDeleteItemId(id);
   }, []);
-  const addShoppingCart = useCallback((place) => {
-    setShoppingItems((prev) => {
-      const updated = [...prev, place];
-      return updated;
-    });
-  }, []);
+  const addShoppingCart = useCallback(
+    (place) => {
+      if (userStates.isLogin) {
+        setShoppingItems((prev) => {
+          const updated = [...prev, place];
+          return updated;
+        });
+      } else {
+        setNeedLogin(true);
+      }
+    },
+    [userStates]
+  );
   const updateShoppingCart = useCallback((items) => {
     setShoppingItems(items);
   }, []);
@@ -89,6 +104,9 @@ const HotplacePage = () => {
       // const updated =
     });
   }, []);
+  const portalAuthClose = useCallback(() => {
+    setNeedLogin(false);
+  }, []);
   const settings = {
     dots: false,
     infinite: true,
@@ -96,6 +114,7 @@ const HotplacePage = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+
   return (
     <div className={styles.HotplacePage}>
       <div className={styles.searchContainer}>
@@ -152,26 +171,28 @@ const HotplacePage = () => {
       <div className={styles.categoryContainer}>
         <CategoryBar />
       </div>
-      <Drawer
-        title={`${"장소"}의 담은 목록`}
-        placement="right"
-        closable={true}
-        onClose={setCartVisibleFalse}
-        visible={cartVisible}
-        width={window.innerWidth > 768 ? "36vw" : "80vw"}
-        bodyStyle={{
-          backgroundColor: "#ebecec",
-          padding: 0,
-        }}
-        zIndex={1004}
-      >
-        <ShoppingCart
-          deleteClickedItemId={deleteClickedItemId}
-          setConfirmPortalTrue={setConfirmPortalTrue}
-          updateShoppingCart={updateShoppingCart}
-          items={shoppingItems}
-        />
-      </Drawer>
+      {!needLogin && (
+        <Drawer
+          title={`${"장소"}의 담은 목록`}
+          placement="right"
+          closable={true}
+          onClose={setCartVisibleFalse}
+          visible={cartVisible}
+          width={window.innerWidth > 768 ? "36vw" : "80vw"}
+          bodyStyle={{
+            backgroundColor: "#ebecec",
+            padding: 0,
+          }}
+          zIndex={1004}
+        >
+          <ShoppingCart
+            deleteClickedItemId={deleteClickedItemId}
+            setConfirmPortalTrue={setConfirmPortalTrue}
+            updateShoppingCart={updateShoppingCart}
+            items={shoppingItems}
+          />
+        </Drawer>
+      )}
       {confirmPortal && (
         <DeleteConfirm
           deleteItemId={deleteItemId}
@@ -179,6 +200,7 @@ const HotplacePage = () => {
           onClose={setConfirmPortalFalse}
         />
       )}
+      {needLogin && <PortalAuth onClose={portalAuthClose} />}
     </div>
   );
 };
