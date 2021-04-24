@@ -33,13 +33,13 @@ const HotplacePage = () => {
   const [searchPlaces, setSearchPlaces] = useState([]);
   const [markerIndex, setMarkerIndex] = useState();
   const [shoppingItems, setShoppingItems] = useState([]);
-  const [checkLogin, setCheckLogin] = useState(false);
+  const [needLogin, setNeedLogin] = useState(false);
 
   const setCartVisibleTrue = useCallback(() => {
     if (userStates.isLogin) {
       setCartVisible(true);
     } else {
-      setCheckLogin(true);
+      setNeedLogin(true);
     }
   }, [userStates]);
   const setCartVisibleFalse = useCallback(() => {
@@ -91,7 +91,7 @@ const HotplacePage = () => {
           return updated;
         });
       } else {
-        setCheckLogin(true);
+        setNeedLogin(true);
       }
     },
     [userStates]
@@ -105,7 +105,7 @@ const HotplacePage = () => {
     });
   }, []);
   const portalAuthClose = useCallback(() => {
-    setCheckLogin(false);
+    setNeedLogin(false);
   }, []);
   const settings = {
     dots: false,
@@ -171,7 +171,7 @@ const HotplacePage = () => {
       <div className={styles.categoryContainer}>
         <CategoryBar />
       </div>
-      {!checkLogin && (
+      {!needLogin && (
         <Drawer
           title={`${"장소"}의 담은 목록`}
           placement="right"
@@ -200,7 +200,7 @@ const HotplacePage = () => {
           onClose={setConfirmPortalFalse}
         />
       )}
-      {checkLogin && <PortalAuth onClose={portalAuthClose} />}
+      {needLogin && <PortalAuth onClose={portalAuthClose} />}
     </div>
   );
 };
