@@ -19,7 +19,6 @@ export const onLogin = async (email, password) => {
     .catch((error) => {
       console.error(error);
       return [false, "", ""];
-      // throw new Error(`Unexpected Login Error ${error}`);
     });
 };
 
@@ -33,10 +32,10 @@ export const onRegister = (name, email, password) => {
     .post("/auth/register", data)
     .then((res) => {
       console.log(res);
+      return true;
     })
     .catch((error) => {
       console.error(error);
-      // alert(`unexpected ${error}`);
-      // throw new Error(`Unexpected Register Error ${error}`);
+      return false;
     });
 };
