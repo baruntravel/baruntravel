@@ -17,7 +17,9 @@ const ReviewList = ({ place, onClickReviewWrite }) => {
       </div>
       <div className={styles.reviewList__body}>
         <div className={styles.reviewContainer}>
-          <ReviewCard />
+          {[1, 2, 3, 4].map(() => (
+            <ReviewCard />
+          ))}
         </div>
       </div>
     </div>

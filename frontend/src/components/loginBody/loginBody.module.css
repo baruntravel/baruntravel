@@ -4,6 +4,21 @@
   flex-direction: column;
   margin-bottom: 2em;
 }
+.loginFailBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+.loginFail2,
+.loginFail {
+  font-size: 9px;
+}
+.loginFail {
+  color: red;
+}
+
 .inputBar {
   margin-bottom: 1em;
   padding: 0.5em;
@@ -45,5 +60,7 @@
 }
 
 .loadingBody {
+  position: absolute;
   margin-top: 60%;
+  z-index: 2;
 }

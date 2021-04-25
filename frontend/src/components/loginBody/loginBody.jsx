@@ -12,9 +12,10 @@ const LoginBody = ({ onClickRegister, onClose }) => {
   const passwordRef = useRef();
   const [loading, setLoading] = useState(false);
   const [userStates, setUserStates] = useRecoilState(userState);
+  const [loginFail, setLoginFail] = useState(false);
   const history = useHistory();
 
-  const updateUserLogin = (isLogin, email, name) => {
+  const updateUserLogin = (isLogin, email, name, loginFail) => {
     setUserStates((prev) => {
       const updated = { ...prev };
       updated["isLogin"] = isLogin;
@@ -24,25 +25,35 @@ const LoginBody = ({ onClickRegister, onClose }) => {
     });
   };
 
-  const handleSubmit = useCallback(async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    const email = emailRef.current.value;
-    const password = passwordRef.current.value;
-    // const [isLogin, userEmail, userName] = await onLogin(email, password);
-    // await updateUserLogin(isLogin, userEmail, userName);
-    updateUserLogin(true, "test", "test");
-    setLoading(false);
-    const isLogin = true;
-    formRef.current.reset();
-    if (isLogin) {
-      console.log("okay");
-      onClose();
-    }
-  }, []);
+  const handleSubmit = useCallback(
+    async (event) => {
+      event.preventDefault();
+      setLoading(true);
+      const email = emailRef.current.value;
+      const password = passwordRef.current.value;
+      const [isLogin, userEmail, userName] = await onLogin(email, password);
+      await updateUserLogin(isLogin, userEmail, userName);
+      setLoading(false);
+      if (isLogin) {
+        formRef.current.reset();
+        onClose();
+      } else {
+        setLoginFail(true);
+      }
+    },
+    [onClose, updateUserLogin]
+  );
 
   return (
     <form ref={formRef} className={styles.loginForm} onSubmit={handleSubmit}>
+      {loginFail && (
+        <div className={styles.loginFailBox}>
+          <span className={styles.loginFail}>
+            죄송합니다. 로그인에 실패했습니다.
+          </span>
+          <span className={styles.loginFail2}>올바르게 입력해주세요.</span>
+        </div>
+      )}
       <input
         ref={emailRef}
         type="email"
