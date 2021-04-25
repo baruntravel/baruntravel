@@ -45,5 +45,7 @@
 }
 
 .loadingBody {
+  position: absolute;
   margin-top: 60%;
+  z-index: 2;
 }

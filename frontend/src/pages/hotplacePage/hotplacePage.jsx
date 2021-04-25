@@ -24,6 +24,7 @@ const HotplacePage = () => {
   const sliderRef = useRef();
 
   const userStates = useRecoilValue(userState);
+  console.log(userStates);
   const [cartVisible, setCartVisible] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [confirmPortal, setConfirmPortal] = useState(false);

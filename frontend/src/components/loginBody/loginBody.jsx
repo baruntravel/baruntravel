@@ -29,14 +29,12 @@ const LoginBody = ({ onClickRegister, onClose }) => {
     setLoading(true);
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    // const [isLogin, userEmail, userName] = await onLogin(email, password);
-    // await updateUserLogin(isLogin, userEmail, userName);
-    updateUserLogin(true, "test", "test");
+    const [isLogin, userEmail, userName] = await onLogin(email, password);
+    await updateUserLogin(isLogin, userEmail, userName);
     setLoading(false);
-    const isLogin = true;
-    formRef.current.reset();
     if (isLogin) {
       console.log("okay");
+      formRef.current.reset();
       onClose();
     }
   }, []);
