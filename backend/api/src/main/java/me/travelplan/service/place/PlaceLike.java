@@ -23,6 +23,7 @@ public class PlaceLike extends BaseEntity {
 
     private void setPlace(Place place) {
         this.place = place;
+        place.getPlaceLikes().add(this);
     }
 
     public static PlaceLike create(Place place) {
