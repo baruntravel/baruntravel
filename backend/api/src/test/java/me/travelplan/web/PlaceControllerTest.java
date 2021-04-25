@@ -1,6 +1,7 @@
 package me.travelplan.web;
 
 import me.travelplan.MvcTest;
+import me.travelplan.WithMockCustomUser;
 import me.travelplan.service.place.Place;
 import me.travelplan.service.place.PlaceMapperImpl;
 import me.travelplan.service.place.PlaceReview;
@@ -8,6 +9,7 @@ import me.travelplan.service.place.PlaceService;
 import me.travelplan.web.place.PlaceController;
 import me.travelplan.web.place.PlaceDto;
 import me.travelplan.web.place.PlaceRequest;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -165,6 +167,24 @@ public class PlaceControllerTest extends MvcTest {
                         pathParameters(
                                 parameterWithName("placeId").description("장소 식별자"),
                                 parameterWithName("reviewId").description("리뷰 식별자")
+                        )
+                ));
+    }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("장소 좋아요 테스트")
+    public void createPlaceLikeTest() throws Exception {
+        ResultActions results = mockMvc.perform(
+                post("/place/{placeId}/like", 1)
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(document("place-like-create-update",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("placeId").description("장소 식별자")
                         )
                 ));
     }
