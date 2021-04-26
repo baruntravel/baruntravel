@@ -21,7 +21,7 @@ public class CartController {
 
     @GetMapping("/my")
     public CartPlaceResponse.GetList getMyCart(@CurrentUser CustomUserDetails customUserDetails) {
-        return cartMapper.toGetListResponse(cartPlaceService.getMyCart(customUserDetails.getUser()));
+        return cartMapper.toGetListResponse(cartPlaceService.getMyCart(customUserDetails.getUser()), customUserDetails.getUser());
     }
 
     @DeleteMapping("/place/{placeId}")

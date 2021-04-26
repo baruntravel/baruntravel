@@ -42,4 +42,9 @@ public class PlaceController {
         placeService.checkReviewUpdatable(reviewId, userDetails.getUser());
         placeService.delete(reviewId);
     }
+
+    @PostMapping("/{placeId}/like")
+    public void createOrUpdateLike(@PathVariable Long placeId, @CurrentUser CustomUserDetails userDetails) {
+        placeService.createOrUpdateLike(placeId, userDetails.getUser());
+    }
 }
