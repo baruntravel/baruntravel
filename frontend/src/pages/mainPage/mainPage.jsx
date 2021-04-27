@@ -16,6 +16,11 @@ const MainPage = () => {
         <Navbar />
       </div>
       <div className={styles.body}>
+        <h1>
+          여행을 바르게,
+          <br />
+          ✈️ 바른여행길잡이
+        </h1>
         <Banner />
         <SelectArea />
         <SelectRoute />

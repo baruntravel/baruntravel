@@ -1,8 +1,17 @@
 .container {
   user-select: none;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+.header {
+  margin: 12px;
+  width: 85%;
 }
 
 .body {
-  width: 80%;
   margin: 0 auto;
+  width: 85%;
 }
