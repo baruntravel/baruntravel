@@ -21,6 +21,7 @@ def lambda_handler(event, context):
 
 
     results = {
+        "placeId": placeId,
         "thumbnail": place["basicInfo"].get("mainphotourl", ""),
         "phone": place["basicInfo"].get("phonenum", ""),
         "openHour": periodList,
