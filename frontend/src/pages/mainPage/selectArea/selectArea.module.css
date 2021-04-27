@@ -1,7 +1,11 @@
 .container {
   margin: 0;
   padding: 0;
-  width: 560px;
+  width: 100%;
+}
+
+.title {
+  margin-top: 16px;
 }
 
 .areaList {
