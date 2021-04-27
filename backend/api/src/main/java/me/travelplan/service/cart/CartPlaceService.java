@@ -1,6 +1,7 @@
 package me.travelplan.service.cart;
 
 import lombok.RequiredArgsConstructor;
+import me.travelplan.service.cart.exception.CartPlaceNotFoundException;
 import me.travelplan.service.cart.exception.PlaceExistedException;
 import me.travelplan.service.place.Place;
 import me.travelplan.service.place.PlaceRepository;
@@ -31,6 +32,11 @@ public class CartPlaceService {
     @Transactional(readOnly = true)
     public List<CartPlace> getMyCart(User user) {
         return cartPlaceRepository.findAllByCreatedBy(user);
+    }
+
+    public void addMemo(Long placeId, CartPlaceRequest.AddMemo request, User user) {
+        CartPlace cartPlace = cartPlaceRepository.findByPlaceIdAndCreatedBy(placeId, user).orElseThrow(CartPlaceNotFoundException::new);
+        cartPlace.addMemo(request.getMemo());
     }
 
     public void deleteOnePlace(Long placeId, User user) {

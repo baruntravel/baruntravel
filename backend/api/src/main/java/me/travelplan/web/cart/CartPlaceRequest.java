@@ -13,4 +13,12 @@ public class CartPlaceRequest {
     public static class AddPlace {
         private Long placeId;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AddMemo {
+        private String memo;
+    }
 }

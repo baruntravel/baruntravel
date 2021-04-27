@@ -135,6 +135,34 @@ public class CartControllerTest extends MvcTest {
 
     @Test
     @WithMockCustomUser
+    @DisplayName("카트에 담겨있는 장소에 메모 추가")
+    public void addMemo() throws Exception {
+        CartPlaceRequest.AddMemo request = CartPlaceRequest.AddMemo.builder()
+                .memo("테스트 메모입니다.")
+                .build();
+
+        ResultActions results = mockMvc.perform(
+                put("/cart/place/{placeId}/memo",123L)
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(document("cart-addMemo",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("placeId").description("카트에 담겨있는 장소 식별자")
+                        ),
+                        requestFields(
+                                fieldWithPath("memo").type(JsonFieldType.STRING).description("카트에 담겨있는 장소에 추가할 메모")
+                        )
+                ));
+    }
+
+    @Test
+    @WithMockCustomUser
     @DisplayName("카트에 있는 장소 한개 삭제")
     public void deleteOneCartPlace() throws Exception {
         ResultActions results = mockMvc.perform(delete("/cart/place/{placeId}", 123));

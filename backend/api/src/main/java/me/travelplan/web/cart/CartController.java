@@ -24,6 +24,11 @@ public class CartController {
         return cartMapper.toGetListResponse(cartPlaceService.getMyCart(customUserDetails.getUser()), customUserDetails.getUser());
     }
 
+    @PutMapping("/place/{placeId}/memo")
+    public void addMemo(@PathVariable Long placeId, @RequestBody CartPlaceRequest.AddMemo request, @CurrentUser CustomUserDetails customUserDetails) {
+        cartPlaceService.addMemo(placeId,request,customUserDetails.getUser());
+    }
+
     @DeleteMapping("/place/{placeId}")
     public void deleteOnePlace(@PathVariable Long placeId, @CurrentUser CustomUserDetails customUserDetails) {
         cartPlaceService.deleteOnePlace(placeId, customUserDetails.getUser());
