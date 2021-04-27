@@ -82,6 +82,7 @@ public class CartControllerTest extends MvcTest {
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
+                .memo("첫번째 테스트 메모입니다~!")
                 .build();
         cartPlaceList.add(cartPlace1);
         CartPlace cartPlace2 = CartPlace.builder()
@@ -90,10 +91,11 @@ public class CartControllerTest extends MvcTest {
                         .name("강릉 해돋이 마을")
                         .x(97.123)
                         .y(124.123)
-                        .category(PlaceCategory.builder().id("CE7").name("카페").build())
+                        .category(PlaceCategory.builder().id("FD6").name("음식점").build())
                         .url("https://www.naver.com")
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
+                .memo("두번째 테스트 메모입니다~!")
                 .build();
         cartPlaceList.add(cartPlace2);
         CartPlace cartPlace3 = CartPlace.builder()
@@ -106,6 +108,7 @@ public class CartControllerTest extends MvcTest {
                         .url("https://www.naver.com")
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
+                .memo("세번째 테스트 메모입니다~!")
                 .build();
         cartPlaceList.add(cartPlace3);
 
@@ -125,7 +128,9 @@ public class CartControllerTest extends MvcTest {
                         responseFields(
                                 fieldWithPath("places[].id").description("장소 식별자"),
                                 fieldWithPath("places[].name").description("장소 이름"),
-                                fieldWithPath("places[].category").description("장소 카테고리"),
+                                fieldWithPath("places[].categoryId").description("장소 카테고리 식별자"),
+                                fieldWithPath("places[].categoryName").description("장소 카테고리 이름"),
+                                fieldWithPath("places[].memo").description("장소에 대한 메모 (메모가 없다면 null)"),
                                 fieldWithPath("places[].likeCheck").description("장소 좋아요"),
                                 fieldWithPath("places[].url").description("장소 URL"),
                                 fieldWithPath("places[].image").description("장소 이미지 URL")

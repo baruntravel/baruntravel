@@ -10,7 +10,9 @@ public class CartPlaceDto {
     public static class Place {
         private Long id;
         private String name;
-        private String category;
+        private String categoryId;
+        private String categoryName;
+        private String memo;
         private String url;
         private String image;
         private boolean likeCheck;
