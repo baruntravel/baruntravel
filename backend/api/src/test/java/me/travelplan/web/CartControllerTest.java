@@ -126,6 +126,7 @@ public class CartControllerTest extends MvcTest {
                                 fieldWithPath("places[].id").description("장소 식별자"),
                                 fieldWithPath("places[].name").description("장소 이름"),
                                 fieldWithPath("places[].category").description("장소 카테고리"),
+                                fieldWithPath("places[].likeCheck").description("장소 좋아요"),
                                 fieldWithPath("places[].url").description("장소 URL"),
                                 fieldWithPath("places[].image").description("장소 이미지 URL")
                         )

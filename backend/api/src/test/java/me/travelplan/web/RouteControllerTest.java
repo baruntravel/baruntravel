@@ -33,7 +33,6 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -346,22 +345,22 @@ public class RouteControllerTest extends MvcTest {
         results.andExpect(status().isOk())
                 .andDo(print())
                 .andDo(document("route-review-list",
-                getDocumentRequest(),
-                getDocumentResponse(),
-                pathParameters(
-                        parameterWithName("id").description("경로 식별자")
-                ),
-                responseFields(
-                        fieldWithPath("reviews[].id").description("경로 리뷰 식별자"),
-                        fieldWithPath("reviews[].content").description("경로 리뷰 내용"),
-                        fieldWithPath("reviews[].score").description("경로 리뷰 점수"),
-                        fieldWithPath("reviews[].createdBy").description("경로 리뷰 작성자"),
-                        fieldWithPath("reviews[].files[].name").description("경로 리뷰에 첨부되어 있는 파일 이름"),
-                        fieldWithPath("reviews[].files[].url").description("경로 리뷰에 첨부되어 있는 파일 url"),
-                        fieldWithPath("reviews[].createdAt").description("경로 리뷰 생성날짜"),
-                        fieldWithPath("reviews[].updatedAt").description("경로 리뷰 수정날짜")
-                )
-        ));
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("id").description("경로 식별자")
+                        ),
+                        responseFields(
+                                fieldWithPath("reviews[].id").description("경로 리뷰 식별자"),
+                                fieldWithPath("reviews[].content").description("경로 리뷰 내용"),
+                                fieldWithPath("reviews[].score").description("경로 리뷰 점수"),
+                                fieldWithPath("reviews[].createdBy").description("경로 리뷰 작성자"),
+                                fieldWithPath("reviews[].files[].name").description("경로 리뷰에 첨부되어 있는 파일 이름"),
+                                fieldWithPath("reviews[].files[].url").description("경로 리뷰에 첨부되어 있는 파일 url"),
+                                fieldWithPath("reviews[].createdAt").description("경로 리뷰 생성날짜"),
+                                fieldWithPath("reviews[].updatedAt").description("경로 리뷰 수정날짜")
+                        )
+                ));
     }
 
     @Test
@@ -423,7 +422,7 @@ public class RouteControllerTest extends MvcTest {
 
     @Test
     @WithMockCustomUser
-    @DisplayName("경로에 즐겨찾기 테스트")
+    @DisplayName("경로 좋아요 테스트")
     public void createRouteLikeTest() throws Exception {
         ResultActions results = mockMvc.perform(
                 post("/route/{id}/like", 1)
@@ -439,5 +438,4 @@ public class RouteControllerTest extends MvcTest {
                         )
                 ));
     }
-
 }

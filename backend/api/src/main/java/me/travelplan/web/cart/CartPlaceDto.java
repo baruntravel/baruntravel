@@ -13,5 +13,6 @@ public class CartPlaceDto {
         private String category;
         private String url;
         private String image;
+        private boolean likeCheck;
     }
 }
