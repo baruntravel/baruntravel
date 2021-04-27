@@ -5,7 +5,7 @@ export const onLogin = async (email, password) => {
     email,
     password,
   };
-  return axios
+  await axios
     .post("/auth/login", data)
     .then((res) => {
       const { accessToken, refreshToken, expiredTime } = res.data;
@@ -22,13 +22,13 @@ export const onLogin = async (email, password) => {
     });
 };
 
-export const onRegister = (name, email, password) => {
+export const onRegister = async (name, email, password) => {
   const data = {
     name,
     email,
     password,
   };
-  axios
+  await axios
     .post("/auth/register", data)
     .then((res) => {
       console.log(res);

@@ -26,13 +26,13 @@ const LoginBody = ({ onClickRegister, onClose }) => {
   };
 
   const handleSubmit = useCallback(
-    async (event) => {
+    (event) => {
       event.preventDefault();
       setLoading(true);
       const email = emailRef.current.value;
       const password = passwordRef.current.value;
-      const [isLogin, userEmail, userName] = await onLogin(email, password);
-      await updateUserLogin(isLogin, userEmail, userName);
+      const [isLogin, userEmail, userName] = onLogin(email, password);
+      updateUserLogin(isLogin, userEmail, userName);
       setLoading(false);
       if (isLogin) {
         formRef.current.reset();
