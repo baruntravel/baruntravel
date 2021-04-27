@@ -1,25 +1,20 @@
-import React, { useState } from "react";
-import PortalAuth from "../../containers/portalAuth/portalAuth";
+import styles from "./mainPage.module.css";
+import SelectArea from "./selectArea/selectArea";
+import SelectRoute from "./selectRoute/selectRoute";
+import { useHistory } from "react-router-dom";
+import { useState } from "react";
 
-const MainPage = (props) => {
-  const [portalClicked, setPortalClicked] = useState(false);
-  const [loginClicked, setLoginClicked] = useState(true);
-  const handlePortal = () => {
-    setPortalClicked(!portalClicked);
-  };
-  const handleLoginClicked = () => {
-    setLoginClicked(!loginClicked);
-  };
+const MainPage = () => {
+  const history = useHistory();
+  const [isLoggedIn, setLoggedIn] = useState(true);
+
+  //로그인 안 돼있을시 홈으로
+  !isLoggedIn && history.push("/");
+
   return (
-    <div>
-      <button onClick={handlePortal}>로그인 버튼</button>
-      {portalClicked && (
-        <PortalAuth
-          loginClicked={loginClicked}
-          onClose={handlePortal}
-          onClickChange={handleLoginClicked}
-        />
-      )}
+    <div className={styles.container}>
+      <SelectArea />
+      <SelectRoute />
     </div>
   );
 };
