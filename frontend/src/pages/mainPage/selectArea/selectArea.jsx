@@ -4,14 +4,14 @@ import areaList from "../../../assets/areaList.json";
 
 const SelectArea = () => {
   let history = useHistory();
-  const showAllArea = () => history.push("/all-place");
+  const showAllArea = () => history.push("/place-all");
 
   // 인기지역 10개만 보여주고, 전체보기 누르면 전체 지역
   const AreaList = () => {
     let areaArray = [];
     for (let i = 0; i < 10; i++) {
       areaArray.push(
-        <Link to={`${areaList[i].eng}/places`} key={i}>
+        <Link to="/place" key={i}>
           <div className={styles.areaBox}>
             <li className={styles.area} id={areaList[i].eng} key={i}>
               {areaList[i].kor}
