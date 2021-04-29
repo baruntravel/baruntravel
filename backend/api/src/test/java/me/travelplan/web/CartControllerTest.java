@@ -47,7 +47,14 @@ public class CartControllerTest extends MvcTest {
     @DisplayName("카트가 없다면 카트를 생성하고 장소를 담고 있다면 있는 카트에 장소담기")
     public void createCartAndAddPlace() throws Exception {
         CartPlaceRequest.AddPlace request = CartPlaceRequest.AddPlace.builder()
-                .placeId(1L)
+                .id(123L)
+                .name("테스트 장소이름")
+                .x(36.5)
+                .y(127.12)
+                .url("www.naver.com")
+                .address("서울 종로구 종로3길 17")
+                .categoryId("CE7")
+                .categoryName("카페")
                 .build();
 
         ResultActions results = mockMvc.perform(
@@ -62,7 +69,14 @@ public class CartControllerTest extends MvcTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
-                                fieldWithPath("placeId").type(JsonFieldType.NUMBER).description("카트에 추가할 장소 식별자")
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("장소 식별자"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("장소 이름"),
+                                fieldWithPath("address").type(JsonFieldType.STRING).description("장소 주소"),
+                                fieldWithPath("x").type(JsonFieldType.NUMBER).description("장소 x 좌표"),
+                                fieldWithPath("y").type(JsonFieldType.NUMBER).description("장소 y 좌표"),
+                                fieldWithPath("url").type(JsonFieldType.STRING).description("장소 url"),
+                                fieldWithPath("categoryId").type(JsonFieldType.STRING).description("장소 카테고리 식별자"),
+                                fieldWithPath("categoryName").type(JsonFieldType.STRING).description("장소 카테고리 이름")
                         )
                 ));
     }

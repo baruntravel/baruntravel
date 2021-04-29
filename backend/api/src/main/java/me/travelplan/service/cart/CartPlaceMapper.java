@@ -1,10 +1,13 @@
 package me.travelplan.service.cart;
 
+import me.travelplan.service.place.Place;
 import me.travelplan.service.user.User;
 import me.travelplan.web.cart.CartPlaceDto;
+import me.travelplan.web.cart.CartPlaceRequest;
 import me.travelplan.web.cart.CartPlaceResponse;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +17,11 @@ import java.util.List;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR
 )
 public interface CartPlaceMapper {
+    @Mapping(constant = "PENDING", target = "detailStatus")
+    @Mapping(source = "place.categoryId", target = "category.id")
+    @Mapping(source = "place.categoryName", target = "category.name")
+    Place dtoToPlace(CartPlaceRequest.AddPlace place);
+
     default CartPlaceResponse.GetList toGetListResponse(List<CartPlace> cartPlaces, User user) {
         List<CartPlaceDto.Place> cartPlaceList = new ArrayList<>();
         cartPlaces.forEach(cartPlace -> {

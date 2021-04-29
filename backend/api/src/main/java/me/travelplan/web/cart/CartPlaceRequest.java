@@ -11,7 +11,14 @@ public class CartPlaceRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class AddPlace {
-        private Long placeId;
+        private Long id;
+        private String name;
+        private String url;
+        private Double x;
+        private Double y;
+        private String address;
+        private String categoryId;
+        private String categoryName;
     }
 
     @Getter
