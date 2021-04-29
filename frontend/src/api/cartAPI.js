@@ -38,4 +38,14 @@ export const onDeleteCartItem = async (placeId) => {
     });
 };
 
-export const onDeleteCartAll = async () => {};
+export const onDeleteCartAll = async () => {
+  await axios
+    .delete("/cart/place/")
+    .then((res) => {
+      return true;
+    })
+    .catch((error) => {
+      console.error(error);
+      return false;
+    });
+};

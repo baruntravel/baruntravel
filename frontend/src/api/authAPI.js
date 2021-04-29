@@ -7,16 +7,24 @@ export const onLogin = async (email, password) => {
   };
   await axios
     .post("/auth/login", data)
-    .then((res) => {
-      const { accessToken, refreshToken, expiredTime } = res.data;
+    .then(async (res) => {
+      const {
+        accessToken,
+        refreshToken,
+        accessTokenExpiredAt,
+        refreshTokenExpiredAt,
+      } = res.data;
       axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
       localStorage.setItem("refreshToken", refreshToken);
-      localStorage.setItem("expiredTime", expiredTime);
-      return axios
+      localStorage.setItem("accessTokenExpiredAt", accessTokenExpiredAt);
+      localStorage.setItem("refreshTokenExpiredAt", refreshTokenExpiredAt);
+      const data = await axios
         .get("/auth/me")
         .then((res) => [true, res.data.email, res.data.name]);
+      return data;
     })
     .catch((error) => {
+      console.log(data);
       console.error(error);
       return [false, "", ""];
     });

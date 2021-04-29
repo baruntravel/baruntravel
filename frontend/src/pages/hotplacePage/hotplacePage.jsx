@@ -13,10 +13,15 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useRecoilValue } from "recoil";
-import { userState } from "../../recoil/userState";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { userState, userCart } from "../../recoil/userState";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
 
+import {
+  onAddCart,
+  onDeleteCartItem,
+  onDeleteCartAll,
+} from "../../api/cartAPI";
 const HotplacePage = () => {
   const placeListRef = useRef();
   const searchRef = useRef();
@@ -32,7 +37,7 @@ const HotplacePage = () => {
   const [searchPlace, setSearchPlace] = useState("");
   const [searchPlaces, setSearchPlaces] = useState([]);
   const [markerIndex, setMarkerIndex] = useState();
-  const [shoppingItems, setShoppingItems] = useState([]);
+  const [shoppingItems, setShoppingItems] = useRecoilState(userCart);
   const [needLogin, setNeedLogin] = useState(false);
 
   const setCartVisibleTrue = useCallback(() => {
@@ -56,6 +61,7 @@ const HotplacePage = () => {
       const updated = prev.filter((item) => item.id !== id);
       return updated;
     });
+    onDeleteCartItem(id);
   }, []);
   const updateClickedPlace = useCallback((place) => {
     setPlace(place);
@@ -90,6 +96,7 @@ const HotplacePage = () => {
           const updated = [...prev, place];
           return updated;
         });
+        onAddCart(place.id);
       } else {
         setNeedLogin(true);
       }
@@ -98,6 +105,10 @@ const HotplacePage = () => {
   );
   const updateShoppingCart = useCallback((items) => {
     setShoppingItems(items);
+  }, []);
+  const resetCartAll = useCallback(() => {
+    setShoppingItems([]);
+    onDeleteCartAll();
   }, []);
   const updateItemMemo = useCallback((item) => {
     setShoppingItems((prev) => {
@@ -189,6 +200,7 @@ const HotplacePage = () => {
             deleteClickedItemId={deleteClickedItemId}
             setConfirmPortalTrue={setConfirmPortalTrue}
             updateShoppingCart={updateShoppingCart}
+            resetCartAll={resetCartAll}
             items={shoppingItems}
           />
         </Drawer>

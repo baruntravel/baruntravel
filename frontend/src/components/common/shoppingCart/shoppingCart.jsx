@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
-import { testPlaces } from "../../../recoil/routeAtom";
 import styles from "./shoppingCart.module.css";
 import ShoppingItem from "./shoppingItem/shoppingItem";
 import { postRoute } from "../../../api/routeAPI";
@@ -12,6 +11,7 @@ const ShoppingCart = ({
   setConfirmPortalTrue,
   updateShoppingCart,
   deleteClickedItemId,
+  resetCartAll,
   // routeName,
 }) => {
   // const routeName = "test경로"; // 경로 이름이 있을 경우 새로운 경로 이름 생성, (edit할 수도 있으니까?)
@@ -41,6 +41,7 @@ const ShoppingCart = ({
     console.log(items);
     setOpenInputName(true);
     // postRoute(items);
+    resetCartAll();
   }, []);
   return (
     <>

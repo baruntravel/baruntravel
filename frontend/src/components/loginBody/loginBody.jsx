@@ -3,19 +3,18 @@ import styles from "./loginBody.module.css";
 import { onLogin } from "../../api/authAPI";
 import { Spin } from "antd";
 import { useRecoilState } from "recoil";
-import { userState } from "../../recoil/userState";
-import { useHistory } from "react-router-dom";
-
+import { userState, userCart } from "../../recoil/userState";
+import { onReceiveCart } from "../../api/cartAPI";
 const LoginBody = ({ onClickRegister, onClose }) => {
   const formRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   const [loading, setLoading] = useState(false);
   const [userStates, setUserStates] = useRecoilState(userState);
+  const [shoppingItems, setShoppingItems] = useRecoilState(userCart);
   const [loginFail, setLoginFail] = useState(false);
-  const history = useHistory();
 
-  const updateUserLogin = (isLogin, email, name, loginFail) => {
+  const updateUserLogin = (isLogin, email, name) => {
     setUserStates((prev) => {
       const updated = { ...prev };
       updated["isLogin"] = isLogin;
@@ -25,24 +24,27 @@ const LoginBody = ({ onClickRegister, onClose }) => {
     });
   };
 
-  const handleSubmit = useCallback(
-    (event) => {
-      event.preventDefault();
-      setLoading(true);
-      const email = emailRef.current.value;
-      const password = passwordRef.current.value;
-      const [isLogin, userEmail, userName] = onLogin(email, password);
-      updateUserLogin(isLogin, userEmail, userName);
-      setLoading(false);
-      if (isLogin) {
-        formRef.current.reset();
-        onClose();
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setLoading(true);
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+    const [isLogin, userEmail, userName] = onLogin(email, password);
+    updateUserLogin(isLogin, userEmail, userName);
+    setLoading(false);
+    if (isLogin) {
+      const cartItems = onReceiveCart();
+      if (cartItems) {
+        setShoppingItems(cartItems);
       } else {
-        setLoginFail(true);
+        //
       }
-    },
-    [onClose, updateUserLogin]
-  );
+      formRef.current.reset();
+      onClose();
+    } else {
+      setLoginFail(true);
+    }
+  };
 
   return (
     <form ref={formRef} className={styles.loginForm} onSubmit={handleSubmit}>
