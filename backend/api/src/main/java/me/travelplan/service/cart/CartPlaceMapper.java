@@ -28,11 +28,11 @@ public interface CartPlaceMapper {
             CartPlaceDto.Place place = CartPlaceDto.Place.builder()
                     .id(cartPlace.getPlace().getId())
                     .name(cartPlace.getPlace().getName())
+                    .address(cartPlace.getPlace().getAddress())
                     .categoryId(cartPlace.getPlace().getCategory().getId())
                     .categoryName(cartPlace.getPlace().getCategory().getName())
                     .memo(cartPlace.getMemo())
                     .likeCheck(cartPlace.getPlace().isLike(user))
-                    .image(cartPlace.getPlace().getImage().getUrl())
                     .url(cartPlace.getPlace().getUrl())
                     .build();
             cartPlaceList.add(place);

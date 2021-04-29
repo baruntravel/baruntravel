@@ -92,6 +92,7 @@ public class CartControllerTest extends MvcTest {
                         .name("테스트 장소 이름")
                         .x(97.123)
                         .y(124.123)
+                        .address("종로구 종로 3길 17")
                         .url("https://www.naver.com")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
@@ -105,6 +106,7 @@ public class CartControllerTest extends MvcTest {
                         .name("강릉 해돋이 마을")
                         .x(97.123)
                         .y(124.123)
+                        .address("테스트 주소")
                         .category(PlaceCategory.builder().id("FD6").name("음식점").build())
                         .url("https://www.naver.com")
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
@@ -118,6 +120,7 @@ public class CartControllerTest extends MvcTest {
                         .name("테스트장소2")
                         .x(97.123)
                         .y(124.123)
+                        .address("테스트 주소2")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .url("https://www.naver.com")
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
@@ -142,12 +145,12 @@ public class CartControllerTest extends MvcTest {
                         responseFields(
                                 fieldWithPath("places[].id").description("장소 식별자"),
                                 fieldWithPath("places[].name").description("장소 이름"),
-                                fieldWithPath("places[].categoryId").description("장소 카테고리 식별자"),
-                                fieldWithPath("places[].categoryName").description("장소 카테고리 이름"),
+                                fieldWithPath("places[].address").description("장소 주소"),
                                 fieldWithPath("places[].memo").description("장소에 대한 메모 (메모가 없다면 null)"),
                                 fieldWithPath("places[].likeCheck").description("장소 좋아요"),
                                 fieldWithPath("places[].url").description("장소 URL"),
-                                fieldWithPath("places[].image").description("장소 이미지 URL")
+                                fieldWithPath("places[].categoryId").description("장소 카테고리 식별자"),
+                                fieldWithPath("places[].categoryName").description("장소 카테고리 이름")
                         )
                 ));
     }
