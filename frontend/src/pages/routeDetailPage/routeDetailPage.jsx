@@ -85,6 +85,28 @@ const RouteDetailPage = (props) => {
     },
     [places]
   );
+
+  const [reviewDatas, setReviewDatas] = useState([
+    {
+      createdAt: new Date(2011, 0, 1, 0, 0, 0, 0),
+      likeCount: 5,
+    },
+    {
+      createdAt: new Date(2011, 0, 1, 0, 0, 0, 2),
+      likeCount: 6,
+    },
+    {
+      createdAt: new Date(2011, 0, 1, 0, 0, 0, 1),
+      likeCount: 7,
+    },
+    {
+      createdAt: new Date(2011, 0, 1, 0, 0, 0, 4),
+      likeCount: 3,
+    },
+  ]);
+  const handleSetReviewDatas = (updated) => {
+    setReviewDatas(updated);
+  };
   return (
     <div className={styles.RouteDetailPage}>
       <DetailHeader />
@@ -140,7 +162,11 @@ const RouteDetailPage = (props) => {
           <span className={styles.wishCount}>{`${4}명이 좋아해요`}</span>
         </div>
         <div className={styles.reviewList}>
-          <ReviewList onClickReviewWrite={onClickReviewWrite} />
+          <ReviewList
+            onClickReviewWrite={onClickReviewWrite}
+            reviewDatas={reviewDatas}
+            setReviewDatas={handleSetReviewDatas}
+          />
         </div>
         <div className={styles.buttonBox}>
           <button
