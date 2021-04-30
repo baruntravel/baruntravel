@@ -12,6 +12,7 @@ import ImagesZoom from "../../components/reviewComponents/imagesZoom/imagesZoom"
 import { Drawer } from "antd";
 import ReviewForm from "../../components/reviewComponents/reviewForm/reviewForm";
 import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
+import InputRootName from "../../components/common/inputRootName/inputRootName";
 
 const RouteDetailPage = (props) => {
   const [showImagesZoom, setShowImagesZoom] = useState(false);
@@ -20,6 +21,14 @@ const RouteDetailPage = (props) => {
   const [reviewWrite, setReviewWrite] = useState(false);
   const [moreReview, setMoreReview] = useState(false);
 
+  const [openInputName, setOpenInputName] = useState(false);
+
+  const onCloseInputName = useCallback(() => {
+    setOpenInputName(false);
+  }, []);
+  const onOpenInputName = useCallback(() => {
+    setOpenInputName(true);
+  }, []);
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);
   }, []);
@@ -85,6 +94,28 @@ const RouteDetailPage = (props) => {
     },
     [places]
   );
+
+  const [reviewDatas, setReviewDatas] = useState([
+    {
+      createdAt: new Date(2011, 0, 1, 0, 0, 0, 0),
+      likeCount: 5,
+    },
+    {
+      createdAt: new Date(2011, 0, 1, 0, 0, 0, 2),
+      likeCount: 6,
+    },
+    {
+      createdAt: new Date(2011, 0, 1, 0, 0, 0, 1),
+      likeCount: 7,
+    },
+    {
+      createdAt: new Date(2011, 0, 1, 0, 0, 0, 4),
+      likeCount: 3,
+    },
+  ]);
+  const handleSetReviewDatas = (updated) => {
+    setReviewDatas(updated);
+  };
   return (
     <div className={styles.RouteDetailPage}>
       <DetailHeader />
@@ -136,11 +167,17 @@ const RouteDetailPage = (props) => {
           </div>
         </div>
         <div className={styles.buttonBox}>
-          <button className={styles.button}>일정으로 담기</button>
+          <button className={styles.button} onClick={onOpenInputName}>
+            일정으로 담기
+          </button>
           <span className={styles.wishCount}>{`${4}명이 좋아해요`}</span>
         </div>
         <div className={styles.reviewList}>
-          <ReviewList onClickReviewWrite={onClickReviewWrite} />
+          <ReviewList
+            onClickReviewWrite={onClickReviewWrite}
+            reviewDatas={reviewDatas}
+            setReviewDatas={handleSetReviewDatas}
+          />
         </div>
         <div className={styles.buttonBox}>
           <button
@@ -175,6 +212,7 @@ const RouteDetailPage = (props) => {
       {showImagesZoom && (
         <ImagesZoom images={images} onClose={onClose} index={imageIndex} />
       )}
+      {openInputName && <InputRootName onClose={onCloseInputName} />}
     </div>
   );
 };
