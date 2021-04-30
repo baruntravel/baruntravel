@@ -11,50 +11,41 @@ const ReviewList = ({
 }) => {
   const newRef = useRef();
   const recommendRef = useRef();
-  console.log(reviewDatas);
   const viewListDate = () => {
     console.log("최신순");
-    const updated = [...reviewDatas];
-    updated.sort((a, b) => {
-      if (a.createdAt > b.createdAt) {
-        return 1;
-      } else if (a.createdAt < b.createdAt) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
-    setReviewDatas(updated);
     newRef.current.style = "color:black; opacity:1";
     recommendRef.current.style = "color:gray; opacity: 0.8;";
-    // setReviewDatas((prev) => {
-    //   const updated = prev.sort((a, b) => {
-    //     if (a.createdAt > b.createdAt) {
-    //       return 1;
-    //     } else if (a.createdAt < b.createdAt) {
-    //       return -1;
-    //     } else {
-    //       return 0;
-    //     }
-    //   });
-    //   return updated;
-    // });
+    setReviewDatas((prev) => {
+      const updated = [...prev];
+      updated.sort((a, b) => {
+        if (a.createdAt > b.createdAt) {
+          return 1;
+        } else if (a.createdAt < b.createdAt) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+      return updated;
+    });
   };
   const viewListLikeCount = () => {
     console.log("추천순");
-    const updated = [...reviewDatas];
-    updated.sort((a, b) => {
-      if (a.likeCount < b.likeCount) {
-        return 1;
-      } else if (a.likeCount > b.likeCount) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
     newRef.current.style = "color:gray; opacity: 0.8;";
     recommendRef.current.style = "color:black; opacity:1";
-    setReviewDatas(updated);
+    setReviewDatas((prev) => {
+      const updated = [...prev];
+      updated.sort((a, b) => {
+        if (a.likeCount < b.likeCount) {
+          return 1;
+        } else if (a.likeCount > b.likeCount) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+      return updated;
+    });
   };
   return (
     <div className={styles.reviewList}>
