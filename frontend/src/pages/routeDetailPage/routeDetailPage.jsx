@@ -12,6 +12,7 @@ import ImagesZoom from "../../components/reviewComponents/imagesZoom/imagesZoom"
 import { Drawer } from "antd";
 import ReviewForm from "../../components/reviewComponents/reviewForm/reviewForm";
 import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
+import InputRootName from "../../components/common/inputRootName/inputRootName";
 
 const RouteDetailPage = (props) => {
   const [showImagesZoom, setShowImagesZoom] = useState(false);
@@ -20,6 +21,14 @@ const RouteDetailPage = (props) => {
   const [reviewWrite, setReviewWrite] = useState(false);
   const [moreReview, setMoreReview] = useState(false);
 
+  const [openInputName, setOpenInputName] = useState(false);
+
+  const onCloseInputName = useCallback(() => {
+    setOpenInputName(false);
+  }, []);
+  const onOpenInputName = useCallback(() => {
+    setOpenInputName(true);
+  }, []);
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);
   }, []);
@@ -158,7 +167,9 @@ const RouteDetailPage = (props) => {
           </div>
         </div>
         <div className={styles.buttonBox}>
-          <button className={styles.button}>일정으로 담기</button>
+          <button className={styles.button} onClick={onOpenInputName}>
+            일정으로 담기
+          </button>
           <span className={styles.wishCount}>{`${4}명이 좋아해요`}</span>
         </div>
         <div className={styles.reviewList}>
@@ -201,6 +212,7 @@ const RouteDetailPage = (props) => {
       {showImagesZoom && (
         <ImagesZoom images={images} onClose={onClose} index={imageIndex} />
       )}
+      {openInputName && <InputRootName onClose={onCloseInputName} />}
     </div>
   );
 };
