@@ -19,6 +19,8 @@ import PortalAuth from "../../containers/portalAuth/portalAuth";
 import { userState } from "../../recoil/userState";
 import { onLogout } from "../../api/authAPI";
 import LogoutConfirm from "../common/logoutConfirm/logoutConfirm";
+import { Drawer } from "antd";
+import ProfileEdit from "../profileEdit/profileEdit";
 
 const SideMyProfile = ({ handleClose }) => {
   const [myRouteList, setMyRouteList] = useRecoilState(myRouteCart);
@@ -29,6 +31,7 @@ const SideMyProfile = ({ handleClose }) => {
   const history = useHistory();
   const [openAuth, setOpenAuth] = useState(false);
   const [openLogout, setOpenLogout] = useState(false);
+  const [openEditProfile, setOpenEditProfile] = useState(false);
 
   const onOpenAuth = useCallback(() => {
     setOpenAuth(true);
@@ -41,6 +44,12 @@ const SideMyProfile = ({ handleClose }) => {
   }, []);
   const onCloseLogout = useCallback(() => {
     setOpenLogout(false);
+  }, []);
+  const onOpenEditProfile = useCallback(() => {
+    setOpenEditProfile(true);
+  }, []);
+  const onCloseEditProfile = useCallback(() => {
+    setOpenEditProfile(false);
   }, []);
   const goToHome = useCallback(() => {
     history.push("/");
@@ -146,6 +155,16 @@ const SideMyProfile = ({ handleClose }) => {
       {openLogout && (
         <LogoutConfirm onLogout={onHandleLogout} onClose={onCloseLogout} />
       )}
+      <Drawer
+        placement="right"
+        closable={false}
+        visible={true}
+        width={"100vw"}
+        bodyStyle={{ padding: 0 }}
+        zIndex={1005}
+      >
+        <ProfileEdit />
+      </Drawer>
     </div>
   );
 };
