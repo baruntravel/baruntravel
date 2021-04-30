@@ -96,7 +96,7 @@ const HotplacePage = () => {
           const updated = [...prev, place];
           return updated;
         });
-        onAddCart(place.id);
+        onAddCart(place);
       } else {
         setNeedLogin(true);
       }

@@ -1,8 +1,15 @@
 import axios from "axios";
 
-export const onAddCart = async (placeId) => {
+export const onAddCart = async (place) => {
   const data = {
-    placeId,
+    id: place.id,
+    name: place.place_name,
+    url: place.place_url,
+    x: place.x,
+    y: place.y,
+    address_name: place.road_address_name || place.address_name,
+    category: place.category_group_code,
+    category_name: place.category_group_name,
   };
   await axios
     .post("/cart/place", data)
