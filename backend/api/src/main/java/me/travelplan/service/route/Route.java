@@ -20,6 +20,15 @@ public class Route extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
+    @Column(name = "min_x")
+    private Double minX;
+    @Column(name = "min_y")
+    private Double minY;
+    @Column(name = "max_x")
+    private Double maxX;
+    @Column(name = "max_y")
+    private Double maxY;
 
     @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
     private final List<RoutePlace> places = new ArrayList<>();
@@ -29,17 +38,6 @@ public class Route extends BaseEntity {
 
     @OneToMany(mappedBy = "route", cascade = CascadeType.REMOVE)
     private final List<RouteLike> routeLikes = new ArrayList<>();
-
-    private String name;
-
-    @Column(name = "min_x")
-    private Double minX;
-    @Column(name = "min_y")
-    private Double minY;
-    @Column(name = "max_x")
-    private Double maxX;
-    @Column(name = "max_y")
-    private Double maxY;
 
     public void addPlace(RoutePlace place) {
         this.places.add(place);

@@ -7,7 +7,7 @@ import {
   RightCircleOutlined,
 } from "@ant-design/icons";
 
-const ImagesZoom = ({ images, onClose }) => {
+const ImagesZoom = ({ images, onClose, index }) => {
   const arrowRef = useRef();
   const onClickPrev = () => {
     arrowRef.current.prev();
@@ -28,6 +28,7 @@ const ImagesZoom = ({ images, onClose }) => {
             ref={arrowRef}
             className={styles.carousel__Body}
             dots={false}
+            initialSlide={index || 0}
           >
             {images.map((v, index) => (
               <div className={styles.imgContainer} key={index}>

@@ -10,12 +10,14 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
 public class PlaceService {
     private final PlaceRepository placeRepository;
     private final PlaceReviewRepository placeReviewRepository;
+    private final PlaceLikeRepository placeLikeRepository;
 
     public List<PlaceReview> getReviews(Long placeId) {
         Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
@@ -52,6 +54,19 @@ public class PlaceService {
 
         if (!review.getCreatedBy().getId().equals(user.getId())) {
             throw new PlaceReviewNotUpdatableException();
+        }
+    }
+
+    @Transactional
+    public void createOrUpdateLike(Long placeId, User user) {
+        Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
+        Optional<PlaceLike> optionalPlaceLike = placeLikeRepository.findByPlaceIdAndCreatedBy(placeId, user);
+        if (optionalPlaceLike.isEmpty()) {
+            placeLikeRepository.save(PlaceLike.create(place));
+        }
+        if (optionalPlaceLike.isPresent()) {
+            PlaceLike placeLike = optionalPlaceLike.get();
+            placeLikeRepository.delete(placeLike);
         }
     }
 }

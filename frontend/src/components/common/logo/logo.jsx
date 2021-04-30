@@ -6,9 +6,9 @@ const Logo = () => {
     <>
       <div className={styles.logoWrap}>
         <div className={styles.logoTitle}>
-          바른여행
+          바른
           <br />
-          길잡이
+          여행
         </div>
       </div>
     </>

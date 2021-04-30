@@ -9,6 +9,7 @@ const RegisterBody = ({ onClickLogin }) => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const [loading, setLoading] = useState(false);
+  const [registerFail, setRegisterFail] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -18,11 +19,21 @@ const RegisterBody = ({ onClickLogin }) => {
     const password = passwordRef.current.value || "";
     const result = await onRegister(nickname, email, password);
     // 회원 가입 api호출
-    formRef.current.reset();
     setLoading(false);
+    if (result) {
+      formRef.current.reset();
+      onClickLogin();
+    } else {
+      setRegisterFail(true);
+    }
   };
   return (
     <form ref={formRef} className={styles.RegisterBody} onSubmit={handleSubmit}>
+      {registerFail && (
+        <div className={styles.registerFailBox}>
+          <span className={styles.loginFail}>~~ 사유로 실패하였습니다</span>
+        </div>
+      )}
       <input
         ref={nicknameRef}
         type="text"
@@ -41,7 +52,7 @@ const RegisterBody = ({ onClickLogin }) => {
         ref={passwordRef}
         type="password"
         className={styles.inputBar}
-        placeholder="비밀번호 (6자리 이상 입력해주세요.)"
+        placeholder="비밀번호 (6자리 이상 입력하세요.)"
         required
       />
 

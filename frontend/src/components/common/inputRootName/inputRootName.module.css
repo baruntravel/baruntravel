@@ -1,0 +1,56 @@
+.InputRootName {
+  position: fixed;
+  z-index: 1005;
+  text-align: center;
+  background-color: #00000080;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.confirmBox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 25vh;
+  width: 80%;
+  margin: auto;
+  background-color: white;
+  border-radius: 8px;
+}
+
+.inputBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 70%;
+  border-bottom: 1px solid lightgrey;
+}
+.input {
+  font-size: 1.2em;
+  background-color: whitesmoke;
+  padding: 0 24px;
+  margin: 0 12px;
+}
+.buttonBox {
+  display: flex;
+  width: 100%;
+  height: 30%;
+}
+.confirmBtnBox,
+.closeBtnBox {
+  display: flex;
+  height: 100%;
+  flex-basis: 50%;
+  align-items: center;
+  justify-content: center;
+}
+.closeBtnBox {
+  border-right: 1px solid lightgrey;
+}
+.confirmBtnBox {
+  color: #00acee;
+}

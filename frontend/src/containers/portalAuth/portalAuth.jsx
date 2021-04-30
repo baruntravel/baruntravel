@@ -1,17 +1,16 @@
 import Modal from "antd/lib/modal/Modal";
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import LoginBody from "../../components/loginBody/loginBody";
+import Portal from "../../components/portal/portal";
 import RegisterBody from "../../components/registerBody/registerBody";
 import styles from "./portalAuth.module.css";
 
-const PortalAuth = ({
-  loginClicked,
-  onClose,
-  onClickChange,
-  handleLoading,
-}) => {
+const PortalAuth = ({ onClose, handleLoading }) => {
   const portalRef = useRef();
-
+  const [loginClicked, setLoginClicked] = useState(true);
+  const onClickChange = () => {
+    setLoginClicked(!loginClicked);
+  };
   const handleClose = (event) => {
     if (
       portalRef.current &&
@@ -28,15 +27,20 @@ const PortalAuth = ({
     };
   }, [handleClose]);
   return (
-    <div className={styles.PortalAuth}>
-      <div ref={portalRef} className={styles.authBody}>
-        {loginClicked ? (
-          <LoginBody onClickRegister={onClickChange} />
-        ) : (
-          <RegisterBody onClickLogin={onClickChange} />
-        )}
+    <Portal>
+      <div className={styles.PortalAuth}>
+        <div ref={portalRef} className={styles.authBody}>
+          <div className={styles.header}>
+            <span className={styles.title}>바른 여행 길잡이</span>
+          </div>
+          {loginClicked ? (
+            <LoginBody onClickRegister={onClickChange} onClose={onClose} />
+          ) : (
+            <RegisterBody onClickLogin={onClickChange} />
+          )}
+        </div>
       </div>
-    </div>
+    </Portal>
   );
 };
 
