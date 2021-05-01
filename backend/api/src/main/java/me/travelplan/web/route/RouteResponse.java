@@ -1,7 +1,9 @@
 package me.travelplan.web.route;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class RouteResponse {
@@ -18,10 +20,14 @@ public class RouteResponse {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class GetOne {
         private String name;
-        private Double minX;
-        private Double maxX;
-        private Double minY;
-        private Double maxY;
+        private Double centerX;
+        private Double centerY;
+        private String createdBy;
+        private Integer reviewCount;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+        public LocalDateTime createdAt;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+        public LocalDateTime updatedAt;
         private List<RouteDto.RoutePlace> places;
     }
 

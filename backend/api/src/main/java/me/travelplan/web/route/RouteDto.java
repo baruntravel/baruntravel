@@ -18,6 +18,7 @@ public class RouteDto {
         private Long id;
         private String image;
         private String name;
+        private String address;
         private String url;
         private Double x;
         private Double y;

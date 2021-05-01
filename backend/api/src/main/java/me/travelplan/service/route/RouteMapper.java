@@ -14,6 +14,7 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -84,14 +85,6 @@ public interface RouteMapper {
     }
 
     default RouteResponse.GetOne toGetOneResponse(Route route) {
-        var response = RouteResponse.GetOne.builder();
-
-        response.name(route.getName());
-        response.maxX(route.getMaxX());
-        response.maxY(route.getMaxY());
-        response.minX(route.getMinX());
-        response.minY(route.getMinY());
-
         List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
 
         route.getRoutePlaces().forEach(routePlace -> {
@@ -99,19 +92,36 @@ public interface RouteMapper {
             routePlaceBuilder.order(routePlace.getOrder());
 
             Place place = routePlace.getPlace();
-            routePlaces.add(routePlaceBuilder
+            RouteDto.RoutePlace.RoutePlaceBuilder builder = routePlaceBuilder
                     .id(place.getId())
                     .name(place.getName())
-                    .image(place.getImage().getUrl())
                     .x(place.getX())
                     .y(place.getY())
-                    .category(place.getCategory().getId())
-                    .url(place.getUrl())
-                    .build());
+                    .address(place.getAddress())
+                    .category(place.getCategory().getName())
+                    .url(place.getUrl());
+            //TODO 현재 구현에는 place에 image가 null로 들어가고 테스트에서는 image가 들어가기 때문에 조건문처리를 해놓음
+            // place에 image가 확실히 들어가게 되면 조건문 제거
+            if (place.getImage() != null) {
+                routePlaces.add(builder.image(place.getImage().getUrl()).build());
+            } else {
+                routePlaces.add(builder.build());
+            }
         });
-        response.places(routePlaces);
+        HashMap<String, Double> map = route.calculateCenterCoordinate();
+        Double centerX = map.get("centerX");
+        Double centerY = map.get("centerY");
 
-        return response.build();
+        return RouteResponse.GetOne.builder()
+                .name(route.getName())
+                .centerX(centerX)
+                .centerY(centerY)
+                .createdBy(route.getCreatedBy().getName())
+                .createdAt(route.getCreatedAt())
+                .updatedAt(route.getUpdatedAt())
+                .reviewCount(route.getRouteReviews().size())
+                .places(routePlaces)
+                .build();
     }
 
     default RouteResponse.GetsWithOnlyName toGetsWithOnlyNameResponse(List<Route> routes) {

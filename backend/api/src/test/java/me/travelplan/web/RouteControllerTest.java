@@ -218,17 +218,18 @@ public class RouteControllerTest extends MvcTest {
         Route route = Route.builder()
                 .id(1L)
                 .minX(97.123)
-                .minY(97.124)
-                .maxX(124.124)
+                .minY(122.123)
+                .maxX(99.123)
                 .maxY(124.123)
                 .name("테스트 경로")
                 .build();
         route.addPlace(RoutePlace.builder().order(1).place(
                 Place.builder()
-                        .id(12L)
+                        .id(122L)
                         .name("테스트 장소 이름")
                         .x(97.123)
-                        .y(124.123)
+                        .address("서울")
+                        .y(122.123)
                         .url("https://www.naver.com")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
@@ -236,15 +237,20 @@ public class RouteControllerTest extends MvcTest {
         ).build());
         route.addPlace(RoutePlace.builder().order(2).place(
                 Place.builder()
-                        .id(12L)
+                        .id(123L)
                         .name("강릉 해돋이 마을")
-                        .x(97.123)
+                        .x(99.123)
                         .y(124.123)
+                        .address("강릉")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .url("https://www.naver.com")
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
                         .build()
         ).build());
+
+        route.setCreatedAt(LocalDateTime.of(2021, 4, 14, 9, 0));
+        route.setUpdatedAt(LocalDateTime.of(2021, 4, 14, 9, 0).plusDays(5));
+        route.setCreatedBy(User.builder().name("테스트유저").build());
 
         given(routeService.getOne(any())).willReturn(route);
 
@@ -262,12 +268,15 @@ public class RouteControllerTest extends MvcTest {
                         ),
                         responseFields(
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("경로 이름"),
-                                fieldWithPath("minX").type(JsonFieldType.NUMBER).description("경로에 포함된 장소중 가장 왼쪽 x 좌표"),
-                                fieldWithPath("maxX").type(JsonFieldType.NUMBER).description("경로에 포함된 장소중 가장 오른쪽 x 좌표"),
-                                fieldWithPath("minY").type(JsonFieldType.NUMBER).description("경로에 포함된 장소중 가장 왼쪽 y 좌표"),
-                                fieldWithPath("maxY").type(JsonFieldType.NUMBER).description("경로에 포함된 장소중 가장 오른쪽 y 좌표"),
+                                fieldWithPath("centerX").type(JsonFieldType.NUMBER).description("경로의 중심 X좌표"),
+                                fieldWithPath("centerY").type(JsonFieldType.NUMBER).description("경로의 중심 Y좌표"),
+                                fieldWithPath("reviewCount").type(JsonFieldType.NUMBER).description("경로 댓글 개수"),
+                                fieldWithPath("createdBy").type(JsonFieldType.STRING).description("경로의 생성자 이름"),
+                                fieldWithPath("createdAt").type(JsonFieldType.STRING).description("경로 생성 날짜"),
+                                fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("경로 수정 날짜"),
                                 fieldWithPath("places").type(JsonFieldType.ARRAY).description("경로의 장소들"),
                                 fieldWithPath("places[].id").type(JsonFieldType.NUMBER).description("장소 식별자"),
+                                fieldWithPath("places[].address").type(JsonFieldType.STRING).description("장소 주소"),
                                 fieldWithPath("places[].url").type(JsonFieldType.STRING).description("장소 URL"),
                                 fieldWithPath("places[].image").type(JsonFieldType.STRING).description("장소 이미지 URL"),
                                 fieldWithPath("places[].name").type(JsonFieldType.STRING).description("장소 이름"),

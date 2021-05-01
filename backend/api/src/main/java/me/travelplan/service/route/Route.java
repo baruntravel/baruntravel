@@ -7,6 +7,7 @@ import me.travelplan.service.user.User;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,6 +52,13 @@ public class Route extends BaseEntity {
         this.minY = places.stream().mapToDouble(Place::getY).min().getAsDouble();
         this.maxX = places.stream().mapToDouble(Place::getX).max().getAsDouble();
         this.maxY = places.stream().mapToDouble(Place::getY).max().getAsDouble();
+    }
+
+    public HashMap<String, Double> calculateCenterCoordinate() {
+        HashMap<String, Double> centerMap = new HashMap<>();
+        centerMap.put("centerX", (this.maxX + this.minX) / 2);
+        centerMap.put("centerY", (this.maxY + this.minY) / 2);
+        return centerMap;
     }
 
     public boolean isLike(User user) {
