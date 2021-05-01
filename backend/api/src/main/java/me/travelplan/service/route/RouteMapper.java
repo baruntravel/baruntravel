@@ -94,7 +94,7 @@ public interface RouteMapper {
 
         List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
 
-        route.getPlaces().forEach(routePlace -> {
+        route.getRoutePlaces().forEach(routePlace -> {
             var routePlaceBuilder = RouteDto.RoutePlace.builder();
             routePlaceBuilder.order(routePlace.getOrder());
 
@@ -128,7 +128,7 @@ public interface RouteMapper {
         List<RouteResponse.GetList> getList = new ArrayList<>();
         routes.forEach(route -> {
             List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
-            route.getPlaces().forEach(routePlace -> routePlaces.add(RouteDto.RoutePlace.builder()
+            route.getRoutePlaces().forEach(routePlace -> routePlaces.add(RouteDto.RoutePlace.builder()
                     .id(routePlace.getPlace().getId())
                     .name(routePlace.getPlace().getName())
                     .order(routePlace.getOrder())

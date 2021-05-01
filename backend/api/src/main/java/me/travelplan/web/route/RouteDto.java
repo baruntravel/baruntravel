@@ -25,6 +25,17 @@ public class RouteDto {
         private Integer order;
     }
 
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class RoutePlaceWithIdAndOrder {
+        private Long id;
+        private Integer order;
+    }
+
+
     @Getter
     @Builder
     @NoArgsConstructor

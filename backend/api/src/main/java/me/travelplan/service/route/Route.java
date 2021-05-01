@@ -31,7 +31,7 @@ public class Route extends BaseEntity {
     private Double maxY;
 
     @OneToMany(mappedBy = "route", cascade = CascadeType.ALL)
-    private final List<RoutePlace> places = new ArrayList<>();
+    private final List<RoutePlace> routePlaces = new ArrayList<>();
 
     @OneToMany(mappedBy = "route", cascade = CascadeType.REMOVE)
     private final List<RouteReview> routeReviews = new ArrayList<>();
@@ -40,7 +40,7 @@ public class Route extends BaseEntity {
     private final List<RouteLike> routeLikes = new ArrayList<>();
 
     public void addPlace(RoutePlace place) {
-        this.places.add(place);
+        this.routePlaces.add(place);
         place.setRoute(this);
     }
 
@@ -53,7 +53,15 @@ public class Route extends BaseEntity {
         this.maxY = places.stream().mapToDouble(Place::getY).max().getAsDouble();
     }
 
-    public boolean isLike(User user){
+    public boolean isLike(User user) {
         return this.routeLikes.stream().anyMatch(routeLike -> routeLike.getCreatedBy().getId().equals(user.getId()));
+    }
+
+    public static Route create(String name, List<RoutePlace> routePlaces) {
+        Route route = Route.builder()
+                .name(name)
+                .build();
+        routePlaces.forEach(route::addPlace);
+        return route;
     }
 }

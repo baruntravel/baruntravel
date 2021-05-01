@@ -23,8 +23,8 @@ public class RouteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RouteResponse.RouteId create(@RequestBody RouteRequest.CreateOrUpdate request) {
-        return routeMapper.toRouteIdResponse(routeService.create(routeMapper.toEntity(request, 0L)));
+    public RouteResponse.RouteId create(@RequestBody RouteRequest.Create request) {
+        return routeMapper.toRouteIdResponse(routeService.create(request));
     }
 
 

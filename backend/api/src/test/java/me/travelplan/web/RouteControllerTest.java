@@ -8,6 +8,8 @@ import me.travelplan.service.place.PlaceCategory;
 import me.travelplan.service.route.*;
 import me.travelplan.service.user.User;
 import me.travelplan.web.route.RouteController;
+import me.travelplan.web.route.RouteDto;
+import me.travelplan.web.route.RouteRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -100,11 +102,19 @@ public class RouteControllerTest extends MvcTest {
     @WithMockCustomUser
     @DisplayName("경로 생성 테스트")
     public void createTest() throws Exception {
-        String request = getCreateOrUpdateRequest();
+        List<RouteDto.RoutePlaceWithIdAndOrder> routeDtos = IntStream.range(1, 3).mapToObj(i -> RouteDto.RoutePlaceWithIdAndOrder.builder()
+                .id((long) i)
+                .order(i)
+                .build())
+                .collect(Collectors.toList());
+        RouteRequest.Create request = RouteRequest.Create.builder()
+                .name("테스트경로")
+                .places(routeDtos)
+                .build();
 
         ResultActions results = mockMvc.perform(
                 post("/route")
-                        .content(request)
+                        .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8")
         );
@@ -114,15 +124,8 @@ public class RouteControllerTest extends MvcTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("경로 이륾"),
-                                fieldWithPath("places").type(JsonFieldType.ARRAY).description("장소들 정보"),
-                                fieldWithPath("places[].id").type(JsonFieldType.NUMBER).description("카카오톡에서 제공한 장소 식별자"),
-                                fieldWithPath("places[].image").type(JsonFieldType.STRING).description("장소 이미지 URL"),
-                                fieldWithPath("places[].name").type(JsonFieldType.STRING).description("장소 이름"),
-                                fieldWithPath("places[].url").type(JsonFieldType.STRING).description("장소 URL"),
-                                fieldWithPath("places[].x").type(JsonFieldType.NUMBER).description("장소 X값"),
-                                fieldWithPath("places[].y").type(JsonFieldType.NUMBER).description("장소 Y값"),
-                                fieldWithPath("places[].category").type(JsonFieldType.STRING).description("카테고리 분류 코드"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("경로 이름"),
+                                fieldWithPath("places[].id").type(JsonFieldType.NUMBER).description("장소 식별자"),
                                 fieldWithPath("places[].order").type(JsonFieldType.NUMBER).description("장소들 정렬 순서 (사용할 필요가 있는지 검토 필요)")
                         )
                 ));
