@@ -1,5 +1,5 @@
 import styles from "./usersRouteMap.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const UsersRouteMap = ({ places }) => {
   const { kakao } = window;
@@ -10,16 +10,32 @@ const UsersRouteMap = ({ places }) => {
 
   //map init
   useEffect(() => {
+    initMap();
+  }, []);
+
+  function initMap() {
     document.querySelector("body").style.overflow = "hidden"; // mobile에서 스크롤 막음
     let container = document.getElementById("Map");
     const options = {
+      // center: center,
       center: new kakao.maps.LatLng(37.566826, 126.9786567),
       level: 4,
     };
-    const map = new kakao.maps.Map(container, options);
-    setMap(map);
-  }, []);
+    let tmpMap = new kakao.maps.Map(container, options);
+    getBoundsHandler(tmpMap);
+    setMap(tmpMap);
+  }
 
+  const getBoundsHandler = (map) => {
+    kakao.maps.event.addListener(map, "bounds_changed", function () {
+      var bounds = map.getBounds();
+      var swLatlng = bounds.getSouthWest();
+      var neLatlng = bounds.getNorthEast();
+      console.log(swLatlng, neLatlng);
+    });
+  };
+
+  //루트 바뀔 때 마다
   useEffect(() => {
     displayMarker(infowindow);
   }, [places]);
@@ -45,8 +61,7 @@ const UsersRouteMap = ({ places }) => {
   }
 
   function addMarker(position, index) {
-    var imageSrc =
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
+    var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
       imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
       imgOptions = {
         spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
@@ -76,6 +91,12 @@ const UsersRouteMap = ({ places }) => {
     var content = '<div style="padding:5px;z-index:1;">' + title + "</div>";
     infowindow.setContent(content);
     infowindow.open(map, marker);
+  }
+
+  function getScreenXY() {
+    console.log("Drag Event Done");
+    let latlng = map.getCenter();
+    console.log(latlng.getLat(), latlng.getLng());
   }
 
   return <div className={styles.map} id="Map" />;

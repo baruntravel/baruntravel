@@ -27,10 +27,7 @@ const UsersRoutePage = () => {
     <div className={styles.wrapper}>
       <UsersRouteMap places={places} />
       <div className={styles.routeCarousel}>
-        <RouteCarousel
-          routeItems={routeItems}
-          handleChange={(e) => handleChange(e)}
-        />
+        <RouteCarousel routeItems={routeItems} handleChange={(e) => handleChange(e)} />
       </div>
       <div className={styles.bottomDrawer}>
         <BottomDrawer routeItems={routeItems} index={index} />
