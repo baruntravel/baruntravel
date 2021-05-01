@@ -282,7 +282,7 @@ public class RouteControllerTest extends MvcTest {
                                 fieldWithPath("places[].name").type(JsonFieldType.STRING).description("장소 이름"),
                                 fieldWithPath("places[].x").type(JsonFieldType.NUMBER).description("장소 X값"),
                                 fieldWithPath("places[].y").type(JsonFieldType.NUMBER).description("장소 Y값"),
-                                fieldWithPath("places[].category").type(JsonFieldType.STRING).description("장소 분류 코드"),
+                                fieldWithPath("places[].category").type(JsonFieldType.STRING).description("장소 카테고리 이름"),
                                 fieldWithPath("places[].order").type(JsonFieldType.NUMBER).description("장소 정렬 값 (사용할 필요가 있는지 검토해봐야함)")
                         )
                 ));

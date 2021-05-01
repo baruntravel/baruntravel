@@ -45,8 +45,11 @@ public class RouteResponse {
     public static class GetList {
         private Long id;
         private String name;
+        private Double centerX;
+        private Double centerY;
         private Integer likeCount;
         private boolean likeCheck;
+        private String createdBy;
         private List<RouteDto.RoutePlace> places;
     }
 
