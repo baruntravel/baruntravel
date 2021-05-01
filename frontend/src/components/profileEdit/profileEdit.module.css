@@ -5,3 +5,43 @@
   flex-direction: column;
   align-items: center;
 }
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.avatar {
+  margin-top: 30%;
+  margin-bottom: 32px;
+}
+
+.nicknameEditBox {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+}
+.nicknameEdit {
+  text-align: center;
+  font-size: medium;
+  font-weight: 600;
+  padding-bottom: 6px;
+  border-bottom: 2px solid lightgray;
+  margin-bottom: 12px;
+}
+.nicknameEdit:focus {
+  outline: none;
+  caret-color: #00acee;
+}
+.editBtnNone,
+.editBtn {
+  height: 36px;
+  border: none;
+  background-color: #00acee;
+  color: white;
+}
+.editBtnNone {
+  opacity: 0.5;
+}

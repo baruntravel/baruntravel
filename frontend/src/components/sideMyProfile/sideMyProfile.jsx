@@ -47,6 +47,7 @@ const SideMyProfile = ({ handleClose }) => {
   }, []);
   const onOpenEditProfile = useCallback(() => {
     setOpenEditProfile(true);
+    handleClose();
   }, []);
   const onCloseEditProfile = useCallback(() => {
     setOpenEditProfile(false);
