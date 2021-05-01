@@ -1,10 +1,10 @@
 package me.travelplan.service.cart;
 
 import lombok.RequiredArgsConstructor;
+import me.travelplan.service.cart.exception.CartPlaceNotFoundException;
 import me.travelplan.service.cart.exception.PlaceExistedException;
 import me.travelplan.service.place.Place;
 import me.travelplan.service.place.PlaceRepository;
-import me.travelplan.service.place.exception.PlaceNotFoundException;
 import me.travelplan.service.user.User;
 import me.travelplan.web.cart.CartPlaceRequest;
 import org.springframework.stereotype.Service;
@@ -19,11 +19,13 @@ public class CartPlaceService {
     private final PlaceRepository placeRepository;
     private final CartPlaceRepository cartPlaceRepository;
 
-    public void addPlace(CartPlaceRequest.AddPlace request, User user) {
-        if (cartPlaceRepository.findByPlaceIdAndCreatedBy(request.getPlaceId(), user).isPresent()) {
+    public void addPlace(Place place, User user) {
+        if (placeRepository.findById(place.getId()).isEmpty()) {
+            placeRepository.save(place);
+        }
+        if (cartPlaceRepository.findByPlaceIdAndCreatedBy(place.getId(), user).isPresent()) {
             throw new PlaceExistedException();
         }
-        Place place = placeRepository.findById(request.getPlaceId()).orElseThrow(PlaceNotFoundException::new);
         CartPlace cartPlace = CartPlace.create(place);
         cartPlaceRepository.save(cartPlace);
     }
@@ -31,6 +33,11 @@ public class CartPlaceService {
     @Transactional(readOnly = true)
     public List<CartPlace> getMyCart(User user) {
         return cartPlaceRepository.findAllByCreatedBy(user);
+    }
+
+    public void addMemo(Long placeId, CartPlaceRequest.AddMemo request, User user) {
+        CartPlace cartPlace = cartPlaceRepository.findByPlaceIdAndCreatedBy(placeId, user).orElseThrow(CartPlaceNotFoundException::new);
+        cartPlace.addMemo(request.getMemo());
     }
 
     public void deleteOnePlace(Long placeId, User user) {
