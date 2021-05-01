@@ -47,7 +47,7 @@ const SideMyProfile = ({ handleClose }) => {
   }, []);
   const onOpenEditProfile = useCallback(() => {
     setOpenEditProfile(true);
-    handleClose();
+    // handleClose();
   }, []);
   const onCloseEditProfile = useCallback(() => {
     setOpenEditProfile(false);
@@ -128,7 +128,9 @@ const SideMyProfile = ({ handleClose }) => {
               <div className={styles.icon}>
                 <SettingOutlined />
               </div>
-              <span className={styles.section__tag}>Settings</span>
+              <span className={styles.section__tag} onClick={onOpenEditProfile}>
+                Settings
+              </span>
             </div>
           </div>
           <div className={styles.section__tagBox}>
@@ -159,12 +161,12 @@ const SideMyProfile = ({ handleClose }) => {
       <Drawer
         placement="right"
         closable={false}
-        visible={true}
+        visible={openEditProfile}
         width={"100vw"}
         bodyStyle={{ padding: 0 }}
         zIndex={1005}
       >
-        <ProfileEdit />
+        <ProfileEdit onClose={onCloseEditProfile} />
       </Drawer>
     </div>
   );

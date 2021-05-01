@@ -5,7 +5,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { memo } from "react";
 import useInput from "../../hooks/useInput";
 
-const ProfileEdit = memo((props) => {
+const ProfileEdit = memo(({ onClose }) => {
   const imageInputRef = useRef();
   const [updateImageUrl, setUpdateImageUrl] = useState();
   const [updateImageFile, setUpdateImageFile] = useState();
@@ -26,7 +26,7 @@ const ProfileEdit = memo((props) => {
   return (
     <div className={styles.ProfileEdit}>
       <header className={styles.header}>
-        <div>뒤로 가기</div>
+        <div onClick={onClose}>뒤로 가기</div>
       </header>
       <section className={styles.body}>
         <div className={styles.avatar} onClick={onClickImageUpload}>
