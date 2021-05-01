@@ -24,7 +24,6 @@ export const onLogin = async (email, password) => {
       return data;
     })
     .catch((error) => {
-      console.log(data);
       console.error(error);
       return [false, "", ""];
     });

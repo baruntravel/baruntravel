@@ -38,7 +38,9 @@ const ShoppingCart = ({
     updateShoppingCart(updateItems);
   }, []);
   const onSaveRoute = useCallback(() => {
-    setOpenInputName(true);
+    if (items.length > 0) {
+      setOpenInputName(true);
+    }
   }, []);
   return (
     <>
