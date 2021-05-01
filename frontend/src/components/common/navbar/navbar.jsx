@@ -1,6 +1,5 @@
 import styles from "./navbar.module.css";
 import Logo from "../logo/logo";
-import Menu from "../menu/menu";
 import { useCallback, useState } from "react";
 import { Drawer } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
