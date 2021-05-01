@@ -39,7 +39,6 @@ const HotplacePage = () => {
   const [markerIndex, setMarkerIndex] = useState();
   const [shoppingItems, setShoppingItems] = useRecoilState(userCart);
   const [needLogin, setNeedLogin] = useState(false);
-
   const setCartVisibleTrue = useCallback(() => {
     if (userStates.isLogin) {
       setCartVisible(true);
@@ -56,12 +55,12 @@ const HotplacePage = () => {
   const setConfirmPortalFalse = useCallback(() => {
     setConfirmPortal(false);
   }, []);
-  const handleDeleteItem = useCallback((id) => {
+  const handleDeleteItem = useCallback(async (id) => {
     setShoppingItems((prev) => {
       const updated = prev.filter((item) => item.id !== id);
       return updated;
     });
-    onDeleteCartItem(id);
+    await onDeleteCartItem(id);
   }, []);
   const updateClickedPlace = useCallback((place) => {
     setPlace(place);
@@ -106,9 +105,9 @@ const HotplacePage = () => {
   const updateShoppingCart = useCallback((items) => {
     setShoppingItems(items);
   }, []);
-  const resetCartAll = useCallback(() => {
+  const resetCartAll = useCallback(async () => {
     setShoppingItems([]);
-    onDeleteCartAll();
+    await onDeleteCartAll();
   }, []);
   const updateItemMemo = useCallback((item) => {
     setShoppingItems((prev) => {
@@ -172,7 +171,8 @@ const HotplacePage = () => {
                 onHandleDelete={handleDeleteItem}
                 addShoppingCart={addShoppingCart}
                 isLiked={
-                  shoppingItems.filter((item) => item.id === place.id).length
+                  shoppingItems.filter((item) => item.id === place.id).length >
+                  0
                 }
               />
             </div>

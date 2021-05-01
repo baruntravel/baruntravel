@@ -2,15 +2,16 @@ import axios from "axios";
 
 export const onAddCart = async (place) => {
   const data = {
-    id: place.id,
+    id: Number(place.id),
     name: place.place_name,
     url: place.place_url,
-    x: place.x,
-    y: place.y,
-    address_name: place.road_address_name || place.address_name,
-    category: place.category_group_code,
-    category_name: place.category_group_name,
+    x: Number(place.x),
+    y: Number(place.y),
+    address: place.road_address_name || place.address_name,
+    categoryId: place.category_group_code,
+    categoryName: place.category_group_name,
   };
+  console.log(axios.defaults.headers);
   await axios
     .post("/cart/place", data)
     .then((res) => {
@@ -23,7 +24,7 @@ export const onAddCart = async (place) => {
 };
 
 export const onReceiveCart = async () => {
-  await axios
+  return await axios
     .get("/cart/my")
     .then((res) => {
       return res.data.places;
@@ -36,12 +37,13 @@ export const onReceiveCart = async () => {
 
 export const onDeleteCartItem = async (placeId) => {
   await axios
-    .get(`/cart/place/${placeId}`)
+    .delete(`/cart/place/${placeId}`)
     .then((res) => {
-      return res.data;
+      return true;
     })
     .catch((error) => {
       console.error(error);
+      return false;
     });
 };
 

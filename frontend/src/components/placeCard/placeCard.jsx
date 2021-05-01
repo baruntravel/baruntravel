@@ -10,17 +10,7 @@ const PlaceCard = ({ place, onHandleDelete, addShoppingCart, isLiked }) => {
     onHandleDelete(place.id);
   }, []);
   const onHandleLike = () => {
-    const data = {
-      id: place.id,
-      category_name: place.category_group_name,
-      address_name: place.road_address_name || place.address_name,
-      name: place.place_name,
-      x: place.x,
-      y: place.y,
-      url: place.place_url,
-      memo: "",
-    };
-    addShoppingCart(data);
+    addShoppingCart(place);
   };
   const onClickCard = useCallback((event) => {
     if (

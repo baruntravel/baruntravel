@@ -1,13 +1,13 @@
 import axios from "axios";
 
-export const onLogin = async (email, password) => {
+export const onLogin = (email, password) => {
   const data = {
     email,
     password,
   };
-  await axios
+  return axios
     .post("/auth/login", data)
-    .then(async (res) => {
+    .then((res) => {
       const {
         accessToken,
         refreshToken,
@@ -18,10 +18,9 @@ export const onLogin = async (email, password) => {
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("accessTokenExpiredAt", accessTokenExpiredAt);
       localStorage.setItem("refreshTokenExpiredAt", refreshTokenExpiredAt);
-      const data = await axios
+      return axios
         .get("/auth/me")
         .then((res) => [true, res.data.email, res.data.name]);
-      return data;
     })
     .catch((error) => {
       console.error(error);
@@ -35,7 +34,7 @@ export const onRegister = async (name, email, password) => {
     email,
     password,
   };
-  await axios
+  const result = await axios
     .post("/auth/register", data)
     .then((res) => {
       console.log(res);
@@ -45,4 +44,5 @@ export const onRegister = async (name, email, password) => {
       console.error(error);
       return false;
     });
+  return result;
 };

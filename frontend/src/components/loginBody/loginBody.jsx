@@ -26,19 +26,20 @@ const LoginBody = ({ onClickRegister, onClose }) => {
   };
 
   const handleSubmit = useCallback(
-    (event) => {
+    async (event) => {
       event.preventDefault();
       setLoading(true);
-      const [isLogin, userEmail, userName] = onLogin(email, password);
+      const [isLogin, userEmail, userName] = await onLogin(email, password);
       updateUserLogin(isLogin, userEmail, userName);
       setLoading(false);
       if (isLogin) {
-        // const cartItems = onReceiveCart();
-        // if (cartItems) {
-        //   setShoppingItems(cartItems);
-        // } else {
-        //   //
-        // }
+        const cartItems = await onReceiveCart();
+        console.log(cartItems);
+        if (cartItems) {
+          setShoppingItems(cartItems);
+        } else {
+          //
+        }
         formRef.current.reset();
         onClose();
       } else {
