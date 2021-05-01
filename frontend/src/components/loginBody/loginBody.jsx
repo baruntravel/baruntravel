@@ -3,19 +3,19 @@ import styles from "./loginBody.module.css";
 import { onLogin } from "../../api/authAPI";
 import { Spin } from "antd";
 import { useRecoilState } from "recoil";
-import { userState } from "../../recoil/userState";
-import { useHistory } from "react-router-dom";
-
+import { userState, userCart } from "../../recoil/userState";
+import { onReceiveCart } from "../../api/cartAPI";
+import useInput from "../../hooks/useInput";
 const LoginBody = ({ onClickRegister, onClose }) => {
   const formRef = useRef();
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const [email, onHandleEmail] = useInput();
+  const [password, onHandlePassword] = useInput();
   const [loading, setLoading] = useState(false);
   const [userStates, setUserStates] = useRecoilState(userState);
+  const [shoppingItems, setShoppingItems] = useRecoilState(userCart);
   const [loginFail, setLoginFail] = useState(false);
-  const history = useHistory();
 
-  const updateUserLogin = (isLogin, email, name, loginFail) => {
+  const updateUserLogin = (isLogin, email, name) => {
     setUserStates((prev) => {
       const updated = { ...prev };
       updated["isLogin"] = isLogin;
@@ -29,19 +29,24 @@ const LoginBody = ({ onClickRegister, onClose }) => {
     async (event) => {
       event.preventDefault();
       setLoading(true);
-      const email = emailRef.current.value;
-      const password = passwordRef.current.value;
       const [isLogin, userEmail, userName] = await onLogin(email, password);
-      await updateUserLogin(isLogin, userEmail, userName);
+      updateUserLogin(isLogin, userEmail, userName);
       setLoading(false);
       if (isLogin) {
+        const cartItems = await onReceiveCart();
+        console.log(cartItems);
+        if (cartItems) {
+          setShoppingItems(cartItems);
+        } else {
+          //
+        }
         formRef.current.reset();
         onClose();
       } else {
         setLoginFail(true);
       }
     },
-    [onClose, updateUserLogin]
+    [email, onClose, password, setShoppingItems, updateUserLogin]
   );
 
   return (
@@ -55,17 +60,17 @@ const LoginBody = ({ onClickRegister, onClose }) => {
         </div>
       )}
       <input
-        ref={emailRef}
         type="email"
         className={styles.inputBar}
         placeholder="이메일"
+        onChange={onHandleEmail}
         required
       />
       <input
-        ref={passwordRef}
         type="password"
         className={styles.inputBar}
         placeholder="비밀번호"
+        onChange={onHandlePassword}
         required
       />
       <button className={styles.loginBtn}>로그인</button>
