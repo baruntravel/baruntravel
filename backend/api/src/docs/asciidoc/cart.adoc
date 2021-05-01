@@ -24,6 +24,21 @@ include::{snippets}/cart-addPlace/request-fields.adoc[]
 성공 응답 HTTP
 include::{snippets}/cart-addPlace/http-response.adoc[]
 
+=== 카트에 담겨있는 장소에 메모 추가
+
+`PUT /cart/place/{placeId}/memo`
+
+요청 HTTP
+
+include::{snippets}/cart-addMemo/path-parameters.adoc[]
+
+- Body
+include::{snippets}/cart-addMemo/http-request.adoc[]
+include::{snippets}/cart-addMemo/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/cart-addMemo/http-response.adoc[]
+
 === 자신의 카트 조회
 
 `GET /cart/my`
