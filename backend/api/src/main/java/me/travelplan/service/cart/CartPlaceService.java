@@ -5,6 +5,7 @@ import me.travelplan.service.cart.exception.CartPlaceNotFoundException;
 import me.travelplan.service.cart.exception.PlaceExistedException;
 import me.travelplan.service.place.Place;
 import me.travelplan.service.place.PlaceRepository;
+import me.travelplan.service.place.PlaceService;
 import me.travelplan.service.user.User;
 import me.travelplan.web.cart.CartPlaceRequest;
 import org.springframework.stereotype.Service;
@@ -17,11 +18,13 @@ import java.util.List;
 @Transactional
 public class CartPlaceService {
     private final PlaceRepository placeRepository;
+    private final PlaceService placeService;
     private final CartPlaceRepository cartPlaceRepository;
 
     public void addPlace(Place place, User user) {
         if (placeRepository.findById(place.getId()).isEmpty()) {
             placeRepository.save(place);
+            placeService.updateDetail(place.getId());
         }
         if (cartPlaceRepository.findByPlaceIdAndCreatedBy(place.getId(), user).isPresent()) {
             throw new PlaceExistedException();
