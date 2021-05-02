@@ -105,14 +105,19 @@ const HotplacePage = () => {
   const updateShoppingCart = useCallback((items) => {
     setShoppingItems(items);
   }, []);
+  const updateMemoShoppingItem = useCallback((id, memo) => {
+    setShoppingItems((prev) => {
+      const updated = [...prev];
+      const forUpdateIndex = updated.findIndex((item) => {
+        if (item.id === id) return true;
+      });
+      updated[forUpdateIndex] = { ...updated[forUpdateIndex], memo: memo };
+      return updated;
+    });
+  }, []);
   const resetCartAll = useCallback(async () => {
     setShoppingItems([]);
     await onDeleteCartAll();
-  }, []);
-  const updateItemMemo = useCallback((item) => {
-    setShoppingItems((prev) => {
-      // const updated =
-    });
   }, []);
   const portalAuthClose = useCallback(() => {
     setNeedLogin(false);
@@ -200,6 +205,7 @@ const HotplacePage = () => {
             deleteClickedItemId={deleteClickedItemId}
             setConfirmPortalTrue={setConfirmPortalTrue}
             updateShoppingCart={updateShoppingCart}
+            updateMemoShoppingItem={updateMemoShoppingItem}
             resetCartAll={resetCartAll}
             items={shoppingItems}
           />

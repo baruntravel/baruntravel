@@ -58,3 +58,19 @@ export const onDeleteCartAll = async () => {
       return false;
     });
 };
+
+export const onWriteMemo = async (placeId, memo) => {
+  const data = {
+    memo,
+  };
+  const result = await axios
+    .put(`/cart/place/${placeId}/memo`, data)
+    .then((res) => {
+      return true;
+    })
+    .catch((error) => {
+      console.error(error);
+      return false;
+    });
+  return result;
+};

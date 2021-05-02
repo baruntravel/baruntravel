@@ -56,7 +56,7 @@
 }
 .card__bottom {
   height: 30%;
-  padding: 16px;
+  padding-left: 16px;
 }
 .memoBox {
   display: flex;
@@ -67,4 +67,12 @@
 .memoIcon {
   font-size: 1em;
   margin-right: 8px;
+}
+.memo {
+  width: 100%;
+  opacity: 0.9;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: start;
 }

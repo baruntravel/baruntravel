@@ -34,7 +34,6 @@ const LoginBody = ({ onClickRegister, onClose }) => {
       setLoading(false);
       if (isLogin) {
         const cartItems = await onReceiveCart();
-        console.log(cartItems);
         if (cartItems) {
           setShoppingItems(cartItems);
         } else {

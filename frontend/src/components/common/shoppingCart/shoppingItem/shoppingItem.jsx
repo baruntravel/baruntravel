@@ -1,14 +1,14 @@
-import { FormOutlined, HeartTwoTone } from "@ant-design/icons";
-import { Rate } from "antd";
+import { FormOutlined } from "@ant-design/icons";
 import React, { useCallback, useState } from "react";
 import PlaceCard from "../../../placeCard/placeCard";
 import MemoForm from "../../memoForm/memoForm";
 import styles from "./shoppingItem.module.css";
+
 const ShoppingItem = ({
   item,
   setConfirmPortalTrue,
   deleteClickedItemId,
-  updateShoppingCart,
+  updateMemoShoppingItem,
 }) => {
   const [openMemo, setOpenMemo] = useState(false);
 
@@ -38,7 +38,7 @@ const ShoppingItem = ({
             style={{ color: "#00acee" }}
           />
           {item.memo ? (
-            <span>메모있다!</span>
+            <span className={styles.memo}>{item.memo}</span>
           ) : (
             <span className={styles.memo}>메모 적기</span>
           )}
@@ -48,7 +48,7 @@ const ShoppingItem = ({
         <MemoForm
           item={item}
           onClose={setOpenMemoFalse}
-          updateShoppingCart={updateShoppingCart}
+          updateMemoShoppingItem={updateMemoShoppingItem}
         />
       )}
     </div>
