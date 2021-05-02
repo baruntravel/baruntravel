@@ -23,23 +23,26 @@ const ShoppingCart = memo(
       resetCartAll();
       setOpenInputName(false);
     }, []);
-    const onDragEnd = useCallback((result) => {
-      const { destination, source, reason } = result;
-      if (!destination || reason === "CANCEL") {
-        return;
-      }
-      if (
-        destination.droppableId === source.droppableId &&
-        destination.index === source.index
-      ) {
-        return;
-      }
-      const updateItems = [...items];
-      const droppedItem = items[source.index];
-      updateItems.splice(source.index, 1);
-      updateItems.splice(destination.index, 0, droppedItem);
-      updateShoppingCart(updateItems);
-    }, []);
+    const onDragEnd = useCallback(
+      (result) => {
+        const { destination, source, reason } = result;
+        if (!destination || reason === "CANCEL") {
+          return;
+        }
+        if (
+          destination.droppableId === source.droppableId &&
+          destination.index === source.index
+        ) {
+          return;
+        }
+        const updateItems = [...items];
+        const droppedItem = items[source.index];
+        updateItems.splice(source.index, 1);
+        updateItems.splice(destination.index, 0, droppedItem);
+        updateShoppingCart(updateItems);
+      },
+      [items, updateShoppingCart]
+    );
     const onSaveRoute = useCallback(() => {
       if (items.length > 0) {
         setOpenInputName(true);

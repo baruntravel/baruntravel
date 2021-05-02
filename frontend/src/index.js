@@ -7,6 +7,7 @@ axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL;
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common["Authorization"] =
   `Bearer ${localStorage.getItem("accessToken")}` || "";
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
