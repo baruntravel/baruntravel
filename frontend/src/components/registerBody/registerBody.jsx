@@ -11,13 +11,13 @@ const RegisterBody = ({ onClickLogin }) => {
   const [loading, setLoading] = useState(false);
   const [registerFail, setRegisterFail] = useState(false);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     setLoading(true);
     const nickname = nicknameRef.current.value || "";
     const email = emailRef.current.value || "";
     const password = passwordRef.current.value || "";
-    const result = await onRegister(nickname, email, password);
+    const result = onRegister(nickname, email, password);
     // 회원 가입 api호출
     setLoading(false);
     if (result) {
