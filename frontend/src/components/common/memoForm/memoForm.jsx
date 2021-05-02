@@ -7,7 +7,7 @@ import styles from "./memoForm.module.css";
 import { onWriteMemo } from "../../../api/cartAPI";
 
 const MemoForm = ({ item, onClose, updateMemoShoppingItem }) => {
-  const [textAreaContent, onChangeTextArea] = useInput("");
+  const [textAreaContent, onChangeTextArea] = useInput(item.memo || "");
 
   const saveMemo = useCallback(async () => {
     const result = await onWriteMemo(item.id, textAreaContent);
