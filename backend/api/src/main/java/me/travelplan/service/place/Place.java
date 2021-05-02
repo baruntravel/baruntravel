@@ -54,6 +54,7 @@ public class Place extends BaseEntity {
     }
 
     public Place setFromKakaoMapPlace(KakaoMapPlace kakaoMapPlace) {
+        this.detailStatus = DetailStatus.COMPLETE;
         this.thumbnail = File.createExternalImage(kakaoMapPlace.getThumbnail());
         try {
             this.openHour = kakaoMapPlace.getOpenHour().get(0).getTimeList().get(0).getTimeSE();
