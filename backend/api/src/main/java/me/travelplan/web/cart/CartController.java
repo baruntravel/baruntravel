@@ -16,12 +16,17 @@ public class CartController {
 
     @PostMapping("/place")
     public void addPlace(@RequestBody CartPlaceRequest.AddPlace request, @CurrentUser CustomUserDetails customUserDetails) {
-        cartPlaceService.addPlace(request, customUserDetails.getUser());
+        cartPlaceService.addPlace(cartMapper.dtoToPlace(request), customUserDetails.getUser());
     }
 
     @GetMapping("/my")
     public CartPlaceResponse.GetList getMyCart(@CurrentUser CustomUserDetails customUserDetails) {
         return cartMapper.toGetListResponse(cartPlaceService.getMyCart(customUserDetails.getUser()), customUserDetails.getUser());
+    }
+
+    @PutMapping("/place/{placeId}/memo")
+    public void addMemo(@PathVariable Long placeId, @RequestBody CartPlaceRequest.AddMemo request, @CurrentUser CustomUserDetails customUserDetails) {
+        cartPlaceService.addMemo(placeId, request, customUserDetails.getUser());
     }
 
     @DeleteMapping("/place/{placeId}")

@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface CartPlaceRepository extends JpaRepository<CartPlace, Long> {
     Optional<CartPlace> findByPlaceIdAndCreatedBy(Long placeId, User user);
 
-    @Query("select c from CartPlace c join fetch c.place where c.createdBy=:user")
+    @Query("select c from CartPlace c join fetch c.place p join fetch p.category where c.createdBy=:user")
     List<CartPlace> findAllByCreatedBy(@Param("user") User user);
 
     void deleteByPlaceIdAndCreatedBy(Long placeId, User user);

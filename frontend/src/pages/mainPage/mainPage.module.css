@@ -1,0 +1,17 @@
+.container {
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+.header {
+  margin: 12px;
+  width: 85%;
+}
+
+.body {
+  margin: 0 auto;
+  width: 85%;
+}

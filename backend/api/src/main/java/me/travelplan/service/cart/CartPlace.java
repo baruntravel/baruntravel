@@ -17,9 +17,15 @@ public class CartPlace extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String memo;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     private Place place;
+
+    public void addMemo(String memo) {
+        this.memo = memo;
+    }
 
     public static CartPlace create(Place place) {
         return CartPlace.builder()

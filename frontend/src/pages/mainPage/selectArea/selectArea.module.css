@@ -1,36 +1,41 @@
 .container {
   margin: 0;
   padding: 0;
-  width: 560px;
+  width: 100%;
 }
 
-.routeList {
+.title {
+  margin-top: 16px;
+}
+
+.areaList {
   margin: 0;
   padding: 0;
   display: flex;
   overflow-x: scroll;
 }
 
-.routeList a {
+.areaList a {
   color: black;
   text-decoration: none;
 }
 
-.routeList a:hover {
+.areaList a:hover {
   color: black;
 }
 
-.route {
+.area {
   white-space: nowrap;
   width: 100px;
   height: 100px;
-  background-color: steelblue;
+  background-color: thistle;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 50%;
   margin: 4px;
 }
 
-.route:hover {
+.area:hover {
   background-color: skyblue;
 }

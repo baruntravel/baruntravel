@@ -22,13 +22,13 @@ export const onLogin = async (email, password) => {
     });
 };
 
-export const onRegister = (name, email, password) => {
+export const onRegister = async (name, email, password) => {
   const data = {
     name,
     email,
     password,
   };
-  axios
+  await axios
     .post("/auth/register", data)
     .then((res) => {
       console.log(res);
@@ -38,4 +38,9 @@ export const onRegister = (name, email, password) => {
       console.error(error);
       return false;
     });
+};
+
+export const onLogout = () => {
+  axios.defaults.headers.common["Authorization"] = undefined;
+  window.localStorage.clear();
 };

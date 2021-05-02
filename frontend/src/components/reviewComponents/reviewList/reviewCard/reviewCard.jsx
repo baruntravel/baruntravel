@@ -5,7 +5,7 @@ import Avatar from "antd/lib/avatar/avatar";
 import { getYear, getMonth, getDate } from "date-fns";
 import { LikeOutlined, LikeTwoTone } from "@ant-design/icons";
 import PostImages from "../../postImages/postImages";
-const ReviewCard = ({}) => {
+const ReviewCard = ({ likeCount }) => {
   const [liked, setLiked] = useState(false); // post의 좋아요를 누른 사람들 중 유저가 있는 지 확인하는 작업,
   const onUnlike = () => {
     // 좋아요 취소 -> DB에 반영,
@@ -73,7 +73,7 @@ const ReviewCard = ({}) => {
               onClick={onUnlike}
             />
           )}
-          <span className={styles.likeCount}>{data.likeCount}</span>
+          <span className={styles.likeCount}>{likeCount}</span>
         </div>
         <span className={styles.date}>{`${getYear(data.date)}.${getMonth(
           data.date

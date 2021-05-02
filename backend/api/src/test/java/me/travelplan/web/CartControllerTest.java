@@ -47,7 +47,14 @@ public class CartControllerTest extends MvcTest {
     @DisplayName("카트가 없다면 카트를 생성하고 장소를 담고 있다면 있는 카트에 장소담기")
     public void createCartAndAddPlace() throws Exception {
         CartPlaceRequest.AddPlace request = CartPlaceRequest.AddPlace.builder()
-                .placeId(1L)
+                .id(123L)
+                .name("테스트 장소이름")
+                .x(36.5)
+                .y(127.12)
+                .url("www.naver.com")
+                .address("서울 종로구 종로3길 17")
+                .categoryId("CE7")
+                .categoryName("카페")
                 .build();
 
         ResultActions results = mockMvc.perform(
@@ -62,7 +69,14 @@ public class CartControllerTest extends MvcTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestFields(
-                                fieldWithPath("placeId").type(JsonFieldType.NUMBER).description("카트에 추가할 장소 식별자")
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("장소 식별자"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("장소 이름"),
+                                fieldWithPath("address").type(JsonFieldType.STRING).description("장소 주소"),
+                                fieldWithPath("x").type(JsonFieldType.NUMBER).description("장소 x 좌표"),
+                                fieldWithPath("y").type(JsonFieldType.NUMBER).description("장소 y 좌표"),
+                                fieldWithPath("url").type(JsonFieldType.STRING).description("장소 url"),
+                                fieldWithPath("categoryId").type(JsonFieldType.STRING).description("장소 카테고리 식별자"),
+                                fieldWithPath("categoryName").type(JsonFieldType.STRING).description("장소 카테고리 이름")
                         )
                 ));
     }
@@ -78,10 +92,12 @@ public class CartControllerTest extends MvcTest {
                         .name("테스트 장소 이름")
                         .x(97.123)
                         .y(124.123)
+                        .address("종로구 종로 3길 17")
                         .url("https://www.naver.com")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
+                .memo("첫번째 테스트 메모입니다~!")
                 .build();
         cartPlaceList.add(cartPlace1);
         CartPlace cartPlace2 = CartPlace.builder()
@@ -90,10 +106,12 @@ public class CartControllerTest extends MvcTest {
                         .name("강릉 해돋이 마을")
                         .x(97.123)
                         .y(124.123)
-                        .category(PlaceCategory.builder().id("CE7").name("카페").build())
+                        .address("테스트 주소")
+                        .category(PlaceCategory.builder().id("FD6").name("음식점").build())
                         .url("https://www.naver.com")
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
+                .memo("두번째 테스트 메모입니다~!")
                 .build();
         cartPlaceList.add(cartPlace2);
         CartPlace cartPlace3 = CartPlace.builder()
@@ -102,10 +120,12 @@ public class CartControllerTest extends MvcTest {
                         .name("테스트장소2")
                         .x(97.123)
                         .y(124.123)
+                        .address("테스트 주소2")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .url("https://www.naver.com")
                         .image(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
+                .memo("세번째 테스트 메모입니다~!")
                 .build();
         cartPlaceList.add(cartPlace3);
 
@@ -125,10 +145,40 @@ public class CartControllerTest extends MvcTest {
                         responseFields(
                                 fieldWithPath("places[].id").description("장소 식별자"),
                                 fieldWithPath("places[].name").description("장소 이름"),
-                                fieldWithPath("places[].category").description("장소 카테고리"),
+                                fieldWithPath("places[].address").description("장소 주소"),
+                                fieldWithPath("places[].memo").description("장소에 대한 메모 (메모가 없다면 null)"),
                                 fieldWithPath("places[].likeCheck").description("장소 좋아요"),
                                 fieldWithPath("places[].url").description("장소 URL"),
-                                fieldWithPath("places[].image").description("장소 이미지 URL")
+                                fieldWithPath("places[].categoryId").description("장소 카테고리 식별자"),
+                                fieldWithPath("places[].categoryName").description("장소 카테고리 이름")
+                        )
+                ));
+    }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("카트에 담겨있는 장소에 메모 추가")
+    public void addMemo() throws Exception {
+        CartPlaceRequest.AddMemo request = CartPlaceRequest.AddMemo.builder()
+                .memo("테스트 메모입니다.")
+                .build();
+
+        ResultActions results = mockMvc.perform(
+                put("/cart/place/{placeId}/memo",123L)
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(document("cart-addMemo",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("placeId").description("카트에 담겨있는 장소 식별자")
+                        ),
+                        requestFields(
+                                fieldWithPath("memo").type(JsonFieldType.STRING).description("카트에 담겨있는 장소에 추가할 메모")
                         )
                 ));
     }

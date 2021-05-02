@@ -1,16 +1,15 @@
 import "./App.css";
-import MainPage from "./pages/mainPage/mainPage";
-import SelectContainer from "./pages/selectContainer/selectContainer";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import MainPage from "./pages/mainPage/mainPage";
+import LoginPage from "./pages/loginPage/loginPage";
 import UsersRoutePage from "./pages/usersRoutePage/usersRoutePage";
 import HotplacePage from "./pages/hotplacePage/hotplacePage";
 import { RecoilRoot } from "recoil";
 import MyRoutePage from "./pages/myRoutePage/myRoutePage";
-import PlaceCard from "./components/placeCard/placeCard";
 import RouteDetailPage from "./pages/routeDetailPage/routeDetailPage";
 import PlaceDetailPage from "./pages/placeDetailPage/placeDetailPage";
-import AllRoute from "./pages/selectContainer/selectRoute/allRoute/allRoute";
-import AllArea from "./pages/selectContainer/selectArea/allArea/allArea";
+import AllRoute from "./pages/mainPage/selectRoute/allRoute/allRoute";
+import AllArea from "./pages/mainPage/selectArea/allArea/allArea";
 
 function App() {
   return (
@@ -20,8 +19,13 @@ function App() {
           <Route exact path="/">
             <MainPage />
           </Route>
+
+          <Route exact path="/login">
+            <LoginPage />
+          </Route>
+
           <Route path="/start">
-            <SelectContainer />
+            <MainPage />
           </Route>
 
           <Route exact path="/:id/places">
