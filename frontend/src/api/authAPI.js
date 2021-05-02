@@ -15,6 +15,7 @@ export const onLogin = (email, password) => {
         refreshTokenExpiredAt,
       } = res.data;
       axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+      localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("accessTokenExpiredAt", accessTokenExpiredAt);
       localStorage.setItem("refreshTokenExpiredAt", refreshTokenExpiredAt);
