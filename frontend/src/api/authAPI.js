@@ -46,3 +46,8 @@ export const onRegister = async (name, email, password) => {
     });
   return result;
 };
+
+export const onLogout = () => {
+  axios.defaults.headers.common["Authorization"] = undefined;
+  window.localStorage.clear();
+};

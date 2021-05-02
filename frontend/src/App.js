@@ -6,7 +6,6 @@ import UsersRoutePage from "./pages/usersRoutePage/usersRoutePage";
 import HotplacePage from "./pages/hotplacePage/hotplacePage";
 import { RecoilRoot } from "recoil";
 import MyRoutePage from "./pages/myRoutePage/myRoutePage";
-import PlaceCard from "./components/placeCard/placeCard";
 import RouteDetailPage from "./pages/routeDetailPage/routeDetailPage";
 import PlaceDetailPage from "./pages/placeDetailPage/placeDetailPage";
 import AllRoute from "./pages/mainPage/selectRoute/allRoute/allRoute";
