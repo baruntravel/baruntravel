@@ -1,28 +1,11 @@
 package me.travelplan.service.kakaomap;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
-
-@Getter
-class OpenHourTime {
-    String timeName;
-    String timeSE;
-    String dayOfWeek;
-}
-
-@Getter
-class OpenHour {
-    String periodName;
-    List<OpenHourTime> timeList;
-}
-
-@Getter
-class Photo {
-    String imageUrl;
-}
 
 @Getter
 @Builder
@@ -33,4 +16,22 @@ public class KakaoMapPlace {
     String phone;
     List<OpenHour> openHour;
     List<Photo> photos;
+
+    @Getter(AccessLevel.PUBLIC)
+    public static class Photo {
+        String imageUrl;
+    }
+
+    @Getter
+    public static class OpenHour {
+        String periodName;
+        List<OpenHourTime> timeList;
+    }
+
+    @Getter
+    public static class OpenHourTime {
+        String timeName;
+        String timeSE;
+        String dayOfWeek;
+    }
 }

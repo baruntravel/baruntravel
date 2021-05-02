@@ -33,7 +33,7 @@ public interface RouteMapper {
                 .name(request.getPlace().getName())
                 .url(request.getPlace().getName())
                 .category(PlaceCategory.builder().id(request.getPlace().getCategory()).build())
-                .image(File.builder()
+                .thumbnail(File.builder()
                         .name(request.getPlace().getName())
                         .extension("")
                         .height(0)
@@ -59,7 +59,7 @@ public interface RouteMapper {
 
         request.getPlaces().forEach((place) -> route.addPlace(RoutePlace.builder().order(place.getOrder()).place(
                 Place.builder()
-                        .image(
+                        .thumbnail(
                                 File.builder()
                                         .name(place.getName())
                                         .extension("")
@@ -100,8 +100,8 @@ public interface RouteMapper {
                     .url(place.getUrl());
             //TODO 현재 구현에는 place에 image가 null로 들어가고 테스트에서는 image가 들어가기 때문에 조건문처리를 해놓음
             // place에 image가 확실히 들어가게 되면 조건문 제거
-            if (place.getImage() != null) {
-                routePlaces.add(builder.image(place.getImage().getUrl()).build());
+            if (place.getThumbnail() != null) {
+                routePlaces.add(builder.image(place.getThumbnail().getUrl()).build());
             } else {
                 routePlaces.add(builder.build());
             }
@@ -148,8 +148,8 @@ public interface RouteMapper {
                         .order(routePlace.getOrder());
                 //TODO 현재 구현에는 place에 image가 null로 들어가고 테스트에서는 image가 들어가기 때문에 조건문처리를 해놓음
                 // place에 image가 확실히 들어가게 되면 조건문 제거
-                if (routePlace.getPlace().getImage() != null) {
-                    routePlaces.add(routePlaceBuilder.image(routePlace.getPlace().getImage().getUrl()).build());
+                if (routePlace.getPlace().getThumbnail() != null) {
+                    routePlaces.add(routePlaceBuilder.image(routePlace.getPlace().getThumbnail().getUrl()).build());
                 } else {
                     routePlaces.add(routePlaceBuilder.build());
                 }

@@ -92,7 +92,7 @@ public class RoutesControllerTest extends MvcTest {
                         .address("강릉")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .url("https://www.naver.com")
-                        .image(File.builder().url("http://loremflickr.com/440/440").build())
+                        .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .build());
         route1.setCreatedBy(User.builder().name("테스트유저1").build());
@@ -114,7 +114,7 @@ public class RoutesControllerTest extends MvcTest {
                         .y(124.123)
                         .url("https://www.naver.com")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
-                        .image(File.builder().url("http://loremflickr.com/440/440").build())
+                        .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build()
         ).build());
         route2.addPlace(RoutePlace.builder().order(2).place(
@@ -126,7 +126,7 @@ public class RoutesControllerTest extends MvcTest {
                         .y(124.124)
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .url("https://www.naver.com")
-                        .image(File.builder().url("http://loremflickr.com/440/440").build())
+                        .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .build());
         route2.setCreatedBy(User.builder().name("테스트유저2").build());
@@ -148,7 +148,7 @@ public class RoutesControllerTest extends MvcTest {
                         .y(124.124)
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .url("https://www.naver.com")
-                        .image(File.builder().url("http://loremflickr.com/440/440").build())
+                        .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .build());
         route3.setCreatedBy(User.builder().name("테스트유저3").build());
