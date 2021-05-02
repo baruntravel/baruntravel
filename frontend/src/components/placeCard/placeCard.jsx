@@ -24,7 +24,8 @@ const PlaceCard = ({ place, onHandleDelete, addShoppingCart, isLiked }) => {
   useEffect(() => {
     // isLiked && setLiked(true);
   });
-  const placeAddress = place.road_address_name || place.address_name;
+  const placeAddress =
+    place.road_address_name || place.address_name || place.address;
   return (
     <div className={styles.PlaceCard} onClick={onClickCard}>
       <div className={styles.imageBox}>
@@ -60,21 +61,8 @@ const PlaceCard = ({ place, onHandleDelete, addShoppingCart, isLiked }) => {
           )}
         </div>
         <span className={styles.categoryName}>
-          {place.category_group_name || place.category_name}
+          {place.category_group_name || place.categoryName}
         </span>
-        {/* <div className={styles.placeRateBox}>
-          <Rate
-            className={styles.rate}
-            disabled={true}
-            defaultValue={4}
-            allowClear={false}
-            style={{
-              animation: "none",
-              fontSize: "0.8em",
-            }}
-          />
-          <span className={styles.reviewCount}>6</span>
-        </div> */}
         <div className={styles.bottom}>
           <span className={styles.placeAddress}>{placeAddress}</span>
           <a

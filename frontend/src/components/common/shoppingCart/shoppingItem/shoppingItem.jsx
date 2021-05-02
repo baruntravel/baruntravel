@@ -33,8 +33,15 @@ const ShoppingItem = ({
       </div>
       <div className={styles.card__bottom}>
         <div className={styles.memoBox} onClick={setOpenMemoTrue}>
-          <FormOutlined className={styles.memoIcon} />
-          <span className={styles.memo}>메모 적기</span>
+          <FormOutlined
+            className={styles.memoIcon}
+            style={{ color: "#00acee" }}
+          />
+          {item.memo ? (
+            <span>메모있다!</span>
+          ) : (
+            <span className={styles.memo}>메모 적기</span>
+          )}
         </div>
       </div>
       {openMemo && (
