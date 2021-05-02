@@ -1,0 +1,16 @@
+POST {{apiUrl}}/cart/place
+Content-Type: application/json;charset=UTF-8
+Authorization: {{authorizationToken}}
+
+{
+  "id": 1797997961,
+  "name": "옥동식 서교점",
+  "url": "https://place.map.kakao.com/1797997961",
+  "x": 37.554619995803215,
+  "y": 126.91083170563417,
+  "address": "서울 마포구 양화로7길 44-10 (우)04035",
+  "categoryId": "CE7",
+  "categoryName": "카페"
+}
+
+

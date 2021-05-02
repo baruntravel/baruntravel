@@ -45,7 +45,7 @@ public class Place extends BaseEntity {
     /**
      * Detail
      */
-    @OneToMany
+    @OneToMany(mappedBy = "place")
     private List<PlaceImage> images;
     private String openHour;
 

@@ -58,6 +58,8 @@ public class File extends BaseEntity {
                 .server(FileServer.EXTERNAL)
                 .extension("")
                 .height(0)
+                .size(0L)
+                .type(FileType.IMAGE)
                 .width(0)
                 .name("")
                 .build();

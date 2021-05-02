@@ -81,11 +81,15 @@ public class PlaceService {
         }
     }
 
-    @Async
+//    @Async
     @Transactional
     public void updateDetail(Long id) {
         Place place = placeRepository.findById(id).orElseThrow(PlaceNotFoundException::new);
         KakaoMapPlace kakaoPlace = kakaoMapService.getKakaoMapPlace(id);
+
+        if (kakaoPlace == null) {
+            return;
+        }
 
         List<File> images = kakaoPlace.getPhotos().stream()
                 .map(photo -> File.createExternalImage(photo.getImageUrl()))

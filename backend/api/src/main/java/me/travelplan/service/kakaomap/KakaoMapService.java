@@ -23,8 +23,8 @@ public class KakaoMapService {
         try {
             HashMap<String, Object> payloadMap = new HashMap<>();
             payloadMap.put("body", "{\"placeId\": " + placeId + "}");
-
-            SdkBytes payload = SdkBytes.fromUtf8String(objectMapper.writeValueAsString(payloadMap));
+            String payloadStr = objectMapper.writeValueAsString(payloadMap);
+            SdkBytes payload = SdkBytes.fromUtf8String(payloadStr);
 
             InvokeRequest request = InvokeRequest.builder()
                     .functionName("KakaoMapCralwer")
