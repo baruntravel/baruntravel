@@ -18,12 +18,24 @@ public class RouteDto {
         private Long id;
         private String image;
         private String name;
+        private String address;
         private String url;
         private Double x;
         private Double y;
         private String category;
         private Integer order;
     }
+
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class RoutePlaceWithIdAndOrder {
+        private Long id;
+        private Integer order;
+    }
+
 
     @Getter
     @Builder

@@ -39,10 +39,6 @@ public class File extends BaseEntity {
     private Integer width;
     private Integer height;
 
-    @OneToMany(mappedBy = "file", cascade = CascadeType.PERSIST)
-    @Builder.Default
-    private List<RouteReviewFile> routeReviewFiles = new ArrayList<>();
-
     public static File create(SavedFile file) {
         return File.builder()
                 .name(file.getName())
