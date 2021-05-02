@@ -4,7 +4,7 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"; // empty hea
 import FavoriteIcon from "@material-ui/icons/Favorite"; // filled heart icon
 import { Link } from "react-router-dom";
 
-const RouteCarousel = ({ routeItems, handleChange }) => {
+const RouteCarousel = ({ routes, handleChange }) => {
   const settings = {
     dots: false,
     infinite: true,
@@ -16,19 +16,19 @@ const RouteCarousel = ({ routeItems, handleChange }) => {
   return (
     <div className={styles.container}>
       <Slider afterChange={(e) => handleChange(e)} {...settings}>
-        {Object.keys(routeItems).map((value, index) => {
+        {Object.keys(routes).map((value, index) => {
           return (
             <Link to={`route/${value}`} target="_blank" key={index}>
               <div className={styles.routeCard}>
                 <div className={styles.top}>
-                  <div className={styles.routeName}>{routeItems[value].routeName}</div>
-                  <div className={styles.creator}>{routeItems[value].creator}</div>
+                  <div className={styles.routeName}>{routes[value].routeName}</div>
+                  <div className={styles.creator}>{routes[value].creator}</div>
                   <button className={styles.heartButton}>
                     <FavoriteBorderIcon />
                   </button>
                 </div>
                 <div className={styles.bottom}>
-                  {routeItems[value].places.map((value, index) => {
+                  {routes[value].places.map((value, index) => {
                     return (
                       <div className={styles.places} key={index}>
                         {value.placeName}

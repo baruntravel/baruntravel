@@ -9,7 +9,7 @@ import BottomDrawer from "./bottomDrawer/bottomDrawer";
 
 // import { getRoute, postRoute, postEmpty } from "../../api/routeAPI";
 const UsersRoutePage = () => {
-  const [routeItems, setRouteItems] = useRecoilState(usersRouteItems);
+  const [routes, setRoutes] = useRecoilState(usersRouteItems); // Todo : routeAPI로 불러오기
   const [myState, setMyState] = useRecoilState(userState);
   const [places, setPlaces] = useState([]);
   const [index, setIndex] = useState(0);
@@ -19,18 +19,18 @@ const UsersRoutePage = () => {
   };
 
   useEffect(() => {
-    const places = Object.values(routeItems)[index].places;
+    const places = Object.values(routes)[index].places;
     setPlaces(places);
   }, [index]);
 
   return (
     <div className={styles.wrapper}>
-      <UsersRouteMap places={places} />
+      <UsersRouteMap places={places} routes={routes} />
       <div className={styles.routeCarousel}>
-        <RouteCarousel routeItems={routeItems} handleChange={(e) => handleChange(e)} />
+        <RouteCarousel routes={routes} handleChange={(e) => handleChange(e)} />
       </div>
       <div className={styles.bottomDrawer}>
-        <BottomDrawer routeItems={routeItems} index={index} />
+        <BottomDrawer routes={routes} index={index} />
       </div>
     </div>
   );
