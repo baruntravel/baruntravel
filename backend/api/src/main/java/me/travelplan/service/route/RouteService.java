@@ -7,6 +7,7 @@ import me.travelplan.service.file.FileRepository;
 import me.travelplan.service.file.FileS3Uploader;
 import me.travelplan.service.place.Place;
 import me.travelplan.service.place.PlaceRepository;
+import me.travelplan.service.place.exception.PlaceNotFoundException;
 import me.travelplan.service.route.exception.RouteNotFoundException;
 import me.travelplan.service.route.exception.RouteReviewNotFoundException;
 import me.travelplan.service.user.User;
@@ -45,20 +46,23 @@ public class RouteService {
     }
 
     @Transactional
-    public Route create(Route route) {
-        List<RoutePlace> places = route.getPlaces();
-        route.calculateCoordinate(places);
+    public Route create(RouteRequest.Create request) {
+        List<RoutePlace> routePlaces = request.getPlaces().stream()
+                .map(place -> {
+                    Place findPlace = placeRepository.findById(place.getId()).orElseThrow(PlaceNotFoundException::new);
+                    return RoutePlace.create(findPlace, place.getOrder());
+                }).collect(Collectors.toList());
+        Route route = Route.create(request.getName(), routePlaces);
+        route.calculateCoordinate(routePlaces);
 
-        fileRepository.saveAll(route.getPlaces().stream().map(RoutePlace::getPlace).map(Place::getImage).collect(Collectors.toList()));
-        placeRepository.saveAll(route.getPlaces().stream().map(RoutePlace::getPlace).collect(Collectors.toList()));
         return routeRepository.save(route);
     }
 
     @Transactional
     public Route update(Route route) {
         routePlaceRepository.deleteAllByRoute(route);
-        fileRepository.saveAll(route.getPlaces().stream().map(RoutePlace::getPlace).map(Place::getImage).collect(Collectors.toList()));
-        placeRepository.saveAll(route.getPlaces().stream().map(RoutePlace::getPlace).collect(Collectors.toList()));
+        fileRepository.saveAll(route.getRoutePlaces().stream().map(RoutePlace::getPlace).map(Place::getImage).collect(Collectors.toList()));
+        placeRepository.saveAll(route.getRoutePlaces().stream().map(RoutePlace::getPlace).collect(Collectors.toList()));
         return routeRepository.save(route);
     }
 
@@ -71,7 +75,7 @@ public class RouteService {
         Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
         fileRepository.save(place.getImage());
         route.addPlace(RoutePlace.builder().order(0).route(route).place(place).build());
-        route.calculateCoordinate(route.getPlaces());
+        route.calculateCoordinate(route.getRoutePlaces());
         return routeRepository.save(route);
     }
 

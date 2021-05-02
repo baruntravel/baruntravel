@@ -12,15 +12,16 @@ import javax.persistence.*;
 @Entity
 @Table(name = "routes_places")
 public class RoutePlace {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "route_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "route_id")
     private Route route;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "place_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "place_id")
     private Place place;
 
     @Column(name = "`order`")
@@ -28,5 +29,12 @@ public class RoutePlace {
 
     public void setRoute(Route route) {
         this.route = route;
+    }
+
+    public static RoutePlace create(Place place, Integer order) {
+        return RoutePlace.builder()
+                .place(place)
+                .order(order)
+                .build();
     }
 }

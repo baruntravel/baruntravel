@@ -14,6 +14,7 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,62 +57,69 @@ public interface RouteMapper {
 
         Route route = routeBuilder.build();
 
-        request.getPlaces().forEach((place) -> {
-            route.addPlace(RoutePlace.builder().order(place.getOrder()).place(
-                    Place.builder()
-                            .image(
-                                    File.builder()
-                                            .name(place.getName())
-                                            .extension("")
-                                            .height(0)
-                                            .width(0)
-                                            .server(FileServer.EXTERNAL)
-                                            .size(0L).type(FileType.IMAGE)
-                                            .url(place.getImage())
-                                            .build()
-                            )
-                            .category(PlaceCategory.builder().id(place.getCategory()).build())
-                            .id(place.getId())
-                            .url(place.getUrl())
-                            .name(place.getName())
-                            .x(place.getX())
-                            .y(place.getY())
-                            .build()
-            ).build());
-        });
+        request.getPlaces().forEach((place) -> route.addPlace(RoutePlace.builder().order(place.getOrder()).place(
+                Place.builder()
+                        .image(
+                                File.builder()
+                                        .name(place.getName())
+                                        .extension("")
+                                        .height(0)
+                                        .width(0)
+                                        .server(FileServer.EXTERNAL)
+                                        .size(0L).type(FileType.IMAGE)
+                                        .url(place.getImage())
+                                        .build()
+                        )
+                        .category(PlaceCategory.builder().id(place.getCategory()).build())
+                        .id(place.getId())
+                        .url(place.getUrl())
+                        .name(place.getName())
+                        .x(place.getX())
+                        .y(place.getY())
+                        .build()
+        ).build()));
 
         return route;
     }
 
     default RouteResponse.GetOne toGetOneResponse(Route route) {
-        var response = RouteResponse.GetOne.builder();
-
-        response.name(route.getName());
-        response.maxX(route.getMaxX());
-        response.maxY(route.getMaxY());
-        response.minX(route.getMinX());
-        response.minY(route.getMinY());
-
         List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
 
-        route.getPlaces().forEach(routePlace -> {
+        route.getRoutePlaces().forEach(routePlace -> {
             var routePlaceBuilder = RouteDto.RoutePlace.builder();
             routePlaceBuilder.order(routePlace.getOrder());
 
             Place place = routePlace.getPlace();
-            routePlaces.add(routePlaceBuilder
+            RouteDto.RoutePlace.RoutePlaceBuilder builder = routePlaceBuilder
                     .id(place.getId())
                     .name(place.getName())
-                    .image(place.getImage().getUrl())
                     .x(place.getX())
                     .y(place.getY())
-                    .category(place.getCategory().getId())
-                    .url(place.getUrl())
-                    .build());
+                    .address(place.getAddress())
+                    .category(place.getCategory().getName())
+                    .url(place.getUrl());
+            //TODO 현재 구현에는 place에 image가 null로 들어가고 테스트에서는 image가 들어가기 때문에 조건문처리를 해놓음
+            // place에 image가 확실히 들어가게 되면 조건문 제거
+            if (place.getImage() != null) {
+                routePlaces.add(builder.image(place.getImage().getUrl()).build());
+            } else {
+                routePlaces.add(builder.build());
+            }
         });
-        response.places(routePlaces);
+        HashMap<String, Double> map = route.calculateCenterCoordinate();
+        Double centerX = map.get("centerX");
+        Double centerY = map.get("centerY");
 
-        return response.build();
+        return RouteResponse.GetOne.builder()
+                .name(route.getName())
+                .centerX(centerX)
+                .centerY(centerY)
+                .createdBy(route.getCreatedBy().getName())
+                .createdAt(route.getCreatedAt())
+                .updatedAt(route.getUpdatedAt())
+                .reviewCount(route.getRouteReviews().size())
+                .places(routePlaces)
+                .build();
     }
 
     default RouteResponse.GetsWithOnlyName toGetsWithOnlyNameResponse(List<Route> routes) {
@@ -128,24 +136,38 @@ public interface RouteMapper {
         List<RouteResponse.GetList> getList = new ArrayList<>();
         routes.forEach(route -> {
             List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
-            route.getPlaces().forEach(routePlace -> routePlaces.add(RouteDto.RoutePlace.builder()
-                    .id(routePlace.getPlace().getId())
-                    .name(routePlace.getPlace().getName())
-                    .order(routePlace.getOrder())
-                    .image(routePlace.getPlace().getImage().getUrl())
-                    .x(routePlace.getPlace().getX())
-                    .y(routePlace.getPlace().getY())
-                    .category(routePlace.getPlace().getCategory().getId())
-                    .url(routePlace.getPlace().getUrl())
-                    .build()));
+            route.getRoutePlaces().forEach(routePlace -> {
+                RouteDto.RoutePlace.RoutePlaceBuilder routePlaceBuilder = RouteDto.RoutePlace.builder()
+                        .id(routePlace.getPlace().getId())
+                        .name(routePlace.getPlace().getName())
+                        .address(routePlace.getPlace().getAddress())
+                        .x(routePlace.getPlace().getX())
+                        .y(routePlace.getPlace().getY())
+                        .category(routePlace.getPlace().getCategory().getName())
+                        .url(routePlace.getPlace().getUrl())
+                        .order(routePlace.getOrder());
+                //TODO 현재 구현에는 place에 image가 null로 들어가고 테스트에서는 image가 들어가기 때문에 조건문처리를 해놓음
+                // place에 image가 확실히 들어가게 되면 조건문 제거
+                if (routePlace.getPlace().getImage() != null) {
+                    routePlaces.add(routePlaceBuilder.image(routePlace.getPlace().getImage().getUrl()).build());
+                } else {
+                    routePlaces.add(routePlaceBuilder.build());
+                }
+            });
+            HashMap<String, Double> map = route.calculateCenterCoordinate();
+            Double centerX = map.get("centerX");
+            Double centerY = map.get("centerY");
+
             RouteResponse.GetList list = RouteResponse.GetList.builder()
                     .id(route.getId())
                     .name(route.getName())
+                    .centerX(centerX)
+                    .centerY(centerY)
                     .likeCheck(route.isLike(loginUser))
                     .likeCount(route.getRouteLikes().size())
+                    .createdBy(route.getCreatedBy().getName())
                     .places(routePlaces)
                     .build();
-
             getList.add(list);
         });
         return getList;

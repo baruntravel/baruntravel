@@ -14,6 +14,15 @@ public class RouteRequest {
     }
 
     @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Create {
+        private String name;
+        private List<RouteDto.RoutePlaceWithIdAndOrder> places;
+    }
+
+    @Getter
     @NoArgsConstructor
     public static class CreateOrUpdate {
         private String name;

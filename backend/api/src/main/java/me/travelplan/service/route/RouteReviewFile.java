@@ -28,15 +28,9 @@ public class RouteReviewFile {
         this.routeReview = routeReview;
     }
 
-    public void addFile(File file) {
-        this.file = file;
-        file.getRouteReviewFiles().add(this);
-    }
-
     public static RouteReviewFile create(File file) {
-        RouteReviewFile routeReviewFile = RouteReviewFile.builder().build();
-        routeReviewFile.addFile(file);
-
-        return routeReviewFile;
+        return RouteReviewFile.builder()
+                .file(file)
+                .build();
     }
 }
