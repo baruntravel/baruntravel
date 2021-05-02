@@ -176,8 +176,7 @@ const HotplacePage = () => {
                 onHandleDelete={handleDeleteItem}
                 addShoppingCart={addShoppingCart}
                 isLiked={
-                  shoppingItems.filter((item) => item.id === place.id).length >
-                  0
+                  shoppingItems.filter((item) => item.id == place.id).length
                 }
               />
             </div>
