@@ -29,7 +29,12 @@ const HotplacePage = () => {
   const inputRef = useRef();
   const sliderRef = useRef();
 
-  const shoppingItemsRecoil = useRecoilValue(userCart);
+  // recoil과 beautiful-dnd가 concurrent 문제로 충돌이 나여 전역관리와 페이지 단 관리 두가지를 모두해줘야함.
+  const [shoppingItemsRecoil, setShoppingItemsRecoil] = useRecoilState(
+    userCart
+  );
+  const [shoppingItems, setShoppingItems] = useState([]);
+
   const userStates = useRecoilValue(userState);
   const [cartVisible, setCartVisible] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
@@ -40,12 +45,14 @@ const HotplacePage = () => {
   const [searchPlaces, setSearchPlaces] = useState([]);
   const [markerIndex, setMarkerIndex] = useState();
 
-  const [shoppingItems, setShoppingItems] = useState([]);
   useEffect(() => {
     if (userStates.isLogin) {
       setShoppingItems(shoppingItemsRecoil);
     }
-  }, [shoppingItemsRecoil, userStates]);
+  }, [userStates]);
+  useEffect(() => {
+    setShoppingItemsRecoil(shoppingItems);
+  }, [shoppingItems]);
   const [needLogin, setNeedLogin] = useState(false);
 
   const setCartVisibleTrue = useCallback(() => {
