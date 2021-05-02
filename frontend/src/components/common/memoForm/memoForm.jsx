@@ -4,13 +4,18 @@ import React, { useCallback, useRef } from "react";
 import useInput from "../../../hooks/useInput";
 import Portal from "../../portal/portal";
 import styles from "./memoForm.module.css";
+import { onWriteMemo } from "../../../api/cartAPI";
 
-const MemoForm = ({ item, onClose, updateShoppingCart }) => {
-  const [textAreaContent, onChangeTextArea, setTextAreaContent] = useInput("");
+const MemoForm = ({ item, onClose, updateMemoShoppingItem }) => {
+  const [textAreaContent, onChangeTextArea] = useInput(item.memo || "");
 
-  const saveMemo = useCallback(() => {
-    console.log(textAreaContent);
-  }, [textAreaContent]);
+  const saveMemo = useCallback(async () => {
+    const result = await onWriteMemo(item.id, textAreaContent);
+    if (result) {
+      updateMemoShoppingItem(item.id, textAreaContent);
+    }
+    onClose();
+  }, [item.id, onClose, textAreaContent, updateMemoShoppingItem]);
   return (
     <Portal>
       <div className={styles.MemoForm}>

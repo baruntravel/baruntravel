@@ -125,7 +125,7 @@ const SideMyProfile = ({ handleClose }) => {
               <span className={styles.tag__count}>4</span>
             </div>
             <div className={styles.section__tagBox}>
-              <div className={styles.icon}>
+              <div className={styles.icon} onClick={onOpenEditProfile}>
                 <SettingOutlined />
               </div>
               <span className={styles.section__tag} onClick={onOpenEditProfile}>
@@ -134,7 +134,7 @@ const SideMyProfile = ({ handleClose }) => {
             </div>
           </div>
           <div className={styles.section__tagBox}>
-            <div className={styles.icon}>
+            <div className={styles.icon} onClick={onOpenLogout}>
               <ExportOutlined />
             </div>
             <button className={styles.logoutBtn} onClick={onOpenLogout}>

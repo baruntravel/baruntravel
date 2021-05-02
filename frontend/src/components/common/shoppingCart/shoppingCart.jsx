@@ -11,6 +11,7 @@ const ShoppingCart = memo(
     items,
     setConfirmPortalTrue,
     updateShoppingCart,
+    updateMemoShoppingItem,
     deleteClickedItemId,
     resetCartAll,
     // routeName,
@@ -76,6 +77,7 @@ const ShoppingCart = memo(
                               setConfirmPortalTrue={setConfirmPortalTrue}
                               deleteClickedItemId={deleteClickedItemId}
                               updateShoppingCart={updateShoppingCart}
+                              updateMemoShoppingItem={updateMemoShoppingItem}
                             />
                           </div>
                         )}
