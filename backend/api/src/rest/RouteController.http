@@ -122,12 +122,27 @@ Content-Disposition: form-data; name="score"
 
 ###
 
+POST {{apiUrl}}/route/1/review
+Authorization: {{ authorizationToken }}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="content"
+
+Create Review Without File!
+--WebAppBoundary
+Content-Disposition: form-data; name="score"
+
+5.0
+--WebAppBoundary--
+
+
 GET {{apiUrl}}/route/1/reviews
 Authorization: {{ authorizationToken }}
 
 ###
 
-POST {{apiUrl}}/route/review/2
+POST {{apiUrl}}/route/review/1
 Authorization: {{ authorizationToken }}
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
@@ -148,12 +163,12 @@ Content-Disposition: form-data; name="score"
 
 ###
 
-POST {{apiUrl}}/route/review/2/like
+POST {{apiUrl}}/route/review/3/like
 Authorization: {{ authorizationToken }}
 
 ###
 
-DELETE {{apiUrl}}/route/review/1
+DELETE {{apiUrl}}/route/review/2
 Authorization: {{ authorizationToken }}
 
 

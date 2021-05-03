@@ -173,12 +173,14 @@ public interface RouteMapper {
         return getList;
     }
 
-    default RouteResponse.ReviewList entityToResponseReviewList(List<RouteReview> reviews) {
+    default RouteResponse.ReviewList entityToResponseReviewList(List<RouteReview> reviews, User user) {
         return RouteResponse.ReviewList.builder()
                 .reviews(reviews.stream().map(routeReview -> RouteDto.ReviewResponse.builder()
                         .id(routeReview.getId())
                         .content(routeReview.getContent())
                         .score(routeReview.getScore())
+                        .likeCheck(routeReview.isLike(user))
+                        .likeCount(routeReview.getRouteReviewLikes().size())
                         .createdBy(routeReview.getCreatedBy().getName())
                         .files(routeReview.getRouteReviewFiles().stream()
                                 .map(routeReviewFile -> FileDto.builder()
