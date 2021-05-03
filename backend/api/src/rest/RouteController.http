@@ -1,3 +1,4 @@
+###
 POST {{apiUrl}}/route/empty
 Content-Type: application/json
 Authorization: {{ authorizationToken }}
@@ -17,22 +18,10 @@ Authorization: {{ authorizationToken }}
   "places": [
     {
       "id" : 123,
-      "image" : "https://www.gn.go.kr/tour/images/tour/main_new/mvisual_img07.jpg",
-      "name" : "강릉바닷가",
-      "url" : "https://www.gn.go.kr/tour/index.do",
-      "x" : 37.748125,
-      "y" : 128.878996,
-      "category" : "FD6",
       "order" : 1
     },
     {
       "id" : 124,
-      "image" : "https://cf.bstatic.com/xdata/images/hotel/270x200/129750773.jpg?k=d338049190ff48b19261ee5f516ee563aaeb8aeb97c4774c1e171e402cf25891&o=",
-      "name" : "강릉 어린이집",
-      "url" : "https://kr.hotels.com/go/south-korea/kr-best-gangneung-things-to-do",
-      "x" : 37.748130,
-      "y" : 128.8789333,
-      "category" : "CE7",
       "order" : 2
     }
   ]
@@ -98,3 +87,68 @@ Authorization: {{ authorizationToken }}
 
 GET {{apiUrl}}/routes/my
 Authorization: {{ authorizationToken }}
+
+###
+
+POST {{apiUrl}}/route/1/review
+Authorization: {{ authorizationToken }}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="files"; filename="enjoy.png"
+
+< C:\Users\Administrator\Desktop\baruntravel\baruntravel\backend\api\src\main\resources\mock\images\enjoy.png
+
+--WebAppBoundary
+Content-Disposition: form-data; name="files"; filename="enjoy2.png"
+
+< C:\Users\Administrator\Desktop\baruntravel\baruntravel\backend\api\src\main\resources\mock\images\enjoy2.png
+
+--WebAppBoundary
+Content-Disposition: form-data; name="content"
+
+Create Review!
+--WebAppBoundary
+Content-Disposition: form-data; name="score"
+
+5.0
+--WebAppBoundary--
+
+###
+
+GET {{apiUrl}}/route/1/reviews
+Authorization: {{ authorizationToken }}
+
+###
+
+POST {{apiUrl}}/route/review/1
+Authorization: {{ authorizationToken }}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="files"; filename="enjoy2.png"
+
+< C:\Users\Administrator\Desktop\baruntravel\baruntravel\backend\api\src\main\resources\mock\images\enjoy2.png
+
+--WebAppBoundary
+Content-Disposition: form-data; name="content"
+
+Update Review!
+--WebAppBoundary
+Content-Disposition: form-data; name="score"
+
+3.5
+--WebAppBoundary--
+
+###
+
+DELETE {{apiUrl}}/route/review/1
+Authorization: {{ authorizationToken }}
+
+###
+
+POST {{apiUrl}}/route/1/like
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+

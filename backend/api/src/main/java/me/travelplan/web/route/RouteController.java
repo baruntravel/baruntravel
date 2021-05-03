@@ -27,7 +27,6 @@ public class RouteController {
         return routeMapper.toRouteIdResponse(routeService.create(request));
     }
 
-
     @PutMapping("/{id}")
     public void update(@PathVariable Long id, @RequestBody RouteRequest.CreateOrUpdate request) {
         routeService.update(routeMapper.toEntity(request, id));
@@ -54,8 +53,6 @@ public class RouteController {
         return routeMapper.entityToResponseReviewList(routeService.getReviewList(id));
     }
 
-    //test에서 file을 처리할 때 fileUpload가 post형식임
-    //PutMapping을 사용할 방법은??
     @PostMapping("/review/{id}")
     public void updateReview(@PathVariable Long id, RouteRequest.CreateOrUpdateReview request, @CurrentUser CustomUserDetails userDetails) {
         routeService.updateReview(id, request, userDetails.getUser());
