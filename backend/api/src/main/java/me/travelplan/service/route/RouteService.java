@@ -35,6 +35,7 @@ public class RouteService {
     private final RouteReviewFileRepository routeReviewFileRepository;
     private final FileS3Uploader fileService;
     private final RouteLikeRepository routeLikeRepository;
+    private final RouteReviewLikeRepository routeReviewLikeRepository;
 
     @Transactional
     public Route createEmpty(Route route) {
@@ -155,6 +156,19 @@ public class RouteService {
         }
     }
 
+    @Transactional
+    public void createOrUpdateReviewLike(Long id, User user) {
+        RouteReview route = routeReviewRepository.findById(id).orElseThrow(RouteReviewNotFoundException::new);
+        Optional<RouteReviewLike> optionalRouteReviewLike = routeReviewLikeRepository.findByRouteReviewIdAndCreatedBy(id, user);
+        if (optionalRouteReviewLike.isEmpty()) {
+            routeReviewLikeRepository.save(RouteReviewLike.create(route));
+        }
+        if (optionalRouteReviewLike.isPresent()) {
+            RouteReviewLike routeLike = optionalRouteReviewLike.get();
+            routeReviewLikeRepository.delete(routeLike);
+        }
+    }
+
 
     private List<SavedFile> s3FileUpload(RouteRequest.CreateOrUpdateReview request) {
         List<SavedFile> files = new ArrayList<>();
@@ -163,4 +177,5 @@ public class RouteService {
         }
         return files;
     }
+
 }

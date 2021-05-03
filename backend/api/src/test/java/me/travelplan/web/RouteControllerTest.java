@@ -449,4 +449,23 @@ public class RouteControllerTest extends MvcTest {
                         )
                 ));
     }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("경로 리뷰 좋아요 테스트")
+    public void createRouteReviewLikeTest() throws Exception {
+        ResultActions results = mockMvc.perform(
+                post("/route/review/{id}/like", 1)
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("route-review-like-create-update",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("id").description("경로 리뷰 식별자")
+                        )
+                ));
+    }
 }

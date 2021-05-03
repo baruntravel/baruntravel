@@ -42,6 +42,11 @@ public class RouteController {
         routeService.addPlace(id, routeMapper.toPlace(request));
     }
 
+    @PostMapping("/{id}/like")
+    public void createOrUpdateLike(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
+        routeService.createOrUpdateLike(id, userDetails.getUser());
+    }
+
     @PostMapping("/{id}/review")
     @ResponseStatus(HttpStatus.CREATED)
     public void createReview(@PathVariable Long id, RouteRequest.CreateOrUpdateReview request) {
@@ -63,8 +68,8 @@ public class RouteController {
         routeService.deleteReview(id, userDetails.getUser());
     }
 
-    @PostMapping("/{id}/like")
-    public void createOrUpdateLike(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
-        routeService.createOrUpdateLike(id, userDetails.getUser());
+    @PostMapping("/review/{id}/like")
+    public void createOrUpdateReviewLike(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
+        routeService.createOrUpdateReviewLike(id, userDetails.getUser());
     }
 }

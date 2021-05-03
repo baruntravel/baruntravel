@@ -131,6 +131,18 @@ include::{snippets}/route-review-create/request-parameters.adoc[]
 성공 응답 HTTP
 include::{snippets}/route-review-create/http-response.adoc[]
 
+=== 경로 리뷰 좋아요
+
+`POST /route/review/{id}/like`
+
+요청 HTTP
+
+include::{snippets}/route-review-like-create-update/http-request.adoc[]
+include::{snippets}/route-review-like-create-update/path-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-review-like-create-update/http-response.adoc[]
+
 === 경로 리뷰 목록 조회
 
 `GET /route/{id}/reviews`

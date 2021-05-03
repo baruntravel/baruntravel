@@ -90,6 +90,12 @@ Authorization: {{ authorizationToken }}
 
 ###
 
+POST {{apiUrl}}/route/1/like
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+###
+
 POST {{apiUrl}}/route/1/review
 Authorization: {{ authorizationToken }}
 Content-Type: multipart/form-data; boundary=WebAppBoundary
@@ -121,7 +127,7 @@ Authorization: {{ authorizationToken }}
 
 ###
 
-POST {{apiUrl}}/route/review/1
+POST {{apiUrl}}/route/review/2
 Authorization: {{ authorizationToken }}
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
@@ -142,13 +148,12 @@ Content-Disposition: form-data; name="score"
 
 ###
 
-DELETE {{apiUrl}}/route/review/1
+POST {{apiUrl}}/route/review/2/like
 Authorization: {{ authorizationToken }}
 
 ###
 
-POST {{apiUrl}}/route/1/like
-Content-Type: application/json
+DELETE {{apiUrl}}/route/review/1
 Authorization: {{ authorizationToken }}
 
 
