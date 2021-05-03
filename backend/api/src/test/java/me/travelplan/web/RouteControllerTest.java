@@ -382,8 +382,8 @@ public class RouteControllerTest extends MvcTest {
     public void updateRouteReviewTest() throws Exception {
         InputStream is1 = new ClassPathResource("mock/images/enjoy.png").getInputStream();
         InputStream is2 = new ClassPathResource("mock/images/enjoy2.png").getInputStream();
-        MockMultipartFile mockFile1 = new MockMultipartFile("file1", "mock_file1.jpg", "image/jpg", is1.readAllBytes());
-        MockMultipartFile mockFile2 = new MockMultipartFile("file2", "mock_file2.jpg", "image/jpg", is2.readAllBytes());
+        MockMultipartFile mockFile1 = new MockMultipartFile("files", "mock_file1.jpg", "image/jpg", is1.readAllBytes());
+        MockMultipartFile mockFile2 = new MockMultipartFile("files", "mock_file2.jpg", "image/jpg", is2.readAllBytes());
 
         ResultActions results = mockMvc.perform(
                 fileUpload("/route/review/{id}", 1)
@@ -404,8 +404,7 @@ public class RouteControllerTest extends MvcTest {
                                 parameterWithName("id").description("경로 리뷰 식별자")
                         ),
                         requestParts(
-                                partWithName("file1").description("리뷰수정에 추가할 파일"),
-                                partWithName("file2").description("리뷰수정에 추가할 파일")
+                                partWithName("files").description("리뷰수정에 추가할 파일")
                         ),
                         requestParameters(
                                 parameterWithName("content").description("경로 리뷰 수정 내용"),

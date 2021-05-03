@@ -68,7 +68,7 @@ public class RouteService {
     }
 
     public Route getOne(Long id) {
-        return routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
+        return routeRepository.findByIdWithUser(id).orElseThrow(RouteNotFoundException::new);
     }
 
     @Transactional

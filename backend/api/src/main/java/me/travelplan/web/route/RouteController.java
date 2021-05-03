@@ -63,13 +63,13 @@ public class RouteController {
         routeService.updateReview(id, request, userDetails.getUser());
     }
 
-    @DeleteMapping("/review/{id}")
-    public void deleteReview(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
-        routeService.deleteReview(id, userDetails.getUser());
-    }
-
     @PostMapping("/review/{id}/like")
     public void createOrUpdateReviewLike(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
         routeService.createOrUpdateReviewLike(id, userDetails.getUser());
+    }
+
+    @DeleteMapping("/review/{id}")
+    public void deleteReview(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
+        routeService.deleteReview(id, userDetails.getUser());
     }
 }

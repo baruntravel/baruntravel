@@ -1,7 +1,6 @@
 package me.travelplan.service.route;
 
 import com.querydsl.core.QueryResults;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +23,7 @@ public class RouteQueryRepository {
                         .and(route.maxX.loe(maxX))
                         .and(route.minY.goe(minY))
                         .and(route.maxY.loe(maxY)))
+                .join(route.createdBy).fetchJoin()
                 .orderBy(route.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
