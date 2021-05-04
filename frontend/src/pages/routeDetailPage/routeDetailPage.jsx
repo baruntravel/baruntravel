@@ -16,6 +16,7 @@ import InputRootName from "../../components/common/inputRootName/inputRootName";
 import { onUploadRouteReview } from "../../api/reviewAPI";
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
+import PortalAuth from "../../containers/portalAuth/portalAuth";
 
 const RouteDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
@@ -25,6 +26,7 @@ const RouteDetailPage = (props) => {
   const [reviewWrite, setReviewWrite] = useState(false);
   const [moreReview, setMoreReview] = useState(false);
   const [openInputName, setOpenInputName] = useState(false);
+  const [needLogin, setNeedLogin] = useState(false);
 
   const routeId = 100;
 
@@ -40,10 +42,16 @@ const RouteDetailPage = (props) => {
   const onClose = useCallback(() => {
     setShowImagesZoom(false);
   }, []);
-
-  const onClickReviewWrite = useCallback(() => {
-    setReviewWrite(true);
+  const onClosePortaAuth = useCallback(() => {
+    setNeedLogin(false);
   }, []);
+  const onClickReviewWrite = useCallback(() => {
+    if (userStates.isLogin) {
+      setReviewWrite(true);
+    } else {
+      setNeedLogin(true);
+    }
+  }, [userStates]);
   const onCloseReviewWrite = useCallback(() => {
     setReviewWrite(false);
   }, []);
@@ -53,8 +61,8 @@ const RouteDetailPage = (props) => {
   const onCloseMoreReview = useCallback(() => {
     setMoreReview(false);
   }, []);
-  const onUploadReview = useCallback((files, content, score) => {
-    onUploadRouteReview(100, files, content, score);
+  const onUploadReview = useCallback((formData) => {
+    onUploadRouteReview(100, formData);
   }, []);
   const settings = {
     dots: false,
@@ -215,12 +223,18 @@ const RouteDetailPage = (props) => {
           overflowY: "hidden",
         }}
       >
-        <MoreReviewList onCloseMoreReview={onCloseMoreReview} />
+        <MoreReviewList
+          setReviewDatas={handleSetReviewDatas}
+          onClickReviewWrite={onClickReviewWrite}
+          onCloseMoreReview={onCloseMoreReview}
+          reviewDatas={reviewDatas}
+        />
       </Drawer>
       {showImagesZoom && (
         <ImagesZoom images={images} onClose={onClose} index={imageIndex} />
       )}
       {openInputName && <InputRootName onClose={onCloseInputName} />}
+      {needLogin && <PortalAuth onClose={onClosePortaAuth} />}
     </div>
   );
 };

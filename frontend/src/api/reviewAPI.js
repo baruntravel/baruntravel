@@ -1,13 +1,8 @@
 import axios from "axios";
 
-export const onUploadRouteReview = async (routeId, files, content, score) => {
-  const data = {
-    files,
-    content,
-    score,
-  };
+export const onUploadRouteReview = async (routeId, formData) => {
   await axios
-    .post(`/route/${routeId}/review`, data, {
+    .post(`/route/${routeId}/review`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
     .then((res) => true)

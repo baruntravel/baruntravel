@@ -12,19 +12,24 @@ const ReviewForm = ({ item, onClose, onCloseReviewForm, onUploadReview }) => {
   const [images, setImages] = useState({}); // 미리보기용 URL 저장소
   const [files, setFiles] = useState({});
   const [inputContext, handleInputContext] = useInput("");
-  const [rate, setRate] = useState();
+  const [rate, setRate] = useState(5);
   const imageInput = useRef();
-  const onSubmit = () => {
-    console.log(inputContext);
-    console.log(rate);
-    const imageFormData = new FormData();
-    Object.keys(files).forEach((key) => {
-      imageFormData.append("images", files[key]);
-    }); // imageFormData.getAll("images") 를 하면 모두 담겨있는 것을 확인했다.
-
-    onUploadReview(imageFormData, inputContext, rate);
-    // image update API 호출
-  };
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      const formData = new FormData();
+      Object.keys(files).forEach((key) => {
+        formData.append("files", files[key]);
+      }); // formData.getAll("images") 를 하면 모두 담겨있는 것을 확인했다.
+      formData.append("content", inputContext);
+      const test = parseFloat(5.2);
+      console.log(typeof test, test);
+      formData.append("score", test);
+      onUploadReview(formData);
+      // image update API 호출
+    },
+    [files, inputContext, onUploadReview, rate]
+  );
   const onChangeRate = useCallback((number) => {
     setRate(number);
   }, []);

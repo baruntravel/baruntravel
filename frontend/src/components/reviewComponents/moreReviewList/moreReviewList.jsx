@@ -1,15 +1,26 @@
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import React from "react";
 import ReviewList from "../reviewList/reviewList";
 import styles from "./moreReviewList.module.css";
 
-const MoreReviewList = ({ onCloseMoreReview }) => {
+const MoreReviewList = ({
+  setReviewDatas,
+  onClickReviewWrite,
+  onCloseMoreReview,
+  reviewDatas,
+}) => {
   return (
     <div className={styles.moreReviewList}>
-      <header>
-        <span>뒤로 가기</span>
-        <button onClick={onCloseMoreReview}>Close</button>
+      <header className={styles.header}>
+        <div className={styles.backIcon} onClick={onCloseMoreReview}>
+          <ArrowLeftOutlined />
+        </div>
       </header>
-      <ReviewList />
+      <ReviewList
+        reviewDatas={reviewDatas}
+        onClickReviewWrite={onClickReviewWrite}
+        setReviewDatas={setReviewDatas}
+      />
     </div>
   );
 };
