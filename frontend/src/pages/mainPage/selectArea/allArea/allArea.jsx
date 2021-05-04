@@ -18,17 +18,13 @@ const AllArea = () => {
             onClick={() => history.goBack()}
           />
           <input className={styles.inputBar} placeholder="어디로 가세요?" />
-          <FontAwesomeIcon
-            icon={faSearch}
-            className={styles.searchButton}
-            size="lg"
-          />
+          <FontAwesomeIcon icon={faSearch} className={styles.searchButton} size="lg" />
         </div>
         <h3 className={styles.title}>전체 여행지</h3>
         <ul className={styles.areaList}>
           {areaList.map((area, index) => {
             return (
-              <Link to={`${area.eng}/places`} key={index}>
+              <Link to="/place" key={index}>
                 <li className={styles.areaBox}>
                   <div className={styles.box_left}>
                     <div className={styles.logo}></div>
