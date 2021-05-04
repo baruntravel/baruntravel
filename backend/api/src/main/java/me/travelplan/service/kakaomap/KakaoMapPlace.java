@@ -11,27 +11,27 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class KakaoMapPlace {
-    Long placeId;
-    String thumbnail;
-    String phone;
-    List<OpenHour> openHour;
-    List<Photo> photos;
+    private Long placeId;
+    private String thumbnail;
+    private String phone;
+    private List<OpenHour> openHour;
+    private List<Photo> photos;
 
     @Getter(AccessLevel.PUBLIC)
     public static class Photo {
-        String imageUrl;
+        private String imageUrl;
     }
 
     @Getter
     public static class OpenHour {
-        String periodName;
-        List<OpenHourTime> timeList;
+        private String periodName;
+        private List<OpenHourTime> timeList;
     }
 
     @Getter
     public static class OpenHourTime {
-        String timeName;
-        String timeSE;
-        String dayOfWeek;
+        private String timeName;
+        private String timeSE;
+        private String dayOfWeek;
     }
 }
