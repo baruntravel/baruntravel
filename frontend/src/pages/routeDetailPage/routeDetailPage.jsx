@@ -13,14 +13,20 @@ import { Drawer } from "antd";
 import ReviewForm from "../../components/reviewComponents/reviewForm/reviewForm";
 import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
 import InputRootName from "../../components/common/inputRootName/inputRootName";
+import { onUploadRouteReview } from "../../api/reviewAPI";
+import { userState } from "../../recoil/userState";
+import { useRecoilValue } from "recoil";
 
 const RouteDetailPage = (props) => {
+  const userStates = useRecoilValue(userState);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const [imagePlaceName, setImagePlaceName] = useState("첫");
   const [reviewWrite, setReviewWrite] = useState(false);
   const [moreReview, setMoreReview] = useState(false);
   const [openInputName, setOpenInputName] = useState(false);
+
+  const routeId = 100;
 
   const onCloseInputName = useCallback(() => {
     setOpenInputName(false);
@@ -46,6 +52,9 @@ const RouteDetailPage = (props) => {
   }, []);
   const onCloseMoreReview = useCallback(() => {
     setMoreReview(false);
+  }, []);
+  const onUploadReview = useCallback((files, content, score) => {
+    onUploadRouteReview(100, files, content, score);
   }, []);
   const settings = {
     dots: false,
@@ -193,7 +202,7 @@ const RouteDetailPage = (props) => {
         bodyStyle={{ padding: 0 }}
         onClose={onCloseReviewWrite}
       >
-        <ReviewForm />
+        <ReviewForm onUploadReview={onUploadReview} />
       </Drawer>
       <Drawer
         className={styles.reviewListDrawer}

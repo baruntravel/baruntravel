@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const onReviewUpload = async (routeId, files, content, score) => {
+export const onUploadRouteReview = async (routeId, files, content, score) => {
   const data = {
     files,
     content,
@@ -17,7 +17,7 @@ export const onReviewUpload = async (routeId, files, content, score) => {
     });
 };
 
-export const onReceiveReview = async (routeId) => {
+export const onReceiveRouteReview = async (routeId) => {
   const result = await axios
     .get(`/route/${routeId}/reviews`)
     .then((res) => res.data.reviews)
@@ -28,7 +28,7 @@ export const onReceiveReview = async (routeId) => {
   return result;
 };
 
-export const onEditReview = async (routeId, files, content, score) => {
+export const onEditRouteReview = async (routeId, files, content, score) => {
   const data = {
     files,
     content,
@@ -45,7 +45,7 @@ export const onEditReview = async (routeId, files, content, score) => {
     });
 };
 
-export const onDeleteReview = async (routeId) => {
+export const onDeleteRouteReview = async (routeId) => {
   await axios
     .delete(`/route/review/${routeId}`)
     .then((res) => true)

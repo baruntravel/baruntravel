@@ -14,7 +14,6 @@ const LoginBody = ({ onClickRegister, onClose }) => {
   const [userStates, setUserStates] = useRecoilState(userState);
   const [shoppingItems, setShoppingItems] = useRecoilState(userCart);
   const [loginFail, setLoginFail] = useState(false);
-
   const updateUserLogin = (isLogin, email, name) => {
     setUserStates((prev) => {
       const updated = { ...prev };
@@ -33,19 +32,13 @@ const LoginBody = ({ onClickRegister, onClose }) => {
       updateUserLogin(isLogin, userEmail, userName);
       setLoading(false);
       if (isLogin) {
-        const cartItems = await onReceiveCart();
-        if (cartItems) {
-          setShoppingItems(cartItems);
-        } else {
-          //
-        }
         formRef.current.reset();
         onClose();
       } else {
         setLoginFail(true);
       }
     },
-    [email, onClose, password, setShoppingItems, updateUserLogin]
+    [email, onClose, password, updateUserLogin]
   );
 
   return (

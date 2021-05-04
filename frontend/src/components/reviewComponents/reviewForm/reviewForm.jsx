@@ -6,27 +6,28 @@ import { getYear, getMonth, getDate } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages } from "@fortawesome/free-solid-svg-icons";
 import ReviewImageEdit from "./reviewImageEdit/reviewImageEdit";
+import useInput from "../../../hooks/useInput";
 
-const ReviewForm = ({ item, onClose, onCloseReviewForm }) => {
+const ReviewForm = ({ item, onClose, onCloseReviewForm, onUploadReview }) => {
   const [images, setImages] = useState({}); // 미리보기용 URL 저장소
   const [files, setFiles] = useState({});
+  const [inputContext, handleInputContext] = useInput("");
+  const [rate, setRate] = useState();
   const imageInput = useRef();
   const onSubmit = () => {
+    console.log(inputContext);
+    console.log(rate);
     const imageFormData = new FormData();
     Object.keys(files).forEach((key) => {
       imageFormData.append("images", files[key]);
     }); // imageFormData.getAll("images") 를 하면 모두 담겨있는 것을 확인했다.
-    const date = new Date();
-    const [nowYear, nowMonth, nowDate] = [
-      getYear(date),
-      getMonth(date) + 1,
-      getDate(date),
-    ];
 
-    // place Id도 있어야할 것 같다.
+    onUploadReview(imageFormData, inputContext, rate);
     // image update API 호출
   };
-
+  const onChangeRate = useCallback((number) => {
+    setRate(number);
+  }, []);
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click();
   }, [imageInput]);
@@ -62,7 +63,7 @@ const ReviewForm = ({ item, onClose, onCloseReviewForm }) => {
             <span>{"장소 이름"}</span>
             <div className={styles.rateBox}>
               <Rate
-                defaultValue={4}
+                defaultValue={5}
                 allowClear={false}
                 className={styles.rate}
                 style={{
@@ -70,6 +71,8 @@ const ReviewForm = ({ item, onClose, onCloseReviewForm }) => {
                   fontSize: "0.9em",
                   marginLeft: "12px",
                 }}
+                value={rate}
+                onChange={onChangeRate}
               />
             </div>
           </div>
@@ -88,6 +91,8 @@ const ReviewForm = ({ item, onClose, onCloseReviewForm }) => {
         <TextArea
           className={styles.textArea}
           style={{ width: "100%", height: "50%" }}
+          value={inputContext}
+          onChange={handleInputContext}
         />
         <div className={styles.imageBox}>
           <button className={styles.imageUpload} onClick={onClickImageUpload}>
