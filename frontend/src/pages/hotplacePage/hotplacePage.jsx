@@ -53,6 +53,7 @@ const HotplacePage = () => {
   useEffect(() => {
     setShoppingItemsRecoil(shoppingItems);
   }, [shoppingItems]);
+
   const [needLogin, setNeedLogin] = useState(false);
 
   const setCartVisibleTrue = useCallback(() => {
@@ -222,11 +223,10 @@ const HotplacePage = () => {
       </div>
       {!needLogin && (
         <Drawer
-          title={`${"장소"}의 담은 목록`}
           placement="right"
-          closable={true}
-          onClose={setCartVisibleFalse}
+          closable={false}
           visible={cartVisible}
+          onClose={setCartVisibleFalse}
           width={window.innerWidth > 768 ? "36vw" : "80vw"}
           bodyStyle={{
             backgroundColor: "#ebecec",
@@ -240,6 +240,7 @@ const HotplacePage = () => {
             updateShoppingCart={updateShoppingCart}
             updateMemoShoppingItem={updateMemoShoppingItem}
             resetCartAll={resetCartAll}
+            onClose={setCartVisibleFalse}
             items={shoppingItems}
           />
         </Drawer>
