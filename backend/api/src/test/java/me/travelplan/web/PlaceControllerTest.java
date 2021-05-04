@@ -180,7 +180,7 @@ public class PlaceControllerTest extends MvcTest {
         );
 
         results.andExpect(status().isOk())
-                .andDo(document("place-like-create-update",
+                .andDo(document("place-like-create-delete",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(

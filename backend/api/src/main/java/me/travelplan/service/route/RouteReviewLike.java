@@ -20,14 +20,9 @@ public class RouteReviewLike extends BaseEntity {
     @JoinColumn(name = "route_review_id")
     private RouteReview routeReview;
 
-    public void setRouteReview(RouteReview routeReview) {
-        this.routeReview = routeReview;
-        routeReview.getRouteReviewLikes().add(this);
-    }
-
     public static RouteReviewLike create(RouteReview routeReview) {
-        RouteReviewLike routeReviewLike = RouteReviewLike.builder().build();
-        routeReviewLike.setRouteReview(routeReview);
+        RouteReviewLike routeReviewLike = RouteReviewLike.builder().routeReview(routeReview).build();
+        routeReview.getRouteReviewLikes().add(routeReviewLike);
         return routeReviewLike;
     }
 }

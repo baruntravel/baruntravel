@@ -58,7 +58,7 @@ public class PlaceService {
     }
 
     @Transactional
-    public void createOrUpdateLike(Long placeId, User user) {
+    public void createOrDeleteLike(Long placeId, User user) {
         Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
         Optional<PlaceLike> optionalPlaceLike = placeLikeRepository.findByPlaceIdAndCreatedBy(placeId, user);
         if (optionalPlaceLike.isEmpty()) {

@@ -14,13 +14,13 @@
 === 좋아요 생성 or 삭제
 
 요청 HTTP
-include::{snippets}/place-like-create-update/http-request.adoc[]
+include::{snippets}/place-like-create-delete/http-request.adoc[]
 
 Path Variable
-include::{snippets}/place-like-create-update/path-parameters.adoc[]
+include::{snippets}/place-like-create-delete/path-parameters.adoc[]
 
 성공 응답 HTTP
-include::{snippets}/place-like-create-update/http-response.adoc[]
+include::{snippets}/place-like-create-delete/http-response.adoc[]
 
 == 리뷰 관련 API
 

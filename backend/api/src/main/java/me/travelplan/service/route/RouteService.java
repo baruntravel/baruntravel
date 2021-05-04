@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
+@Transactional
 public class RouteService {
     private final RouteRepository routeRepository;
     private final RoutePlaceRepository routePlaceRepository;
@@ -37,16 +38,15 @@ public class RouteService {
     private final RouteLikeRepository routeLikeRepository;
     private final RouteReviewLikeRepository routeReviewLikeRepository;
 
-    @Transactional
     public Route createEmpty(Route route) {
         return routeRepository.save(route);
     }
 
+    @Transactional(readOnly = true)
     public List<Route> getByUser(User user) {
         return routeRepository.findByCreatedBy(user);
     }
 
-    @Transactional
     public Route create(RouteRequest.Create request) {
         List<RoutePlace> routePlaces = request.getPlaces().stream()
                 .map(place -> {
@@ -59,7 +59,6 @@ public class RouteService {
         return routeRepository.save(route);
     }
 
-    @Transactional
     public Route update(Route route) {
         routePlaceRepository.deleteAllByRoute(route);
         fileRepository.saveAll(route.getRoutePlaces().stream().map(RoutePlace::getPlace).map(Place::getImage).collect(Collectors.toList()));
@@ -67,11 +66,11 @@ public class RouteService {
         return routeRepository.save(route);
     }
 
+    @Transactional(readOnly = true)
     public Route getOne(Long id) {
         return routeRepository.findByIdWithUser(id).orElseThrow(RouteNotFoundException::new);
     }
 
-    @Transactional
     public Route addPlace(Long id, Place place) {
         Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
         fileRepository.save(place.getImage());
@@ -80,11 +79,11 @@ public class RouteService {
         return routeRepository.save(route);
     }
 
+    @Transactional(readOnly = true)
     public Page<Route> getList(RouteRequest.GetList request, Pageable pageable) {
         return routeQueryRepository.findAllByCoordinate(request.getMaxX(), request.getMinX(), request.getMaxY(), request.getMinY(), pageable);
     }
 
-    @Transactional
     public void createReview(RouteRequest.CreateOrUpdateReview request, Long id) {
         Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
         List<SavedFile> files = s3FileUpload(request);
@@ -95,7 +94,6 @@ public class RouteService {
         routeReviewRepository.save(routeReview);
     }
 
-    @Transactional
     public RouteReview updateReview(Long id, RouteRequest.CreateOrUpdateReview request, User user) {
         RouteReview routeReview = routeReviewRepository.findById(id).orElseThrow(RouteReviewNotFoundException::new);
         if (!routeReview.getCreatedBy().getId().equals(user.getId())) {
@@ -123,7 +121,6 @@ public class RouteService {
         return routeReview;
     }
 
-    @Transactional
     public void deleteReview(Long id, User user) {
         RouteReview routeReview = routeReviewRepository.findById(id).orElseThrow(RouteReviewNotFoundException::new);
         if (!routeReview.getCreatedBy().getId().equals(user.getId())) {
@@ -143,8 +140,7 @@ public class RouteService {
         return routeReviewRepository.findAllByRouteId(id);
     }
 
-    @Transactional
-    public void createOrUpdateLike(Long id, User user) {
+    public void createOrDeleteLike(Long id, User user) {
         Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
         Optional<RouteLike> optionalRouteLike = routeLikeRepository.findByRouteIdAndCreatedBy(id, user);
         if (optionalRouteLike.isEmpty()) {
@@ -156,8 +152,7 @@ public class RouteService {
         }
     }
 
-    @Transactional
-    public void createOrUpdateReviewLike(Long id, User user) {
+    public void createOrDeleteReviewLike(Long id, User user) {
         RouteReview route = routeReviewRepository.findById(id).orElseThrow(RouteReviewNotFoundException::new);
         Optional<RouteReviewLike> optionalRouteReviewLike = routeReviewLikeRepository.findByRouteReviewIdAndCreatedBy(id, user);
         if (optionalRouteReviewLike.isEmpty()) {
@@ -169,7 +164,6 @@ public class RouteService {
         }
     }
 
-
     private List<SavedFile> s3FileUpload(RouteRequest.CreateOrUpdateReview request) {
         List<SavedFile> files = new ArrayList<>();
         if (request.getFiles() != null) {
@@ -177,5 +171,4 @@ public class RouteService {
         }
         return files;
     }
-
 }

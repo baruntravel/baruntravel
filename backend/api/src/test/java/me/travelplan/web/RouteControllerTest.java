@@ -442,7 +442,7 @@ public class RouteControllerTest extends MvcTest {
 
         results.andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("route-like-create-update",
+                .andDo(document("route-like-create-delete",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
@@ -461,7 +461,7 @@ public class RouteControllerTest extends MvcTest {
 
         results.andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("route-review-like-create-update",
+                .andDo(document("route-review-like-create-delete",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(

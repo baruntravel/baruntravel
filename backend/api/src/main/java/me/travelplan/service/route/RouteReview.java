@@ -35,17 +35,13 @@ public class RouteReview extends BaseEntity {
     @Builder.Default
     private List<RouteReviewFile> routeReviewFiles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "routeReview", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "routeReview", cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<RouteReviewLike> routeReviewLikes = new ArrayList<>();
 
     public void setRoute(Route route) {
         this.route = route;
         route.getRouteReviews().add(this);
-    }
-
-    public boolean isLike(User user) {
-        return this.routeReviewLikes.stream().anyMatch(routeLike -> routeLike.getCreatedBy().getId().equals(user.getId()));
     }
 
     public void addRouteReviewFiles(List<RouteReviewFile> routeReviewFiles) {
@@ -58,6 +54,10 @@ public class RouteReview extends BaseEntity {
     public void update(Double score, String content) {
         this.score = score;
         this.content = content;
+    }
+
+    public boolean isLike(User user) {
+        return this.routeReviewLikes.stream().anyMatch(routeLike -> routeLike.getCreatedBy().getId().equals(user.getId()));
     }
 
     public static RouteReview create(Double score, String content, List<RouteReviewFile> routeReviewFiles, Route route) {
