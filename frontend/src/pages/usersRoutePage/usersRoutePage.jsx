@@ -26,7 +26,7 @@ const UsersRoutePage = () => {
   return (
     <div className={styles.wrapper}>
       <UsersRouteMap places={places} routes={routes} />
-      <div className={styles.routeCarousel}>
+      <div className={styles.routeCarousel} onDragStart={(e) => e.preventDefault()}>
         <RouteCarousel routes={routes} handleChange={(e) => handleChange(e)} />
       </div>
       <div className={styles.bottomDrawer}>
