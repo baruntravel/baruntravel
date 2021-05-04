@@ -107,6 +107,7 @@ const PlaceDetailPage = (props) => {
       likeCount: 3,
     },
   ]);
+
   return (
     <div className={styles.PlaceDetailPage}>
       <DetailHeader

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./hotplacePage.module.css";
 import HotplaceMap from "../../components/map/hotplaceMap/hotplaceMap";
 import useInput from "../../hooks/useInput";
@@ -21,12 +21,19 @@ import {
   onAddCart,
   onDeleteCartItem,
   onDeleteCartAll,
+  onReceiveCart,
 } from "../../api/cartAPI";
 const HotplacePage = () => {
   const placeListRef = useRef();
   const searchRef = useRef();
   const inputRef = useRef();
   const sliderRef = useRef();
+
+  // recoil과 beautiful-dnd가 concurrent 문제로 충돌이 나여 전역관리와 페이지 단 관리 두가지를 모두해줘야함.
+  const [shoppingItemsRecoil, setShoppingItemsRecoil] = useRecoilState(
+    userCart
+  );
+  const [shoppingItems, setShoppingItems] = useState([]);
 
   const userStates = useRecoilValue(userState);
   const [cartVisible, setCartVisible] = useState(false);
@@ -37,8 +44,18 @@ const HotplacePage = () => {
   const [searchPlace, setSearchPlace] = useState("");
   const [searchPlaces, setSearchPlaces] = useState([]);
   const [markerIndex, setMarkerIndex] = useState();
-  const [shoppingItems, setShoppingItems] = useRecoilState(userCart);
+
+  useEffect(() => {
+    if (userStates.isLogin) {
+      setShoppingItems(shoppingItemsRecoil);
+    }
+  }, [userStates]);
+  useEffect(() => {
+    setShoppingItemsRecoil(shoppingItems);
+  }, [shoppingItems]);
+
   const [needLogin, setNeedLogin] = useState(false);
+
   const setCartVisibleTrue = useCallback(() => {
     if (userStates.isLogin) {
       setCartVisible(true);
@@ -55,22 +72,27 @@ const HotplacePage = () => {
   const setConfirmPortalFalse = useCallback(() => {
     setConfirmPortal(false);
   }, []);
-  const handleDeleteItem = useCallback(async (id) => {
-    setShoppingItems((prev) => {
-      const updated = prev.filter((item) => item.id !== id);
-      return updated;
-    });
-    await onDeleteCartItem(id);
-  }, []);
+  const handleDeleteItem = useCallback(
+    async (id) => {
+      setShoppingItems((prev) => {
+        const updated = prev.filter((item) => item.id !== id);
+        return updated;
+      });
+      await onDeleteCartItem(id);
+    },
+    [setShoppingItems]
+  );
   const updateClickedPlace = useCallback((place) => {
     setPlace(place);
   }, []);
+
   const updateSearchPlaces = useCallback((places) => {
     if (places.length > 0) {
       placeListRef.current.style.display = "initial";
     }
     setSearchPlaces(places);
   }, []);
+
   const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
@@ -82,12 +104,15 @@ const HotplacePage = () => {
     },
     [inputKeyword, searchPlace]
   );
+
   const clickedMarker = useCallback((index) => {
     sliderRef.current.slickGoTo(index);
   }, []);
+
   const deleteClickedItemId = useCallback((id) => {
     setDeleteItemId(id);
   }, []);
+
   const addShoppingCart = useCallback(
     (place) => {
       if (userStates.isLogin) {
@@ -100,25 +125,35 @@ const HotplacePage = () => {
         setNeedLogin(true);
       }
     },
-    [userStates]
+    [setShoppingItems, userStates]
   );
-  const updateShoppingCart = useCallback((items) => {
-    setShoppingItems(items);
-  }, []);
-  const updateMemoShoppingItem = useCallback((id, memo) => {
-    setShoppingItems((prev) => {
-      const updated = [...prev];
-      const forUpdateIndex = updated.findIndex((item) => {
-        if (item.id === id) return true;
+
+  const updateShoppingCart = useCallback(
+    (items) => {
+      setShoppingItems(items);
+    },
+    [setShoppingItems]
+  );
+
+  const updateMemoShoppingItem = useCallback(
+    (id, memo) => {
+      setShoppingItems((prev) => {
+        const updated = [...prev];
+        const forUpdateIndex = updated.findIndex((item) => {
+          if (item.id === id) return true;
+        });
+        updated[forUpdateIndex] = { ...updated[forUpdateIndex], memo: memo };
+        return updated;
       });
-      updated[forUpdateIndex] = { ...updated[forUpdateIndex], memo: memo };
-      return updated;
-    });
-  }, []);
+    },
+    [setShoppingItems]
+  );
+
   const resetCartAll = useCallback(async () => {
     setShoppingItems([]);
     await onDeleteCartAll();
-  }, []);
+  }, [setShoppingItems]);
+
   const portalAuthClose = useCallback(() => {
     setNeedLogin(false);
   }, []);
@@ -188,11 +223,10 @@ const HotplacePage = () => {
       </div>
       {!needLogin && (
         <Drawer
-          title={`${"장소"}의 담은 목록`}
           placement="right"
-          closable={true}
-          onClose={setCartVisibleFalse}
+          closable={false}
           visible={cartVisible}
+          onClose={setCartVisibleFalse}
           width={window.innerWidth > 768 ? "36vw" : "80vw"}
           bodyStyle={{
             backgroundColor: "#ebecec",
@@ -206,6 +240,7 @@ const HotplacePage = () => {
             updateShoppingCart={updateShoppingCart}
             updateMemoShoppingItem={updateMemoShoppingItem}
             resetCartAll={resetCartAll}
+            onClose={setCartVisibleFalse}
             items={shoppingItems}
           />
         </Drawer>
