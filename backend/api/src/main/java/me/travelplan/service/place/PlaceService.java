@@ -103,6 +103,5 @@ public class PlaceService {
         placeImageRepository.saveAll(placeImages);
 
         place.setFromKakaoMapPlace(kakaoPlace);
-        placeRepository.save(place);
     }
 }
