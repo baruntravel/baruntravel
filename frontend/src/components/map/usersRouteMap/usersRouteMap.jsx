@@ -1,11 +1,13 @@
 import styles from "./usersRouteMap.module.css";
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 const UsersRouteMap = ({ routes, places }) => {
   const { kakao } = window;
   const [map, setMap] = useState();
   const [markers, setMarkers] = useState([]);
   const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+  let history = useHistory();
 
   //map init
   useEffect(() => {
@@ -13,7 +15,6 @@ const UsersRouteMap = ({ routes, places }) => {
 
     function initMap() {
       document.querySelector("body").style.overflow = "hidden"; // mobile에서 스크롤 막음
-      // let [x, y] = [37.566826, 126.9786567];
       let x = Object.values(routes)[0].places[0].x,
         y = Object.values(routes)[0].places[0].y;
       let container = document.getElementById("Map");
@@ -32,7 +33,7 @@ const UsersRouteMap = ({ routes, places }) => {
         let bounds = map.getBounds();
         let swLatlng = bounds.getSouthWest();
         let neLatlng = bounds.getNorthEast();
-        console.log(swLatlng, neLatlng);
+        // console.log(swLatlng, neLatlng);
       });
     }
   }, []);
@@ -56,15 +57,18 @@ const UsersRouteMap = ({ routes, places }) => {
         let marker = addMarker(placePosition, i);
         setMarkers((markers) => [...markers, marker]);
         bounds.extend(placePosition);
-        (function (marker, title) {
-          kakao.maps.event.addListener(marker, "mouseover", function () {
-            displayInfowindow(marker, title);
+        (function (marker, title, id) {
+          // kakao.maps.event.addListener(marker, "mouseover", function () {
+          //   displayInfowindow(marker, title, id);
+          // });
+          kakao.maps.event.addListener(marker, "click", function () {
+            displayInfowindow(marker, title, id);
           });
 
-          kakao.maps.event.addListener(marker, "mouseout", function () {
-            infowindow.close();
-          });
-        })(marker, places[i].placeName);
+          // kakao.maps.event.addListener(marker, "mouseout", function () {
+          //   infowindow.close();
+          // });
+        })(marker, places[i].placeName, places[i].id);
       }
     }
 
@@ -115,10 +119,18 @@ const UsersRouteMap = ({ routes, places }) => {
       setMarkers([]);
     }
 
-    function displayInfowindow(marker, title) {
-      var content = '<div style="padding:5px;z-index:1;">' + title + "</div>";
+    function displayInfowindow(marker, title, id) {
+      var content = `
+      <div class="infowindow" style="padding: 10px; z-index:1;">
+        ${title}
+      </div>`;
       infowindow.setContent(content);
       infowindow.open(map, marker);
+      document.querySelectorAll(".infowindow").forEach((item) => {
+        item.addEventListener("click", () => {
+          history.push(`/place/${id}`);
+        });
+      });
     }
 
     function moveToRoute(dest) {
