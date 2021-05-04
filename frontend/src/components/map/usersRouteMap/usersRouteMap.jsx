@@ -45,6 +45,9 @@ const UsersRouteMap = ({ routes, places }) => {
       moveToRoute(places[0]);
     }
 
+    let path = addPath();
+    return () => removePath(path); //Unmount 직전에 path 지움
+
     function displayMarker(infowindow) {
       removeMarker();
       let bounds = new kakao.maps.LatLngBounds();
@@ -65,6 +68,27 @@ const UsersRouteMap = ({ routes, places }) => {
       }
     }
 
+    function addPath() {
+      let linepath = [];
+      for (let i = 0; i < places.length; i++) {
+        linepath.push(new kakao.maps.LatLng(places[i].y, places[i].x));
+      }
+
+      let polyline = new kakao.maps.Polyline({
+        path: linepath, // 선을 구성하는 좌표배열 입니다
+        strokeWeight: 5, // 선의 두께 입니다
+        strokeColor: "#FFAE00", // 선의 색깔입니다
+        strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+        strokeStyle: "solid", // 선의 스타일입니다
+      });
+      polyline.setMap(map);
+      return polyline;
+    }
+
+    function removePath(line) {
+      line.setMap(null);
+    }
+
     function addMarker(position, index) {
       var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
         imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
@@ -81,7 +105,6 @@ const UsersRouteMap = ({ routes, places }) => {
 
       marker.setMap(map); // 지도 위에 마커를 표출합니다
       setMarkers((markers) => [...markers, marker]);
-
       return marker;
     }
 
