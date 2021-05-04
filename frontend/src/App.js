@@ -24,31 +24,31 @@ function App() {
             <LoginPage />
           </Route>
 
-          <Route path="/start">
+          <Route exact path="/start">
             <MainPage />
           </Route>
 
-          <Route exact path="/:id/places">
+          <Route exact path="/place">
             <HotplacePage />
           </Route>
-          <Route exact path="/all-place">
+          <Route exact path="/place-all">
             <AllArea />
           </Route>
 
-          <Route exact path="/routes">
+          <Route exact path="/route">
             <UsersRoutePage />
           </Route>
-          <Route exact path="/all-route">
+          <Route exact path="/route-all">
             <AllRoute />
           </Route>
           <Route exact path="/myRoute">
             <MyRoutePage />
           </Route>
-          <Route path="/routes/:id">
+          <Route exact path="/route/:id">
             <RouteDetailPage />
           </Route>
 
-          <Route exact path="/:id/place/detail">
+          <Route exact path="/place/:id">
             <PlaceDetailPage />
           </Route>
 

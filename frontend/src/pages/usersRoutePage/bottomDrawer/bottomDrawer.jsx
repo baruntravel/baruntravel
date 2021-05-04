@@ -2,13 +2,13 @@ import { ClickAwayListener, SwipeableDrawer } from "@material-ui/core";
 import { useState } from "react";
 import styles from "./bottomDrawer.module.css";
 
-const BottomDrawer = ({ routeItems, index }) => {
+const BottomDrawer = ({ routes, index }) => {
   const [toggleDrawer, setToggleDrawer] = useState(false);
   const handleDrawer = () => {
     setToggleDrawer(!toggleDrawer);
   };
 
-  const places = Object.values(routeItems)[index].places;
+  const places = Object.values(routes)[index].places;
 
   return (
     <div className={styles.container}>
@@ -20,12 +20,7 @@ const BottomDrawer = ({ routeItems, index }) => {
       >
         ▲
       </button>
-      <SwipeableDrawer
-        anchor="bottom"
-        open={toggleDrawer}
-        onOpen={() => handleDrawer()}
-        onClose={() => handleDrawer()}
-      >
+      <SwipeableDrawer anchor="bottom" open={toggleDrawer} onOpen={() => handleDrawer()} onClose={() => handleDrawer()}>
         <button
           className={[styles.drawerButton, styles.down].join(" ")}
           onClick={(e) => {
