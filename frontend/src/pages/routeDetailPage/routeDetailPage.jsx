@@ -20,7 +20,6 @@ const RouteDetailPage = (props) => {
   const [imagePlaceName, setImagePlaceName] = useState("첫");
   const [reviewWrite, setReviewWrite] = useState(false);
   const [moreReview, setMoreReview] = useState(false);
-
   const [openInputName, setOpenInputName] = useState(false);
 
   const onCloseInputName = useCallback(() => {
