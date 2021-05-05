@@ -23,16 +23,12 @@ const UsersRoutePage = () => {
   useEffect(() => setPlaces(Object.values(routes)[index].places), [index]);
   useEffect(() => {}, [searchHere]);
 
-  const indexHandler = (index) => setIndex(index);
   const mapHandler = (map) => setMap(map);
+  const indexHandler = (index) => setIndex(index);
   const modalHandler = () => setModalToggle(!modalToggle);
-  const zoomHandler = (level) =>
-    map.setLevel(level, {
-      animate: {
-        duration: 200,
-      },
-    });
+  const zoomHandler = (level) => map.setLevel(level, { animate: { duration: 200 } });
   const searchHereHandler = (e) => {
+    //Todo
     e.target.style = searchHere ? "background-color: white;" : "background-color: black;";
     setSearchHere(!searchHere);
   };

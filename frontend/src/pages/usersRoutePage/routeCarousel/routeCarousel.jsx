@@ -20,18 +20,19 @@ const RouteCarousel = ({ routes, indexHandler }) => {
           return (
             <Link to={`route/${value}`} target="_blank" key={index}>
               <div className={styles.routeCard}>
-                <div className={styles.top}>
+                <div className={styles.row1}>
                   <div className={styles.routeName}>{routes[value].routeName}</div>
                   <div className={styles.creator}>{routes[value].creator}</div>
                   <button className={styles.heartButton}>
                     <FavoriteBorderIcon />
                   </button>
                 </div>
-                <div className={styles.bottom}>
+                <div className={styles.row2}>
                   {routes[value].places.map((value, index) => {
                     return (
-                      <div className={styles.places} key={index}>
-                        {value.placeName}
+                      <div className={styles.col1} key={index}>
+                        <div className={styles.index}>{index + 1}</div>
+                        <div className={styles.places}>{value.placeName}</div>
                       </div>
                     );
                   })}

@@ -12,8 +12,8 @@ const PlaceListModal = ({ routes, modalHandler }) => {
           return (
             <div className={styles.routeCard} key={index}>
               <div className={styles.col1}>
-                <h2 className={styles.routeName}>{routes[value].routeName}</h2>
-                <h3 className={styles.creator}>{routes[value].creator}</h3>
+                <h2>{routes[value].routeName}</h2>
+                <h3>{routes[value].creator}</h3>
               </div>
               {routes[value].places.map(({ id, placeName, placeUrl, addressName, category }, index) => {
                 return (
