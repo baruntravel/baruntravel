@@ -2,7 +2,7 @@ import styles from "./usersRouteMap.module.css";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
-const UsersRouteMap = ({ routes, places }) => {
+const UsersRouteMap = ({ routes, places, mapHandler }) => {
   const { kakao } = window;
   const [map, setMap] = useState();
   const [markers, setMarkers] = useState([]);
@@ -24,6 +24,7 @@ const UsersRouteMap = ({ routes, places }) => {
       };
       let tmpMap = new kakao.maps.Map(container, options);
 
+      mapHandler(tmpMap);
       boundsHandler(tmpMap);
       setMap(tmpMap);
     }

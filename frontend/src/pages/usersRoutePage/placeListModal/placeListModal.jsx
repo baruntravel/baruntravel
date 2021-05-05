@@ -4,40 +4,47 @@ import { faMap } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-//Todo : 화면 스크롤 되게, 루트 다 보여줄지, 해당 인덱스의 루트만 보여줄지
-
-const PlaceListModal = ({ places, modalHandler }) => {
+const PlaceListModal = ({ routes, modalHandler }) => {
   return (
     <div className={styles.container}>
       <div className={styles.routeCardContainer}>
-        {places.map(({ id, placeName, placeUrl, addressName, category }, index) => {
+        {Object.keys(routes).map((value, index) => {
           return (
-            <Link to={`place/${id}`} key={index}>
-              <div className={styles.routeCard}>
-                <div className={styles.left}>
-                  <div className={styles.row1}>
-                    <h2>{placeName}</h2>
-                    <h3>{category}</h3>
-                  </div>
-                  <div className={styles.row2}>
-                    <h3>{addressName}</h3>
-                    <h3>02-2222-3333</h3>
-                  </div>
-                </div>
-                <div className={styles.right}>
-                  <div className={styles.thumbnail}></div>
-                </div>
+            <div className={styles.routeCard} key={index}>
+              <div className={styles.col1}>
+                <h2 className={styles.routeName}>{routes[value].routeName}</h2>
+                <h3 className={styles.creator}>{routes[value].creator}</h3>
               </div>
-            </Link>
+              {routes[value].places.map(({ id, placeName, placeUrl, addressName, category }, index) => {
+                return (
+                  <Link to={`place/${id}`} key={index}>
+                    <div className={styles.placeCard}>
+                      <div className={styles.col2}>
+                        <div className={styles.row1}>
+                          <h2>{placeName}</h2>
+                          <h3>{category}</h3>
+                        </div>
+                        <div className={styles.row2}>
+                          <h3>{addressName}</h3>
+                          <h3>02-2222-3333</h3>
+                        </div>
+                      </div>
+                      <div className={styles.col3}>
+                        <div className={styles.thumbnail}></div>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           );
         })}
-      </div>
 
-      <button className={styles.mapButton} onClick={modalHandler}>
-        <FontAwesomeIcon icon={faMap} color="white" size="lg" />
-      </button>
+        <button className={styles.mapButton} onClick={modalHandler}>
+          <FontAwesomeIcon icon={faMap} color="white" size="lg" />
+        </button>
+      </div>
     </div>
   );
 };
-
 export default PlaceListModal;

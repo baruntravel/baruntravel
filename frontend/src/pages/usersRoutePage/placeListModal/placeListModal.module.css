@@ -13,12 +13,26 @@ body {
   overflow-y: auto;
 }
 
+.col1 {
+  display: flex;
+  align-items: center;
+  margin: 8px 10px 0;
+}
+
+.col1 h3 {
+  margin-left: 6px;
+  color: #1890ff;
+}
+
 .routeCardContainer {
 }
 
-.routeCard {
+.placeCardContainer {
+}
+
+.placeCard {
   background-color: white;
-  margin: 6px;
+  margin: 8px 6px 8px 20px;
   padding: 20px;
   display: flex;
   justify-content: space-between;

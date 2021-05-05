@@ -4,7 +4,7 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"; // empty hea
 import FavoriteIcon from "@material-ui/icons/Favorite"; // filled heart icon
 import { Link } from "react-router-dom";
 
-const RouteCarousel = ({ routes, handleChange }) => {
+const RouteCarousel = ({ routes, indexHandler }) => {
   const settings = {
     dots: false,
     infinite: true,
@@ -15,7 +15,7 @@ const RouteCarousel = ({ routes, handleChange }) => {
 
   return (
     <div className={styles.container}>
-      <Slider afterChange={(e) => handleChange(e)} {...settings}>
+      <Slider afterChange={(e) => indexHandler(e)} {...settings}>
         {Object.keys(routes).map((value, index) => {
           return (
             <Link to={`route/${value}`} target="_blank" key={index}>
