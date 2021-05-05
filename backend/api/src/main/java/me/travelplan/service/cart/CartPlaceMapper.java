@@ -20,6 +20,7 @@ public interface CartPlaceMapper {
     @Mapping(constant = "PENDING", target = "detailStatus")
     @Mapping(source = "place.categoryId", target = "category.id")
     @Mapping(source = "place.categoryName", target = "category.name")
+    @Mapping(constant = "", target = "openHour")
     Place dtoToPlace(CartPlaceRequest.AddPlace place);
 
     default CartPlaceResponse.GetList toGetListResponse(List<CartPlace> cartPlaces, User user) {

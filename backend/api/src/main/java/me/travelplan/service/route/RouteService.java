@@ -61,7 +61,7 @@ public class RouteService {
     @Transactional
     public Route update(Route route) {
         routePlaceRepository.deleteAllByRoute(route);
-        fileRepository.saveAll(route.getRoutePlaces().stream().map(RoutePlace::getPlace).map(Place::getImage).collect(Collectors.toList()));
+        fileRepository.saveAll(route.getRoutePlaces().stream().map(RoutePlace::getPlace).map(Place::getThumbnail).collect(Collectors.toList()));
         placeRepository.saveAll(route.getRoutePlaces().stream().map(RoutePlace::getPlace).collect(Collectors.toList()));
         return routeRepository.save(route);
     }
@@ -73,7 +73,7 @@ public class RouteService {
     @Transactional
     public Route addPlace(Long id, Place place) {
         Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
-        fileRepository.save(place.getImage());
+        fileRepository.save(place.getThumbnail());
         route.addPlace(RoutePlace.builder().order(0).route(route).place(place).build());
         route.calculateCoordinate(route.getRoutePlaces());
         return routeRepository.save(route);

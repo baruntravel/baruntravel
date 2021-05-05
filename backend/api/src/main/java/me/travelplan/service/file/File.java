@@ -51,4 +51,17 @@ public class File extends BaseEntity {
                 .url(file.getPublicUrl())
                 .build();
     }
+
+    public static File createExternalImage(String url) {
+        return File.builder()
+                .url(url)
+                .server(FileServer.EXTERNAL)
+                .extension("")
+                .height(0)
+                .size(0L)
+                .type(FileType.IMAGE)
+                .width(0)
+                .name("")
+                .build();
+    }
 }

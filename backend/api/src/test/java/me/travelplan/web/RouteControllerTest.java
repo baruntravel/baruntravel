@@ -232,7 +232,7 @@ public class RouteControllerTest extends MvcTest {
                         .y(122.123)
                         .url("https://www.naver.com")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
-                        .image(File.builder().url("http://loremflickr.com/440/440").build())
+                        .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build()
         ).build());
         route.addPlace(RoutePlace.builder().order(2).place(
@@ -244,7 +244,7 @@ public class RouteControllerTest extends MvcTest {
                         .address("강릉")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .url("https://www.naver.com")
-                        .image(File.builder().url("http://loremflickr.com/440/440").build())
+                        .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build()
         ).build());
 
