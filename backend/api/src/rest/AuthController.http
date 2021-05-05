@@ -1,7 +1,23 @@
 POST {{apiUrl}}/auth/register
-Content-Type: application/json
+Content-Type: multipart/form-data; boundary=boundary
 
-{"email": "{{TEST_USER_EMAIL}}", "password": "{{TEST_USER_PASSWORD}}", "name":  "testname"}
+--boundary
+Content-Disposition: form-data; name="email";
+
+{{TEST_USER_EMAIL}}
+--boundary
+Content-Disposition: form-data; name="password";
+
+{{TEST_USER_PASSWORD}}
+--boundary
+Content-Disposition: form-data; name="name";
+
+testname
+--boundary
+Content-Disposition: form-data; name="avatar"; filename="enjoy.png"
+
+< ./../main/resources/mock/images/enjoy.png
+--boundary
 
 ###
 POST {{apiUrl}}/auth/login
