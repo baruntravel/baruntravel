@@ -9,8 +9,9 @@
 
 .navbarContainer {
   position: fixed;
+  width: 95%;
   z-index: 5;
-  top: 1%;
+  top: 3%;
 }
 
 .routeCarousel {

@@ -1,12 +1,15 @@
 import styles from "./navbar.module.css";
-import { ShoppingCartOutlined } from "@ant-design/icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
   return (
     <div className={styles.container}>
-      <div className={styles.backButton}></div>
+      <div className={styles.backButton}>
+        <FontAwesomeIcon icon={faChevronLeft} color="black" size="lg" />
+      </div>
       <div className={styles.cartButton}>
-        <ShoppingCartOutlined style={{ fontSize: "36px" }} className={styles.cartIcon} />
+        <FontAwesomeIcon icon={faShoppingCart} color="black" size="lg" />
       </div>
     </div>
   );

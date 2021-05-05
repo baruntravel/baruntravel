@@ -6,10 +6,9 @@ import { userState } from "../../recoil/userState";
 import { usersRouteItems } from "../../recoil/routeAtom";
 import Navbar from "./navbar/navbar";
 import RouteCarousel from "./routeCarousel/routeCarousel";
-import BottomDrawer from "./bottomDrawer/bottomDrawer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList } from "@fortawesome/free-solid-svg-icons";
-import ListModal from "./listModal/listModal";
+import PlaceListModal from "./placeListModal/placeListModal";
 
 // import { getRoute, postRoute, postEmpty } from "../../api/routeAPI";
 const UsersRoutePage = () => {
@@ -19,18 +18,10 @@ const UsersRoutePage = () => {
   const [index, setIndex] = useState(0);
   const [modalToggle, setModalToggle] = useState(false);
 
-  const handleChange = (index) => {
-    setIndex(index);
-  };
+  const handleChange = (index) => setIndex(index);
+  const modalHandler = () => setModalToggle(!modalToggle);
 
-  const modalHandler = () => {
-    setModalToggle(!modalToggle);
-  };
-
-  useEffect(() => {
-    const places = Object.values(routes)[index].places;
-    setPlaces(places);
-  }, [index]);
+  useEffect(() => setPlaces(Object.values(routes)[index].places), [index]);
 
   return (
     <div className={styles.wrapper}>
@@ -50,9 +41,10 @@ const UsersRoutePage = () => {
         </div>
         <RouteCarousel routes={routes} handleChange={(e) => handleChange(e)} />
       </div>
+
       {modalToggle && (
         <div className={styles.modalContainer}>
-          <ListModal places={places} index={index} modalHandler={modalHandler} />
+          <PlaceListModal places={places} index={index} modalHandler={modalHandler} />
         </div>
       )}
     </div>
