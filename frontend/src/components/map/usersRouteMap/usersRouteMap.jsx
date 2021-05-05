@@ -48,6 +48,17 @@ const UsersRouteMap = ({ routes, places, mapHandler }) => {
     }
 
     let path = addPath();
+
+    map && // 지도 확대시 path 잠시 없앰
+      kakao.maps.event.addListener(map, "zoom_start", function () {
+        path.setMap(null);
+      });
+
+    map && // 지도 확대 끝날시 path 다시 나타냄
+      kakao.maps.event.addListener(map, "zoom_changed", function () {
+        path.setMap(map);
+      });
+
     return () => removePath(path); //Unmount 직전에 path 지움
 
     function displayMarker(infowindow) {
