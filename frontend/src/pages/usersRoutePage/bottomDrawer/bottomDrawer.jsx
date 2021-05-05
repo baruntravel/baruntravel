@@ -1,4 +1,4 @@
-import { ClickAwayListener, SwipeableDrawer } from "@material-ui/core";
+import { SwipeableDrawer } from "@material-ui/core";
 import { useState } from "react";
 import styles from "./bottomDrawer.module.css";
 

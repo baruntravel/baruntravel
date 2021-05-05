@@ -3,25 +3,62 @@
   height: 100vh;
   display: flex;
   justify-content: center;
+  align-items: center;
   user-select: none;
+}
+
+.navbarContainer {
+  position: fixed;
+  z-index: 5;
+  top: 1%;
 }
 
 .routeCarousel {
   position: fixed;
   z-index: 10;
-  max-width: 768px;
+  max-width: 512px;
   max-height: 128px;
   width: 95%;
   height: 20%;
-  bottom: 6%;
+  bottom: 1%;
 }
 
+.box1 {
+  position: fixed;
+  display: flex;
+  width: 95%;
+  max-width: 512px;
+
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+  bottom: 22%;
+}
+
+.listButton {
+  background-color: #1890ff;
+  border: none;
+  outline: none;
+  padding: 10px;
+}
+
+.searchHere {
+  display: flex;
+}
+
+.modalContainer {
+  width: 100%;
+  position: fixed;
+  z-index: 10;
+}
+
+/* 
 .drawerButton {
-  /* /* width: 24px; */
+  width: 24px;
 }
 
 .bottomDrawer {
   position: fixed;
   z-index: 10;
   bottom: 1%;
-}
+} */
