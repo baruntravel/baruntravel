@@ -368,7 +368,6 @@ public class RouteControllerTest extends MvcTest {
                                 fieldWithPath("reviews[].likeCount").description("경로 리뷰 좋아요 개수"),
                                 fieldWithPath("reviews[].likeCheck").description("로그인 유저가 해당 경로 리뷰에 좋아요를 눌렀다면 true"),
                                 fieldWithPath("reviews[].createdBy").description("경로 리뷰 작성자"),
-                                fieldWithPath("reviews[].files[].name").description("경로 리뷰에 첨부되어 있는 파일 이름"),
                                 fieldWithPath("reviews[].files[].url").description("경로 리뷰에 첨부되어 있는 파일 url"),
                                 fieldWithPath("reviews[].createdAt").description("경로 리뷰 생성날짜"),
                                 fieldWithPath("reviews[].updatedAt").description("경로 리뷰 수정날짜")

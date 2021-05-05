@@ -184,7 +184,6 @@ public interface RouteMapper {
                         .createdBy(routeReview.getCreatedBy().getName())
                         .files(routeReview.getRouteReviewFiles().stream()
                                 .map(routeReviewFile -> FileDto.builder()
-                                        .name(routeReviewFile.getFile().getName())
                                         .url(routeReviewFile.getFile().getUrl())
                                         .build())
                                 .collect(Collectors.toList()))
