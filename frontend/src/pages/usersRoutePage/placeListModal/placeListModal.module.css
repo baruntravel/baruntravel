@@ -9,10 +9,11 @@ body {
   width: 100vw;
   height: 100vh;
   background-color: #e9ecef;
+  position: absolute;
+  overflow-y: auto;
 }
 
 .routeCardContainer {
-  overflow-y: scroll;
 }
 
 .routeCard {

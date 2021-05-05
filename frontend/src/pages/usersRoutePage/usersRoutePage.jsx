@@ -17,11 +17,17 @@ const UsersRoutePage = () => {
   const [places, setPlaces] = useState([]);
   const [index, setIndex] = useState(0);
   const [modalToggle, setModalToggle] = useState(false);
+  const [searchHere, setSearchHere] = useState(false);
 
   const handleChange = (index) => setIndex(index);
   const modalHandler = () => setModalToggle(!modalToggle);
+  const searchHereHandler = (e) => {
+    e.target.style = searchHere ? "background-color: white;" : "background-color: black;";
+    setSearchHere(!searchHere);
+  };
 
   useEffect(() => setPlaces(Object.values(routes)[index].places), [index]);
+  useEffect(() => {}, [searchHere]);
 
   return (
     <div className={styles.wrapper}>
@@ -32,8 +38,8 @@ const UsersRoutePage = () => {
       <div className={styles.routeCarousel} onDragStart={(e) => e.preventDefault()}>
         <div className={styles.box1}>
           <div className={styles.searchHere}>
-            <button className={styles.serachHereBtn} />
-            <div className={styles.serachHereTitle}>현 지도에서 검색</div>
+            <button onClick={searchHereHandler} />
+            <div>현 지도에서 검색</div>
           </div>
           <button className={styles.listButton} onClick={modalHandler}>
             <FontAwesomeIcon icon={faList} color="white" size="lg" />
@@ -44,7 +50,7 @@ const UsersRoutePage = () => {
 
       {modalToggle && (
         <div className={styles.modalContainer}>
-          <PlaceListModal places={places} index={index} modalHandler={modalHandler} />
+          <PlaceListModal places={places} modalHandler={modalHandler} />
         </div>
       )}
     </div>

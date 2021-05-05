@@ -5,6 +5,7 @@
   justify-content: center;
   align-items: center;
   user-select: none;
+  overflow-y: auto;
 }
 
 .navbarContainer {
@@ -29,8 +30,7 @@
   display: flex;
   width: 95%;
   max-width: 512px;
-
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   z-index: 10;
   bottom: 22%;
@@ -45,21 +45,30 @@
 
 .searchHere {
   display: flex;
+  align-items: center;
+}
+
+.searchHere button {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  outline: none;
+  background-color: white;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin-right: 4px;
+}
+
+.searchHere div {
+  font-weight: 500;
+}
+
+.checked {
+  background-color: black;
 }
 
 .modalContainer {
   width: 100%;
+  height: 100%;
   position: fixed;
-  z-index: 10;
+  z-index: 100;
 }
-
-/* 
-.drawerButton {
-  width: 24px;
-}
-
-.bottomDrawer {
-  position: fixed;
-  z-index: 10;
-  bottom: 1%;
-} */
