@@ -28,7 +28,7 @@ const RouteDetailPage = (props) => {
   const [openInputName, setOpenInputName] = useState(false);
   const [needLogin, setNeedLogin] = useState(false);
 
-  const routeId = 100;
+  const routeId = 1;
 
   const onCloseInputName = useCallback(() => {
     setOpenInputName(false);
