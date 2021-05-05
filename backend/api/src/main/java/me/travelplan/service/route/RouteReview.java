@@ -2,6 +2,7 @@ package me.travelplan.service.route;
 
 import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
+import me.travelplan.service.user.User;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -34,6 +35,10 @@ public class RouteReview extends BaseEntity {
     @Builder.Default
     private List<RouteReviewFile> routeReviewFiles = new ArrayList<>();
 
+    @OneToMany(mappedBy = "routeReview", cascade = CascadeType.REMOVE)
+    @Builder.Default
+    private List<RouteReviewLike> routeReviewLikes = new ArrayList<>();
+
     public void setRoute(Route route) {
         this.route = route;
         route.getRouteReviews().add(this);
@@ -49,6 +54,10 @@ public class RouteReview extends BaseEntity {
     public void update(Double score, String content) {
         this.score = score;
         this.content = content;
+    }
+
+    public boolean isLike(User user) {
+        return this.routeReviewLikes.stream().anyMatch(routeLike -> routeLike.getCreatedBy().getId().equals(user.getId()));
     }
 
     public static RouteReview create(Double score, String content, List<RouteReviewFile> routeReviewFiles, Route route) {

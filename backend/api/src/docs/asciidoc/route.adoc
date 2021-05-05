@@ -103,18 +103,18 @@ include::{snippets}/routes-getList/request-parameters.adoc[]
 include::{snippets}/routes-getList/http-response.adoc[]
 include::{snippets}/routes-getList/response-fields.adoc[]
 
-=== 경로 즐겨찾기(좋아요) 생성 or 수정
+=== 경로 즐겨찾기(좋아요) 생성 or 삭제
 
 `POST /route/{id}/like`
 
 요청 HTTP
 
 - Body
-include::{snippets}/route-like-create-update/http-request.adoc[]
-include::{snippets}/route-like-create-update/path-parameters.adoc[]
+include::{snippets}/route-like-create-delete/http-request.adoc[]
+include::{snippets}/route-like-create-delete/path-parameters.adoc[]
 
 성공 응답 HTTP
-include::{snippets}/route-like-create-update/http-response.adoc[]
+include::{snippets}/route-like-create-delete/http-response.adoc[]
 
 == 리뷰 관련 API
 
@@ -130,6 +130,18 @@ include::{snippets}/route-review-create/request-parameters.adoc[]
 
 성공 응답 HTTP
 include::{snippets}/route-review-create/http-response.adoc[]
+
+=== 경로 리뷰 좋아요
+
+`POST /route/review/{id}/like`
+
+요청 HTTP
+
+include::{snippets}/route-review-like-create-delete/http-request.adoc[]
+include::{snippets}/route-review-like-create-delete/path-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/route-review-like-create-delete/http-response.adoc[]
 
 === 경로 리뷰 목록 조회
 

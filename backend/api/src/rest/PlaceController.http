@@ -33,3 +33,9 @@ Authorization: {{ authorizationToken }}
 DELETE {{apiUrl}}/place/123/review/2
 Content-Type: application/json
 Authorization: {{ authorizationToken }}
+
+###
+
+POST {{apiUrl}}/place/123/like
+Content-Type: application/json
+Authorization: {{ authorizationToken }}

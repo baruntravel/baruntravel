@@ -65,6 +65,8 @@ public class RouteDto {
         private String content;
         private Double score;
         private String createdBy;
+        private Integer likeCount;
+        private boolean likeCheck;
         private List<FileDto> files;
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

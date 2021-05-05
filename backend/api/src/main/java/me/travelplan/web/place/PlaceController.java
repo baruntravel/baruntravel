@@ -45,6 +45,6 @@ public class PlaceController {
 
     @PostMapping("/{placeId}/like")
     public void createOrUpdateLike(@PathVariable Long placeId, @CurrentUser CustomUserDetails userDetails) {
-        placeService.createOrUpdateLike(placeId, userDetails.getUser());
+        placeService.createOrDeleteLike(placeId, userDetails.getUser());
     }
 }
