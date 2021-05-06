@@ -10,6 +10,7 @@ import RouteDetailPage from "./pages/routeDetailPage/routeDetailPage";
 import PlaceDetailPage from "./pages/placeDetailPage/placeDetailPage";
 import AllRoute from "./pages/mainPage/selectRoute/allRoute/allRoute";
 import AllArea from "./pages/mainPage/selectArea/allArea/allArea";
+import DetailProfile from "./components/detailProfile/detailProfile";
 
 function App() {
   return (
@@ -50,6 +51,10 @@ function App() {
 
           <Route exact path="/place/:id">
             <PlaceDetailPage />
+          </Route>
+
+          <Route exact path="/detailProfile">
+            <DetailProfile />
           </Route>
 
           {/* 테스트 */}
