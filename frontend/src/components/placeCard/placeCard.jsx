@@ -12,18 +12,19 @@ const PlaceCard = ({ place, onHandleDelete, addShoppingCart, isLiked }) => {
   const onHandleLike = () => {
     addShoppingCart(place);
   };
-  const onClickCard = useCallback((event) => {
-    if (
-      likeIconRef.current.contains(event.target) ||
-      event.target.nodeName === "A"
-    ) {
-      return;
-    }
-    history.push(`/place/${place.id}`);
-  }, []);
-  useEffect(() => {
-    // isLiked && setLiked(true);
-  });
+  const onClickCard = useCallback(
+    (event) => {
+      if (
+        likeIconRef.current.contains(event.target) ||
+        event.target.nodeName === "A"
+      ) {
+        return;
+      }
+      history.push(`/place/${place.id}`);
+    },
+    [history, place.id]
+  );
+
   const placeAddress =
     place.road_address_name || place.address_name || place.address;
   return (
