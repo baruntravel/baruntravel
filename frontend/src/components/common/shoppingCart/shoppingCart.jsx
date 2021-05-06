@@ -3,7 +3,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styles from "./shoppingCart.module.css";
 import ShoppingItem from "./shoppingItem/shoppingItem";
-import { postRoute } from "../../../api/routeAPI";
+import { makeRoute } from "../../../api/routeAPI";
 import InputRootName from "../inputRootName/inputRootName";
 import { HistoryOutlined } from "@ant-design/icons";
 import ResetConfirm from "../resetConfirm/resetConfirm";
@@ -23,8 +23,12 @@ const ShoppingCart = memo(
     const [openInputName, setOpenInputName] = useState(false);
     const [openResetConfirm, setOpenResetConfirm] = useState(false);
 
-    const setCloseInputName = useCallback(() => {
-      resetCartAll();
+    const onOpenInputName = useCallback(() => {
+      if (items.length > 0) {
+        setOpenInputName(true);
+      }
+    }, [items]);
+    const onCloseInputName = useCallback(() => {
       setOpenInputName(false);
     }, []);
     const onOpenResetConfirm = useCallback(() => {
@@ -55,11 +59,15 @@ const ShoppingCart = memo(
       },
       [items, updateShoppingCart]
     );
-    const onSaveRoute = useCallback(() => {
-      if (items.length > 0) {
-        setOpenInputName(true);
-      }
-    }, []);
+    const onSaveRoute = useCallback(
+      async (name) => {
+        if (await makeRoute(name, items)) {
+          resetCartAll();
+          onClose();
+        }
+      },
+      [items, resetCartAll]
+    );
     return (
       <>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -117,14 +125,16 @@ const ShoppingCart = memo(
               )}
             </Droppable>
             <div className={styles.bottom}>
-              <button className={styles.addRouteBtn} onClick={onSaveRoute}>
+              <button className={styles.addRouteBtn} onClick={onOpenInputName}>
                 경로 저장하기
               </button>
               <span>바른 여행 길잡이</span>
             </div>
           </div>
         </DragDropContext>
-        {openInputName && <InputRootName onClose={setCloseInputName} />}
+        {openInputName && (
+          <InputRootName onClose={onCloseInputName} onSaveRoute={onSaveRoute} />
+        )}
         {openResetConfirm && (
           <ResetConfirm onReset={resetCartAll} onClose={onCloseResetConfirm} />
         )}
