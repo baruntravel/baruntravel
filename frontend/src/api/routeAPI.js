@@ -1,39 +1,29 @@
 import axios from "axios";
 
-export const getRoute = (areaID) => {
-  axios
-    .get(`/route/123`)
-    .then((res) => {
-      console.log(res);
-    })
+export const getMyRoute = async () => {
+  return await axios
+    .get(`/routes/my`)
+    .then((res) => res.data.routes)
     .catch((error) => {
       console.error(error);
+      throw new Error(`${error}`);
     });
 };
 
-export const postEmpty = () => {
-  axios
-    .post(`/route/empty`, {
-      name: "Test1234",
-    })
-    .then((res) => {
-      console.log(res);
-    })
+export const makeRoute = async (name, placesData) => {
+  const places = placesData.map((place, index) => ({
+    id: place.id,
+    order: index,
+  }));
+  const data = {
+    name,
+    places,
+  };
+  return await axios
+    .post(`/route`, data)
+    .then((res) => res.data.id || true)
     .catch((error) => {
-      console.error(error);
-    });
-};
-
-export const postRoute = (data) => {
-  axios
-    .post(`/route`, {
-      name: "TEST1",
-      places: data,
-    })
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((error) => {
-      console.error(error);
+      console.error(`${error}`);
+      return false;
     });
 };

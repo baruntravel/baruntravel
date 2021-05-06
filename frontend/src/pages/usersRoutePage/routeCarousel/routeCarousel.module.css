@@ -1,14 +1,14 @@
 .container {
   background-color: white;
-  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
   width: 100%;
   height: 100%;
 }
 
-.top {
+.row1 {
   display: flex;
-  margin: 8px 12%;
-  justify-content: space-around;
+  margin: 8px 10%;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -28,28 +28,38 @@
   background-color: transparent;
 }
 
-.bottom {
-  margin: 24px;
-  display: flex;
-  justify-content: space-around;
+.row2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 100%;
+  padding: 0 12px;
+  justify-items: center;
   align-items: center;
 }
 
-.places {
-  color: black;
-  width: 24%;
-  height: 32px;
-  font-size: 16px;
-  font-weight: 500;
+.col1 {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
-/* .places:hover {
-  transform: scale(1.1);
-  cursor: pointer;
-} */
+.col1 .places {
+  color: black;
+  width: 80%;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
 
-@media screen and (max-width: 768px) {
-  .routeCard {
-    width: 100%;
-  }
+.col1 .index {
+  background-color: #1890ff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 4px;
 }
