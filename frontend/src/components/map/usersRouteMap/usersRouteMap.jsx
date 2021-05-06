@@ -2,7 +2,7 @@ import styles from "./usersRouteMap.module.css";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
-const UsersRouteMap = ({ routes, places }) => {
+const UsersRouteMap = ({ routes, places, mapHandler }) => {
   const { kakao } = window;
   const [map, setMap] = useState();
   const [markers, setMarkers] = useState([]);
@@ -24,6 +24,7 @@ const UsersRouteMap = ({ routes, places }) => {
       };
       let tmpMap = new kakao.maps.Map(container, options);
 
+      mapHandler(tmpMap);
       boundsHandler(tmpMap);
       setMap(tmpMap);
     }
@@ -48,6 +49,16 @@ const UsersRouteMap = ({ routes, places }) => {
 
     let path = addPath();
     return () => removePath(path); //Unmount 직전에 path 지움
+
+    // map && // 지도 확대시 path 잠시 없앰
+    //   kakao.maps.event.addListener(map, "zoom_start", function () {
+    //     path.setMap(null);
+    //   });
+
+    // map && // 지도 확대 끝날시 path 다시 나타냄
+    //   kakao.maps.event.addListener(map, "zoom_changed", function () {
+    //     path.setMap(map);
+    //   });
 
     function displayMarker(infowindow) {
       removeMarker();
@@ -81,16 +92,16 @@ const UsersRouteMap = ({ routes, places }) => {
       let polyline = new kakao.maps.Polyline({
         path: linepath, // 선을 구성하는 좌표배열 입니다
         strokeWeight: 5, // 선의 두께 입니다
-        strokeColor: "#FFAE00", // 선의 색깔입니다
-        strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+        strokeColor: "#1890ff", // 선의 색깔입니다
+        strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
         strokeStyle: "solid", // 선의 스타일입니다
       });
       polyline.setMap(map);
       return polyline;
     }
 
-    function removePath(line) {
-      line.setMap(null);
+    function removePath(path) {
+      path.setMap(null);
     }
 
     function addMarker(position, index) {
