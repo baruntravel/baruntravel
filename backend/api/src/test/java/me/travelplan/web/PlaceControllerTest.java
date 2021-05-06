@@ -53,6 +53,7 @@ public class PlaceControllerTest extends MvcTest {
                 .images(IntStream.range(0, 2).mapToObj(i -> PlaceImage.builder().file(File.builder().url("file url" + i).build()).build()).collect(Collectors.toList()))
                 .x(37.554619995803215)
                 .y(126.91083170563417)
+                .openHour("11:00 ~ 19:30")
                 .category(PlaceCategory.builder().id("FD6").name("음식점").build())
                 .url("https://place.map.kakao.com/1797997961")
                 .build();
@@ -74,6 +75,7 @@ public class PlaceControllerTest extends MvcTest {
                         responseFields(
                                 fieldWithPath("name").description("장소 이름"),
                                 fieldWithPath("address").description("장소 주소"),
+                                fieldWithPath("openHour").description("장소 영업 시간"),
                                 fieldWithPath("category").description("장소 카테고리 이름"),
                                 fieldWithPath("x").description("장소 x좌표"),
                                 fieldWithPath("y").description("장소 y좌표"),

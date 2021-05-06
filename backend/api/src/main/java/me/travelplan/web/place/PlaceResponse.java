@@ -15,6 +15,7 @@ public class PlaceResponse {
     public static class GetOne {
         private String name;
         private String address;
+        private String openHour;
         private String category;
         private Double x;
         private Double y;
