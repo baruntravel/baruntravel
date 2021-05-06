@@ -5,11 +5,13 @@ import { useHistory } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../recoil/userState";
 import styles from "./detailProfile.module.css";
+import DetailProfileCondition from "./detailProfileCondition/detailProfileCondition";
 
 const DetailProfile = (props) => {
   const userStates = useRecoilValue(userState);
   const history = useHistory();
   // useEffect lifecycle method를 사용하지 않은 이유 -> 마운트 되어 렌더링 그려지는 모습이 0.1초동안 보여지는 것을 방지
+  const [selected, setSelected] = useState("내경로");
 
   if (!userStates.isLogin) {
     history.push("/");
@@ -31,6 +33,23 @@ const DetailProfile = (props) => {
             icon={<UserOutlined />}
           />
           <span className={styles.nickname}>{userStates.name}</span>
+        </div>
+        <div className={styles.selectorBox}>
+          <div className={styles.selector}>
+            <span className={styles.selector__title}>내 경로</span>
+          </div>
+          <div className={styles.selector}>
+            <span className={styles.selector__title}>공유 경로</span>
+          </div>
+          <div className={styles.selector}>
+            <span className={styles.selector__title}>좋아요 경로</span>
+          </div>
+          <div className={styles.selector}>
+            <span className={styles.selector__title}>리뷰</span>
+          </div>
+        </div>
+        <div className={styles.listView}>
+          <DetailProfileCondition selected={selected} />
         </div>
       </section>
     </div>

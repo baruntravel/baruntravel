@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export const getMyRoute = async () => {
-  return await axios
+export const getMyRoute = () => {
+  return axios
     .get(`/routes/my`)
     .then((res) => res.data.routes)
     .catch((error) => {
