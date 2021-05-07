@@ -8,7 +8,6 @@ import me.travelplan.web.common.FileDto;
 import java.util.List;
 
 public class PlaceResponse {
-
     @Getter
     @Builder
     @AllArgsConstructor
@@ -21,7 +20,8 @@ public class PlaceResponse {
         private Double y;
         private Integer likeCount;
         private boolean likeCheck;
-        private List<FileDto> files;
+        private Double score;
+        private List<FileDto> images;
     }
 
     @Getter

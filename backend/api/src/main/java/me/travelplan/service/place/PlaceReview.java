@@ -16,7 +16,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "places_reviews")
 public class PlaceReview extends BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
