@@ -271,6 +271,7 @@ public class RouteControllerTest extends MvcTest {
                                 fieldWithPath("centerX").type(JsonFieldType.NUMBER).description("경로의 중심 X좌표"),
                                 fieldWithPath("centerY").type(JsonFieldType.NUMBER).description("경로의 중심 Y좌표"),
                                 fieldWithPath("reviewCount").type(JsonFieldType.NUMBER).description("경로 댓글 개수"),
+                                fieldWithPath("score").type(JsonFieldType.NUMBER).description("경로 평점"),
                                 fieldWithPath("createdBy").type(JsonFieldType.STRING).description("경로의 생성자 이름"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("경로 생성 날짜"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("경로 수정 날짜"),

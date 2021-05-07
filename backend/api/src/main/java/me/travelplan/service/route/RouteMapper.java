@@ -114,6 +114,7 @@ public interface RouteMapper {
                 .name(route.getName())
                 .centerX(centerX)
                 .centerY(centerY)
+                .score(route.getReviewScoreAvg())
                 .createdBy(route.getCreatedBy().getName())
                 .createdAt(route.getCreatedAt())
                 .updatedAt(route.getUpdatedAt())
