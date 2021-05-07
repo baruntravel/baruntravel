@@ -39,10 +39,10 @@ const DetailProfile = (props) => {
             <span className={styles.selector__title}>내 경로</span>
           </div>
           <div className={styles.selector}>
-            <span className={styles.selector__title}>공유 경로</span>
+            <span className={styles.selector__title}>좋아요</span>
           </div>
           <div className={styles.selector}>
-            <span className={styles.selector__title}>좋아요 경로</span>
+            <span className={styles.selector__title}>공유 경로</span>
           </div>
           <div className={styles.selector}>
             <span className={styles.selector__title}>리뷰</span>
