@@ -15,6 +15,11 @@ public class PlaceController {
     private final PlaceMapper placeMapper;
     private final PlaceService placeService;
 
+    @GetMapping("/{id}")
+    public PlaceResponse.GetOne getOne(@PathVariable Long id,@CurrentUser CustomUserDetails customUserDetails) {
+        return placeMapper.entityToGetOneDto(placeService.getOne(id),customUserDetails.getUser());
+    }
+
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{placeId}/review")
     public PlaceResponse.Reviews getReviews(@PathVariable Long placeId) {

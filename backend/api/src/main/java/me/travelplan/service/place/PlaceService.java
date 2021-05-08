@@ -10,16 +10,16 @@ import me.travelplan.service.place.exception.PlaceNotUpdatableException;
 import me.travelplan.service.place.exception.PlaceReviewNotFoundException;
 import me.travelplan.service.place.exception.PlaceReviewNotUpdatableException;
 import me.travelplan.service.user.User;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class PlaceService {
     private final PlaceRepository placeRepository;
     private final PlaceReviewRepository placeReviewRepository;
@@ -28,26 +28,29 @@ public class PlaceService {
     private final FileRepository fileRepository;
     private final PlaceImageRepository placeImageRepository;
 
+    @Transactional(readOnly = true)
+    public Place getOne(Long id) {
+        return placeRepository.findByIdWithCategory(id).orElseThrow(PlaceNotFoundException::new);
+    }
+
+    @Transactional(readOnly = true)
     public List<PlaceReview> getReviews(Long placeId) {
         Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
         return place.getReviews();
     }
 
-    @Transactional
     public PlaceReview createReview(Long placeId, PlaceReview placeReview) {
         Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
         placeReview.setPlace(place);
         return placeReviewRepository.save(placeReview);
     }
 
-    @Transactional
     public PlaceReview updateReview(PlaceReview changed) {
         PlaceReview before = placeReviewRepository.findById(changed.getId()).orElseThrow(PlaceReviewNotFoundException::new);
         before.update(changed);
         return placeReviewRepository.save(before);
     }
 
-    @Transactional
     public void delete(Long reviewId) {
         placeReviewRepository.deleteById(reviewId);
     }
@@ -68,7 +71,6 @@ public class PlaceService {
         }
     }
 
-    @Transactional
     public void createOrDeleteLike(Long placeId, User user) {
         Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
         Optional<PlaceLike> optionalPlaceLike = placeLikeRepository.findByPlaceIdAndCreatedBy(placeId, user);
@@ -81,8 +83,7 @@ public class PlaceService {
         }
     }
 
-//    @Async
-    @Transactional
+    //    @Async
     public void updateDetail(Long id) {
         Place place = placeRepository.findById(id).orElseThrow(PlaceNotFoundException::new);
         KakaoMapPlace kakaoPlace = kakaoMapService.getKakaoMapPlace(id);

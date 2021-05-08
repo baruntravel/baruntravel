@@ -1,47 +1,21 @@
 package me.travelplan.web.advice;
 
 import me.travelplan.exception.BusinessException;
-import me.travelplan.service.exception.ResponsibleClientException;
-import me.travelplan.service.exception.ResponsibleServerException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestControllerAdvice
 public class CustomExceptionHandler {
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity businessExceptionHandler(BusinessException ex) {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<ErrorResponse> businessExceptionHandler(BusinessException ex) {
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status("400")
+                .error("BadRequest")
+                .message(ex.getMessage())
+                .build();
 
-        response.put("status", 400);
-        response.put("error", "Bad request");
-        response.put("message", ex.getMessage());
-        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(ResponsibleClientException.class)
-    public ResponseEntity responsibleClientException(ResponsibleClientException ex) {
-        Map<String, Object> response = new HashMap<>();
-
-        response.put("status", 400);
-        response.put("error", "Bad request");
-        response.put("message", ex.getMessage());
-
-        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(ResponsibleServerException.class)
-    public ResponseEntity responsibleServerException(ResponsibleServerException ex) {
-        Map<String, Object> response = new HashMap<>();
-
-        response.put("status", 500);
-        response.put("error", "Internal Server Error");
-        response.put("message", ex.getMessage());
-
-        return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }

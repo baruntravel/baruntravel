@@ -11,6 +11,19 @@
 ---
 == 기본 API
 
+=== 장소 조회
+
+`GET /place/{id}`
+
+요청 HTTP
+
+include::{snippets}/place-getOne/http-request.adoc[]
+include::{snippets}/place-getOne/path-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/place-getOne/http-response.adoc[]
+include::{snippets}/place-getOne/response-fields.adoc[]
+
 === 좋아요 생성 or 삭제
 
 요청 HTTP
