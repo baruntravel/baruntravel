@@ -2,13 +2,13 @@ package me.travelplan.web;
 
 import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
-import me.travelplan.service.cart.CartPlaceMapperImpl;
-import me.travelplan.service.cart.CartPlace;
+import me.travelplan.service.cart.domain.CartPlace;
 import me.travelplan.service.cart.CartPlaceService;
-import me.travelplan.service.file.File;
-import me.travelplan.service.place.Place;
-import me.travelplan.service.place.PlaceCategory;
+import me.travelplan.service.file.domain.File;
+import me.travelplan.service.place.domain.Place;
+import me.travelplan.service.place.domain.PlaceCategory;
 import me.travelplan.web.cart.CartController;
+import me.travelplan.web.cart.CartPlaceMapperImpl;
 import me.travelplan.web.cart.CartPlaceRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

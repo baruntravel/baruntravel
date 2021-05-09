@@ -1,15 +1,23 @@
 package me.travelplan.service.place;
 
 import lombok.RequiredArgsConstructor;
-import me.travelplan.service.file.File;
-import me.travelplan.service.file.FileRepository;
-import me.travelplan.service.kakaomap.KakaoMapPlace;
-import me.travelplan.service.kakaomap.KakaoMapService;
+import me.travelplan.service.file.domain.File;
+import me.travelplan.service.file.repository.FileRepository;
+import me.travelplan.component.kakaomap.KakaoMapPlace;
+import me.travelplan.component.kakaomap.KakaoMapService;
+import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.exception.PlaceNotFoundException;
 import me.travelplan.service.place.exception.PlaceNotUpdatableException;
 import me.travelplan.service.place.exception.PlaceReviewNotFoundException;
 import me.travelplan.service.place.exception.PlaceReviewNotUpdatableException;
-import me.travelplan.service.user.User;
+import me.travelplan.service.place.domain.PlaceImage;
+import me.travelplan.service.place.domain.PlaceLike;
+import me.travelplan.service.place.repository.PlaceImageRepository;
+import me.travelplan.service.place.repository.PlaceLikeRepository;
+import me.travelplan.service.place.domain.PlaceReview;
+import me.travelplan.service.place.repository.PlaceRepository;
+import me.travelplan.service.place.repository.PlaceReviewRepository;
+import me.travelplan.service.user.domain.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import me.travelplan.service.file.FileServer;
-import me.travelplan.service.file.FileType;
+import me.travelplan.service.file.domain.FileServer;
+import me.travelplan.service.file.domain.FileType;
 
 @Getter
 @Builder
