@@ -1,0 +1,30 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatarBox {
+  display: flex;
+  flex-direction: column;
+}
+.nickname {
+  text-align: center;
+}
+
+.selectorBox {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  border-bottom: 1px solid lightgray;
+}
+.selector {
+  display: flex;
+  width: 100%;
+  flex-basis: 1;
+  justify-content: center;
+}
+.selector__title {
+  text-align: center;
+}
