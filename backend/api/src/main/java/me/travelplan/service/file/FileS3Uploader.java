@@ -26,7 +26,7 @@ public class FileS3Uploader {
         return files.stream().map(this::upload).collect(Collectors.toList());
     }
 
-    private SavedFile upload(MultipartFile file) {
+    public SavedFile upload(MultipartFile file) {
         String originalName = file.getOriginalFilename();
         String extension = Optional.ofNullable(originalName)
                 .filter(s -> s.contains("."))
