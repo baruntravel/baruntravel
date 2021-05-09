@@ -44,7 +44,7 @@ public interface PlaceMapper {
                 .category(place.getCategory().getName())
                 .openHour(place.getOpenHour())
                 .images(place.getImages().stream().map(placeImage -> FileDto.builder().url(placeImage.getFile().getUrl()).build()).collect(Collectors.toList()))
-                .score(place.getReviewScoreAvg())
+                .score(place.getAverageReviewScore())
                 .likeCount(place.getPlaceLikes().size())
                 .likeCheck(place.isLike(user))
                 .build();

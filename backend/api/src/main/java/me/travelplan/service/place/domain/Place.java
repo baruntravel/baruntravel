@@ -37,11 +37,11 @@ public class Place extends BaseEntity {
 
     @OneToMany(mappedBy = "place")
     @Builder.Default
-    private List<PlaceReview> reviews = new ArrayList<>();
+    private final List<PlaceReview> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "place")
     @Builder.Default
-    private List<PlaceLike> placeLikes = new ArrayList<>();
+    private final List<PlaceLike> placeLikes = new ArrayList<>();
     /**
      * Detail
      */
@@ -65,7 +65,7 @@ public class Place extends BaseEntity {
         return this;
     }
 
-    public Double getReviewScoreAvg() {
+    public Double getAverageReviewScore() {
         return this.reviews.stream().mapToDouble(PlaceReview::getScore).average().orElse(0);
     }
 }
