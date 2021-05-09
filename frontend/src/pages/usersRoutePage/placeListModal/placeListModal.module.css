@@ -1,0 +1,71 @@
+html,
+body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-color: #e9ecef;
+  position: absolute;
+  overflow-y: auto;
+}
+
+.col1 {
+  display: flex;
+  align-items: center;
+  margin: 12px 24px 0;
+}
+
+.col1 h3 {
+  margin-left: 8px;
+  color: #1890ff;
+}
+
+.routeCardContainer {
+  margin-top: 24px;
+}
+
+.placeCardContainer {
+}
+
+.placeCard {
+  background-color: white;
+  margin: 8px 16px 8px 28px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.row1 {
+  display: flex;
+  align-items: center;
+}
+
+.row1 h3 {
+  margin: 2px 6px;
+  color: #999;
+}
+
+/* img {
+  background-image: url("https://picsum.photos/200");
+} */
+
+.thumbnail {
+  width: 88px;
+  height: 88px;
+  background-color: orange;
+}
+
+.mapButton {
+  position: fixed;
+  display: sticky;
+  bottom: 22%;
+  right: 2.5%;
+  background-color: #1890ff;
+  border: none;
+  outline: none;
+  padding: 10px;
+}

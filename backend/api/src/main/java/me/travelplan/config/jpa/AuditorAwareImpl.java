@@ -1,7 +1,7 @@
 package me.travelplan.config.jpa;
 
 import me.travelplan.security.userdetails.CustomUserDetails;
-import me.travelplan.service.user.User;
+import me.travelplan.service.user.domain.User;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;

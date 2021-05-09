@@ -8,8 +8,8 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.travelplan.service.exception.ResponsibleClientException;
-import me.travelplan.service.user.User;
+import me.travelplan.exception.BusinessException;
+import me.travelplan.service.user.domain.User;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -62,7 +62,7 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token);
         } catch (JwtException ex) {
             log.error(ex.getMessage());
-            throw new ResponsibleClientException("다시 로그인 해주세요");
+            throw new BusinessException("다시 로그인 해주세요");
         }
 
         return claims;

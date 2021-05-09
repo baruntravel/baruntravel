@@ -1,3 +1,4 @@
 - link:/docs/auth.html[회원가입 및 인증 API]
 - link:/docs/route.html[경로 API]
-- link:/docs/cart.html[자신의 경로를 담은 카트 API]
+- link:/docs/place.html[장소 API]
+- link:/docs/cart.html[카트 API]

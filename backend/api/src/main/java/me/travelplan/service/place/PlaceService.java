@@ -1,30 +1,52 @@
 package me.travelplan.service.place;
 
 import lombok.RequiredArgsConstructor;
+import me.travelplan.service.file.domain.File;
+import me.travelplan.service.file.repository.FileRepository;
+import me.travelplan.component.kakaomap.KakaoMapPlace;
+import me.travelplan.component.kakaomap.KakaoMapService;
+import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.exception.PlaceNotFoundException;
 import me.travelplan.service.place.exception.PlaceNotUpdatableException;
 import me.travelplan.service.place.exception.PlaceReviewNotFoundException;
 import me.travelplan.service.place.exception.PlaceReviewNotUpdatableException;
-import me.travelplan.service.user.User;
+import me.travelplan.service.place.domain.PlaceImage;
+import me.travelplan.service.place.domain.PlaceLike;
+import me.travelplan.service.place.repository.PlaceImageRepository;
+import me.travelplan.service.place.repository.PlaceLikeRepository;
+import me.travelplan.service.place.domain.PlaceReview;
+import me.travelplan.service.place.repository.PlaceRepository;
+import me.travelplan.service.place.repository.PlaceReviewRepository;
+import me.travelplan.service.user.domain.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class PlaceService {
     private final PlaceRepository placeRepository;
     private final PlaceReviewRepository placeReviewRepository;
     private final PlaceLikeRepository placeLikeRepository;
+    private final KakaoMapService kakaoMapService;
+    private final FileRepository fileRepository;
+    private final PlaceImageRepository placeImageRepository;
 
+    @Transactional(readOnly = true)
+    public Place getOne(Long id) {
+        return placeRepository.findByIdWithCategory(id).orElseThrow(PlaceNotFoundException::new);
+    }
+
+    @Transactional(readOnly = true)
     public List<PlaceReview> getReviews(Long placeId) {
         Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
         return place.getReviews();
     }
 
-    @Transactional
     public PlaceReview createReview(Long placeId, PlaceReview placeReview) {
         Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
         placeReview.setPlace(place);
@@ -57,8 +79,7 @@ public class PlaceService {
         }
     }
 
-    @Transactional
-    public void createOrUpdateLike(Long placeId, User user) {
+    public void createOrDeleteLike(Long placeId, User user) {
         Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
         Optional<PlaceLike> optionalPlaceLike = placeLikeRepository.findByPlaceIdAndCreatedBy(placeId, user);
         if (optionalPlaceLike.isEmpty()) {
@@ -68,5 +89,28 @@ public class PlaceService {
             PlaceLike placeLike = optionalPlaceLike.get();
             placeLikeRepository.delete(placeLike);
         }
+    }
+
+    //    @Async
+    public void updateDetail(Long id) {
+        Place place = placeRepository.findById(id).orElseThrow(PlaceNotFoundException::new);
+        KakaoMapPlace kakaoPlace = kakaoMapService.getKakaoMapPlace(id);
+
+        if (kakaoPlace == null) {
+            return;
+        }
+
+        List<File> images = kakaoPlace.getPhotos().stream()
+                .map(photo -> File.createExternalImage(photo.getImageUrl()))
+                .collect(Collectors.toList());
+
+        images = fileRepository.saveAll(images);
+
+        List<PlaceImage> placeImages = images.stream()
+                .map(image -> PlaceImage.builder().place(place).file(image).build())
+                .collect(Collectors.toList());
+        placeImageRepository.saveAll(placeImages);
+
+        place.setFromKakaoMapPlace(kakaoPlace);
     }
 }

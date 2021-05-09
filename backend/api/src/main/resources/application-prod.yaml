@@ -73,3 +73,7 @@ spring:
   flyway:
     baseline-version: 0
     out-of-order: true
+
+storage:
+  s3Bucket: s3.baruntravel.me
+  s3Public: https://s3.ap-northeast-2.amazonaws.com/s3.baruntravel.me

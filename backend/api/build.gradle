@@ -103,6 +103,7 @@ dependencies {
      */
     implementation platform('software.amazon.awssdk:bom:2.13.33')
     implementation 'software.amazon.awssdk:s3'
+    implementation 'software.amazon.awssdk:lambda'
     /**
      * Test Dependencies
      */

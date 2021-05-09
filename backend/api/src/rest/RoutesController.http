@@ -1,0 +1,3 @@
+GET {{apiUrl}}/routes?size=10&page=1&minX=30&maxX=200&minY=10&maxY=200
+Authorization: {{ authorizationToken }}
+

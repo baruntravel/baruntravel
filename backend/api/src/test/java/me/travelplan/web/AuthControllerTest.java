@@ -3,9 +3,11 @@ package me.travelplan.web;
 import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
 import me.travelplan.security.jwt.Token;
+import me.travelplan.service.file.domain.File;
+import me.travelplan.service.file.FileService;
 import me.travelplan.service.user.*;
-import me.travelplan.web.auth.AuthController;
-import me.travelplan.web.auth.AuthResponse;
+import me.travelplan.service.user.domain.User;
+import me.travelplan.web.auth.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -24,21 +26,26 @@ import static me.travelplan.ApiDocumentUtils.getDocumentResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AuthController.class)
 @Import({
         UserMapperImpl.class,
-        PasswordEncoderMapper.class
+        PasswordEncoderMapper.class,
+        AvatarMapper.class,
 })
 public class AuthControllerTest extends MvcTest {
     @MockBean
     private AuthService authService;
     @MockBean
     private UserService userService;
+    @MockBean
+    private FileService fileService;
 
     @Test
     @DisplayName("회원가입 테스트")
@@ -46,16 +53,14 @@ public class AuthControllerTest extends MvcTest {
         User user = User.builder().email("test@test.com").password("encodedPasswordd").name("testname").build();
 
         given(userService.create(any())).willReturn(user);
-
-        Map<String, Object> request = new HashMap<>();
-        request.put("email", "test@test.com");
-        request.put("password", "password");
-        request.put("name", "name");
+        given(fileService.upload(any())).willReturn(File.createExternalImage("hello.png"));
 
         ResultActions results = mockMvc.perform(
-                post("/auth/register")
-                    .content(objectMapper.writeValueAsString(request))
-                    .contentType(MediaType.APPLICATION_JSON)
+                fileUpload("/auth/register")
+                        .param("email", "test@test.com")
+                        .param("password", "password")
+                        .param("name", "testName")
+                    .contentType(MediaType.MULTIPART_FORM_DATA)
                     .characterEncoding("UTF-8")
         );
 
@@ -63,10 +68,10 @@ public class AuthControllerTest extends MvcTest {
                 .andDo(document("auth-register",
                         getDocumentRequest(),
                         getDocumentResponse(),
-                        requestFields(
-                                fieldWithPath("email").type(JsonFieldType.STRING).description("가입할 이메일"),
-                                fieldWithPath("password").type(JsonFieldType.STRING).description("가입할 비밀번호"),
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("가입할 이름")
+                        requestParameters(
+                                parameterWithName("email").description("가입할 이메일"),
+                                parameterWithName("password").description("가입할 비밀번호"),
+                                parameterWithName("name").description("가입할 이륾")
                         )
                 ));
     }

@@ -24,6 +24,7 @@ public class RouteResponse {
         private Double centerY;
         private String createdBy;
         private Integer reviewCount;
+        private Double score;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         public LocalDateTime createdAt;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

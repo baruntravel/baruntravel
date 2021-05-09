@@ -2,14 +2,14 @@ package me.travelplan.web;
 
 import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
-import me.travelplan.service.file.File;
-import me.travelplan.service.place.Place;
-import me.travelplan.service.place.PlaceCategory;
-import me.travelplan.service.route.Route;
-import me.travelplan.service.route.RouteMapperImpl;
-import me.travelplan.service.route.RoutePlace;
+import me.travelplan.service.file.domain.File;
+import me.travelplan.service.place.domain.Place;
+import me.travelplan.service.place.domain.PlaceCategory;
+import me.travelplan.service.route.domain.Route;
+import me.travelplan.service.route.domain.RoutePlace;
 import me.travelplan.service.route.RouteService;
-import me.travelplan.service.user.User;
+import me.travelplan.service.user.domain.User;
+import me.travelplan.web.route.RouteMapperImpl;
 import me.travelplan.web.route.RoutesController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -92,7 +92,7 @@ public class RoutesControllerTest extends MvcTest {
                         .address("강릉")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .url("https://www.naver.com")
-                        .image(File.builder().url("http://loremflickr.com/440/440").build())
+                        .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .build());
         route1.setCreatedBy(User.builder().name("테스트유저1").build());
@@ -114,7 +114,7 @@ public class RoutesControllerTest extends MvcTest {
                         .y(124.123)
                         .url("https://www.naver.com")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
-                        .image(File.builder().url("http://loremflickr.com/440/440").build())
+                        .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build()
         ).build());
         route2.addPlace(RoutePlace.builder().order(2).place(
@@ -126,7 +126,7 @@ public class RoutesControllerTest extends MvcTest {
                         .y(124.124)
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .url("https://www.naver.com")
-                        .image(File.builder().url("http://loremflickr.com/440/440").build())
+                        .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .build());
         route2.setCreatedBy(User.builder().name("테스트유저2").build());
@@ -148,7 +148,7 @@ public class RoutesControllerTest extends MvcTest {
                         .y(124.124)
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .url("https://www.naver.com")
-                        .image(File.builder().url("http://loremflickr.com/440/440").build())
+                        .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .build());
         route3.setCreatedBy(User.builder().name("테스트유저3").build());

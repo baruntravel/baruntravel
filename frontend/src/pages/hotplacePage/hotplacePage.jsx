@@ -43,6 +43,7 @@ const HotplacePage = () => {
   const [searchPlace, setSearchPlace] = useState("");
   const [searchPlaces, setSearchPlaces] = useState([]);
   const [markerIndex, setMarkerIndex] = useState();
+  const [needLogin, setNeedLogin] = useState(false);
 
   console.log(userStates, shoppingItems);
   useEffect(() => {
@@ -87,6 +88,8 @@ const HotplacePage = () => {
     },
     [setShoppingItems]
   );
+
+  // 클릭된 카드의 장소로 setting
   const updateClickedPlace = useCallback((place) => {
     setPlace(place);
   }, []);
@@ -98,6 +101,7 @@ const HotplacePage = () => {
     setSearchPlaces(places);
   }, []);
 
+  // keyword 검색
   const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
@@ -110,6 +114,7 @@ const HotplacePage = () => {
     [inputKeyword, searchPlace]
   );
 
+  // marker 클릭 시
   const clickedMarker = useCallback((index) => {
     sliderRef.current.slickGoTo(index);
   }, []);

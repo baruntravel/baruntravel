@@ -3,7 +3,6 @@ package me.travelplan.web.cart;
 import lombok.RequiredArgsConstructor;
 import me.travelplan.security.userdetails.CurrentUser;
 import me.travelplan.security.userdetails.CustomUserDetails;
-import me.travelplan.service.cart.CartPlaceMapper;
 import me.travelplan.service.cart.CartPlaceService;
 import org.springframework.web.bind.annotation.*;
 

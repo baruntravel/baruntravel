@@ -3,7 +3,6 @@ package me.travelplan.web.route;
 import lombok.RequiredArgsConstructor;
 import me.travelplan.security.userdetails.CurrentUser;
 import me.travelplan.security.userdetails.CustomUserDetails;
-import me.travelplan.service.route.RouteMapper;
 import me.travelplan.service.route.RouteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +26,6 @@ public class RouteController {
         return routeMapper.toRouteIdResponse(routeService.create(request));
     }
 
-
     @PutMapping("/{id}")
     public void update(@PathVariable Long id, @RequestBody RouteRequest.CreateOrUpdate request) {
         routeService.update(routeMapper.toEntity(request, id));
@@ -43,6 +41,11 @@ public class RouteController {
         routeService.addPlace(id, routeMapper.toPlace(request));
     }
 
+    @PostMapping("/{id}/like")
+    public void createOrUpdateLike(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
+        routeService.createOrDeleteLike(id, userDetails.getUser());
+    }
+
     @PostMapping("/{id}/review")
     @ResponseStatus(HttpStatus.CREATED)
     public void createReview(@PathVariable Long id, RouteRequest.CreateOrUpdateReview request) {
@@ -50,24 +53,22 @@ public class RouteController {
     }
 
     @GetMapping("/{id}/reviews")
-    public RouteResponse.ReviewList getReviewList(@PathVariable Long id) {
-        return routeMapper.entityToResponseReviewList(routeService.getReviewList(id));
+    public RouteResponse.ReviewList getReviewList(@PathVariable Long id, @CurrentUser CustomUserDetails customUserDetails) {
+        return routeMapper.entityToResponseReviewList(routeService.getReviewList(id), customUserDetails.getUser());
     }
 
-    //test에서 file을 처리할 때 fileUpload가 post형식임
-    //PutMapping을 사용할 방법은??
     @PostMapping("/review/{id}")
     public void updateReview(@PathVariable Long id, RouteRequest.CreateOrUpdateReview request, @CurrentUser CustomUserDetails userDetails) {
         routeService.updateReview(id, request, userDetails.getUser());
     }
 
+    @PostMapping("/review/{id}/like")
+    public void createOrUpdateReviewLike(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
+        routeService.createOrDeleteReviewLike(id, userDetails.getUser());
+    }
+
     @DeleteMapping("/review/{id}")
     public void deleteReview(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
         routeService.deleteReview(id, userDetails.getUser());
-    }
-
-    @PostMapping("/{id}/like")
-    public void createOrUpdateLike(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
-        routeService.createOrUpdateLike(id, userDetails.getUser());
     }
 }

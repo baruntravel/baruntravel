@@ -2,13 +2,13 @@ package me.travelplan.web;
 
 import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
-import me.travelplan.service.cart.CartPlaceMapperImpl;
-import me.travelplan.service.cart.CartPlace;
+import me.travelplan.service.cart.domain.CartPlace;
 import me.travelplan.service.cart.CartPlaceService;
-import me.travelplan.service.file.File;
-import me.travelplan.service.place.Place;
-import me.travelplan.service.place.PlaceCategory;
+import me.travelplan.service.file.domain.File;
+import me.travelplan.service.place.domain.Place;
+import me.travelplan.service.place.domain.PlaceCategory;
 import me.travelplan.web.cart.CartController;
+import me.travelplan.web.cart.CartPlaceMapperImpl;
 import me.travelplan.web.cart.CartPlaceRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -95,7 +95,7 @@ public class CartControllerTest extends MvcTest {
                         .address("종로구 종로 3길 17")
                         .url("https://www.naver.com")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
-                        .image(File.builder().url("http://loremflickr.com/440/440").build())
+                        .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .memo("첫번째 테스트 메모입니다~!")
                 .build();
@@ -109,7 +109,7 @@ public class CartControllerTest extends MvcTest {
                         .address("테스트 주소")
                         .category(PlaceCategory.builder().id("FD6").name("음식점").build())
                         .url("https://www.naver.com")
-                        .image(File.builder().url("http://loremflickr.com/440/440").build())
+                        .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .memo("두번째 테스트 메모입니다~!")
                 .build();
@@ -123,7 +123,7 @@ public class CartControllerTest extends MvcTest {
                         .address("테스트 주소2")
                         .category(PlaceCategory.builder().id("CE7").name("카페").build())
                         .url("https://www.naver.com")
-                        .image(File.builder().url("http://loremflickr.com/440/440").build())
+                        .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .memo("세번째 테스트 메모입니다~!")
                 .build();
