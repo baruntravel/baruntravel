@@ -14,10 +14,12 @@ const RegisterBody = ({ onClickLogin }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoading(true);
-    const nickname = nicknameRef.current.value || "";
-    const email = emailRef.current.value || "";
-    const password = passwordRef.current.value || "";
-    const result = onRegister(nickname, email, password);
+    const avatar = "";
+    const formData = new FormData();
+    formData.append("email", emailRef.current.value || "");
+    formData.append("nickname", nicknameRef.current.value || "");
+    formData.append("password", passwordRef.current.value || "");
+    const result = onRegister(formData);
     // 회원 가입 api호출
     setLoading(false);
     if (result) {
