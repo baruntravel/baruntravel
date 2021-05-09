@@ -1,6 +1,7 @@
 import { UserOutlined } from "@ant-design/icons";
 import Avatar from "antd/lib/avatar/avatar";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../recoil/userState";
@@ -12,6 +13,13 @@ const DetailProfile = (props) => {
   const history = useHistory();
   // useEffect lifecycle method를 사용하지 않은 이유 -> 마운트 되어 렌더링 그려지는 모습이 0.1초동안 보여지는 것을 방지
   const [selected, setSelected] = useState("내경로");
+
+  const selectorListRef = useRef();
+
+  const onHandleSelector = useCallback((e) => {
+    setSelected(e.target.dataset.link);
+    console.log(selectorListRef.current.children);
+  }, []);
 
   if (!userStates.isLogin) {
     history.push("/");
@@ -34,20 +42,44 @@ const DetailProfile = (props) => {
           />
           <span className={styles.nickname}>{userStates.name}</span>
         </div>
-        <div className={styles.selectorBox}>
-          <div className={styles.selector}>
-            <span className={styles.selector__title}>내 경로</span>
-          </div>
-          <div className={styles.selector}>
-            <span className={styles.selector__title}>좋아요</span>
-          </div>
-          <div className={styles.selector}>
-            <span className={styles.selector__title}>공유 경로</span>
-          </div>
-          <div className={styles.selector}>
-            <span className={styles.selector__title}>리뷰</span>
-          </div>
-        </div>
+        <ul ref={selectorListRef} className={styles.selectorBox}>
+          <li
+            className={styles.selector}
+            data-link="내경로"
+            onClick={onHandleSelector}
+          >
+            <span className={styles.selector__title} data-link="내경로">
+              내 경로
+            </span>
+          </li>
+          <li
+            className={styles.selector}
+            data-link="좋아요"
+            onClick={onHandleSelector}
+          >
+            <span className={styles.selector__title} data-link="좋아요">
+              좋아요
+            </span>
+          </li>
+          <li
+            className={styles.selector}
+            data-link="공유경로"
+            onClick={onHandleSelector}
+          >
+            <span className={styles.selector__title} data-link="공유경로">
+              공유 경로
+            </span>
+          </li>
+          <li
+            className={styles.selector}
+            data-link="공유경로"
+            onClick={onHandleSelector}
+          >
+            <span className={styles.selector__title} data-link="리뷰">
+              리뷰
+            </span>
+          </li>
+        </ul>
         <div className={styles.listView}>
           <DetailProfileCondition selected={selected} />
         </div>
