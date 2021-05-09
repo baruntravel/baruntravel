@@ -13,15 +13,22 @@ import { Drawer } from "antd";
 import ReviewForm from "../../components/reviewComponents/reviewForm/reviewForm";
 import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
 import InputRootName from "../../components/common/inputRootName/inputRootName";
+import { onUploadRouteReview } from "../../api/reviewAPI";
+import { userState } from "../../recoil/userState";
+import { useRecoilValue } from "recoil";
+import PortalAuth from "../../containers/portalAuth/portalAuth";
 
 const RouteDetailPage = (props) => {
+  const userStates = useRecoilValue(userState);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const [imagePlaceName, setImagePlaceName] = useState("첫");
   const [reviewWrite, setReviewWrite] = useState(false);
   const [moreReview, setMoreReview] = useState(false);
-
   const [openInputName, setOpenInputName] = useState(false);
+  const [needLogin, setNeedLogin] = useState(false);
+
+  const routeId = 1;
 
   const onCloseInputName = useCallback(() => {
     setOpenInputName(false);
@@ -35,10 +42,16 @@ const RouteDetailPage = (props) => {
   const onClose = useCallback(() => {
     setShowImagesZoom(false);
   }, []);
-
-  const onClickReviewWrite = useCallback(() => {
-    setReviewWrite(true);
+  const onClosePortaAuth = useCallback(() => {
+    setNeedLogin(false);
   }, []);
+  const onClickReviewWrite = useCallback(() => {
+    if (userStates.isLogin) {
+      setReviewWrite(true);
+    } else {
+      setNeedLogin(true);
+    }
+  }, [userStates]);
   const onCloseReviewWrite = useCallback(() => {
     setReviewWrite(false);
   }, []);
@@ -47,6 +60,9 @@ const RouteDetailPage = (props) => {
   }, []);
   const onCloseMoreReview = useCallback(() => {
     setMoreReview(false);
+  }, []);
+  const onUploadReview = useCallback((formData) => {
+    onUploadRouteReview(100, formData);
   }, []);
   const settings = {
     dots: false,
@@ -194,7 +210,7 @@ const RouteDetailPage = (props) => {
         bodyStyle={{ padding: 0 }}
         onClose={onCloseReviewWrite}
       >
-        <ReviewForm />
+        <ReviewForm onUploadReview={onUploadReview} />
       </Drawer>
       <Drawer
         className={styles.reviewListDrawer}
@@ -207,12 +223,18 @@ const RouteDetailPage = (props) => {
           overflowY: "hidden",
         }}
       >
-        <MoreReviewList onCloseMoreReview={onCloseMoreReview} />
+        <MoreReviewList
+          setReviewDatas={handleSetReviewDatas}
+          onClickReviewWrite={onClickReviewWrite}
+          onCloseMoreReview={onCloseMoreReview}
+          reviewDatas={reviewDatas}
+        />
       </Drawer>
       {showImagesZoom && (
         <ImagesZoom images={images} onClose={onClose} index={imageIndex} />
       )}
       {openInputName && <InputRootName onClose={onCloseInputName} />}
+      {needLogin && <PortalAuth onClose={onClosePortaAuth} />}
     </div>
   );
 };

@@ -87,6 +87,7 @@ const PlaceDetailPage = (props) => {
       staticMapContainer,
       staticMapOption
     );
+    window.scrollTo(0, 0);
   }, []);
 
   const [reviewDatas, setReviewDatas] = useState([
