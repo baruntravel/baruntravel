@@ -29,13 +29,13 @@ const HotplacePage = () => {
   const inputRef = useRef();
   const sliderRef = useRef();
 
+  const userStates = useRecoilValue(userState);
+
   // recoil과 beautiful-dnd가 concurrent 문제로 충돌이 나여 전역관리와 페이지 단 관리 두가지를 모두해줘야함.
   const [shoppingItemsRecoil, setShoppingItemsRecoil] = useRecoilState(
     userCart
   );
   const [shoppingItems, setShoppingItems] = useState([]);
-
-  const userStates = useRecoilValue(userState);
   const [cartVisible, setCartVisible] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [confirmPortal, setConfirmPortal] = useState(false);
@@ -44,17 +44,17 @@ const HotplacePage = () => {
   const [searchPlace, setSearchPlace] = useState("");
   const [searchPlaces, setSearchPlaces] = useState([]);
   const [markerIndex, setMarkerIndex] = useState();
+  const [needLogin, setNeedLogin] = useState(false);
 
   useEffect(() => {
     if (userStates.isLogin) {
       setShoppingItems(shoppingItemsRecoil);
     }
   }, [userStates]);
+
   useEffect(() => {
     setShoppingItemsRecoil(shoppingItems);
   }, [shoppingItems]);
-
-  const [needLogin, setNeedLogin] = useState(false);
 
   const setCartVisibleTrue = useCallback(() => {
     if (userStates.isLogin) {
@@ -82,6 +82,8 @@ const HotplacePage = () => {
     },
     [setShoppingItems]
   );
+
+  // 클릭된 카드의 장소로 setting
   const updateClickedPlace = useCallback((place) => {
     setPlace(place);
   }, []);
@@ -93,6 +95,7 @@ const HotplacePage = () => {
     setSearchPlaces(places);
   }, []);
 
+  // keyword 검색
   const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
@@ -105,6 +108,7 @@ const HotplacePage = () => {
     [inputKeyword, searchPlace]
   );
 
+  // marker 클릭 시
   const clickedMarker = useCallback((index) => {
     sliderRef.current.slickGoTo(index);
   }, []);
@@ -157,6 +161,7 @@ const HotplacePage = () => {
   const portalAuthClose = useCallback(() => {
     setNeedLogin(false);
   }, []);
+
   const settings = {
     dots: false,
     infinite: true,
