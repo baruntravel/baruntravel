@@ -33,7 +33,6 @@ public class RouteService {
     private final RoutePlaceRepository routePlaceRepository;
     private final PlaceRepository placeRepository;
     private final FileRepository fileRepository;
-    private final QRouteRepository routeQueryRepository;
     private final RouteReviewRepository routeReviewRepository;
     private final RouteReviewFileRepository routeReviewFileRepository;
     private final S3Uploader fileService;
@@ -83,7 +82,7 @@ public class RouteService {
 
     @Transactional(readOnly = true)
     public Page<Route> getList(RouteRequest.GetList request, Pageable pageable) {
-        return routeQueryRepository.findAllByCoordinate(request.getMaxX(), request.getMinX(), request.getMaxY(), request.getMinY(), pageable);
+        return routeRepository.findAllByCoordinate(request.getMaxX(), request.getMinX(), request.getMaxY(), request.getMinY(), pageable);
     }
 
     public void createReview(RouteRequest.CreateOrUpdateReview request, Long id) {
