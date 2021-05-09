@@ -1,3 +1,9 @@
+GET {{apiUrl}}/place/1797997961
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+###
+
 GET {{apiUrl}}/place/123/review
 Content-Type: application/json
 Authorization: {{ authorizationToken }}

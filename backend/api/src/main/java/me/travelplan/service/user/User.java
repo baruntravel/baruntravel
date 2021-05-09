@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.travelplan.config.jpa.BaseEntity;
+import me.travelplan.service.file.File;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,6 +18,10 @@ public class User extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JoinColumn(name = "avatar_file_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    private File avatar;
+
     private String email;
     private String password;
     private String name;
@@ -24,7 +29,8 @@ public class User extends BaseEntity {
     private LocalDateTime refreshTokenExpiredAt;
 
     @Builder
-    public User(String email, String password, String name, String refreshToken, LocalDateTime refreshTokenExpiredAt) {
+    public User(File avatar, String email, String password, String name, String refreshToken, LocalDateTime refreshTokenExpiredAt) {
+        this.avatar = avatar;
         this.email = email;
         this.password = password;
         this.name = name;

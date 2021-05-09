@@ -19,7 +19,7 @@ public class AuthController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/register")
-    public void register(@RequestBody AuthRequest.Register request) {
+    public void register(AuthRequest.Register request) {
         userService.create(userMapper.toEntity(request));
     }
 

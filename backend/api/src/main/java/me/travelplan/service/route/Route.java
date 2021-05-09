@@ -65,6 +65,10 @@ public class Route extends BaseEntity {
         return this.routeLikes.stream().anyMatch(routeLike -> routeLike.getCreatedBy().getId().equals(user.getId()));
     }
 
+    public Double getReviewScoreAvg() {
+        return this.routeReviews.stream().mapToDouble(RouteReview::getScore).average().orElse(0);
+    }
+
     public static Route create(String name, List<RoutePlace> routePlaces) {
         Route route = Route.builder()
                 .name(name)

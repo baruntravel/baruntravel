@@ -35,13 +35,13 @@ public class Place extends BaseEntity {
     @JoinColumn(name = "category_id")
     private PlaceCategory category;
 
-    @OneToMany(mappedBy = "place", fetch = FetchType.LAZY)
-    private List<PlaceReview> reviews;
+    @OneToMany(mappedBy = "place")
+    @Builder.Default
+    private List<PlaceReview> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "place")
     @Builder.Default
     private List<PlaceLike> placeLikes = new ArrayList<>();
-
     /**
      * Detail
      */
@@ -63,5 +63,9 @@ public class Place extends BaseEntity {
         }
 
         return this;
+    }
+
+    public Double getReviewScoreAvg() {
+        return this.reviews.stream().mapToDouble(PlaceReview::getScore).average().orElse(0);
     }
 }

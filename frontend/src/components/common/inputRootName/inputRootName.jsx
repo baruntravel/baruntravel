@@ -4,16 +4,18 @@ import styles from "./inputRootName.module.css";
 const InputRootName = ({ onClose, onSaveRoute }) => {
   const portalRef = useRef();
   const inputRef = useRef();
-  const handleSave = () => {
-    // onSaveRoute();
-    console.log(inputRef.current.value);
-    onClose();
+  const handleSave = (e) => {
+    e.preventDefault();
+    if (inputRef.current.value) {
+      onSaveRoute(inputRef.current.value);
+      onClose();
+    }
   };
   return (
     <Portal>
       <div className={styles.InputRootName}>
         <div ref={portalRef} className={styles.confirmBox}>
-          <form className={styles.inputBox}>
+          <form className={styles.inputBox} onSubmit={handleSave}>
             <input
               ref={inputRef}
               className={styles.input}

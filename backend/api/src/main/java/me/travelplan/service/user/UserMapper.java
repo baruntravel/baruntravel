@@ -10,13 +10,13 @@ import java.util.UUID;
 
 @Mapper(
         componentModel = "spring",
-        uses = {PasswordEncoderMapper.class},
+        uses = {PasswordEncoderMapper.class, AvatarMapper.class},
         imports = {LocalDateTime.class, UUID.class},
         injectionStrategy = InjectionStrategy.CONSTRUCTOR
 )
 public interface UserMapper {
-
-    @Mapping(target = "password", qualifiedBy = EncodeMapping.class)
+    @Mapping(target = "password", source = "password", qualifiedBy = EncodeMapping.class)
+    @Mapping(target = "avatar", source = "avatar", qualifiedBy = AvatarMapping.class)
     @Mapping(target = "refreshToken", expression = "java(UUID.randomUUID().toString())")
     @Mapping(target = "refreshTokenExpiredAt", expression = "java(LocalDateTime.now())")
     User toEntity(AuthRequest.Register request);

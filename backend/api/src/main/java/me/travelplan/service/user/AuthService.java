@@ -1,15 +1,15 @@
 package me.travelplan.service.user;
 
-import lombok.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.travelplan.security.jwt.JwtTokenProvider;
 import me.travelplan.security.jwt.Token;
 import me.travelplan.security.userdetails.CustomUserDetails;
-import me.travelplan.service.exception.ResponsibleClientException;
+import me.travelplan.service.user.exception.PasswordWrongException;
 import me.travelplan.web.auth.AuthResponse;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import me.travelplan.security.jwt.JwtTokenProvider;
 
 import javax.transaction.Transactional;
 
@@ -30,7 +30,7 @@ public class AuthService {
         User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("찾을 수 없는 사용자입니다"));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new ResponsibleClientException("잘못된 비밀번호입니다");
+            throw new PasswordWrongException();
         }
 
         // TODO RefreshToken 처리 필요
