@@ -3,7 +3,6 @@ package me.travelplan.web.place;
 import lombok.RequiredArgsConstructor;
 import me.travelplan.security.userdetails.CurrentUser;
 import me.travelplan.security.userdetails.CustomUserDetails;
-import me.travelplan.service.place.PlaceMapper;
 import me.travelplan.service.place.PlaceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

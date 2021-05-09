@@ -2,9 +2,7 @@ package me.travelplan.config.jpa;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.travelplan.service.user.User;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import me.travelplan.service.user.domain.User;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;

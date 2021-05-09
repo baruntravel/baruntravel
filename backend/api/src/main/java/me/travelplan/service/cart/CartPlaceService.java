@@ -1,12 +1,14 @@
 package me.travelplan.service.cart;
 
 import lombok.RequiredArgsConstructor;
+import me.travelplan.service.cart.domain.CartPlace;
 import me.travelplan.service.cart.exception.CartPlaceNotFoundException;
 import me.travelplan.service.cart.exception.PlaceExistedException;
-import me.travelplan.service.place.Place;
-import me.travelplan.service.place.PlaceRepository;
+import me.travelplan.service.cart.repository.CartPlaceRepository;
+import me.travelplan.service.place.domain.Place;
+import me.travelplan.service.place.repository.PlaceRepository;
 import me.travelplan.service.place.PlaceService;
-import me.travelplan.service.user.User;
+import me.travelplan.service.user.domain.User;
 import me.travelplan.web.cart.CartPlaceRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

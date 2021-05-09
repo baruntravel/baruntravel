@@ -2,10 +2,15 @@ package me.travelplan.web;
 
 import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
-import me.travelplan.service.file.File;
+import me.travelplan.service.file.domain.File;
 import me.travelplan.service.place.*;
+import me.travelplan.service.place.domain.Place;
+import me.travelplan.service.place.domain.PlaceCategory;
+import me.travelplan.service.place.domain.PlaceImage;
+import me.travelplan.service.place.domain.PlaceReview;
 import me.travelplan.web.place.PlaceController;
 import me.travelplan.web.place.PlaceDto;
+import me.travelplan.web.place.PlaceMapperImpl;
 import me.travelplan.web.place.PlaceRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

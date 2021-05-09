@@ -1,7 +1,9 @@
 package me.travelplan.service.user;
 
 import lombok.RequiredArgsConstructor;
+import me.travelplan.service.user.domain.User;
 import me.travelplan.service.user.exception.EmailExistedException;
+import me.travelplan.service.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
