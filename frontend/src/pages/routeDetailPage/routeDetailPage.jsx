@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -17,9 +17,11 @@ import { onUploadRouteReview } from "../../api/reviewAPI";
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
+import { getRouteDetail } from "../../api/routeAPI";
 
 const RouteDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
+  const [loading, setLoading] = useState(true);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const [imagePlaceName, setImagePlaceName] = useState("첫");
@@ -132,6 +134,18 @@ const RouteDetailPage = (props) => {
   const handleSetReviewDatas = (updated) => {
     setReviewDatas(updated);
   };
+
+  useEffect(() => {
+    async function getRouteDetailInf() {
+      const route = await getRouteDetail(1);
+      console.log(route);
+    }
+    getRouteDetailInf();
+    setLoading(false);
+  }, []);
+  if (loading) {
+    return <div>hi</div>;
+  }
   return (
     <div className={styles.RouteDetailPage}>
       <DetailHeader />
