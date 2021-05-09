@@ -17,7 +17,7 @@ const RegisterBody = ({ onClickLogin }) => {
     const avatar = "";
     const formData = new FormData();
     formData.append("email", emailRef.current.value || "");
-    formData.append("nickname", nicknameRef.current.value || "");
+    formData.append("name", nicknameRef.current.value || "");
     formData.append("password", passwordRef.current.value || "");
     const result = onRegister(formData);
     // 회원 가입 api호출
