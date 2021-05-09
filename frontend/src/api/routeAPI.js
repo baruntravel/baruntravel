@@ -19,6 +19,7 @@ export const makeRoute = async (name, placesData) => {
     name,
     places,
   };
+  console.log(places);
   return await axios
     .post(`/route`, data)
     .then((res) => res.data.id || true)
