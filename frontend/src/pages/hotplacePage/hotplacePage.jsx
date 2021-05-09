@@ -43,7 +43,6 @@ const HotplacePage = () => {
   const [searchPlace, setSearchPlace] = useState("");
   const [searchPlaces, setSearchPlaces] = useState([]);
   const [markerIndex, setMarkerIndex] = useState();
-  const [needLogin, setNeedLogin] = useState(false);
 
   console.log(userStates, shoppingItems);
   useEffect(() => {

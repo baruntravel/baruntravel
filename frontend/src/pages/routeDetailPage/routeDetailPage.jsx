@@ -62,7 +62,7 @@ const RouteDetailPage = (props) => {
     setMoreReview(false);
   }, []);
   const onUploadReview = useCallback((formData) => {
-    onUploadRouteReview(100, formData);
+    onUploadRouteReview(1, formData);
   }, []);
   const settings = {
     dots: false,
