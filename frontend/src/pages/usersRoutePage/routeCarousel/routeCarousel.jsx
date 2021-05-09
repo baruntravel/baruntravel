@@ -18,7 +18,7 @@ const RouteCarousel = ({ routes, indexHandler }) => {
       <Slider afterChange={(e) => indexHandler(e)} {...settings}>
         {Object.keys(routes).map((value, index) => {
           return (
-            <Link to={`route/${value}`} target="_blank" key={index}>
+            <Link to={`route/${value}`} key={index}>
               <div className={styles.routeCard}>
                 <div className={styles.row1}>
                   <div className={styles.routeName}>{routes[value].routeName}</div>
