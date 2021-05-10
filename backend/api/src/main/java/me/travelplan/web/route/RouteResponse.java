@@ -22,13 +22,13 @@ public class RouteResponse {
         private String name;
         private Double centerX;
         private Double centerY;
-        private String createdBy;
         private Integer reviewCount;
         private Double score;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         public LocalDateTime createdAt;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         public LocalDateTime updatedAt;
+        private RouteDto.RouteCreator creator;
         private List<RouteDto.RoutePlace> places;
     }
 

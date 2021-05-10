@@ -31,7 +31,6 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/me")
     public AuthResponse.Me me(@CurrentUser CustomUserDetails currentUser) {
-        return authService.me(currentUser);
+        return userMapper.toMe(userService.getMe(currentUser.getUser()));
     }
-
 }

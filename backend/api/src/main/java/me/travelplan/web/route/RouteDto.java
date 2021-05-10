@@ -39,6 +39,15 @@ public class RouteDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class RouteCreator {
+        private String name;
+        private String avatar;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class RouteNameWithPlaceName {
         private Long id;
         private String name;

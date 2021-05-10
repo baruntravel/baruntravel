@@ -38,8 +38,7 @@ public class RouteRepositoryImpl implements RouteRepositoryCustom {
     @Override
     public Optional<Route> findByIdWithUser(Long id) {
         return Optional.ofNullable(queryFactory.selectFrom(route)
-                .join(route.createdBy, user)
-                .fetchJoin()
+                .join(route.createdBy).fetchJoin()
                 .where(route.id.eq(id))
                 .fetchOne());
     }

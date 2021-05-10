@@ -72,12 +72,18 @@ public interface RouteMapper {
         Double centerX = map.get("centerX");
         Double centerY = map.get("centerY");
 
+        RouteDto.RouteCreator.RouteCreatorBuilder creatorBuilder = RouteDto.RouteCreator.builder()
+                .name(route.getCreatedBy().getName());
+        if (route.getCreatedBy().getAvatar() != null) {
+            creatorBuilder.avatar(route.getCreatedBy().getAvatar().getUrl());
+        }
+
         return RouteResponse.GetOne.builder()
                 .name(route.getName())
                 .centerX(centerX)
                 .centerY(centerY)
                 .score(route.getAverageReviewScore())
-                .createdBy(route.getCreatedBy().getName())
+                .creator(creatorBuilder.build())
                 .createdAt(route.getCreatedAt())
                 .updatedAt(route.getUpdatedAt())
                 .reviewCount(route.getRouteReviews().size())
