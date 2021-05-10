@@ -21,8 +21,8 @@ public class RouteController {
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable Long id, @RequestBody RouteRequest.CreateOrUpdate request) {
-        routeService.update(routeMapper.toEntity(request, id));
+    public void updatePlaceOrder(@PathVariable Long id, @RequestBody RouteRequest.Update request) {
+        routeService.updatePlaceOrder(id, request);
     }
 
     @GetMapping("/{id}")

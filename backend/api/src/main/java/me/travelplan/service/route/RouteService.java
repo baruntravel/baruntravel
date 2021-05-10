@@ -53,11 +53,10 @@ public class RouteService {
         return routeRepository.save(route);
     }
 
-    public Route update(Route route) {
-        routePlaceRepository.deleteAllByRoute(route);
-        fileRepository.saveAll(route.getRoutePlaces().stream().map(RoutePlace::getPlace).map(Place::getThumbnail).collect(Collectors.toList()));
-        placeRepository.saveAll(route.getRoutePlaces().stream().map(RoutePlace::getPlace).collect(Collectors.toList()));
-        return routeRepository.save(route);
+    public void updatePlaceOrder(Long id, RouteRequest.Update request) {
+        RoutePlace firstRoutePlace = routePlaceRepository.findByRouteIdAndPlaceId(id, request.getFirstPlaceId()).orElseThrow();
+        RoutePlace secondRoutePlace = routePlaceRepository.findByRouteIdAndPlaceId(id, request.getSecondPlaceId()).orElseThrow();
+        RoutePlace.swapOrder(firstRoutePlace, secondRoutePlace);
     }
 
     @Transactional(readOnly = true)
@@ -109,4 +108,6 @@ public class RouteService {
     public void createOrDeleteReviewLike(Long id, User user) {
         routeReviewService.createOrDeleteReviewLike(id, user);
     }
+
+
 }

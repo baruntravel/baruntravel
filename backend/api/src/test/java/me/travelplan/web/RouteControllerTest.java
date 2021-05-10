@@ -5,7 +5,7 @@ import me.travelplan.WithMockCustomUser;
 import me.travelplan.service.file.domain.File;
 import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.domain.PlaceCategory;
-import me.travelplan.service.route.*;
+import me.travelplan.service.route.RouteService;
 import me.travelplan.service.route.domain.Route;
 import me.travelplan.service.route.domain.RoutePlace;
 import me.travelplan.service.route.domain.RouteReview;
@@ -52,34 +52,6 @@ public class RouteControllerTest extends MvcTest {
     @MockBean
     RouteService routeService;
 
-    private String getCreateOrUpdateRequest() {
-        return "{\n" +
-                "  \"name\": \"나의 테스트 경로\",\n" +
-                "  \"places\": [\n" +
-                "    {\n" +
-                "      \"id\" : 123,\n" +
-                "      \"image\" : \"https://www.gn.go.kr/tour/images/tour/main_new/mvisual_img07.jpg\",\n" +
-                "      \"name\" : \"강릉바닷가\",\n" +
-                "      \"url\" : \"https://www.gn.go.kr/tour/index.do\",\n" +
-                "      \"x\" : 37.748125,\n" +
-                "      \"y\" : 128.878996,\n" +
-                "      \"category\" : \"CE7\",\n" +
-                "      \"order\" : 1\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"id\" : 124,\n" +
-                "      \"image\" : \"https://cf.bstatic.com/xdata/images/hotel/270x200/129750773.jpg?k=d338049190ff48b19261ee5f516ee563aaeb8aeb97c4774c1e171e402cf25891&o=\",\n" +
-                "      \"name\" : \"강릉 어린이집\",\n" +
-                "      \"url\" : \"https://kr.hotels.com/go/south-korea/kr-best-gangneung-things-to-do\",\n" +
-                "      \"x\" : 37.748130,\n" +
-                "      \"y\" : 128.8789333,\n" +
-                "      \"category\" : \"CE7\",\n" +
-                "      \"order\" : 2\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
-    }
-
     @Test
     @WithMockCustomUser
     @DisplayName("경로 생성 테스트")
@@ -115,35 +87,30 @@ public class RouteControllerTest extends MvcTest {
 
     @Test
     @WithMockCustomUser
-    @DisplayName("경로 수정 테스트")
+    @DisplayName("경로 수정(장소순서) 테스트")
     public void updateTest() throws Exception {
-        String request = getCreateOrUpdateRequest();
+        RouteRequest.Update request = RouteRequest.Update.builder()
+                .firstPlaceId(123L)
+                .secondPlaceId(124L)
+                .build();
 
         ResultActions results = mockMvc.perform(
                 put("/route/{id}", 1)
-                        .content(request)
+                        .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8")
         );
 
         results.andExpect(status().isOk())
-                .andDo(document("route-update",
+                .andDo(document("route-update-place-order",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
                                 parameterWithName("id").description("경로 식별자")
                         ),
                         requestFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("경로 이륾"),
-                                fieldWithPath("places").type(JsonFieldType.ARRAY).description("장소들 정보"),
-                                fieldWithPath("places[].id").type(JsonFieldType.NUMBER).description("카카오톡에서 제공한 장소 식별자"),
-                                fieldWithPath("places[].image").type(JsonFieldType.STRING).description("장소 이미지 URL"),
-                                fieldWithPath("places[].name").type(JsonFieldType.STRING).description("장소 이름"),
-                                fieldWithPath("places[].url").type(JsonFieldType.STRING).description("장소 URL"),
-                                fieldWithPath("places[].x").type(JsonFieldType.NUMBER).description("장소 X값"),
-                                fieldWithPath("places[].y").type(JsonFieldType.NUMBER).description("장소 Y값"),
-                                fieldWithPath("places[].category").type(JsonFieldType.STRING).description("카테고리 분류 코드"),
-                                fieldWithPath("places[].order").type(JsonFieldType.NUMBER).description("장소들 정렬 순서 (사용할 필요가 있는지 검토 필요)")
+                                fieldWithPath("firstPlaceId").type(JsonFieldType.NUMBER).description("장소 식별자"),
+                                fieldWithPath("secondPlaceId").type(JsonFieldType.NUMBER).description("장소 식별자")
                         )
                 ));
     }

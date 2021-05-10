@@ -25,8 +25,6 @@ import java.util.stream.Collectors;
 public interface RouteMapper {
     RouteResponse.RouteId toRouteIdResponse(Route route);
 
-    Route toEntity(RouteRequest.CreateEmpty request);
-
     default Place toPlace(RouteRequest.AddPlace request) {
         return Place.builder()
                 .id(request.getPlace().getId())
@@ -45,41 +43,6 @@ public interface RouteMapper {
                 .x(request.getPlace().getX())
                 .y(request.getPlace().getY())
                 .build();
-    }
-
-    default Route toEntity(RouteRequest.CreateOrUpdate request, Long id) {
-        var routeBuilder = Route.builder()
-                .name(request.getName());
-
-        if (id != 0L) {
-            routeBuilder.id(id);
-        }
-
-        Route route = routeBuilder.build();
-
-        request.getPlaces().forEach((place) -> route.addPlace(RoutePlace.builder().order(place.getOrder()).place(
-                Place.builder()
-                        .thumbnail(
-                                File.builder()
-                                        .name(place.getName())
-                                        .extension("")
-                                        .height(0)
-                                        .width(0)
-                                        .server(FileServer.EXTERNAL)
-                                        .size(0L).type(FileType.IMAGE)
-                                        .url(place.getImage())
-                                        .build()
-                        )
-                        .category(PlaceCategory.builder().id(place.getCategory()).build())
-                        .id(place.getId())
-                        .url(place.getUrl())
-                        .name(place.getName())
-                        .x(place.getX())
-                        .y(place.getY())
-                        .build()
-        ).build()));
-
-        return route;
     }
 
     default RouteResponse.GetOne toGetOneResponse(Route route) {

@@ -23,18 +23,18 @@ include::{snippets}/route-create/request-fields.adoc[]
 성공 응답 HTTP
 include::{snippets}/route-create/http-response.adoc[]
 
-=== 경로 수정
+=== 경로 수정(순서)
 
 `PUT /route/{id}`
 
 요청 HTTP
 
-include::{snippets}/route-update/http-request.adoc[]
-include::{snippets}/route-update/path-parameters.adoc[]
-include::{snippets}/route-update/request-fields.adoc[]
+include::{snippets}/route-update-place-order/http-request.adoc[]
+include::{snippets}/route-update-place-order/path-parameters.adoc[]
+include::{snippets}/route-update-place-order/request-fields.adoc[]
 
 성공 응답 HTTP
-include::{snippets}/route-update/http-response.adoc[]
+include::{snippets}/route-update-place-order/http-response.adoc[]
 
 === 경로에 장소 추가하기
 

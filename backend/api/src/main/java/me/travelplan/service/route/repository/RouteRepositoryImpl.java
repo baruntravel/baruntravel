@@ -4,16 +4,16 @@ import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import me.travelplan.service.route.domain.Route;
-import me.travelplan.service.user.domain.QUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import static me.travelplan.service.route.domain.QRoute.route;
-import static me.travelplan.service.user.domain.QUser.*;
 
 import java.util.List;
 import java.util.Optional;
+
+import static me.travelplan.service.route.domain.QRoute.route;
+import static me.travelplan.service.user.domain.QUser.user;
 
 @RequiredArgsConstructor
 @Repository
@@ -40,9 +40,9 @@ public class RouteRepositoryImpl implements RouteRepositoryCustom {
     @Override
     public Optional<Route> findByIdWithUser(Long id) {
         return Optional.ofNullable(queryFactory.selectFrom(route)
-                    .join(route.createdBy, user)
-                    .fetchJoin()
-                    .where(route.id.eq(id))
-                    .fetchOne());
+                .join(route.createdBy, user)
+                .fetchJoin()
+                .where(route.id.eq(id))
+                .fetchOne());
     }
 }

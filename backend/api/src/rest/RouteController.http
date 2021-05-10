@@ -10,40 +10,23 @@ Authorization: {{ authorizationToken }}
     {
       "id" : 1797997961,
       "order" : 1
+    },
+    {
+      "id" : 1440347564,
+      "order" : 2
     }
   ]
 }
 
 ###
 
-PUT {{apiUrl}}/route/1
+PUT {{apiUrl}}/route/3
 Content-Type: application/json
 Authorization: {{ authorizationToken }}
 
 {
-  "name": "수정된 테스트 경로 ",
-  "places": [
-    {
-      "id" : 123,
-      "image" : "https://www.gn.go.kr/tour/images/tour/main_new/mvisual_img07.jpg",
-      "name" : "강남",
-      "url" : "https://www.gn.go.kr/tour/index.do",
-      "x" : 37.748125,
-      "y" : 128.878996,
-      "category" : "FD6",
-      "order" : 1
-    },
-    {
-      "id" : 124,
-      "image" : "https://cf.bstatic.com/xdata/images/hotel/270x200/129750773.jpg?k=d338049190ff48b19261ee5f516ee563aaeb8aeb97c4774c1e171e402cf25891&o=",
-      "name" : "홍대",
-      "url" : "https://kr.hotels.com/go/south-korea/kr-best-gangneung-things-to-do",
-      "x" : 37.748130,
-      "y" : 128.8789333,
-      "category" : "CE7",
-      "order" : 2
-    }
-  ]
+  "firstPlaceId": 1797997961,
+  "secondPlaceId": 1440347564
 }
 
 ###
@@ -67,7 +50,7 @@ Authorization: {{ authorizationToken }}
 
 ###
 
-GET {{apiUrl}}/route/1
+GET {{apiUrl}}/route/3
 Authorization: {{ authorizationToken }}
 
 ###
