@@ -53,7 +53,7 @@ const ReviewList = ({
         <div className={styles.reviewList__first}>
           <div className={styles.reviewCountBox}>
             <h2>리뷰</h2>
-            <h2 className={styles.reviewCount}>6</h2>
+            <h2 className={styles.reviewCount}>{reviewDatas.length}</h2>
           </div>
           <h2 onClick={onClickReviewWrite}>
             <EditTwoTone />

@@ -13,6 +13,7 @@ import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
 import { getPlaceDetail } from "../../api/placeAPI";
+import { onReceivePlaceReview } from "../../api/reviewAPI";
 
 const { kakao } = window;
 
@@ -26,6 +27,7 @@ const PlaceDetailPage = (props) => {
   const [imageIndex, setImageIndex] = useState(0);
   const [liked, setLiked] = useState(false);
   const [images, setImages] = useState([]);
+  const [reviewDatas, setReviewDatas] = useState([]);
 
   const placeId = 7855876;
 
@@ -81,6 +83,9 @@ const PlaceDetailPage = (props) => {
       if (placeDetailInfo) {
         setPlaceDetail(placeDetailInfo);
         setImages(placeDetailInfo.images.map((item) => item.url));
+        makeMapImage(placeDetailInfo.x, placeDetailInfo.y);
+      } else {
+        setPlaceDetail(false);
       }
     }
 
@@ -101,35 +106,22 @@ const PlaceDetailPage = (props) => {
         staticMapOption
       );
     }
+    // 리뷰리스트를 받아오는 함수
+    async function getReviewList() {
+      const reviews = await onReceivePlaceReview(placeId);
+      setReviewDatas(reviews);
+    }
     // placeDetail 받아오는 곳
     getPlaceDetailInfo();
+    getReviewList();
     window.scrollTo(0, 0);
     setLoading(false);
   }, []);
 
-  const [reviewDatas, setReviewDatas] = useState([
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 0),
-      likeCount: 5,
-    },
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 2),
-      likeCount: 6,
-    },
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 1),
-      likeCount: 7,
-    },
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 4),
-      likeCount: 3,
-    },
-  ]);
-
   if (loading) {
     return <div>로딩</div>;
   }
-  if (placeDetail) {
+  if (!placeDetail) {
     return <div>place 정보가 없습니다.</div>;
   }
   return (
