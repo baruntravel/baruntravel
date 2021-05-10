@@ -13,7 +13,7 @@ import { Drawer } from "antd";
 import ReviewForm from "../../components/reviewComponents/reviewForm/reviewForm";
 import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
 import InputRootName from "../../components/common/inputRootName/inputRootName";
-import { onUploadRouteReview } from "../../api/reviewAPI";
+import { onReceiveRouteReview, onUploadRouteReview } from "../../api/reviewAPI";
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
@@ -35,6 +35,7 @@ const RouteDetailPage = (props) => {
   const [routeDetail, setRouteDetail] = useState([]);
   const [images, setImages] = useState([]); // 이미지와 이름을 같이 저장
   const [postImages, setPostImages] = useState([]); // 이미지만 저장 (줌을 위한 이미지)
+  const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
 
   const routeId = 1;
 
@@ -88,32 +89,34 @@ const RouteDetailPage = (props) => {
     [images]
   );
 
-  const [reviewDatas, setReviewDatas] = useState([
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 0),
-      likeCount: 5,
-    },
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 2),
-      likeCount: 6,
-    },
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 1),
-      likeCount: 7,
-    },
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 4),
-      likeCount: 3,
-    },
-  ]);
+  // const [reviewDatas, setReviewDatas] = useState([
+  //   {
+  //     createdAt: new Date(2011, 0, 1, 0, 0, 0, 0),
+  //     likeCount: 5,
+  //   },
+  //   {
+  //     createdAt: new Date(2011, 0, 1, 0, 0, 0, 2),
+  //     likeCount: 6,
+  //   },
+  //   {
+  //     createdAt: new Date(2011, 0, 1, 0, 0, 0, 1),
+  //     likeCount: 7,
+  //   },
+  //   {
+  //     createdAt: new Date(2011, 0, 1, 0, 0, 0, 4),
+  //     likeCount: 3,
+  //   },
+  // ]);
   const handleSetReviewDatas = (updated) => {
     setReviewDatas(updated);
   };
   useEffect(() => {
     if (!userStates.isLogin) {
+      // 로그인 하지않으면 기존 페이지로 이동
       history.push("/");
     }
     async function getRouteDetailInf() {
+      // 루트 상세페이지의 정보를 받아옴
       const route = await getRouteDetail(1);
       setRouteDetail(route);
       const route_images =
@@ -123,7 +126,12 @@ const RouteDetailPage = (props) => {
       setImages(images); // 이미지와 이름만 저장
       setImagePlaceName(images[0][1]); // 첫 이미지의 장소 이름 저장
     }
+    async function getReviewList() {
+      const reviews = await onReceiveRouteReview(routeId);
+      setReviewDatas(reviews);
+    }
     getRouteDetailInf();
+    getReviewList();
     setLoading(false);
   }, [history, userStates.isLogin]);
 
