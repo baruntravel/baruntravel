@@ -1,3 +1,14 @@
 .moreReviewList {
   padding: 0 24px;
 }
+.header {
+  display: flex;
+  text-align: center;
+  height: 7vh;
+  margin-bottom: 12px;
+}
+
+.backIcon {
+  display: flex;
+  align-items: center;
+}

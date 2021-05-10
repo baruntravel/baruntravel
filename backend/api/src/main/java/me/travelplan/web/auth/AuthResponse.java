@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import me.travelplan.security.jwt.Token;
-import me.travelplan.service.user.User;
+import me.travelplan.service.user.domain.User;
 
 import java.time.LocalDateTime;
 

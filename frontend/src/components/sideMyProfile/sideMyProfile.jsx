@@ -47,20 +47,19 @@ const SideMyProfile = ({ handleClose }) => {
   }, []);
   const onOpenEditProfile = useCallback(() => {
     setOpenEditProfile(true);
-    // handleClose();
   }, []);
   const onCloseEditProfile = useCallback(() => {
     setOpenEditProfile(false);
   }, []);
   const goToHome = useCallback(() => {
     history.push("/");
-  }, []);
+  }, [history]);
   const resetList = useResetRecoilState(userState);
   const onHandleLogout = useCallback(() => {
     console.log("로그아웃");
     resetList();
     onLogout();
-  }, []);
+  }, [resetList]);
   return (
     <div className={styles.SideMyProfile}>
       <div className={styles.header}>

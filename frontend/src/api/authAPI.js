@@ -29,14 +29,16 @@ export const onLogin = (email, password) => {
     });
 };
 
-export const onRegister = async (name, email, password) => {
-  const data = {
-    name,
-    email,
-    password,
-  };
+export const onRegister = async (formData) => {
+  // const data = {
+  //   name,
+  //   email,
+  //   password,
+  // };
   const result = await axios
-    .post("/auth/register", data)
+    .post("/auth/register", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
     .then((res) => {
       console.log(res);
       return true;

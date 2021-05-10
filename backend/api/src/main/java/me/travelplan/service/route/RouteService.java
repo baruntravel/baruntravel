@@ -1,16 +1,18 @@
 package me.travelplan.service.route;
 
 import lombok.AllArgsConstructor;
-import me.travelplan.service.exception.PermissionDeniedException;
-import me.travelplan.service.file.File;
-import me.travelplan.service.file.FileRepository;
-import me.travelplan.service.file.FileS3Uploader;
-import me.travelplan.service.place.Place;
-import me.travelplan.service.place.PlaceRepository;
+import me.travelplan.exception.PermissionDeniedException;
+import me.travelplan.service.file.domain.File;
+import me.travelplan.service.file.repository.FileRepository;
+import me.travelplan.service.file.component.S3Uploader;
+import me.travelplan.service.place.domain.Place;
+import me.travelplan.service.place.repository.PlaceRepository;
 import me.travelplan.service.place.exception.PlaceNotFoundException;
+import me.travelplan.service.route.domain.*;
 import me.travelplan.service.route.exception.RouteNotFoundException;
 import me.travelplan.service.route.exception.RouteReviewNotFoundException;
-import me.travelplan.service.user.User;
+import me.travelplan.service.route.repository.*;
+import me.travelplan.service.user.domain.User;
 import me.travelplan.web.common.SavedFile;
 import me.travelplan.web.route.RouteRequest;
 import org.springframework.data.domain.Page;
@@ -31,10 +33,9 @@ public class RouteService {
     private final RoutePlaceRepository routePlaceRepository;
     private final PlaceRepository placeRepository;
     private final FileRepository fileRepository;
-    private final RouteQueryRepository routeQueryRepository;
     private final RouteReviewRepository routeReviewRepository;
     private final RouteReviewFileRepository routeReviewFileRepository;
-    private final FileS3Uploader fileService;
+    private final S3Uploader fileService;
     private final RouteLikeRepository routeLikeRepository;
     private final RouteReviewLikeRepository routeReviewLikeRepository;
 
@@ -81,7 +82,7 @@ public class RouteService {
 
     @Transactional(readOnly = true)
     public Page<Route> getList(RouteRequest.GetList request, Pageable pageable) {
-        return routeQueryRepository.findAllByCoordinate(request.getMaxX(), request.getMinX(), request.getMaxY(), request.getMinY(), pageable);
+        return routeRepository.findAllByCoordinate(request.getMaxX(), request.getMinX(), request.getMaxY(), request.getMinY(), pageable);
     }
 
     public void createReview(RouteRequest.CreateOrUpdateReview request, Long id) {

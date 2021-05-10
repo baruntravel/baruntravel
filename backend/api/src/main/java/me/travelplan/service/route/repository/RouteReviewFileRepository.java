@@ -1,0 +1,18 @@
+package me.travelplan.service.route.repository;
+
+import me.travelplan.service.file.domain.File;
+import me.travelplan.service.route.domain.RouteReviewFile;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+
+public interface RouteReviewFileRepository extends JpaRepository<RouteReviewFile, Long> {
+    void deleteByFileIn(List<File> files);
+
+    @Modifying
+    @Query("delete from RouteReviewFile rf where rf.file.id in :ids")
+    void deleteAllByFileIds(@Param("ids") List<Long> fileIdList);
+}

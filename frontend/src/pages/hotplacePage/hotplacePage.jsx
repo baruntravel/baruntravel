@@ -13,7 +13,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userState, userCart } from "../../recoil/userState";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
 
@@ -30,12 +30,11 @@ const HotplacePage = () => {
   const sliderRef = useRef();
 
   const userStates = useRecoilValue(userState);
-
+  const [needLogin, setNeedLogin] = useState(false);
   // recoil과 beautiful-dnd가 concurrent 문제로 충돌이 나여 전역관리와 페이지 단 관리 두가지를 모두해줘야함.
-  const [shoppingItemsRecoil, setShoppingItemsRecoil] = useRecoilState(
-    userCart
-  );
   const [shoppingItems, setShoppingItems] = useState([]);
+  const setShoppingItemsRecoil = useSetRecoilState(userCart);
+
   const [cartVisible, setCartVisible] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [confirmPortal, setConfirmPortal] = useState(false);
@@ -44,11 +43,17 @@ const HotplacePage = () => {
   const [searchPlace, setSearchPlace] = useState("");
   const [searchPlaces, setSearchPlaces] = useState([]);
   const [markerIndex, setMarkerIndex] = useState();
-  const [needLogin, setNeedLogin] = useState(false);
 
+  console.log(userStates, shoppingItems);
   useEffect(() => {
+    async function receiveCart() {
+      const cartItems = await onReceiveCart();
+      if (cartItems) {
+        setShoppingItems(cartItems);
+      }
+    }
     if (userStates.isLogin) {
-      setShoppingItems(shoppingItemsRecoil);
+      receiveCart();
     }
   }, [userStates]);
 
@@ -73,12 +78,12 @@ const HotplacePage = () => {
     setConfirmPortal(false);
   }, []);
   const handleDeleteItem = useCallback(
-    async (id) => {
+    (id) => {
       setShoppingItems((prev) => {
         const updated = prev.filter((item) => item.id !== id);
         return updated;
       });
-      await onDeleteCartItem(id);
+      onDeleteCartItem(id);
     },
     [setShoppingItems]
   );

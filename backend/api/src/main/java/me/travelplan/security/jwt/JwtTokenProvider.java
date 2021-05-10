@@ -9,7 +9,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.travelplan.exception.BusinessException;
-import me.travelplan.service.user.User;
+import me.travelplan.service.user.domain.User;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
