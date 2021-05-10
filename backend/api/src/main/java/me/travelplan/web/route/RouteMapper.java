@@ -85,11 +85,14 @@ public interface RouteMapper {
                 .build();
     }
 
-    default RouteResponse.GetsWithOnlyName toGetsWithOnlyNameResponse(List<Route> routes) {
-        return RouteResponse.GetsWithOnlyName.builder()
-                .routes(routes.stream().map(route -> RouteDto.RouteWithOnlyName.builder()
+    default RouteResponse.GetMine toGetMineResponse(List<Route> routes) {
+        return RouteResponse.GetMine.builder()
+                .routes(routes.stream().map(route -> RouteDto.RouteNameWithPlaceName.builder()
                         .id(route.getId())
                         .name(route.getName())
+                        .places(route.getRoutePlaces().stream().map(routePlace -> RouteDto.RoutePlaceWithIdAndName.builder()
+                                .id(routePlace.getPlace().getId())
+                                .name(routePlace.getPlace().getName()).build()).collect(Collectors.toList()))
                         .build()
                 ).collect(Collectors.toList()))
                 .build();

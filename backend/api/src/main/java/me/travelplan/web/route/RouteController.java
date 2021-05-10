@@ -21,8 +21,8 @@ public class RouteController {
     }
 
     @PutMapping("/{id}")
-    public void updatePlaceOrder(@PathVariable Long id, @RequestBody RouteRequest.Update request) {
-        routeService.updatePlaceOrder(id, request);
+    public void updatePlaceOrder(@PathVariable Long id, @RequestBody RouteRequest.Update request, @CurrentUser CustomUserDetails customUserDetails) {
+        routeService.updatePlaceOrder(id, request, customUserDetails.getUser());
     }
 
     @GetMapping("/{id}")

@@ -31,8 +31,8 @@ public class RoutesController {
         return new PageImpl<>(getList, pageRequest.of(), content.size());
     }
 
-    @GetMapping("my")
-    public RouteResponse.GetsWithOnlyName getMine(@CurrentUser CustomUserDetails user) {
-        return routeMapper.toGetsWithOnlyNameResponse(routeService.getByUser(user.getUser()));
+    @GetMapping("/my")
+    public RouteResponse.GetMine getMine(@CurrentUser CustomUserDetails user) {
+        return routeMapper.toGetMineResponse(routeService.getByUser(user.getUser()));
     }
 }

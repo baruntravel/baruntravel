@@ -35,8 +35,8 @@ public class RouteResponse {
     @Getter
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class GetsWithOnlyName {
-        List<RouteDto.RouteWithOnlyName> routes;
+    public static class GetMine {
+        List<RouteDto.RouteNameWithPlaceName> routes;
     }
 
     @Getter

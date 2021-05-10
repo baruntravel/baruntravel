@@ -1,6 +1,7 @@
 package me.travelplan.service.route;
 
 import lombok.RequiredArgsConstructor;
+import me.travelplan.exception.PermissionDeniedException;
 import me.travelplan.service.file.repository.FileRepository;
 import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.exception.PlaceNotFoundException;
@@ -53,7 +54,11 @@ public class RouteService {
         return routeRepository.save(route);
     }
 
-    public void updatePlaceOrder(Long id, RouteRequest.Update request) {
+    public void updatePlaceOrder(Long id, RouteRequest.Update request, User user) {
+        Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
+        if (!route.getCreatedBy().getId().equals(user.getId())) {
+            throw new PermissionDeniedException("수정할 권한이 없습니다.");
+        }
         RoutePlace firstRoutePlace = routePlaceRepository.findByRouteIdAndPlaceId(id, request.getFirstPlaceId()).orElseThrow();
         RoutePlace secondRoutePlace = routePlaceRepository.findByRouteIdAndPlaceId(id, request.getSecondPlaceId()).orElseThrow();
         RoutePlace.swapOrder(firstRoutePlace, secondRoutePlace);
