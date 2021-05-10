@@ -65,7 +65,7 @@ public class Route extends BaseEntity {
         return this.routeLikes.stream().anyMatch(routeLike -> routeLike.getCreatedBy().getId().equals(user.getId()));
     }
 
-    public Double getReviewScoreAvg() {
+    public Double getAverageReviewScore() {
         return this.routeReviews.stream().mapToDouble(RouteReview::getScore).average().orElse(0);
     }
 

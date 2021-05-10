@@ -6,7 +6,6 @@ import me.travelplan.service.file.domain.FileType;
 import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.domain.PlaceCategory;
 import me.travelplan.service.route.domain.Route;
-import me.travelplan.service.route.domain.RoutePlace;
 import me.travelplan.service.route.domain.RouteReview;
 import me.travelplan.service.user.domain.User;
 import me.travelplan.web.common.FileDto;
@@ -77,7 +76,7 @@ public interface RouteMapper {
                 .name(route.getName())
                 .centerX(centerX)
                 .centerY(centerY)
-                .score(route.getReviewScoreAvg())
+                .score(route.getAverageReviewScore())
                 .createdBy(route.getCreatedBy().getName())
                 .createdAt(route.getCreatedAt())
                 .updatedAt(route.getUpdatedAt())

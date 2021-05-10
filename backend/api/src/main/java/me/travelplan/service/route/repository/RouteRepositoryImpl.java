@@ -7,7 +7,6 @@ import me.travelplan.service.route.domain.Route;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +15,6 @@ import static me.travelplan.service.route.domain.QRoute.route;
 import static me.travelplan.service.user.domain.QUser.user;
 
 @RequiredArgsConstructor
-@Repository
 public class RouteRepositoryImpl implements RouteRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 

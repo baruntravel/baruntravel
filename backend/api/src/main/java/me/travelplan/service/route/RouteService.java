@@ -108,6 +108,4 @@ public class RouteService {
     public void createOrDeleteReviewLike(Long id, User user) {
         routeReviewService.createOrDeleteReviewLike(id, user);
     }
-
-
 }

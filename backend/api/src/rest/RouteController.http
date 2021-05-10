@@ -139,7 +139,7 @@ Authorization: {{ authorizationToken }}
 
 ###
 
-DELETE {{apiUrl}}/route/review/2
+DELETE {{apiUrl}}/route/review/4
 Authorization: {{ authorizationToken }}
 
 
