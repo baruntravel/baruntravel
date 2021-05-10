@@ -82,29 +82,6 @@ public class RouteControllerTest extends MvcTest {
 
     @Test
     @WithMockCustomUser
-    @DisplayName("이름만 있는 빈 경로 생성 테스트")
-    public void createEmptyTest() throws Exception {
-        String request = "{\"name\" : \"Test Name\"}";
-
-        ResultActions results = mockMvc.perform(
-                post("/route/empty")
-                        .content(request)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding("UTF-8")
-        );
-
-        results.andExpect(status().isCreated())
-                .andDo(document("route-createEmpty",
-                        getDocumentRequest(),
-                        getDocumentResponse(),
-                        requestFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("경로 이름")
-                        )
-                ));
-    }
-
-    @Test
-    @WithMockCustomUser
     @DisplayName("경로 생성 테스트")
     public void createTest() throws Exception {
         List<RouteDto.RoutePlaceWithIdAndOrder> routeDtos = IntStream.range(1, 3).mapToObj(i -> RouteDto.RoutePlaceWithIdAndOrder.builder()

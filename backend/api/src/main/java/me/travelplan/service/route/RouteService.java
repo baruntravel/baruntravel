@@ -1,47 +1,40 @@
 package me.travelplan.service.route;
 
-import lombok.AllArgsConstructor;
-import me.travelplan.exception.PermissionDeniedException;
-import me.travelplan.service.file.domain.File;
+import lombok.RequiredArgsConstructor;
 import me.travelplan.service.file.repository.FileRepository;
-import me.travelplan.service.file.component.S3Uploader;
 import me.travelplan.service.place.domain.Place;
-import me.travelplan.service.place.repository.PlaceRepository;
 import me.travelplan.service.place.exception.PlaceNotFoundException;
-import me.travelplan.service.route.domain.*;
+import me.travelplan.service.place.repository.PlaceRepository;
+import me.travelplan.service.route.domain.Route;
+import me.travelplan.service.route.domain.RouteLike;
+import me.travelplan.service.route.domain.RoutePlace;
+import me.travelplan.service.route.domain.RouteReview;
 import me.travelplan.service.route.exception.RouteNotFoundException;
-import me.travelplan.service.route.exception.RouteReviewNotFoundException;
-import me.travelplan.service.route.repository.*;
+import me.travelplan.service.route.repository.RouteLikeRepository;
+import me.travelplan.service.route.repository.RoutePlaceRepository;
+import me.travelplan.service.route.repository.RouteRepository;
 import me.travelplan.service.user.domain.User;
-import me.travelplan.web.common.SavedFile;
 import me.travelplan.web.route.RouteRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
+
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class RouteService {
     private final RouteRepository routeRepository;
     private final RoutePlaceRepository routePlaceRepository;
     private final PlaceRepository placeRepository;
     private final FileRepository fileRepository;
-    private final RouteReviewRepository routeReviewRepository;
-    private final RouteReviewFileRepository routeReviewFileRepository;
-    private final S3Uploader fileService;
     private final RouteLikeRepository routeLikeRepository;
-    private final RouteReviewLikeRepository routeReviewLikeRepository;
-
-    public Route createEmpty(Route route) {
-        return routeRepository.save(route);
-    }
+    private final RouteReviewService routeReviewService;
 
     @Transactional(readOnly = true)
     public List<Route> getByUser(User user) {
@@ -85,62 +78,6 @@ public class RouteService {
         return routeRepository.findAllByCoordinate(request.getMaxX(), request.getMinX(), request.getMaxY(), request.getMinY(), pageable);
     }
 
-    public void createReview(RouteRequest.CreateOrUpdateReview request, Long id) {
-        Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
-        List<SavedFile> files = s3FileUpload(request);
-        List<File> fileList = fileRepository.saveAll(files.stream().map(File::create).collect(Collectors.toList()));
-        List<RouteReviewFile> routeReviewFiles = fileList.stream().map(RouteReviewFile::create).collect(Collectors.toList());
-        RouteReview routeReview = RouteReview.create(request.getScore(), request.getContent(), routeReviewFiles, route);
-
-        routeReviewRepository.save(routeReview);
-    }
-
-    public RouteReview updateReview(Long id, RouteRequest.CreateOrUpdateReview request, User user) {
-        RouteReview routeReview = routeReviewRepository.findById(id).orElseThrow(RouteReviewNotFoundException::new);
-        if (!routeReview.getCreatedBy().getId().equals(user.getId())) {
-            throw new PermissionDeniedException("수정할 권한이 없습니다.");
-        }
-
-        List<Long> fileIdList = routeReview.getRouteReviewFiles().stream()
-                .map(routeReviewFile -> routeReviewFile.getFile().getId())
-                .collect(Collectors.toList());
-        // 엔티티 하나하나 삭제하며 delete 쿼리가 나가는 것을 방지하기 위해 in 쿼리사용
-        //TODO 파일전체삭제후다시생성 -> 변경된 파일만 수정하기
-        routeReviewFileRepository.deleteAllByFileIds(fileIdList);
-        fileRepository.deleteAllByIds(fileIdList);
-
-        List<SavedFile> files = s3FileUpload(request);
-        List<File> fileList = fileRepository.saveAll(files.stream().map(File::create).collect(Collectors.toList()));
-
-        List<RouteReviewFile> routeReviewFiles = fileList.stream()
-                .map(f -> RouteReviewFile.builder().file(f).routeReview(routeReview).build())
-                .collect(Collectors.toList());
-        routeReviewFileRepository.saveAll(routeReviewFiles);
-
-        routeReview.update(request.getScore(), request.getContent());
-
-        return routeReview;
-    }
-
-    public void deleteReview(Long id, User user) {
-        RouteReview routeReview = routeReviewRepository.findById(id).orElseThrow(RouteReviewNotFoundException::new);
-        if (!routeReview.getCreatedBy().getId().equals(user.getId())) {
-            throw new PermissionDeniedException("삭제할 권한이 없습니다.");
-        }
-        List<Long> fileIdList = routeReview.getRouteReviewFiles().stream()
-                .map(routeReviewFile -> routeReviewFile.getFile().getId())
-                .collect(Collectors.toList());
-
-        routeReviewFileRepository.deleteAllByFileIds(fileIdList);
-        //softdelete @SQLDelete 를 적용시키기 위해 in 쿼리 대신 건당 삭제하도록 수정
-        fileIdList.forEach(fileRepository::deleteById);
-        routeReviewRepository.deleteById(id);
-    }
-
-    public List<RouteReview> getReviewList(Long id) {
-        return routeReviewRepository.findAllByRouteId(id);
-    }
-
     public void createOrDeleteLike(Long id, User user) {
         Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
         Optional<RouteLike> optionalRouteLike = routeLikeRepository.findByRouteIdAndCreatedBy(id, user);
@@ -153,23 +90,23 @@ public class RouteService {
         }
     }
 
-    public void createOrDeleteReviewLike(Long id, User user) {
-        RouteReview route = routeReviewRepository.findById(id).orElseThrow(RouteReviewNotFoundException::new);
-        Optional<RouteReviewLike> optionalRouteReviewLike = routeReviewLikeRepository.findByRouteReviewIdAndCreatedBy(id, user);
-        if (optionalRouteReviewLike.isEmpty()) {
-            routeReviewLikeRepository.save(RouteReviewLike.create(route));
-        }
-        if (optionalRouteReviewLike.isPresent()) {
-            RouteReviewLike routeLike = optionalRouteReviewLike.get();
-            routeReviewLikeRepository.delete(routeLike);
-        }
+    public void createReview(RouteRequest.CreateOrUpdateReview request, Long id) {
+        routeReviewService.create(request, id);
     }
 
-    private List<SavedFile> s3FileUpload(RouteRequest.CreateOrUpdateReview request) {
-        List<SavedFile> files = new ArrayList<>();
-        if (request.getFiles() != null) {
-            files = fileService.uploadFileList(request.getFiles());
-        }
-        return files;
+    public List<RouteReview> getReviewList(Long id) {
+        return routeReviewService.getList(id);
+    }
+
+    public RouteReview updateReview(Long id, RouteRequest.CreateOrUpdateReview request, User user) {
+        return routeReviewService.update(id, request, user);
+    }
+
+    public void deleteReview(Long id, User user) {
+        routeReviewService.delete(id, user);
+    }
+
+    public void createOrDeleteReviewLike(Long id, User user) {
+        routeReviewService.createOrDeleteReviewLike(id, user);
     }
 }

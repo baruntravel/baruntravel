@@ -11,19 +11,6 @@
 ---
 == 기본 API
 
-=== 이름만 있는 빈 경로 생성
-
-`POST /route/empty`
-
-요청 HTTP
-\
-include::{snippets}/route-createEmpty/http-request.adoc[]
-include::{snippets}/route-createEmpty/request-fields.adoc[]
-
-성공 응답 HTTP
-include::{snippets}/route-createEmpty/http-response.adoc[]
-
-
 === 경로 생성
 
 `POST /route`

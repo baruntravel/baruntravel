@@ -1,13 +1,4 @@
 ###
-POST {{apiUrl}}/route/empty
-Content-Type: application/json
-Authorization: {{ authorizationToken }}
-
-{
-  "name": "Test Name Route"
-}
-
-###
 
 POST {{apiUrl}}/route
 Content-Type: application/json
@@ -17,12 +8,8 @@ Authorization: {{ authorizationToken }}
   "name": "나의 테스트 경로",
   "places": [
     {
-      "id" : 123,
+      "id" : 1797997961,
       "order" : 1
-    },
-    {
-      "id" : 124,
-      "order" : 2
     }
   ]
 }
@@ -164,7 +151,7 @@ Content-Disposition: form-data; name="score"
 
 ###
 
-POST {{apiUrl}}/route/review/3/like
+POST {{apiUrl}}/route/review/1/like
 Authorization: {{ authorizationToken }}
 
 ###
