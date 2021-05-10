@@ -78,12 +78,12 @@ const HotplacePage = () => {
     setConfirmPortal(false);
   }, []);
   const handleDeleteItem = useCallback(
-    async (id) => {
+    (id) => {
       setShoppingItems((prev) => {
         const updated = prev.filter((item) => item.id !== id);
         return updated;
       });
-      await onDeleteCartItem(id);
+      onDeleteCartItem(id);
     },
     [setShoppingItems]
   );

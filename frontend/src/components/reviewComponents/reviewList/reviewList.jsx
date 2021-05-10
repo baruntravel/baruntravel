@@ -77,9 +77,9 @@ const ReviewList = ({
         </div>
       </div>
       <div className={styles.reviewList__body}>
-        {reviewDatas.map((item) => (
-          <div className={styles.reviewContainer}>
-            <ReviewCard likeCount={item.likeCount} />
+        {reviewDatas.map((item, index) => (
+          <div key={index} className={styles.reviewContainer}>
+            <ReviewCard review={item} />
           </div>
         ))}
       </div>
