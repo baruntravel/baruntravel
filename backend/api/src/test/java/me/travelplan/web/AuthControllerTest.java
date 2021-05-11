@@ -3,9 +3,10 @@ package me.travelplan.web;
 import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
 import me.travelplan.security.jwt.Token;
-import me.travelplan.service.file.domain.File;
 import me.travelplan.service.file.FileService;
-import me.travelplan.service.user.*;
+import me.travelplan.service.file.domain.File;
+import me.travelplan.service.user.AuthService;
+import me.travelplan.service.user.UserService;
 import me.travelplan.service.user.domain.User;
 import me.travelplan.web.auth.*;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +31,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AuthController.class)
@@ -60,8 +61,8 @@ public class AuthControllerTest extends MvcTest {
                         .param("email", "test@test.com")
                         .param("password", "password")
                         .param("name", "testName")
-                    .contentType(MediaType.MULTIPART_FORM_DATA)
-                    .characterEncoding("UTF-8")
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .characterEncoding("UTF-8")
         );
 
         results.andExpect(status().isCreated())
@@ -89,9 +90,9 @@ public class AuthControllerTest extends MvcTest {
 
         ResultActions results = mockMvc.perform(
                 post("/auth/login")
-                    .content(objectMapper.writeValueAsString(request))
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .characterEncoding("UTF-8")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
         );
 
         results.andExpect(status().isOk())
@@ -115,21 +116,29 @@ public class AuthControllerTest extends MvcTest {
     @DisplayName("내 정보 가져오기 테스트")
     @WithMockCustomUser
     public void meTest() throws Exception {
-        var response = AuthResponse.Me.from(User.builder().email("test@test.com").name("test").build());
+        User user = User.builder()
+                .name("테스터")
+                .email("test@test.com")
+                .avatar(File.builder()
+                        .url("https://s3.ap-northeast-2.amazonaws.com/s3.baruntravel.me/CFGueDdj5pCNzEoCk26e8gY5FgWwOuFhiMfVyzOlU7D7ckIlZHHGad6yCCxa.png")
+                        .build())
+                .build();
 
-        given(authService.me(any())).willReturn(response);
+        given(userService.getMe(any())).willReturn(user);
 
         ResultActions results = mockMvc.perform(
                 get("/auth/me")
         );
 
         results.andExpect(status().isOk())
+                .andDo(print())
                 .andDo(document("auth-me",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         responseFields(
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("내 이메일"),
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("내 이름")
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("내 이름"),
+                                fieldWithPath("avatar").type(JsonFieldType.STRING).description("내 프로필 이미지 url")
                         )
                 ));
     }

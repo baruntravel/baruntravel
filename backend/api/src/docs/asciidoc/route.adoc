@@ -11,51 +11,35 @@
 ---
 == 기본 API
 
-=== 이름만 있는 빈 경로 생성
-
-`POST /route/empty`
-
-요청 HTTP
-\
-include::{snippets}/route-createEmpty/http-request.adoc[]
-include::{snippets}/route-createEmpty/request-fields.adoc[]
-
-성공 응답 HTTP
-include::{snippets}/route-createEmpty/http-response.adoc[]
-
-
 === 경로 생성
 
 `POST /route`
 
 요청 HTTP
-\
 include::{snippets}/route-create/http-request.adoc[]
 include::{snippets}/route-create/request-fields.adoc[]
 
 성공 응답 HTTP
 include::{snippets}/route-create/http-response.adoc[]
+include::{snippets}/route-create/response-fields.adoc[]
 
-=== 경로 수정
+=== 경로 수정(순서)
 
 `PUT /route/{id}`
 
 요청 HTTP
-
-include::{snippets}/route-update/http-request.adoc[]
-include::{snippets}/route-update/path-parameters.adoc[]
-include::{snippets}/route-update/request-fields.adoc[]
+include::{snippets}/route-update-place-order/http-request.adoc[]
+include::{snippets}/route-update-place-order/path-parameters.adoc[]
+include::{snippets}/route-update-place-order/request-fields.adoc[]
 
 성공 응답 HTTP
-include::{snippets}/route-update/http-response.adoc[]
+include::{snippets}/route-update-place-order/http-response.adoc[]
 
 === 경로에 장소 추가하기
 
 `PUT /route/{id}/place`
 
 요청 HTTP
-
-- Body
 include::{snippets}/route-addPlace/http-request.adoc[]
 include::{snippets}/route-addPlace/path-parameters.adoc[]
 include::{snippets}/route-addPlace/request-fields.adoc[]
@@ -63,10 +47,9 @@ include::{snippets}/route-addPlace/request-fields.adoc[]
 성공 응답 HTTP
 include::{snippets}/route-addPlace/http-response.adoc[]
 
+=== 내 경로 조회
 
-=== 내 경로 가져오기 (이름만)
-
-`POST /routes/my`
+`GET /routes/my`
 
 요청 HTTP
 include::{snippets}/routes-getMy/http-request.adoc[]
@@ -75,13 +58,11 @@ include::{snippets}/routes-getMy/http-request.adoc[]
 include::{snippets}/routes-getMy/http-response.adoc[]
 include::{snippets}/routes-getMy/response-fields.adoc[]
 
-=== 경로 가져오기
+=== 경로 조회
 
 `GET /route/{id}`
 
 요청 HTTP
-
-- Body
 include::{snippets}/route-getOne/http-request.adoc[]
 include::{snippets}/route-getOne/path-parameters.adoc[]
 
@@ -94,8 +75,6 @@ include::{snippets}/route-getOne/response-fields.adoc[]
 `GET /routes`
 
 요청 HTTP
-
-- Body
 include::{snippets}/routes-getList/http-request.adoc[]
 include::{snippets}/routes-getList/request-parameters.adoc[]
 
@@ -103,13 +82,11 @@ include::{snippets}/routes-getList/request-parameters.adoc[]
 include::{snippets}/routes-getList/http-response.adoc[]
 include::{snippets}/routes-getList/response-fields.adoc[]
 
-=== 경로 즐겨찾기(좋아요) 생성 or 삭제
+=== 경로 좋아요 생성 or 삭제
 
 `POST /route/{id}/like`
 
 요청 HTTP
-
-- Body
 include::{snippets}/route-like-create-delete/http-request.adoc[]
 include::{snippets}/route-like-create-delete/path-parameters.adoc[]
 
@@ -123,20 +100,18 @@ include::{snippets}/route-like-create-delete/http-response.adoc[]
 `POST /route/{id}/review`
 
 요청 HTTP
-
 include::{snippets}/route-review-create/path-parameters.adoc[]
 include::{snippets}/route-review-create/request-parts.adoc[]
 include::{snippets}/route-review-create/request-parameters.adoc[]
 
 성공 응답 HTTP
 include::{snippets}/route-review-create/http-response.adoc[]
-
+include::{snippets}/route-review-create/response-fields.adoc[]
 === 경로 리뷰 좋아요
 
 `POST /route/review/{id}/like`
 
 요청 HTTP
-
 include::{snippets}/route-review-like-create-delete/http-request.adoc[]
 include::{snippets}/route-review-like-create-delete/path-parameters.adoc[]
 
@@ -148,7 +123,6 @@ include::{snippets}/route-review-like-create-delete/http-response.adoc[]
 `GET /route/{id}/reviews`
 
 요청 HTTP
-
 include::{snippets}/route-review-list/path-parameters.adoc[]
 
 성공 응답 HTTP
@@ -160,7 +134,6 @@ include::{snippets}/route-review-list/response-fields.adoc[]
 `POST /route/review/{id}`
 
 요청 HTTP
-
 include::{snippets}/route-review-update/path-parameters.adoc[]
 include::{snippets}/route-review-update/request-parts.adoc[]
 include::{snippets}/route-review-update/request-parameters.adoc[]
@@ -173,7 +146,6 @@ include::{snippets}/route-review-update/http-response.adoc[]
 `DELETE /route/review/{id}`
 
 요청 HTTP
-
 - Body
 include::{snippets}/route-review-delete/http-request.adoc[]
 include::{snippets}/route-review-delete/path-parameters.adoc[]

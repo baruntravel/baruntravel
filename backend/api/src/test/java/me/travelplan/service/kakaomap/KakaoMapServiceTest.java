@@ -17,9 +17,5 @@ public class KakaoMapServiceTest {
     @Test
     @Disabled
     public void getKakaoMapPlaceTest() {
-        KakaoMapPlace place = kakaoMapService.getKakaoMapPlace(21361085L);
-
-
-        System.out.println("hello");
     }
 }

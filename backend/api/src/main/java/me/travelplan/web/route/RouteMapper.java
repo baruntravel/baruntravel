@@ -6,7 +6,6 @@ import me.travelplan.service.file.domain.FileType;
 import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.domain.PlaceCategory;
 import me.travelplan.service.route.domain.Route;
-import me.travelplan.service.route.domain.RoutePlace;
 import me.travelplan.service.route.domain.RouteReview;
 import me.travelplan.service.user.domain.User;
 import me.travelplan.web.common.FileDto;
@@ -24,8 +23,7 @@ import java.util.stream.Collectors;
 )
 public interface RouteMapper {
     RouteResponse.RouteId toRouteIdResponse(Route route);
-
-    Route toEntity(RouteRequest.CreateEmpty request);
+    RouteResponse.ReviewId toReviewIdResponse(RouteReview review);
 
     default Place toPlace(RouteRequest.AddPlace request) {
         return Place.builder()
@@ -45,41 +43,6 @@ public interface RouteMapper {
                 .x(request.getPlace().getX())
                 .y(request.getPlace().getY())
                 .build();
-    }
-
-    default Route toEntity(RouteRequest.CreateOrUpdate request, Long id) {
-        var routeBuilder = Route.builder()
-                .name(request.getName());
-
-        if (id != 0L) {
-            routeBuilder.id(id);
-        }
-
-        Route route = routeBuilder.build();
-
-        request.getPlaces().forEach((place) -> route.addPlace(RoutePlace.builder().order(place.getOrder()).place(
-                Place.builder()
-                        .thumbnail(
-                                File.builder()
-                                        .name(place.getName())
-                                        .extension("")
-                                        .height(0)
-                                        .width(0)
-                                        .server(FileServer.EXTERNAL)
-                                        .size(0L).type(FileType.IMAGE)
-                                        .url(place.getImage())
-                                        .build()
-                        )
-                        .category(PlaceCategory.builder().id(place.getCategory()).build())
-                        .id(place.getId())
-                        .url(place.getUrl())
-                        .name(place.getName())
-                        .x(place.getX())
-                        .y(place.getY())
-                        .build()
-        ).build()));
-
-        return route;
     }
 
     default RouteResponse.GetOne toGetOneResponse(Route route) {
@@ -110,12 +73,18 @@ public interface RouteMapper {
         Double centerX = map.get("centerX");
         Double centerY = map.get("centerY");
 
+        RouteDto.RouteCreator.RouteCreatorBuilder creatorBuilder = RouteDto.RouteCreator.builder()
+                .name(route.getCreatedBy().getName());
+        if (route.getCreatedBy().getAvatar() != null) {
+            creatorBuilder.avatar(route.getCreatedBy().getAvatar().getUrl());
+        }
+
         return RouteResponse.GetOne.builder()
                 .name(route.getName())
                 .centerX(centerX)
                 .centerY(centerY)
-                .score(route.getReviewScoreAvg())
-                .createdBy(route.getCreatedBy().getName())
+                .score(route.getAverageReviewScore())
+                .creator(creatorBuilder.build())
                 .createdAt(route.getCreatedAt())
                 .updatedAt(route.getUpdatedAt())
                 .reviewCount(route.getRouteReviews().size())
@@ -123,11 +92,14 @@ public interface RouteMapper {
                 .build();
     }
 
-    default RouteResponse.GetsWithOnlyName toGetsWithOnlyNameResponse(List<Route> routes) {
-        return RouteResponse.GetsWithOnlyName.builder()
-                .routes(routes.stream().map(route -> RouteDto.RouteWithOnlyName.builder()
+    default RouteResponse.GetMine toGetMineResponse(List<Route> routes) {
+        return RouteResponse.GetMine.builder()
+                .routes(routes.stream().map(route -> RouteDto.RouteNameWithPlaceName.builder()
                         .id(route.getId())
                         .name(route.getName())
+                        .places(route.getRoutePlaces().stream().map(routePlace -> RouteDto.RoutePlaceWithIdAndName.builder()
+                                .id(routePlace.getPlace().getId())
+                                .name(routePlace.getPlace().getName()).build()).collect(Collectors.toList()))
                         .build()
                 ).collect(Collectors.toList()))
                 .build();
@@ -193,4 +165,5 @@ public interface RouteMapper {
                         .build()).collect(Collectors.toList()))
                 .build();
     }
+
 }

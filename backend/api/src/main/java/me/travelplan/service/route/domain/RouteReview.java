@@ -33,18 +33,18 @@ public class RouteReview extends BaseEntity {
 
     @OneToMany(mappedBy = "routeReview", cascade = CascadeType.PERSIST)
     @Builder.Default
-    private List<RouteReviewFile> routeReviewFiles = new ArrayList<>();
+    private final List<RouteReviewFile> routeReviewFiles = new ArrayList<>();
 
     @OneToMany(mappedBy = "routeReview", cascade = CascadeType.REMOVE)
     @Builder.Default
-    private List<RouteReviewLike> routeReviewLikes = new ArrayList<>();
+    private final List<RouteReviewLike> routeReviewLikes = new ArrayList<>();
 
-    public void setRoute(Route route) {
+    private void setRoute(Route route) {
         this.route = route;
         route.getRouteReviews().add(this);
     }
 
-    public void addRouteReviewFiles(List<RouteReviewFile> routeReviewFiles) {
+    private void addRouteReviewFiles(List<RouteReviewFile> routeReviewFiles) {
         routeReviewFiles.forEach(reviewFile -> {
             this.routeReviewFiles.add(reviewFile);
             reviewFile.setRouteReview(this);

@@ -20,13 +20,15 @@ public interface PlaceMapper {
 
     PlaceReview dtoToEntity(PlaceDto.ReviewRequest review);
 
-    @Mapping(source = "review", target = ".")
-    PlaceReview requestToEntity(PlaceRequest.PutReview request);
-
+    @Mapping(source = "placeId", target = "id")
     @Mapping(source = "request.review.score", target = "score")
     @Mapping(source = "request.review.content", target = "content")
+    PlaceReview placeIdAndRequestToEntity(Long placeId, PlaceRequest.PutReview request);
+
     @Mapping(source = "reviewId", target = "id")
-    PlaceReview requestToEntity(Long reviewId, PlaceRequest.PutReview request);
+    @Mapping(source = "request.review.score", target = "score")
+    @Mapping(source = "request.review.content", target = "content")
+    PlaceReview reviewIdAndRequestToEntity(Long reviewId, PlaceRequest.PutReview request);
 
     PlaceDto.ReviewResponse entityToDto(PlaceReview review);
 
@@ -44,7 +46,7 @@ public interface PlaceMapper {
                 .category(place.getCategory().getName())
                 .openHour(place.getOpenHour())
                 .images(place.getImages().stream().map(placeImage -> FileDto.builder().url(placeImage.getFile().getUrl()).build()).collect(Collectors.toList()))
-                .score(place.getReviewScoreAvg())
+                .score(place.getAverageReviewScore())
                 .likeCount(place.getPlaceLikes().size())
                 .likeCheck(place.isLike(user))
                 .build();

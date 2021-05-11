@@ -16,20 +16,17 @@
 `POST /auth/register`
 
 요청 HTTP
-
 include::{snippets}/auth-register/http-request.adoc[]
 include::{snippets}/auth-register/request-fields.adoc[]
 
 성공 응답 HTTP
 include::{snippets}/auth-register/http-response.adoc[]
 
-
 === 로그인
 
 `POST /auth/login`
 
 요청 HTTP
-
 include::{snippets}/auth-login/http-request.adoc[]
 include::{snippets}/auth-login/request-fields.adoc[]
 
@@ -42,7 +39,6 @@ include::{snippets}/auth-login/response-fields.adoc[]
 `GET /auth/me`
 
 요청 HTTP
-
 include::{snippets}/auth-me/http-request.adoc[]
 
 성공 응답 HTTP
