@@ -99,14 +99,6 @@ public class PlaceService {
      *************************************/
 
     public void createOrDeleteLike(Long placeId, User user) {
-        Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
-        Optional<PlaceLike> optionalPlaceLike = placeLikeRepository.findByPlaceIdAndCreatedBy(placeId, user);
-        if (optionalPlaceLike.isEmpty()) {
-            placeLikeRepository.save(PlaceLike.create(place));
-        }
-        if (optionalPlaceLike.isPresent()) {
-            PlaceLike placeLike = optionalPlaceLike.get();
-            placeLikeRepository.delete(placeLike);
-        }
+        placeLikeService.createOrDeleteLike(placeId, user);
     }
 }
