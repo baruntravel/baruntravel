@@ -113,7 +113,7 @@ Authorization: {{ authorizationToken }}
 
 ###
 
-POST {{apiUrl}}/route/review/1
+POST {{apiUrl}}/route/review/9
 Authorization: {{ authorizationToken }}
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
@@ -134,12 +134,28 @@ Content-Disposition: form-data; name="score"
 
 ###
 
-POST {{apiUrl}}/route/review/1/like
+POST {{apiUrl}}/route/review/8
+Authorization: {{ authorizationToken }}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="content"
+
+Update Review!
+--WebAppBoundary
+Content-Disposition: form-data; name="score"
+
+3.5
+--WebAppBoundary--
+
+###
+
+POST {{apiUrl}}/route/review/7/like
 Authorization: {{ authorizationToken }}
 
 ###
 
-DELETE {{apiUrl}}/route/review/4
+DELETE {{apiUrl}}/route/review/9
 Authorization: {{ authorizationToken }}
 
 

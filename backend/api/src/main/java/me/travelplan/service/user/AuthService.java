@@ -6,9 +6,9 @@ import me.travelplan.security.jwt.JwtTokenProvider;
 import me.travelplan.security.jwt.Token;
 import me.travelplan.service.user.domain.User;
 import me.travelplan.service.user.exception.PasswordWrongException;
+import me.travelplan.service.user.exception.UserNotFoundException;
 import me.travelplan.service.user.repository.UserRepository;
 import me.travelplan.web.auth.AuthResponse;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class AuthService {
 
     @Transactional
     public AuthResponse.Login login(String email, String password) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("찾을 수 없는 사용자입니다"));
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new PasswordWrongException();

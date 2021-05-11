@@ -39,12 +39,12 @@ public class RouteReview extends BaseEntity {
     @Builder.Default
     private final List<RouteReviewLike> routeReviewLikes = new ArrayList<>();
 
-    public void setRoute(Route route) {
+    private void setRoute(Route route) {
         this.route = route;
         route.getRouteReviews().add(this);
     }
 
-    public void addRouteReviewFiles(List<RouteReviewFile> routeReviewFiles) {
+    private void addRouteReviewFiles(List<RouteReviewFile> routeReviewFiles) {
         routeReviewFiles.forEach(reviewFile -> {
             this.routeReviewFiles.add(reviewFile);
             reviewFile.setRouteReview(this);

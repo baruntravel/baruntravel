@@ -57,7 +57,7 @@ public class RouteService {
     public void updatePlaceOrder(Long id, RouteRequest.Update request, User user) {
         Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
         if (!route.getCreatedBy().getId().equals(user.getId())) {
-            throw new PermissionDeniedException("수정할 권한이 없습니다.");
+            throw new PermissionDeniedException();
         }
         RoutePlace firstRoutePlace = routePlaceRepository.findByRouteIdAndPlaceId(id, request.getFirstPlaceId()).orElseThrow();
         RoutePlace secondRoutePlace = routePlaceRepository.findByRouteIdAndPlaceId(id, request.getSecondPlaceId()).orElseThrow();
