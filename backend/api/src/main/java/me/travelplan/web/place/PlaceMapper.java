@@ -20,13 +20,15 @@ public interface PlaceMapper {
 
     PlaceReview dtoToEntity(PlaceDto.ReviewRequest review);
 
-    @Mapping(source = "review", target = ".")
-    PlaceReview requestToEntity(PlaceRequest.PutReview request);
-
+    @Mapping(source = "placeId", target = "id")
     @Mapping(source = "request.review.score", target = "score")
     @Mapping(source = "request.review.content", target = "content")
+    PlaceReview placeIdAndRequestToEntity(Long placeId, PlaceRequest.PutReview request);
+
     @Mapping(source = "reviewId", target = "id")
-    PlaceReview requestToEntity(Long reviewId, PlaceRequest.PutReview request);
+    @Mapping(source = "request.review.score", target = "score")
+    @Mapping(source = "request.review.content", target = "content")
+    PlaceReview reviewIdAndRequestToEntity(Long reviewId, PlaceRequest.PutReview request);
 
     PlaceDto.ReviewResponse entityToDto(PlaceReview review);
 
