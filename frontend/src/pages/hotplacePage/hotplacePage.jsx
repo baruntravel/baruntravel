@@ -44,7 +44,6 @@ const HotplacePage = () => {
   const [searchPlaces, setSearchPlaces] = useState([]);
   const [markerIndex, setMarkerIndex] = useState();
 
-  console.log(userStates, shoppingItems);
   useEffect(() => {
     async function receiveCart() {
       const cartItems = await onReceiveCart();
