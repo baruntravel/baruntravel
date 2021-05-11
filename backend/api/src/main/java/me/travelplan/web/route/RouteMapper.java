@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 )
 public interface RouteMapper {
     RouteResponse.RouteId toRouteIdResponse(Route route);
+    RouteResponse.ReviewId toReviewIdResponse(RouteReview review);
 
     default Place toPlace(RouteRequest.AddPlace request) {
         return Place.builder()
@@ -164,4 +165,5 @@ public interface RouteMapper {
                         .build()).collect(Collectors.toList()))
                 .build();
     }
+
 }

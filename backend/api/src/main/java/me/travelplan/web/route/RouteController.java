@@ -42,8 +42,8 @@ public class RouteController {
 
     @PostMapping("/{id}/review")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createReview(@PathVariable Long id, RouteRequest.CreateOrUpdateReview request) {
-        routeService.createReview(request, id);
+    public RouteResponse.ReviewId createReview(@PathVariable Long id, RouteRequest.CreateOrUpdateReview request) {
+        return routeMapper.toReviewIdResponse(routeService.createReview(request, id));
     }
 
     @GetMapping("/{id}/reviews")

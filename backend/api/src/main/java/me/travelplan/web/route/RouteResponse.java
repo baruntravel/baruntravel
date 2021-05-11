@@ -57,7 +57,15 @@ public class RouteResponse {
     @Getter
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class ReviewId {
+        private Long id;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class ReviewList {
         private List<RouteDto.ReviewResponse> reviews;
     }
+
 }

@@ -66,6 +66,8 @@ public class RouteControllerTest extends MvcTest {
                 .places(routeDtos)
                 .build();
 
+        given(routeService.create(any())).willReturn(Route.builder().id(1L).name("테스트경로").build());
+
         ResultActions results = mockMvc.perform(
                 post("/route")
                         .content(objectMapper.writeValueAsString(request))
@@ -74,6 +76,7 @@ public class RouteControllerTest extends MvcTest {
         );
 
         results.andExpect(status().isCreated())
+                .andDo(print())
                 .andDo(document("route-create",
                         getDocumentRequest(),
                         getDocumentResponse(),
@@ -81,6 +84,10 @@ public class RouteControllerTest extends MvcTest {
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("경로 이름"),
                                 fieldWithPath("places[].id").type(JsonFieldType.NUMBER).description("장소 식별자"),
                                 fieldWithPath("places[].order").type(JsonFieldType.NUMBER).description("장소들 정렬 순서 (사용할 필요가 있는지 검토 필요)")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("생성된 경로 식별자"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("생성된 경로 이름")
                         )
                 ));
     }
@@ -205,7 +212,6 @@ public class RouteControllerTest extends MvcTest {
                         .url("https://s3.ap-northeast-2.amazonaws.com/s3.baruntravel.me/CFGueDdj5pCNzEoCk26e8gY5FgWwOuFhiMfVyzOlU7D7ckIlZHHGad6yCCxa.png")
                         .build()).build());
 
-
         given(routeService.getOne(any())).willReturn(route);
 
         ResultActions results = mockMvc.perform(
@@ -253,6 +259,8 @@ public class RouteControllerTest extends MvcTest {
         MockMultipartFile mockFile1 = new MockMultipartFile("files", "mock_file1.jpg", "image/jpg", is1.readAllBytes());
         MockMultipartFile mockFile2 = new MockMultipartFile("files", "mock_file2.jpg", "image/jpg", is2.readAllBytes());
 
+        given(routeService.createReview(any(),any())).willReturn(RouteReview.builder().id(1L).build());
+
         ResultActions results = mockMvc.perform(
                 fileUpload("/route/{id}/review", 1)
                         .file(mockFile1)
@@ -277,6 +285,9 @@ public class RouteControllerTest extends MvcTest {
                         requestParameters(
                                 parameterWithName("content").description("경로 리뷰 내용"),
                                 parameterWithName("score").description("경로 점수")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("생성된 경로 리뷰 식별자")
                         )
                 ));
     }

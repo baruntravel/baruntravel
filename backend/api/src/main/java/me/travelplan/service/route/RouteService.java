@@ -94,8 +94,8 @@ public class RouteService {
         }
     }
 
-    public void createReview(RouteRequest.CreateOrUpdateReview request, Long id) {
-        routeReviewService.create(request, id);
+    public RouteReview createReview(RouteRequest.CreateOrUpdateReview request, Long id) {
+        return routeReviewService.create(request, id);
     }
 
     public List<RouteReview> getReviewList(Long id) {

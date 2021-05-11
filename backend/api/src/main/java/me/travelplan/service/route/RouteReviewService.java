@@ -33,13 +33,13 @@ class RouteReviewService {
     private final RouteReviewFileRepository routeReviewFileRepository;
     private final FileService fileService;
 
-    public void create(RouteRequest.CreateOrUpdateReview request, Long id) {
+    public RouteReview create(RouteRequest.CreateOrUpdateReview request, Long id) {
         Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
         List<File> files = fileService.uploadFiles(request.getFiles());
         List<RouteReviewFile> routeReviewFiles = files.stream().map(RouteReviewFile::create).collect(Collectors.toList());
         RouteReview routeReview = RouteReview.create(request.getScore(), request.getContent(), routeReviewFiles, route);
 
-        routeReviewRepository.save(routeReview);
+        return routeReviewRepository.save(routeReview);
     }
 
     @Transactional(readOnly = true)
