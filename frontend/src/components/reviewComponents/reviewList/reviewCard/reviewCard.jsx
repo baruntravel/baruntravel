@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./reviewCard.module.css";
 import { Rate } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
@@ -17,8 +17,10 @@ const ReviewCard = ({
     createdAt,
     updatedAt,
   },
+  review,
 }) => {
   const [liked, setLiked] = useState(likeCheck); // post의 좋아요를 누른 사람들 중 유저가 있는 지 확인하는 작업,
+  const [images, setImages] = useState([]);
   const onUnlike = () => {
     // 좋아요 취소 -> DB에 반영,
     setLiked(!liked);
@@ -38,6 +40,9 @@ const ReviewCard = ({
     ],
     likeCount: 5,
   };
+  useEffect(() => {
+    files && setImages(files.map((file) => file.url));
+  }, [review]);
   return (
     <div className={styles.ReviewCard}>
       <div className={styles.userProfile}>
@@ -66,7 +71,7 @@ const ReviewCard = ({
         </div>
       </div>
       <div className={styles.imageContainer}>
-        <PostImages images={files.map((file) => file.url)} />
+        <PostImages images={images} />
       </div>
       <div className={styles.review__bottom}>
         <div>
