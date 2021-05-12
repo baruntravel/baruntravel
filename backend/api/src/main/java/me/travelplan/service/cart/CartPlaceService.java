@@ -17,38 +17,37 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class CartPlaceService {
     private final PlaceRepository placeRepository;
     private final PlaceService placeService;
     private final CartPlaceRepository cartPlaceRepository;
 
-    public void addPlace(Place place, User user) {
-        if (placeRepository.findById(place.getId()).isEmpty()) {
-            placeRepository.save(place);
-            placeService.updateDetail(place.getId());
-        }
-        if (cartPlaceRepository.findByPlaceIdAndCreatedBy(place.getId(), user).isPresent()) {
-            throw new PlaceDuplicatedException();
-        }
-        CartPlace cartPlace = CartPlace.create(place);
-        cartPlaceRepository.save(cartPlace);
-    }
-
-    @Transactional(readOnly = true)
     public List<CartPlace> getMyCart(User user) {
         return cartPlaceRepository.findAllByCreatedBy(user);
     }
 
+    @Transactional
+    public void addPlace(Place place, User user) {
+        place = placeService.create(place);
+
+        if (cartPlaceRepository.existsByPlaceIdAndCreatedBy(place.getId(), user)) {
+            throw new PlaceDuplicatedException();
+        }
+        cartPlaceRepository.save(CartPlace.create(place));
+    }
+
+    @Transactional
     public void addMemo(Long placeId, CartPlaceRequest.AddMemo request, User user) {
         CartPlace cartPlace = cartPlaceRepository.findByPlaceIdAndCreatedBy(placeId, user).orElseThrow(CartPlaceNotFoundException::new);
         cartPlace.addMemo(request.getMemo());
     }
 
+    @Transactional
     public void deleteOnePlace(Long placeId, User user) {
         cartPlaceRepository.deleteByPlaceIdAndCreatedBy(placeId, user);
     }
 
+    @Transactional
     public void deleteAllPlace(User user) {
         cartPlaceRepository.deleteAllByCreatedBy(user);
     }

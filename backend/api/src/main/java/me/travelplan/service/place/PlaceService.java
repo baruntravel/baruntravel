@@ -44,6 +44,12 @@ public class PlaceService {
         return placeRepository.findByIdWithCategory(id).orElseThrow(PlaceNotFoundException::new);
     }
 
+    @Transactional
+    public Place create(Place place) {
+        Place savedPlace = placeRepository.save(place);
+        this.updateDetail(savedPlace.getId());
+        return savedPlace;
+    }
 
     @Transactional
     public void delete(Long reviewId) {
@@ -59,7 +65,7 @@ public class PlaceService {
     }
 
     //    @Async
-    public void updateDetail(Long id) {
+    private void updateDetail(Long id) {
         try {
             Place place = placeRepository.findById(id).orElseThrow(PlaceNotFoundException::new);
             KakaoMapPlace kakaoPlace = kakaoMapService.getKakaoMapPlace(id).orElseThrow();

@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CartPlaceRepository extends JpaRepository<CartPlace, Long> {
+    boolean existsByPlaceIdAndCreatedBy(Long placeId, User user);
+
     Optional<CartPlace> findByPlaceIdAndCreatedBy(Long placeId, User user);
 
     @Query("select c from CartPlace c join fetch c.place p join fetch p.category where c.createdBy=:user")
