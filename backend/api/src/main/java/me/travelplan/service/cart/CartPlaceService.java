@@ -18,7 +18,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CartPlaceService {
-    private final PlaceRepository placeRepository;
     private final PlaceService placeService;
     private final CartPlaceRepository cartPlaceRepository;
 
