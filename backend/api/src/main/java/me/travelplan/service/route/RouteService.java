@@ -102,8 +102,8 @@ public class RouteService {
         return routeReviewService.getList(id);
     }
 
-    public RouteReview updateReview(Long id, RouteRequest.CreateOrUpdateReview request, User user) {
-        return routeReviewService.update(id, request, user);
+    public void updateReview(Long id, RouteRequest.CreateOrUpdateReview request, User user) {
+        routeReviewService.update(id, request, user);
     }
 
     public void deleteReview(Long id, User user) {

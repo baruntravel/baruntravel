@@ -17,14 +17,12 @@ import me.travelplan.service.route.repository.RouteReviewRepository;
 import me.travelplan.service.user.domain.User;
 import me.travelplan.web.route.RouteRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 class RouteReviewService {
     private final RouteRepository routeRepository;
@@ -42,12 +40,11 @@ class RouteReviewService {
         return routeReviewRepository.save(routeReview);
     }
 
-    @Transactional(readOnly = true)
     public List<RouteReview> getList(Long id) {
         return routeReviewRepository.findAllByRouteId(id);
     }
 
-    public RouteReview update(Long id, RouteRequest.CreateOrUpdateReview request, User user) {
+    public void update(Long id, RouteRequest.CreateOrUpdateReview request, User user) {
         RouteReview routeReview = routeReviewRepository.findById(id).orElseThrow(RouteReviewNotFoundException::new);
         permissionCheck(user, routeReview);
         reviewFileDelete(routeReview);
@@ -60,8 +57,6 @@ class RouteReviewService {
         routeReviewFileRepository.saveAll(routeReviewFiles);
 
         routeReview.update(request.getScore(), request.getContent());
-
-        return routeReview;
     }
 
     public void delete(Long id, User user) {
