@@ -14,10 +14,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,8 +32,8 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -139,6 +142,35 @@ public class AuthControllerTest extends MvcTest {
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("내 이메일"),
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("내 이름"),
                                 fieldWithPath("avatar").type(JsonFieldType.STRING).description("내 프로필 이미지 url")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("내 정보 수정 테스트")
+    public void updateTest() throws Exception {
+        InputStream is = new ClassPathResource("mock/images/enjoy.png").getInputStream();
+        MockMultipartFile mockFile = new MockMultipartFile("avatar", "enjoy.jpg", "image/jpg", is.readAllBytes());
+
+        ResultActions results = mockMvc.perform(
+                fileUpload("/auth/update")
+                        .file(mockFile)
+                        .param("name", "updateName")
+                        .param("avatarChange","true")
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .characterEncoding("UTF-8")
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(document("auth-update",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestParts(
+                                partWithName("avatar").description("사용자 프로필 이미지(없다면 null)")
+                        ),
+                        requestParameters(
+                                parameterWithName("name").description("가입할 이름"),
+                                parameterWithName("avatarChange").description("사용자 프로필 이미지가 변경되었다면 true")
                         )
                 ));
     }

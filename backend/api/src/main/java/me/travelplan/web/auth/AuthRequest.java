@@ -21,4 +21,15 @@ public class AuthRequest {
         private String email;
         private String password;
     }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class Update {
+        private String name;
+        private MultipartFile avatar;
+        private boolean avatarChange;
+    }
 }
