@@ -50,7 +50,7 @@ Authorization: {{ authorizationToken }}
 
 ###
 
-GET {{apiUrl}}/route/3
+GET {{apiUrl}}/route/1
 Authorization: {{ authorizationToken }}
 
 ###

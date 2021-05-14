@@ -5,6 +5,7 @@ import me.travelplan.security.jwt.JwtTokenAuthenticationFilter;
 import me.travelplan.security.jwt.JwtTokenProvider;
 import me.travelplan.security.userdetails.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -39,20 +40,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()
-            .and()
-            .headers().frameOptions().disable()
-            .and()
-            .httpBasic().disable()
-            .formLogin().disable()
-            .rememberMe().disable()
-            .csrf().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeRequests()
+                .and()
+                .headers().frameOptions().disable()
+                .and()
+                .httpBasic().disable()
+                .formLogin().disable()
+                .rememberMe().disable()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
                 .antMatchers("/hello").permitAll()
                 .antMatchers("/docs/**").permitAll()
                 .antMatchers("/auth/login").permitAll()
                 .antMatchers("/auth/register").permitAll()
+                .antMatchers(HttpMethod.GET, "/routes").permitAll()
+                .antMatchers(HttpMethod.GET, "/route/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/route/{id}/reviews").permitAll()
+                .antMatchers(HttpMethod.GET, "/place/{id}").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

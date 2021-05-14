@@ -38,4 +38,12 @@ public class User extends BaseEntity {
         this.refreshToken = refreshToken;
         this.refreshTokenExpiredAt = refreshTokenExpiredAt;
     }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateAvatar(File updateAvatar) {
+        this.avatar = updateAvatar;
+    }
 }
