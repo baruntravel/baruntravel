@@ -1,14 +1,32 @@
 import styles from "./mainPage.module.css";
-import { useHistory } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navbar from "../../components/common/navbar/navbar";
 import Banner from "./banner/banner";
 import SelectArea from "./selectArea/selectArea";
 import SelectRoute from "./selectRoute/selectRoute";
+import { getFeaturedRoutes as fetchRoutes } from "../../api/routeAPI";
+import { userState } from "../../recoil/userState";
+import { useRecoilValue } from "recoil";
 
 const MainPage = () => {
-  const history = useHistory();
-  const [isLoggedIn, setLoggedIn] = useState(true);
+  const userStates = useRecoilValue(userState);
+  const [mainRoutes, setMainRoutes] = useState({});
+  //TODO : mainRoute(object) state에 places[] 넣기!
+  //그리고 나서, SelectRoute로 routes props전달
+
+  useEffect(() => {
+    // getFeaturedRoutes(1);
+  }, []);
+
+  async function getFeaturedRoutes(id) {
+    const { name, places } = await fetchRoutes(id);
+
+    setMainRoutes({ ...mainRoutes, [name]: name, [places]: places });
+    // setMainRoutes(route);
+    // let routes = [];
+    // routes = [...routes, await fetchRoutes(id)];
+    // setMainRoutes(routes);
+  }
 
   return (
     <div className={styles.container}>
@@ -21,6 +39,12 @@ const MainPage = () => {
           <br />
           ✈️ 바른여행길잡이
         </h1>
+
+        {/* {Object.keys(mainRoutes).map((key) => {
+          console.log(key.name);
+          return <h1>{key.name}</h1>;
+        })} */}
+
         <Banner />
         <SelectArea />
         <SelectRoute />

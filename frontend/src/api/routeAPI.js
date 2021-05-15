@@ -37,3 +37,27 @@ export const getRouteDetail = (routeId) => {
       return false;
     });
 };
+
+// 상위 루트 10개씩 불러오는
+export const getFeaturedRoutes = (id) => {
+  const routes = axios
+    .get(`/route/${id}`)
+    .then((res) => res.data)
+    .catch((error) => {
+      console.error(error);
+      throw new Error(`${error}`);
+    });
+  return routes;
+};
+
+// 왼밑, 오위 좌표로 루트들 불러옴
+export const getRoutesByRange = (sw, ne) => {
+  const routes = axios
+    .get(`/route/${sw},${ne}`)
+    .then((res) => res.data)
+    .catch((error) => {
+      console.error(error);
+      throw new Error(`${error}`);
+    });
+  return routes;
+};
