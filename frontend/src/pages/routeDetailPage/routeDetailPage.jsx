@@ -88,25 +88,6 @@ const RouteDetailPage = (props) => {
     },
     [images]
   );
-
-  // const [reviewDatas, setReviewDatas] = useState([
-  //   {
-  //     createdAt: new Date(2011, 0, 1, 0, 0, 0, 0),
-  //     likeCount: 5,
-  //   },
-  //   {
-  //     createdAt: new Date(2011, 0, 1, 0, 0, 0, 2),
-  //     likeCount: 6,
-  //   },
-  //   {
-  //     createdAt: new Date(2011, 0, 1, 0, 0, 0, 1),
-  //     likeCount: 7,
-  //   },
-  //   {
-  //     createdAt: new Date(2011, 0, 1, 0, 0, 0, 4),
-  //     likeCount: 3,
-  //   },
-  // ]);
   const handleSetReviewDatas = (updated) => {
     setReviewDatas(updated);
   };

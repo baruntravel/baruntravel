@@ -49,3 +49,15 @@ export const onDeleteRouteReview = async (routeId) => {
       throw new Error(`unHandled error ${error}`);
     });
 };
+
+export const onReceivePlaceReview = (placeId) => {
+  return axios
+    .get(`/place/${placeId}/review`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((error) => {
+      console.error(error);
+      return false;
+    });
+};
