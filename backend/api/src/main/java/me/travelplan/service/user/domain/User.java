@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JoinColumn(name = "avatar_file_id")
@@ -36,5 +37,13 @@ public class User extends BaseEntity {
         this.name = name;
         this.refreshToken = refreshToken;
         this.refreshTokenExpiredAt = refreshTokenExpiredAt;
+    }
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateAvatar(File updateAvatar) {
+        this.avatar = updateAvatar;
     }
 }

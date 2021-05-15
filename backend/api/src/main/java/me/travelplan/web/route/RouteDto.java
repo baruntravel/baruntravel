@@ -26,6 +26,33 @@ public class RouteDto {
         private Integer order;
     }
 
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class RoutePlaceWithIdAndName {
+        private Long id;
+        private String name;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class RouteNameWithPlaceName {
+        private Long id;
+        private String name;
+        private List<RouteDto.RoutePlaceWithIdAndName> places;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class RouteCreator {
+        private String name;
+        private String avatar;
+    }
 
     @Getter
     @Builder
@@ -36,15 +63,6 @@ public class RouteDto {
         private Integer order;
     }
 
-
-    @Getter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class RouteWithOnlyName {
-        private Long id;
-        private String name;
-    }
 
     @Getter
     @Builder

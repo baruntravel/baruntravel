@@ -12,9 +12,9 @@ def lambda_handler(event, context):
     headers = {
         'User-Agent': ua.random,
     }
+    print(headers)
     res = requests.get(uri, headers=headers)
     try:
-        print(res.text)
         place = json.loads(res.text)
 
         periodList = []
@@ -45,3 +45,5 @@ def lambda_handler(event, context):
             }
         }
 
+res = lambda_handler({"body": "{\"placeId\" : 1797997961}"}, {})
+print(res)

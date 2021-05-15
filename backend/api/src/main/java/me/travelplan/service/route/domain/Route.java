@@ -2,8 +2,8 @@ package me.travelplan.service.route.domain;
 
 import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
+import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.service.place.domain.Place;
-import me.travelplan.service.user.domain.User;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -61,11 +61,11 @@ public class Route extends BaseEntity {
         return centerMap;
     }
 
-    public boolean isLike(User user) {
-        return this.routeLikes.stream().anyMatch(routeLike -> routeLike.getCreatedBy().getId().equals(user.getId()));
+    public boolean isLike(CustomUserDetails customUserDetails) {
+        return customUserDetails != null && this.routeLikes.stream().anyMatch(routeLike -> routeLike.getCreatedBy().getId().equals(customUserDetails.getUser().getId()));
     }
 
-    public Double getReviewScoreAvg() {
+    public Double getAverageReviewScore() {
         return this.routeReviews.stream().mapToDouble(RouteReview::getScore).average().orElse(0);
     }
 
