@@ -48,6 +48,17 @@
   font-size: 0.8em;
   color: grey;
 }
+.reviewInfo {
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.reviewInfo__score,
+.reviewInfo__reviewCount {
+  padding-left: 4px;
+}
 .titleBox {
   border-bottom: 2px solid gray;
 }

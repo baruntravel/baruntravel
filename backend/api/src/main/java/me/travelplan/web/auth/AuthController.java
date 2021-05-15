@@ -31,4 +31,9 @@ public class AuthController {
     public AuthResponse.Me me(@CurrentUser CustomUserDetails currentUser) {
         return userMapper.toMe(userService.getMe(currentUser.getUser()));
     }
+
+    @PostMapping("/update")
+    public void update(AuthRequest.Update request, @CurrentUser CustomUserDetails customUserDetails) {
+        userService.update(request, customUserDetails.getUser());
+    }
 }

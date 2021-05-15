@@ -3,8 +3,8 @@ package me.travelplan.web.route;
 import lombok.RequiredArgsConstructor;
 import me.travelplan.security.userdetails.CurrentUser;
 import me.travelplan.security.userdetails.CustomUserDetails;
-import me.travelplan.service.route.domain.Route;
 import me.travelplan.service.route.RouteService;
+import me.travelplan.service.route.domain.Route;
 import me.travelplan.web.common.PageRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -26,7 +26,7 @@ public class RoutesController {
                                                RouteRequest.GetList request,
                                                @CurrentUser CustomUserDetails customUserDetails) {
         List<Route> content = routeService.getList(request, pageRequest.of()).getContent();
-        List<RouteResponse.GetList> getList = routeMapper.toGetListResponse(content, customUserDetails.getUser());
+        List<RouteResponse.GetList> getList = routeMapper.toGetListResponse(content, customUserDetails);
 
         return new PageImpl<>(getList, pageRequest.of(), content.size());
     }

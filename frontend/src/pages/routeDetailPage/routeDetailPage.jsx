@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -13,15 +13,31 @@ import { Drawer } from "antd";
 import ReviewForm from "../../components/reviewComponents/reviewForm/reviewForm";
 import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
 import InputRootName from "../../components/common/inputRootName/inputRootName";
+import { onReceiveRouteReview, onUploadRouteReview } from "../../api/reviewAPI";
+import { userState } from "../../recoil/userState";
+import { useRecoilValue } from "recoil";
+import PortalAuth from "../../containers/portalAuth/portalAuth";
+import { getRouteDetail } from "../../api/routeAPI";
+import { StarFilled } from "@ant-design/icons";
+import { useHistory } from "react-router-dom";
 
 const RouteDetailPage = (props) => {
+  const userStates = useRecoilValue(userState);
+  const history = useHistory();
+  const [loading, setLoading] = useState(true);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
-  const [imagePlaceName, setImagePlaceName] = useState("첫");
+  const [imagePlaceName, setImagePlaceName] = useState("");
   const [reviewWrite, setReviewWrite] = useState(false);
   const [moreReview, setMoreReview] = useState(false);
-
   const [openInputName, setOpenInputName] = useState(false);
+  const [needLogin, setNeedLogin] = useState(false);
+  const [routeDetail, setRouteDetail] = useState({});
+  const [images, setImages] = useState([]); // 이미지와 이름을 같이 저장
+  const [postImages, setPostImages] = useState([]); // 이미지만 저장 (줌을 위한 이미지)
+  const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
+
+  const routeId = 1;
 
   const onCloseInputName = useCallback(() => {
     setOpenInputName(false);
@@ -35,10 +51,16 @@ const RouteDetailPage = (props) => {
   const onClose = useCallback(() => {
     setShowImagesZoom(false);
   }, []);
-
-  const onClickReviewWrite = useCallback(() => {
-    setReviewWrite(true);
+  const onClosePortaAuth = useCallback(() => {
+    setNeedLogin(false);
   }, []);
+  const onClickReviewWrite = useCallback(() => {
+    if (userStates.isLogin) {
+      setReviewWrite(true);
+    } else {
+      setNeedLogin(true);
+    }
+  }, [userStates]);
   const onCloseReviewWrite = useCallback(() => {
     setReviewWrite(false);
   }, []);
@@ -48,6 +70,9 @@ const RouteDetailPage = (props) => {
   const onCloseMoreReview = useCallback(() => {
     setMoreReview(false);
   }, []);
+  const onUploadReview = useCallback((formData) => {
+    onUploadRouteReview(1, formData);
+  }, []);
   const settings = {
     dots: false,
     infinite: true,
@@ -55,67 +80,46 @@ const RouteDetailPage = (props) => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
-  const images = [
-    "https://i.pinimg.com/236x/1a/3f/63/1a3f63dacc72b9ce7a0f41d771068c48.jpg",
-    "https://i.pinimg.com/236x/f0/8d/5b/f08d5b455ae78f7c89b99b0354a49b7d.jpg",
-    "https://i.pinimg.com/236x/1a/3f/63/1a3f63dacc72b9ce7a0f41d771068c48.jpg",
-    "https://i.pinimg.com/236x/f0/8d/5b/f08d5b455ae78f7c89b99b0354a49b7d.jpg",
-  ];
-  const places = [
-    {
-      id: "688578118",
-      place_name: "BNK저축은행 리테일금융센터",
-      place_url: "http://place.map.kakao.com/688578118",
-      address_name: "서울 중구 무교로 6",
-      x: "126.97943787116054",
-      y: "37.56657026127022",
-    },
-    {
-      id: "508437738",
-      place_name: "신한은행 서울시청금융센터",
-      placeUrl: "http://place.map.kakao.com/508437738",
-      address_name: "서울 중구 세종대로 110",
-      x: "126.978244947578",
-      y: "37.5662231640346",
-    },
-    {
-      id: "7975883",
-      place_name: "신한은행 서울광장출장소",
-      placeUrl: "http://place.map.kakao.com/7975883",
-      address_name: "서울 중구 을지로 16",
-      x: "126.979476558519",
-      y: "37.5658314512941",
-    },
-  ];
+
   const afterSliderChange = useCallback(
     (index) => {
       setImageIndex(index);
-      setImagePlaceName(places[index].place_name);
+      setImagePlaceName(images[index][1]);
     },
-    [places]
+    [images]
   );
 
-  const [reviewDatas, setReviewDatas] = useState([
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 0),
-      likeCount: 5,
-    },
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 2),
-      likeCount: 6,
-    },
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 1),
-      likeCount: 7,
-    },
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 4),
-      likeCount: 3,
-    },
-  ]);
   const handleSetReviewDatas = (updated) => {
     setReviewDatas(updated);
   };
+  useEffect(() => {
+    if (!userStates.isLogin) {
+      // 로그인 하지않으면 기존 페이지로 이동
+      history.push("/");
+    }
+    async function getRouteDetailInfo() {
+      // 루트 상세페이지의 정보를 받아옴
+      const route = await getRouteDetail(1);
+      setRouteDetail(route);
+      const route_images =
+        route && route.places.map((place) => [place.image, place.name]);
+      const images = route_images.filter((item) => item[0]); // 이미지가 존재하는것만 뽑아낸다.
+      setPostImages(images.map((img) => img[0])); // 이미지만 뽑아서 저장
+      setImages(images); // 이미지와 이름을 세트로 저장
+      setImagePlaceName(images[0][1]); // 첫 이미지의 장소 이름 저장
+    }
+    async function getReviewList() {
+      const reviews = await onReceiveRouteReview(routeId);
+      setReviewDatas(reviews);
+    }
+    getRouteDetailInfo();
+    getReviewList();
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return <div>hi</div>;
+  }
   return (
     <div className={styles.RouteDetailPage}>
       <DetailHeader />
@@ -123,7 +127,7 @@ const RouteDetailPage = (props) => {
         <Slider {...settings} afterChange={(index) => afterSliderChange(index)}>
           {images.map((v, index) => (
             <div key={index} className={styles.imageContainer}>
-              <img className={styles.img} src={v} alt={"placeImage"} />
+              <img className={styles.img} src={v[0]} />
             </div>
           ))}
         </Slider>
@@ -143,23 +147,32 @@ const RouteDetailPage = (props) => {
             }}
           />
           <div className={styles.nicknameBox}>
-            <span className={styles.nickname}>User Nickname</span>
-            <span className={styles.dateReview}>2021.04.20 / 40개의 리뷰</span>
+            <span className={styles.nickname}>{routeDetail.createdBy}</span>
+            <span
+              className={styles.dateReview}
+            >{`${routeDetail.createdAt}`}</span>
           </div>
         </div>
+        <div className={styles.reviewInfo}>
+          <StarFilled style={{ color: "#eb2f96" }} />
+          <span className={styles.reviewInfo__score}>{routeDetail.score}</span>
+          <span
+            className={styles.reviewInfo__reviewCount}
+          >{`(${routeDetail.reviewCount})`}</span>
+        </div>
         <div className={styles.titleBox}>
-          <h2 className={styles.title}>#해시태그 #제목</h2>
+          <h2 className={styles.title}>{routeDetail.name}</h2>
         </div>
         <div className={styles.placesContainer}>
           <div className={styles.contentBox}>
             <span className={styles.content}>이 장소를 다녀왔어요</span>
           </div>
           <div className={styles.imageMap}>
-            <ImageMap places={places} />
+            <ImageMap places={routeDetail.places} />
           </div>
           <div className={styles.placesBox}>
-            {places &&
-              places.map((place, index) => (
+            {routeDetail.places &&
+              routeDetail.places.map((place, index) => (
                 <div key={index} className={styles.placeBox}>
                   <PlaceCard place={place} />
                 </div>
@@ -194,7 +207,7 @@ const RouteDetailPage = (props) => {
         bodyStyle={{ padding: 0 }}
         onClose={onCloseReviewWrite}
       >
-        <ReviewForm />
+        <ReviewForm onUploadReview={onUploadReview} />
       </Drawer>
       <Drawer
         className={styles.reviewListDrawer}
@@ -207,12 +220,18 @@ const RouteDetailPage = (props) => {
           overflowY: "hidden",
         }}
       >
-        <MoreReviewList onCloseMoreReview={onCloseMoreReview} />
+        <MoreReviewList
+          setReviewDatas={handleSetReviewDatas}
+          onClickReviewWrite={onClickReviewWrite}
+          onCloseMoreReview={onCloseMoreReview}
+          reviewDatas={reviewDatas}
+        />
       </Drawer>
       {showImagesZoom && (
-        <ImagesZoom images={images} onClose={onClose} index={imageIndex} />
+        <ImagesZoom images={postImages} onClose={onClose} index={imageIndex} />
       )}
       {openInputName && <InputRootName onClose={onCloseInputName} />}
+      {needLogin && <PortalAuth onClose={onClosePortaAuth} />}
     </div>
   );
 };

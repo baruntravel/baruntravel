@@ -12,16 +12,25 @@ import ImagesZoom from "../../components/reviewComponents/imagesZoom/imagesZoom"
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
+import { getPlaceDetail } from "../../api/placeAPI";
+import { onReceivePlaceReview } from "../../api/reviewAPI";
 
 const { kakao } = window;
+
 const PlaceDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
+  const [placeDetail, setPlaceDetail] = useState({});
+  const [loading, setLoading] = useState(true);
   const [needLogin, setNeedLogin] = useState(false);
-
   const [reviewWrite, setReviewWrite] = useState(false);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const [liked, setLiked] = useState(false);
+  const [images, setImages] = useState([]);
+  const [reviewDatas, setReviewDatas] = useState([]);
+
+  const placeId = 7855876;
+
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);
   }, []);
@@ -59,12 +68,7 @@ const PlaceDetailPage = (props) => {
     console.log("좋아요 취소 API 호출");
     setLiked(false);
   }, []);
-  const images = [
-    "https://blog.hmgjournal.com/images_n/contents/171013_N1.png",
-    "https://blog.hmgjournal.com/images_n/contents/171013_N1.png",
-    "https://blog.hmgjournal.com/images_n/contents/171013_N1.png",
-    "https://blog.hmgjournal.com/images_n/contents/171013_N1.png",
-  ];
+
   const settings = {
     dots: false,
     infinite: true,
@@ -73,41 +77,53 @@ const PlaceDetailPage = (props) => {
     slidesToScroll: 1,
   };
   useEffect(() => {
-    let markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
-    let marker = {
-      position: markerPosition,
-    };
-    let staticMapContainer = document.getElementById("staticMap"),
-      staticMapOption = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
-        level: 4,
-        marker: marker,
+    // placeDetail 받아오는 함수
+    async function getPlaceDetailInfo() {
+      const placeDetailInfo = await getPlaceDetail(placeId);
+      if (placeDetailInfo) {
+        setPlaceDetail(placeDetailInfo);
+        setImages(placeDetailInfo.images.map((item) => item.url));
+        makeMapImage(placeDetailInfo.x, placeDetailInfo.y);
+      } else {
+        setPlaceDetail(false);
+      }
+    }
+
+    // map image 만드는 함수
+    function makeMapImage(x, y) {
+      let markerPosition = new kakao.maps.LatLng(y, x);
+      let marker = {
+        position: markerPosition,
       };
-    let staticMap = new kakao.maps.StaticMap(
-      staticMapContainer,
-      staticMapOption
-    );
+      let staticMapContainer = document.getElementById("staticMap"),
+        staticMapOption = {
+          center: new kakao.maps.LatLng(y, x),
+          level: 4,
+          marker: marker,
+        };
+      let staticMap = new kakao.maps.StaticMap(
+        staticMapContainer,
+        staticMapOption
+      );
+    }
+    // 리뷰리스트를 받아오는 함수
+    async function getReviewList() {
+      const reviews = await onReceivePlaceReview(placeId);
+      setReviewDatas(reviews);
+    }
+    // placeDetail 받아오는 곳
+    getPlaceDetailInfo();
+    getReviewList();
+    window.scrollTo(0, 0);
+    setLoading(false);
   }, []);
 
-  const [reviewDatas, setReviewDatas] = useState([
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 0),
-      likeCount: 5,
-    },
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 2),
-      likeCount: 6,
-    },
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 1),
-      likeCount: 7,
-    },
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 4),
-      likeCount: 3,
-    },
-  ]);
-
+  if (loading) {
+    return <div>로딩</div>;
+  }
+  if (!placeDetail) {
+    return <div>place 정보가 없습니다.</div>;
+  }
   return (
     <div className={styles.PlaceDetailPage}>
       <DetailHeader
@@ -126,19 +142,21 @@ const PlaceDetailPage = (props) => {
           ))}
         </Slider>
         <div className={styles.imageCounter}>
-          <span> {imageIndex + 1} / 21 </span>
+          <span>{`${imageIndex + 1} / ${images.length}`}</span>
         </div>
       </div>
       <div className={styles.body}>
         <div className={styles.body__header}>
-          <h1 className={styles.body__placeName}>Place이름</h1>
+          <h1 className={styles.body__placeName}>{placeDetail.name}</h1>
           <div className={styles.body__placeInfo}>
             <div className={styles.body__rate}>
               <StarFilled style={{ color: "#eb2f96" }} />
-              <span className={styles.body__score}>4</span>
-              <span className={styles.body__reviewCount}>(6)</span>
+              <span className={styles.body__score}>{placeDetail.score}</span>
+              <span
+                className={styles.body__reviewCount}
+              >{`(${placeDetail.likeCount})`}</span>
             </div>
-            <span className={styles.body__address}>장소 주소</span>
+            <span className={styles.body__address}>{placeDetail.address}</span>
           </div>
         </div>
         <div className={styles.body__placeLocation}>
@@ -146,7 +164,9 @@ const PlaceDetailPage = (props) => {
             <h2 className={styles.body__locationTitle}>위치</h2>
           </div>
           <div className={styles.body__addressContainer}>
-            <span className={styles.body__placeAddress}>서울시 ~~~구 ~~~</span>
+            <span className={styles.body__placeAddress}>
+              {placeDetail.address}
+            </span>
           </div>
           <div className={styles.body__mapContainer}>
             <div id="staticMap" className={styles.body__map}></div>

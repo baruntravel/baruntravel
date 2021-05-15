@@ -1,5 +1,6 @@
 package me.travelplan.web.route;
 
+import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.service.file.domain.File;
 import me.travelplan.service.file.domain.FileServer;
 import me.travelplan.service.file.domain.FileType;
@@ -7,7 +8,6 @@ import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.domain.PlaceCategory;
 import me.travelplan.service.route.domain.Route;
 import me.travelplan.service.route.domain.RouteReview;
-import me.travelplan.service.user.domain.User;
 import me.travelplan.web.common.FileDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 )
 public interface RouteMapper {
     RouteResponse.RouteId toRouteIdResponse(Route route);
+
     RouteResponse.ReviewId toReviewIdResponse(RouteReview review);
 
     default Place toPlace(RouteRequest.AddPlace request) {
@@ -105,7 +106,7 @@ public interface RouteMapper {
                 .build();
     }
 
-    default List<RouteResponse.GetList> toGetListResponse(List<Route> routes, User loginUser) {
+    default List<RouteResponse.GetList> toGetListResponse(List<Route> routes, CustomUserDetails customUserDetails) {
         List<RouteResponse.GetList> getList = new ArrayList<>();
         routes.forEach(route -> {
             List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
@@ -136,7 +137,7 @@ public interface RouteMapper {
                     .name(route.getName())
                     .centerX(centerX)
                     .centerY(centerY)
-                    .likeCheck(route.isLike(loginUser))
+                    .likeCheck(route.isLike(customUserDetails))
                     .likeCount(route.getRouteLikes().size())
                     .createdBy(route.getCreatedBy().getName())
                     .places(routePlaces)
@@ -146,13 +147,13 @@ public interface RouteMapper {
         return getList;
     }
 
-    default RouteResponse.ReviewList entityToResponseReviewList(List<RouteReview> reviews, User user) {
+    default RouteResponse.ReviewList entityToResponseReviewList(List<RouteReview> reviews, CustomUserDetails customUserDetails) {
         return RouteResponse.ReviewList.builder()
                 .reviews(reviews.stream().map(routeReview -> RouteDto.ReviewResponse.builder()
                         .id(routeReview.getId())
                         .content(routeReview.getContent())
                         .score(routeReview.getScore())
-                        .likeCheck(routeReview.isLike(user))
+                        .likeCheck(routeReview.isLike(customUserDetails))
                         .likeCount(routeReview.getRouteReviewLikes().size())
                         .createdBy(routeReview.getCreatedBy().getName())
                         .files(routeReview.getRouteReviewFiles().stream()

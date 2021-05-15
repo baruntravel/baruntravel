@@ -48,7 +48,7 @@ public class RouteController {
 
     @GetMapping("/{id}/reviews")
     public RouteResponse.ReviewList getReviewList(@PathVariable Long id, @CurrentUser CustomUserDetails customUserDetails) {
-        return routeMapper.entityToResponseReviewList(routeService.getReviewList(id), customUserDetails.getUser());
+        return routeMapper.entityToResponseReviewList(routeService.getReviewList(id), customUserDetails);
     }
 
     @PostMapping("/review/{id}")

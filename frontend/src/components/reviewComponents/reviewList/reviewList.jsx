@@ -53,7 +53,7 @@ const ReviewList = ({
         <div className={styles.reviewList__first}>
           <div className={styles.reviewCountBox}>
             <h2>리뷰</h2>
-            <h2 className={styles.reviewCount}>6</h2>
+            <h2 className={styles.reviewCount}>{reviewDatas.length}</h2>
           </div>
           <h2 onClick={onClickReviewWrite}>
             <EditTwoTone />
@@ -77,9 +77,9 @@ const ReviewList = ({
         </div>
       </div>
       <div className={styles.reviewList__body}>
-        {reviewDatas.map((item) => (
-          <div className={styles.reviewContainer}>
-            <ReviewCard likeCount={item.likeCount} />
+        {reviewDatas.map((item, index) => (
+          <div key={index} className={styles.reviewContainer}>
+            <ReviewCard review={item} />
           </div>
         ))}
       </div>

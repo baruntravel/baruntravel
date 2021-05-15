@@ -212,14 +212,9 @@ const HotplaceMap = ({
     // 카테고리를 클릭했을 때 호출되는 함수입니다
     function onClickCategory() {
       let id = this.id;
-      let className = this.className;
       placeOverlay.setMap(null);
-      if (className === "on") {
-        currCategory = "";
-      } else {
-        currCategory = id;
-        searchPlaces();
-      }
+      currCategory = id;
+      searchPlaces();
     }
     return () => {
       searchRef.current &&
