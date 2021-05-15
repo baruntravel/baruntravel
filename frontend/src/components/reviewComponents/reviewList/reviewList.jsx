@@ -2,15 +2,49 @@ import React, { useCallback, useRef, useState } from "react";
 import ReviewCard from "./reviewCard/reviewCard";
 import styles from "./reviewList.module.css";
 import { EditTwoTone } from "@ant-design/icons";
+import DeleteConfirm from "../../common/deleteConfirm/deleteConfirm";
 
 const ReviewList = ({
   place,
+  onDeleteReview,
+  userName,
   onClickReviewWrite,
   reviewDatas,
   setReviewDatas,
 }) => {
   const newRef = useRef();
   const recommendRef = useRef();
+  const [selectedCard, setSelectedCard] = useState(false);
+  const [openDeleteConfrim, setOpenDeleteConfirm] = useState(false);
+  const [openEditform, setOpenEditForm] = useState(false);
+
+  const onOpenConfirm = useCallback(() => {
+    setOpenDeleteConfirm(true);
+  }, []);
+  const onCloseConfirm = useCallback(() => {
+    setOpenDeleteConfirm(false);
+  }, []);
+  const onOpenEditForm = useCallback(() => {
+    setOpenEditForm(true);
+  }, []);
+  const onCloseEditForm = useCallback(() => {
+    setOpenEditForm(false);
+  }, []);
+  const onHandleSelected = useCallback((id) => {
+    setSelectedCard(id);
+  }, []);
+
+  const onHandleDeleteReview = useCallback(
+    (id) => {
+      onDeleteReview(id);
+      setReviewDatas((prev) => {
+        const updated = prev.filter((item) => item.id !== id);
+        return updated;
+      });
+    },
+    [onDeleteReview, setReviewDatas]
+  );
+
   const viewListDate = () => {
     console.log("최신순");
     newRef.current.style = "color:black; opacity:1";
@@ -79,10 +113,23 @@ const ReviewList = ({
       <div className={styles.reviewList__body}>
         {reviewDatas.map((item, index) => (
           <div key={index} className={styles.reviewContainer}>
-            <ReviewCard review={item} />
+            <ReviewCard
+              review={item}
+              isUserReview={item.createdBy === userName}
+              onOpenDeleteConfirm={onOpenConfirm}
+              onHandleSelected={onHandleSelected}
+            />
           </div>
         ))}
       </div>
+      {openDeleteConfrim && (
+        <DeleteConfirm
+          onClose={onCloseConfirm}
+          onDeleteItem={onHandleDeleteReview}
+          deleteItemId={selectedCard}
+        />
+      )}
+      {/* {onOpenEditForm} */}
     </div>
   );
 };

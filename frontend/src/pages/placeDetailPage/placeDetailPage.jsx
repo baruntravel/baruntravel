@@ -177,6 +177,7 @@ const PlaceDetailPage = (props) => {
         </div>
         <div className={styles.reviewList}>
           <ReviewList
+            userName={userStates.name}
             reviewDatas={reviewDatas}
             onClickReviewWrite={onClickReviewWrite}
           />

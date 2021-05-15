@@ -13,7 +13,11 @@ import { Drawer } from "antd";
 import ReviewForm from "../../components/reviewComponents/reviewForm/reviewForm";
 import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
 import InputRootName from "../../components/common/inputRootName/inputRootName";
-import { onReceiveRouteReview, onUploadRouteReview } from "../../api/reviewAPI";
+import {
+  onDeleteRouteReview,
+  onReceiveRouteReview,
+  onUploadRouteReview,
+} from "../../api/reviewAPI";
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
@@ -24,6 +28,7 @@ import { useHistory } from "react-router-dom";
 const RouteDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
   const history = useHistory();
+
   const [loading, setLoading] = useState(true);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
@@ -91,21 +96,23 @@ const RouteDetailPage = (props) => {
   const handleSetReviewDatas = (updated) => {
     setReviewDatas(updated);
   };
+  const onDeleteReview = useCallback((id) => {
+    onDeleteRouteReview(id);
+  });
+
   useEffect(() => {
-    if (!userStates.isLogin) {
-      // 로그인 하지않으면 기존 페이지로 이동
-      history.push("/");
-    }
     async function getRouteDetailInf() {
       // 루트 상세페이지의 정보를 받아옴
       const route = await getRouteDetail(1);
-      setRouteDetail(route);
-      const route_images =
-        route && route.places.map((place) => [place.image, place.name]);
-      const images = route_images.filter((item) => item[0]); // 이미지가 존재하는것만 뽑아낸다.
-      setPostImages(images.map((img) => img[0])); // 이미지만 뽑아서 저장
-      setImages(images); // 이미지와 이름만 저장
-      setImagePlaceName(images[0][1]); // 첫 이미지의 장소 이름 저장
+      if (route) {
+        setRouteDetail(route);
+        const route_images =
+          route && route.places.map((place) => [place.image, place.name]);
+        const images = route_images.filter((item) => item[0]); // 이미지가 존재하는것만 뽑아낸다.
+        setPostImages(images.map((img) => img[0])); // 이미지만 뽑아서 저장
+        setImages(images); // 이미지와 이름만 저장
+        setImagePlaceName(images[0][1]); // 첫 이미지의 장소 이름 저장
+      }
     }
     async function getReviewList() {
       const reviews = await onReceiveRouteReview(routeId);
@@ -115,6 +122,11 @@ const RouteDetailPage = (props) => {
     getReviewList();
     setLoading(false);
   }, [history, userStates.isLogin]);
+
+  if (!userStates.isLogin) {
+    // 로그인 하지않으면 기존 페이지로 이동
+    history.push("/");
+  }
 
   if (loading) {
     return <div>hi</div>;
@@ -186,9 +198,11 @@ const RouteDetailPage = (props) => {
         </div>
         <div className={styles.reviewList}>
           <ReviewList
+            onDeleteReview={onDeleteRouteReview}
             onClickReviewWrite={onClickReviewWrite}
             reviewDatas={reviewDatas}
             setReviewDatas={handleSetReviewDatas}
+            userName={userStates.name}
           />
         </div>
         <div className={styles.buttonBox}>
@@ -206,7 +220,10 @@ const RouteDetailPage = (props) => {
         bodyStyle={{ padding: 0 }}
         onClose={onCloseReviewWrite}
       >
-        <ReviewForm onUploadReview={onUploadReview} />
+        <ReviewForm
+          onUploadReview={onUploadReview}
+          onClose={onCloseReviewWrite}
+        />
       </Drawer>
       <Drawer
         className={styles.reviewListDrawer}

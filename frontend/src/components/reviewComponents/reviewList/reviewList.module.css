@@ -35,6 +35,7 @@
   width: 100%;
   justify-content: flex-end;
   padding-top: 12px;
+  margin-bottom: 12px;
 }
 .reviewList__recommend {
   opacity: 0.8;
