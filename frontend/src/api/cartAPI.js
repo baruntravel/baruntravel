@@ -11,7 +11,6 @@ export const onAddCart = async (place) => {
     categoryId: place.category_group_code,
     categoryName: place.category_group_name,
   };
-  console.log(axios.defaults.headers);
   await axios
     .post("/cart/place", data)
     .then((res) => {
