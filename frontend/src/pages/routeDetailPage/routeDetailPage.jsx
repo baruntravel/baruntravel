@@ -13,6 +13,7 @@ import { Drawer } from "antd";
 import InputRootName from "../../components/common/inputRootName/inputRootName";
 import {
   onDeleteRouteReview,
+  onEditRouteReview,
   onReceiveRouteReview,
   onUploadRouteReview,
 } from "../../api/reviewAPI";
@@ -66,9 +67,6 @@ const RouteDetailPage = (props) => {
   const onCloseMoreReview = useCallback(() => {
     setMoreReview(false);
   }, []);
-  const onUploadReview = useCallback((formData) => {
-    onUploadRouteReview(1, formData);
-  }, []);
 
   const settings = {
     dots: false,
@@ -91,7 +89,12 @@ const RouteDetailPage = (props) => {
   const onDeleteReview = useCallback((id) => {
     onDeleteRouteReview(id);
   }, []);
-
+  const onUploadReview = useCallback((formData) => {
+    onUploadRouteReview(1, formData);
+  }, []);
+  const onEditReview = useCallback((reviewId, formData) => {
+    onEditRouteReview(reviewId, formData);
+  }, []);
   useEffect(() => {
     async function getRouteDetailInf() {
       // 루트 상세페이지의 정보를 받아옴
@@ -193,6 +196,7 @@ const RouteDetailPage = (props) => {
             onOpenPortalAuth={onOpenPortalAuth}
             onDeleteReview={onDeleteReview}
             onUploadReview={onUploadReview}
+            onEditReview={onEditReview}
             reviewDatas={reviewDatas}
             setReviewDatas={handleSetReviewDatas}
             userStates={userStates}

@@ -7,6 +7,7 @@ import { LikeOutlined, LikeTwoTone, UserOutlined } from "@ant-design/icons";
 import PostImages from "../../postImages/postImages";
 import ImagesZoom from "../../imagesZoom/imagesZoom";
 const ReviewCard = ({
+  review,
   review: {
     id,
     content,
@@ -21,16 +22,21 @@ const ReviewCard = ({
   isUserReview,
   onOpenDeleteConfirm,
   onHandleSelected,
+  onOpenEditForm,
 }) => {
   const [liked, setLiked] = useState(likeCheck); // post의 좋아요를 누른 사람들 중 유저가 있는 지 확인하는 작업,
   const onUnlike = () => {
     // 좋아요 취소 -> DB에 반영,
     setLiked(!liked);
   };
-  const onClickDelete = () => {
-    onHandleSelected(id);
+  const onClickDelete = useCallback(() => {
+    onHandleSelected(review);
     onOpenDeleteConfirm();
-  };
+  }, [onHandleSelected, onOpenDeleteConfirm, review]);
+  const onClickEdit = useCallback(() => {
+    onHandleSelected(review);
+    onOpenEditForm();
+  }, [onHandleSelected, onOpenEditForm, review]);
   return (
     <div className={styles.ReviewCard}>
       <div className={styles.userProfile}>
@@ -42,7 +48,7 @@ const ReviewCard = ({
         </div>
         {isUserReview && (
           <div className={styles.editBox}>
-            <span>수정</span>
+            <span onClick={onClickEdit}>수정</span>
             <span onClick={onClickDelete}>삭제</span>
           </div>
         )}

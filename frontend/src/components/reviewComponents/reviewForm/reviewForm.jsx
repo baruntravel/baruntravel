@@ -8,11 +8,11 @@ import { faImages } from "@fortawesome/free-solid-svg-icons";
 import ReviewImageEdit from "./reviewImageEdit/reviewImageEdit";
 import useInput from "../../../hooks/useInput";
 
-const ReviewForm = ({ item, onClose, onUploadReview }) => {
+const ReviewForm = ({ item, onClose, onUploadReview, prevReview }) => {
   const [images, setImages] = useState({}); // 미리보기용 URL 저장소
   const [files, setFiles] = useState({}); // 이미지 file 저장
-  const [inputContext, handleInputContext] = useInput("");
-  const [rate, setRate] = useState(5);
+  const [inputContext, handleInputContext] = useInput(prevReview.content || "");
+  const [rate, setRate] = useState(prevReview.score || 5);
   const imageInput = useRef();
   const onSubmit = useCallback(
     (e) => {
@@ -23,11 +23,11 @@ const ReviewForm = ({ item, onClose, onUploadReview }) => {
       }); // formData.getAll("images") 를 하면 모두 담겨있는 것을 확인했다.
       formData.append("content", inputContext);
       formData.append("score", rate);
-      onUploadReview(formData);
+      onUploadReview(prevReview.id || 1, formData);
       onClose();
       // image update API 호출
     },
-    [files, inputContext, onClose, rate]
+    [files, inputContext, onClose, onUploadReview, prevReview, rate]
   );
   const onChangeRate = useCallback((number) => {
     setRate(number);

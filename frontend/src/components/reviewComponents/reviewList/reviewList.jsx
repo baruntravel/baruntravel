@@ -10,6 +10,7 @@ const ReviewList = ({
   onOpenPortalAuth,
   onUploadReview,
   onDeleteReview,
+  onEditReview,
   userStates,
   reviewDatas,
   setReviewDatas,
@@ -43,8 +44,8 @@ const ReviewList = ({
   const onCloseReviewWrite = useCallback(() => {
     setReviewWrite(false);
   }, []);
-  const onHandleSelected = useCallback((id) => {
-    setSelectedCard(id);
+  const onHandleSelected = useCallback((review) => {
+    setSelectedCard(review);
   }, []);
 
   const onHandleDeleteReview = useCallback(
@@ -131,6 +132,7 @@ const ReviewList = ({
               isUserReview={item.createdBy === userStates.name}
               onOpenDeleteConfirm={onOpenConfirm}
               onHandleSelected={onHandleSelected}
+              onOpenEditForm={onOpenEditForm}
             />
           </div>
         ))}
@@ -139,10 +141,9 @@ const ReviewList = ({
         <DeleteConfirm
           onClose={onCloseConfirm}
           onDeleteItem={onHandleDeleteReview}
-          deleteItemId={selectedCard}
+          deleteItemId={selectedCard.id}
         />
       )}
-      {/* {onOpenEditForm} */}
       <Drawer // 리뷰 작성
         className={styles.reviewFormDrawer}
         visible={reviewWrite}
@@ -154,6 +155,20 @@ const ReviewList = ({
         <ReviewForm
           onUploadReview={onUploadReview}
           onClose={onCloseReviewWrite}
+        />
+      </Drawer>
+      <Drawer // 리뷰 수정
+        className={styles.reviewFormDrawer}
+        visible={openEditform}
+        placement="bottom"
+        height="100vh"
+        bodyStyle={{ padding: 0 }}
+        onClose={onCloseEditForm}
+      >
+        <ReviewForm
+          prevReview={selectedCard}
+          onUploadReview={onEditReview}
+          onClose={onCloseEditForm}
         />
       </Drawer>
     </div>

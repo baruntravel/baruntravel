@@ -23,14 +23,9 @@ export const onReceiveRouteReview = async (routeId) => {
   return result;
 };
 
-export const onEditRouteReview = async (routeId, files, content, score) => {
-  const data = {
-    files,
-    content,
-    score,
-  };
+export const onEditRouteReview = async (routeId, formData) => {
   return await axios
-    .post(`/route/review/${routeId}`, data, {
+    .post(`/route/review/${routeId}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
     .then((res) => true)
