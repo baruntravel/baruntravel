@@ -46,10 +46,11 @@ export const onDeleteRouteReview = async (routeId) => {
 };
 
 export const onReceivePlaceReview = (placeId) => {
+  // 장소 리뷰 받아오기
   return axios
     .get(`/place/${placeId}/review`)
     .then((res) => {
-      return res.data;
+      return res.data.reviews;
     })
     .catch((error) => {
       console.error(error);

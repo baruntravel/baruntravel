@@ -88,6 +88,7 @@ const PlaceDetailPage = (props) => {
       setReviewDatas(reviews);
     }
     getPlaceDetail();
+    getReviewList();
 
     let markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
     let marker = {
@@ -158,7 +159,7 @@ const PlaceDetailPage = (props) => {
         </div>
         <div className={styles.reviewList}>
           <ReviewList
-            userName={userStates.name}
+            userStates={userStates}
             reviewDatas={reviewDatas}
             onClickReviewWrite={onClickReviewWrite}
           />
