@@ -1,4 +1,4 @@
-package me.travelplan.web.place;
+package me.travelplan.web.place.review;
 
 import me.travelplan.service.file.domain.File;
 import me.travelplan.service.place.domain.PlaceReview;

@@ -1,4 +1,4 @@
-package me.travelplan.web.place;
+package me.travelplan.web.place.review;
 
 import lombok.RequiredArgsConstructor;
 import me.travelplan.security.userdetails.CurrentUser;

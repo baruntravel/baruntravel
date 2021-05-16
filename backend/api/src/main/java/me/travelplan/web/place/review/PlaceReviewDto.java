@@ -1,4 +1,4 @@
-package me.travelplan.web.place;
+package me.travelplan.web.place.review;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;

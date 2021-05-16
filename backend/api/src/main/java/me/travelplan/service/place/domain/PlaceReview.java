@@ -2,7 +2,7 @@ package me.travelplan.service.place.domain;
 
 import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
-import me.travelplan.web.place.PlaceReviewDto;
+import me.travelplan.web.place.review.PlaceReviewDto;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 

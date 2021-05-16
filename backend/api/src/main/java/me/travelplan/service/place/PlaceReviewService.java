@@ -11,9 +11,7 @@ import me.travelplan.service.place.exception.PlaceReviewNotUpdatableException;
 import me.travelplan.service.place.repository.PlaceRepository;
 import me.travelplan.service.place.repository.PlaceReviewRepository;
 import me.travelplan.service.user.domain.User;
-import me.travelplan.web.place.PlaceDto;
-import me.travelplan.web.place.PlaceRequest;
-import me.travelplan.web.place.PlaceReviewDto;
+import me.travelplan.web.place.review.PlaceReviewDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

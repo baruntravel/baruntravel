@@ -5,6 +5,7 @@ import me.travelplan.WithMockCustomUser;
 import me.travelplan.service.place.PlaceReviewService;
 import me.travelplan.service.place.domain.PlaceReview;
 import me.travelplan.service.user.domain.User;
+import me.travelplan.web.place.review.PlaceReviewController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -13,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.request.RequestPartsSnippet;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
