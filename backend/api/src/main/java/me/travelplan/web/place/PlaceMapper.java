@@ -5,7 +5,7 @@ import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.domain.PlaceImage;
 import me.travelplan.service.place.domain.PlaceReview;
 import me.travelplan.service.user.domain.User;
-import me.travelplan.web.FileDto;
+import me.travelplan.web.common.FileDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 

@@ -1,11 +1,13 @@
 package me.travelplan.web.common;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class FileDto {
-    private String url;
+    @Getter
+    @AllArgsConstructor(access = AccessLevel.PUBLIC)
+    public static class Image {
+        private final String url;
+    }
 }

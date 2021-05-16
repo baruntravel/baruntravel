@@ -1,4 +1,4 @@
-package me.travelplan.web;
+package me.travelplan.web.common;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

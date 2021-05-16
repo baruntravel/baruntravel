@@ -2,8 +2,8 @@ package me.travelplan.web.place.review;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import me.travelplan.web.FileDto;
-import me.travelplan.web.UserDto;
+import me.travelplan.web.common.FileDto;
+import me.travelplan.web.common.UserDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;

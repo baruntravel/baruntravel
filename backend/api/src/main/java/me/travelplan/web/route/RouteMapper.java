@@ -9,7 +9,7 @@ import me.travelplan.service.place.domain.PlaceCategory;
 import me.travelplan.service.route.domain.Route;
 import me.travelplan.service.route.domain.RouteReview;
 import me.travelplan.service.route.domain.RouteReviewFile;
-import me.travelplan.web.FileDto;
+import me.travelplan.web.common.FileDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 

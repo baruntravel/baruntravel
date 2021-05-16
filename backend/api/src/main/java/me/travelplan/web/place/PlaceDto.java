@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import me.travelplan.web.FileDto;
+import me.travelplan.web.common.FileDto;
 
 import java.util.List;
 
