@@ -2,6 +2,7 @@ package me.travelplan.service.place.domain;
 
 import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
+import me.travelplan.web.place.PlaceReviewDto;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -37,8 +38,13 @@ public class PlaceReview extends BaseEntity {
         this.place = place;
     }
 
-    public void update(PlaceReview changed) {
+
+    public void update(PlaceReviewDto.Request changed) {
         this.score = changed.getScore();
         this.content = changed.getContent();
+    }
+
+    public void setImages(List<PlaceReviewImage> images) {
+        this.images = images;
     }
 }

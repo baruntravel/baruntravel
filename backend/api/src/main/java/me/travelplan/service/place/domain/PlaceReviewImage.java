@@ -20,6 +20,6 @@ public class PlaceReviewImage {
     private File file;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "place_id")
-    private Place place;
+    @JoinColumn(name = "review_id")
+    private PlaceReview review;
 }

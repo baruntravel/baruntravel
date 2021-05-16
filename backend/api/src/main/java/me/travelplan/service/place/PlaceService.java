@@ -86,23 +86,6 @@ public class PlaceService {
         return place.getReviews();
     }
 
-    @Transactional
-    public PlaceReview createReview(PlaceRequest.PutReview request) {
-        // TODO Place Review 파일 업로드 개발중이었음
-//        return placeReviewService.createReview(review);
-        return PlaceReview.builder().build();
-    }
-
-    @Transactional
-    public PlaceReview updateReview(PlaceReview after) {
-        return placeReviewService.updateReview(after);
-    }
-
-    public void checkReviewUpdatable(Long placeReviewId, User user) {
-        placeReviewService.checkReviewUpdatable(placeReviewId, user);
-    }
-
-
     /*************************************
      *          Place Like
      *************************************/

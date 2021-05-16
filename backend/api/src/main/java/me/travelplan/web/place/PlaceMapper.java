@@ -16,27 +16,6 @@ import java.util.stream.Collectors;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR
 )
 public interface PlaceMapper {
-
-
-    PlaceReview dtoToEntity(PlaceDto.ReviewRequest review);
-
-    @Mapping(source = "placeId", target = "id")
-    @Mapping(source = "request.review.score", target = "score")
-    @Mapping(source = "request.review.content", target = "content")
-    PlaceReview placeIdAndRequestToEntity(Long placeId, PlaceRequest.PutReview request);
-
-    @Mapping(source = "reviewId", target = "id")
-    @Mapping(source = "request.review.score", target = "score")
-    @Mapping(source = "request.review.content", target = "content")
-    PlaceReview reviewIdAndRequestToEntity(Long reviewId, PlaceRequest.PutReview request);
-
-    PlaceDto.ReviewResponse entityToDto(PlaceReview review);
-
-    List<PlaceDto.ReviewResponse> entityToDto(List<PlaceReview> reviews);
-
-    @Mapping(source = ".", target = "review")
-    PlaceResponse.Review entityToResponseReview(PlaceReview review);
-
     default PlaceResponse.GetOne entityToGetOneDto(Place place, User user) {
         return PlaceResponse.GetOne.builder()
                 .name(place.getName())
