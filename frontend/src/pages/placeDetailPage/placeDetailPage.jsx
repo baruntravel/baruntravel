@@ -6,7 +6,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { StarFilled } from "@ant-design/icons";
 import { Drawer } from "antd";
-import ReviewForm from "../../components/reviewComponents/reviewForm/reviewForm";
 import ReviewList from "../../components/reviewComponents/reviewList/reviewList";
 import ImagesZoom from "../../components/reviewComponents/imagesZoom/imagesZoom";
 import { userState } from "../../recoil/userState";
@@ -15,6 +14,7 @@ import PortalAuth from "../../containers/portalAuth/portalAuth";
 import { onReceivePlace } from "../../api/placeAPI";
 import { onReceivePlaceReview, onUploadPlaceReview } from "../../api/reviewAPI";
 import { useHistory } from "react-router-dom";
+import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
 
 const { kakao } = window;
 const PlaceDetailPage = (props) => {
@@ -64,6 +64,10 @@ const PlaceDetailPage = (props) => {
   const onClickUnlike = useCallback(() => {
     console.log("좋아요 취소 API 호출");
     setLiked(false);
+  }, []);
+
+  const handleSetReviewDatas = useCallback((updated) => {
+    setReviewDatas(updated);
   }, []);
   const onUploadReview = useCallback((formData) => {
     onUploadPlaceReview(placeId, formData);
@@ -168,6 +172,10 @@ const PlaceDetailPage = (props) => {
             <div id="staticMap" className={styles.body__map} />
           </div>
         </div>
+        <div className={styles.buttonBox}>
+          <button className={styles.button}>장바구니 카트에 담기</button>
+          <span className={styles.wishCount}>{`${4}명이 좋아해요`}</span>
+        </div>
         <div className={styles.reviewList}>
           <ReviewList
             userStates={userStates}
@@ -176,7 +184,30 @@ const PlaceDetailPage = (props) => {
             onUploadReview={onUploadReview}
           />
         </div>
+        <div className={styles.buttonBox}>
+          <button
+            className={styles.button}
+            onClick={onOpenMoreReview}
+          >{`${4}개의 리뷰 더보기`}</button>
+        </div>
       </div>
+      <Drawer // 리뷰 더보기
+        className={styles.reviewListDrawer}
+        visible={moreReview}
+        placement="right"
+        width="100vw"
+        bodyStyle={{ padding: 0 }}
+        closeIcon={false}
+        style={{
+          overflowY: "hidden",
+        }}
+      >
+        <MoreReviewList
+          setReviewDatas={handleSetReviewDatas}
+          onCloseMoreReview={onCloseMoreReview}
+          reviewDatas={reviewDatas}
+        />
+      </Drawer>
       {showImagesZoom && (
         <ImagesZoom images={images} onClose={onCloseZoom} index={imageIndex} />
       )}

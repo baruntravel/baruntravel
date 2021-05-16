@@ -42,6 +42,7 @@
   color: gray;
 }
 .reviewContainer {
+  margin-top: 8px;
   padding-bottom: 2px;
   border-bottom: 2px solid lightgrey;
   padding-top: 12px;
