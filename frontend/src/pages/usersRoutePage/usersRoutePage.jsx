@@ -14,14 +14,14 @@ import PlaceListModal from "./placeListModal/placeListModal";
 //route 드래그할 때 마다 루트 10개씩 가져옴 -> setRoutes
 
 const UsersRoutePage = () => {
+  const location = useLocation();
   const [routes, setRoutes] = useRecoilState(usersRouteItems); // Todo : routeAPI로 불러오기
   const [myState, setMyState] = useRecoilState(userState);
   const [places, setPlaces] = useState([]);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(location.state.id);
   const [map, setMap] = useState();
   const [modalToggle, setModalToggle] = useState(false);
   const [searchHere, setSearchHere] = useState(false);
-  const location = useLocation();
 
   const mapHandler = (map) => setMap(map);
   const routesHandler = (routes) => setRoutes(routes);
@@ -33,6 +33,8 @@ const UsersRoutePage = () => {
     e.target.style = searchHere ? "background-color: white;" : "background-color: black;";
     setSearchHere(!searchHere);
   };
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     setPlaces(Object.values(routes)[index].places);
@@ -74,7 +76,7 @@ const UsersRoutePage = () => {
             </button>
           </div>
         </div>
-        <RouteCarousel routes={routes} indexHandler={(e) => indexHandler(e)} />
+        <RouteCarousel initialIndex={index} routes={routes} indexHandler={(e) => indexHandler(e)} />
       </div>
 
       {modalToggle && (

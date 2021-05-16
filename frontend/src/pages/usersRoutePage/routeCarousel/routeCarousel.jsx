@@ -4,13 +4,14 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder"; // empty hea
 import FavoriteIcon from "@material-ui/icons/Favorite"; // filled heart icon
 import { Link } from "react-router-dom";
 
-const RouteCarousel = ({ routes, indexHandler }) => {
+const RouteCarousel = ({ routes, indexHandler, initialIndex }) => {
   const settings = {
     dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    initialSlide: initialIndex,
   };
 
   return (
