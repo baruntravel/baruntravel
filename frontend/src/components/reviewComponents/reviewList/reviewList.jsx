@@ -3,12 +3,14 @@ import ReviewCard from "./reviewCard/reviewCard";
 import styles from "./reviewList.module.css";
 import { EditTwoTone } from "@ant-design/icons";
 import DeleteConfirm from "../../common/deleteConfirm/deleteConfirm";
+import { Drawer } from "antd";
+import ReviewForm from "../reviewForm/reviewForm";
 
 const ReviewList = ({
-  place,
+  onOpenPortalAuth,
+  onUploadReview,
   onDeleteReview,
-  userName,
-  onClickReviewWrite,
+  userStates,
   reviewDatas,
   setReviewDatas,
 }) => {
@@ -17,6 +19,7 @@ const ReviewList = ({
   const [selectedCard, setSelectedCard] = useState(false);
   const [openDeleteConfrim, setOpenDeleteConfirm] = useState(false);
   const [openEditform, setOpenEditForm] = useState(false);
+  const [reviewWrite, setReviewWrite] = useState(false);
 
   const onOpenConfirm = useCallback(() => {
     setOpenDeleteConfirm(true);
@@ -29,6 +32,16 @@ const ReviewList = ({
   }, []);
   const onCloseEditForm = useCallback(() => {
     setOpenEditForm(false);
+  }, []);
+  const onClickReviewWrite = useCallback(() => {
+    if (userStates.isLogin) {
+      setReviewWrite(true);
+    } else {
+      onOpenPortalAuth();
+    }
+  }, [onOpenPortalAuth, userStates]);
+  const onCloseReviewWrite = useCallback(() => {
+    setReviewWrite(false);
   }, []);
   const onHandleSelected = useCallback((id) => {
     setSelectedCard(id);
@@ -115,7 +128,7 @@ const ReviewList = ({
           <div key={index} className={styles.reviewContainer}>
             <ReviewCard
               review={item}
-              isUserReview={item.createdBy === userName}
+              isUserReview={item.createdBy === userStates.name}
               onOpenDeleteConfirm={onOpenConfirm}
               onHandleSelected={onHandleSelected}
             />
@@ -130,6 +143,19 @@ const ReviewList = ({
         />
       )}
       {/* {onOpenEditForm} */}
+      <Drawer // 리뷰 작성
+        className={styles.reviewFormDrawer}
+        visible={reviewWrite}
+        placement="bottom"
+        height="100vh"
+        bodyStyle={{ padding: 0 }}
+        onClose={onCloseReviewWrite}
+      >
+        <ReviewForm
+          onUploadReview={onUploadReview}
+          onClose={onCloseReviewWrite}
+        />
+      </Drawer>
     </div>
   );
 };

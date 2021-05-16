@@ -10,8 +10,6 @@ import Avatar from "antd/lib/avatar/avatar";
 import ReviewList from "../../components/reviewComponents/reviewList/reviewList";
 import ImagesZoom from "../../components/reviewComponents/imagesZoom/imagesZoom";
 import { Drawer } from "antd";
-import ReviewForm from "../../components/reviewComponents/reviewForm/reviewForm";
-import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
 import InputRootName from "../../components/common/inputRootName/inputRootName";
 import {
   onDeleteRouteReview,
@@ -24,6 +22,7 @@ import PortalAuth from "../../containers/portalAuth/portalAuth";
 import { getRouteDetail } from "../../api/routeAPI";
 import { StarFilled } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
+import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
 
 const RouteDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
@@ -33,7 +32,6 @@ const RouteDetailPage = (props) => {
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const [imagePlaceName, setImagePlaceName] = useState("");
-  const [reviewWrite, setReviewWrite] = useState(false);
   const [moreReview, setMoreReview] = useState(false);
   const [openInputName, setOpenInputName] = useState(false);
   const [needLogin, setNeedLogin] = useState(false);
@@ -56,18 +54,11 @@ const RouteDetailPage = (props) => {
   const onClose = useCallback(() => {
     setShowImagesZoom(false);
   }, []);
-  const onClosePortaAuth = useCallback(() => {
-    setNeedLogin(false);
+  const onOpenPortalAuth = useCallback(() => {
+    setNeedLogin(true);
   }, []);
-  const onClickReviewWrite = useCallback(() => {
-    if (userStates.isLogin) {
-      setReviewWrite(true);
-    } else {
-      setNeedLogin(true);
-    }
-  }, [userStates]);
-  const onCloseReviewWrite = useCallback(() => {
-    setReviewWrite(false);
+  const onClosePortalAuth = useCallback(() => {
+    setNeedLogin(false);
   }, []);
   const onOpenMoreReview = useCallback(() => {
     setMoreReview(true);
@@ -78,6 +69,7 @@ const RouteDetailPage = (props) => {
   const onUploadReview = useCallback((formData) => {
     onUploadRouteReview(1, formData);
   }, []);
+
   const settings = {
     dots: false,
     infinite: true,
@@ -93,12 +85,12 @@ const RouteDetailPage = (props) => {
     },
     [images]
   );
-  const handleSetReviewDatas = (updated) => {
+  const handleSetReviewDatas = useCallback((updated) => {
     setReviewDatas(updated);
-  };
+  }, []);
   const onDeleteReview = useCallback((id) => {
     onDeleteRouteReview(id);
-  });
+  }, []);
 
   useEffect(() => {
     async function getRouteDetailInf() {
@@ -138,7 +130,7 @@ const RouteDetailPage = (props) => {
         <Slider {...settings} afterChange={(index) => afterSliderChange(index)}>
           {images.map((v, index) => (
             <div key={index} className={styles.imageContainer}>
-              <img className={styles.img} src={v[0]} />
+              <img className={styles.img} src={v[0]} alt="upload image" />
             </div>
           ))}
         </Slider>
@@ -198,11 +190,12 @@ const RouteDetailPage = (props) => {
         </div>
         <div className={styles.reviewList}>
           <ReviewList
-            onDeleteReview={onDeleteRouteReview}
-            onClickReviewWrite={onClickReviewWrite}
+            onOpenPortalAuth={onOpenPortalAuth}
+            onDeleteReview={onDeleteReview}
+            onUploadReview={onUploadReview}
             reviewDatas={reviewDatas}
             setReviewDatas={handleSetReviewDatas}
-            userName={userStates.name}
+            userStates={userStates}
           />
         </div>
         <div className={styles.buttonBox}>
@@ -212,20 +205,7 @@ const RouteDetailPage = (props) => {
           >{`${4}개의 리뷰 더보기`}</button>
         </div>
       </section>
-      <Drawer
-        className={styles.reviewFormDrawer}
-        visible={reviewWrite}
-        placement="bottom"
-        height="100vh"
-        bodyStyle={{ padding: 0 }}
-        onClose={onCloseReviewWrite}
-      >
-        <ReviewForm
-          onUploadReview={onUploadReview}
-          onClose={onCloseReviewWrite}
-        />
-      </Drawer>
-      <Drawer
+      <Drawer // 리뷰 더보기
         className={styles.reviewListDrawer}
         visible={moreReview}
         placement="right"
@@ -238,7 +218,6 @@ const RouteDetailPage = (props) => {
       >
         <MoreReviewList
           setReviewDatas={handleSetReviewDatas}
-          onClickReviewWrite={onClickReviewWrite}
           onCloseMoreReview={onCloseMoreReview}
           reviewDatas={reviewDatas}
         />
@@ -247,7 +226,7 @@ const RouteDetailPage = (props) => {
         <ImagesZoom images={postImages} onClose={onClose} index={imageIndex} />
       )}
       {openInputName && <InputRootName onClose={onCloseInputName} />}
-      {needLogin && <PortalAuth onClose={onClosePortaAuth} />}
+      {needLogin && <PortalAuth onClose={onClosePortalAuth} />}
     </div>
   );
 };
