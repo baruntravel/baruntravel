@@ -19,6 +19,9 @@ public class CartPlace extends BaseEntity {
 
     private String memo;
 
+    @Column(name = "`order`")
+    private Integer order;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     private Place place;
@@ -27,9 +30,10 @@ public class CartPlace extends BaseEntity {
         this.memo = memo;
     }
 
-    public static CartPlace create(Place place) {
+    public static CartPlace create(Place place, Integer maxOrder) {
         return CartPlace.builder()
                 .place(place)
+                .order(maxOrder + 1)
                 .build();
     }
 }

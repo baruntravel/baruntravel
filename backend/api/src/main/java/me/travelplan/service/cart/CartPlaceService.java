@@ -5,9 +5,9 @@ import me.travelplan.service.cart.domain.CartPlace;
 import me.travelplan.service.cart.exception.CartPlaceNotFoundException;
 import me.travelplan.service.cart.exception.PlaceExistedException;
 import me.travelplan.service.cart.repository.CartPlaceRepository;
+import me.travelplan.service.place.PlaceService;
 import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.repository.PlaceRepository;
-import me.travelplan.service.place.PlaceService;
 import me.travelplan.service.user.domain.User;
 import me.travelplan.web.cart.CartPlaceRequest;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class CartPlaceService {
         if (cartPlaceRepository.findByPlaceIdAndCreatedBy(place.getId(), user).isPresent()) {
             throw new PlaceExistedException();
         }
-        CartPlace cartPlace = CartPlace.create(place);
+        CartPlace cartPlace = CartPlace.create(place, cartPlaceRepository.findMaxOrderByCreatedBy(user));
         cartPlaceRepository.save(cartPlace);
     }
 
