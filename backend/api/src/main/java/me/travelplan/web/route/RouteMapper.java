@@ -8,7 +8,8 @@ import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.domain.PlaceCategory;
 import me.travelplan.service.route.domain.Route;
 import me.travelplan.service.route.domain.RouteReview;
-import me.travelplan.web.common.FileDto;
+import me.travelplan.service.route.domain.RouteReviewFile;
+import me.travelplan.web.FileDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
@@ -163,9 +164,9 @@ public interface RouteMapper {
                             .likeCount(routeReview.getRouteReviewLikes().size())
                             .creator(creatorBuilder.build())
                             .files(routeReview.getRouteReviewFiles().stream()
-                                    .map(routeReviewFile -> FileDto.builder()
-                                            .url(routeReviewFile.getFile().getUrl())
-                                            .build())
+                                    .map(RouteReviewFile::getFile)
+                                    .map(File::getUrl)
+                                    .map(FileDto.Image::new)
                                     .collect(Collectors.toList()))
                             .createdAt(routeReview.getCreatedAt())
                             .updatedAt(routeReview.getUpdatedAt())

@@ -2,7 +2,7 @@ package me.travelplan.web.route;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import me.travelplan.web.common.FileDto;
+import me.travelplan.web.FileDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -85,7 +85,7 @@ public class RouteDto {
         private RouteDto.Creator creator;
         private Integer likeCount;
         private boolean likeCheck;
-        private List<FileDto> files;
+        private List<FileDto.Image> files;
 
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         public LocalDateTime createdAt;

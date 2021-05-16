@@ -57,7 +57,7 @@ public class PlaceControllerTest extends MvcTest {
                 .url("https://place.map.kakao.com/1797997961")
                 .build();
 
-        given(placeService.getOne(any())).willReturn(place);
+        given(placeService.getById(any())).willReturn(place);
 
         ResultActions results = mockMvc.perform(
                 get("/place/{id}", 1)

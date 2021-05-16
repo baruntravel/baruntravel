@@ -16,8 +16,8 @@ public class PlaceController {
     private final PlaceLikeService placeLikeService;
 
     @GetMapping("/{id}")
-    public PlaceDto.Response getOne(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
-        return placeMapper.entityToResponseDto(placeService.getOne(id), userDetails.getUser());
+    public PlaceDto.Response getById(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
+        return placeMapper.entityToResponseDto(placeService.getById(id), userDetails.getUser());
     }
 
     @PostMapping("/{placeId}/like")
