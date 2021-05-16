@@ -9,8 +9,17 @@ import me.travelplan.web.common.FileDto;
 import java.util.List;
 
 public class PlaceDto {
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Request {
-        // TODO
+        private final Long id;
+        private final String name;
+        private final String address;
+        private final String url;
+        private final Double x;
+        private final Double y;
+        private final String categoryId;
     }
 
     @Getter

@@ -24,15 +24,15 @@ public class PlaceReviewController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public PlaceReviewDto.Response create(@PathVariable Long placeId, PlaceReviewDto.Request request, @CurrentUser CustomUserDetails userDetails) {
-        return placeReviewMapper.entityToResponseDto(placeReviewService.createReview(placeId, request), userDetails.getUser());
+    public PlaceReviewDto.Response create(@PathVariable Long placeId, PlaceReviewDto.Request placeReviewDto, @CurrentUser CustomUserDetails userDetails) {
+        return placeReviewMapper.entityToResponseDto(placeReviewService.createReview(placeId, placeReviewDto), userDetails.getUser());
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{reviewId}")
-    public PlaceReviewDto.Response update(@PathVariable Long reviewId, PlaceReviewDto.Request request, @CurrentUser CustomUserDetails userDetails) {
+    public PlaceReviewDto.Response update(@PathVariable Long reviewId, PlaceReviewDto.Request placeReviewDto, @CurrentUser CustomUserDetails userDetails) {
         placeReviewService.checkReviewUpdatable(reviewId, userDetails.getUser());
-        return placeReviewMapper.entityToResponseDto(placeReviewService.updateReview(reviewId, request), userDetails.getUser());
+        return placeReviewMapper.entityToResponseDto(placeReviewService.updateReview(reviewId, placeReviewDto), userDetails.getUser());
     }
 
     @ResponseStatus(HttpStatus.OK)
