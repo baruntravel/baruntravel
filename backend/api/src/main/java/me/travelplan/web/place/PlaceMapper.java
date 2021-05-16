@@ -1,14 +1,11 @@
 package me.travelplan.web.place;
 
 import me.travelplan.service.place.domain.Place;
-import me.travelplan.service.place.domain.PlaceReview;
 import me.travelplan.service.user.domain.User;
 import me.travelplan.web.common.FileDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper(

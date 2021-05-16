@@ -24,13 +24,8 @@ import java.util.List;
 @Service
 public class PlaceService {
     private final PlaceRepository placeRepository;
-    private final PlaceReviewRepository placeReviewRepository;
-    private final PlaceLikeRepository placeLikeRepository;
-    private final KakaoMapService kakaoMapService;
-    private final FileRepository fileRepository;
-    private final PlaceImageRepository placeImageRepository;
-    private final PlaceReviewService placeReviewService;
     private final PlaceLikeService placeLikeService;
+    private final KakaoMapService kakaoMapService;
 
     /*************************************
      *              Place
@@ -47,19 +42,6 @@ public class PlaceService {
         return savedPlace;
     }
 
-    @Transactional
-    public void delete(Long reviewId) {
-        placeReviewRepository.deleteById(reviewId);
-    }
-
-    public void checkUpdatable(Long placeId, User user) {
-        Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
-
-        if (!place.getCreatedBy().getId().equals(user.getId())) {
-            throw new PlaceNotUpdatableException();
-        }
-    }
-
     //    @Async
     public void updateDetail(Long id) {
         try {
@@ -69,23 +51,5 @@ public class PlaceService {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-    }
-
-
-    /*************************************
-     *          Place Review
-     *************************************/
-
-    public List<PlaceReview> getReviews(Long placeId) {
-        Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
-        return place.getReviews();
-    }
-
-    /*************************************
-     *          Place Like
-     *************************************/
-
-    public void createOrDeleteLike(Long placeId, User user) {
-        placeLikeService.createOrDeleteLike(placeId, user);
     }
 }

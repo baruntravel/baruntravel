@@ -4,6 +4,7 @@ import me.travelplan.service.file.domain.File;
 import me.travelplan.service.place.domain.PlaceReview;
 import me.travelplan.service.place.domain.PlaceReviewImage;
 import me.travelplan.service.user.domain.User;
+import me.travelplan.web.FileDto;
 import me.travelplan.web.UserDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -26,7 +27,7 @@ public interface PlaceReviewMapper {
                 .id(review.getId())
                 .content(review.getContent())
                 .score(review.getScore())
-                .images(review.getImages().stream().map(PlaceReviewImage::getFile).map(File::getUrl).collect(Collectors.toList()))
+                .images(review.getImages().stream().map(PlaceReviewImage::getFile).map(File::getUrl).map(FileDto.Image::new).collect(Collectors.toList()))
                 .createdBy(
                         UserDto.Response.builder()
                             .name(review.getCreatedBy().getName())
@@ -36,7 +37,7 @@ public interface PlaceReviewMapper {
                 )
                 .createdAt(review.getCreatedAt())
                 .updatedAt(review.getUpdatedAt())
-                .isMine(review.getCreatedBy().getId().equals(currentUser.getId()))
+                .mine(review.getCreatedBy().getId().equals(currentUser.getId()))
                 .build();
     }
 }

@@ -2,6 +2,7 @@ package me.travelplan.web.place.review;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import me.travelplan.web.FileDto;
 import me.travelplan.web.UserDto;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,9 +30,9 @@ public class PlaceReviewDto {
         private final Long id;
         private final Double score;
         private final String content;
-        private final List<String> images;
+        private final List<FileDto.Image> images;
         private final UserDto.Response createdBy;
-        private final boolean isMine;
+        private final boolean mine;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         private final LocalDateTime createdAt;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

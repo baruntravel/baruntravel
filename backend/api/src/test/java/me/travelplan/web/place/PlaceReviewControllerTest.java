@@ -2,8 +2,10 @@ package me.travelplan.web.place;
 
 import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
+import me.travelplan.service.file.domain.File;
 import me.travelplan.service.place.PlaceReviewService;
 import me.travelplan.service.place.domain.PlaceReview;
+import me.travelplan.service.place.domain.PlaceReviewImage;
 import me.travelplan.service.user.domain.User;
 import me.travelplan.web.place.review.PlaceReviewController;
 import me.travelplan.web.place.review.PlaceReviewMapperImpl;
@@ -55,7 +57,7 @@ public class PlaceReviewControllerTest extends MvcTest {
                 .build();
         mockReview.setCreatedAt(LocalDateTime.now());
         mockReview.setUpdatedAt(LocalDateTime.now());
-        mockReview.setCreatedBy(User.builder().name("이렐리아").email("mock@mock.com").build());
+        mockReview.setCreatedBy(User.builder().id(1L).name("이렐리아").email("mock@mock.com").build());
         given(placeReviewService.createReview(any(), any())).willReturn(mockReview);
 
         // when
@@ -93,14 +95,16 @@ public class PlaceReviewControllerTest extends MvcTest {
         String updatedContent = "업데이트된 내용입니다";
         Double updatedScore = 3.5;
 
+        String mockImageUrl = "https://img1.kakaocdn.net/relay/local/R680x420/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fplace%2FB903BF5B6F1B4BB2ABEA3F10A5FDA30A";
         PlaceReview mockReview = PlaceReview.builder()
                 .id(updatedId)
                 .score(updatedScore)
                 .content(updatedContent)
+                .images(List.of(PlaceReviewImage.builder().file(File.createExternalImage(mockImageUrl)).build()))
                 .build();
         mockReview.setCreatedAt(LocalDateTime.now());
         mockReview.setUpdatedAt(LocalDateTime.now());
-        mockReview.setCreatedBy(User.builder().name("아칼리").email("mock@mock.com").build());
+        mockReview.setCreatedBy(User.builder().id(1L).name("아칼리").email("mock@mock.com").build());
         given(placeReviewService.updateReview(any(), any())).willReturn(mockReview);
         Mockito.doNothing().when(placeReviewService).checkReviewUpdatable(any(), any());
 
@@ -130,7 +134,9 @@ public class PlaceReviewControllerTest extends MvcTest {
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("리뷰 식별자"),
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("리뷰 내용"),
                                 fieldWithPath("score").type(JsonFieldType.NUMBER).description("리뷰 점수"),
-                                fieldWithPath("images").type(JsonFieldType.ARRAY).description("리뷰 이미지 경로들"),
+                                fieldWithPath("mine").type(JsonFieldType.BOOLEAN).description("내가 작성한 리뷰인지 boolean"),
+                                fieldWithPath("images").type(JsonFieldType.ARRAY).description("리뷰 이미지들"),
+                                fieldWithPath("images[].url").type(JsonFieldType.STRING).description("리뷰 이미지 경로들"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("리뷰 작성일시"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("리뷰 수정일시"),
                                 fieldWithPath("createdBy").type(JsonFieldType.OBJECT).description("리뷰 생성자"),
@@ -171,12 +177,18 @@ public class PlaceReviewControllerTest extends MvcTest {
         // given
         List<PlaceReview> reviews = new ArrayList<>();
 
-        PlaceReview review1 = PlaceReview.builder().id(1L).score(3.5).content("안녕하세요 첫번째 리뷰입니다. 재미있었어요!").build();
-        review1.setCreatedBy(User.builder().name("라이언").email("mock@mock.com").build());
+        String mockImageUrl = "https://img1.kakaocdn.net/relay/local/R680x420/?fname=http%3A%2F%2Ft1.daumcdn.net%2Fplace%2FB903BF5B6F1B4BB2ABEA3F10A5FDA30A";
+        PlaceReview review1 = PlaceReview.builder()
+                .id(1L)
+                .score(3.5)
+                .content("안녕하세요 첫번째 리뷰입니다. 재미있었어요!")
+                .images(List.of(PlaceReviewImage.builder().file(File.createExternalImage(mockImageUrl)).build()))
+                .build();
+        review1.setCreatedBy(User.builder().id(1L).name("라이언").email("mock@mock.com").build());
         review1.setCreatedAt(LocalDateTime.now());
         review1.setUpdatedAt(LocalDateTime.now());
         PlaceReview review2 = PlaceReview.builder().id(2L).score(4.5).content("재미있게 잘 놀다 갑니다!").build();
-        review2.setCreatedBy(User.builder().name("벨코즈").email("mock@mock.com").build());
+        review2.setCreatedBy(User.builder().id(2L).name("벨코즈").email("mock@mock.com").build());
         review2.setCreatedAt(LocalDateTime.now());
         review2.setUpdatedAt(LocalDateTime.now());
 
@@ -203,7 +215,9 @@ public class PlaceReviewControllerTest extends MvcTest {
                                 fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("리뷰 식별자"),
                                 fieldWithPath("[].content").type(JsonFieldType.STRING).description("리뷰 내용"),
                                 fieldWithPath("[].score").type(JsonFieldType.NUMBER).description("리뷰 점수"),
-                                fieldWithPath("[].images").type(JsonFieldType.ARRAY).description("리뷰 이미지 경로들"),
+                                fieldWithPath("[].mine").type(JsonFieldType.BOOLEAN).description("내가 작성한 리뷰인지 boolean"),
+                                fieldWithPath("[].images").type(JsonFieldType.ARRAY).description("리뷰 이미지들"),
+                                fieldWithPath("[].images[].url").type(JsonFieldType.STRING).description("리뷰 이미지 경로들"),
                                 fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("리뷰 작성일시"),
                                 fieldWithPath("[].updatedAt").type(JsonFieldType.STRING).description("리뷰 수정일시"),
                                 fieldWithPath("[].createdBy").type(JsonFieldType.OBJECT).description("리뷰 생성자"),

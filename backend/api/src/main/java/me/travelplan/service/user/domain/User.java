@@ -30,7 +30,8 @@ public class User extends BaseEntity {
     private LocalDateTime refreshTokenExpiredAt;
 
     @Builder
-    public User(File avatar, String email, String password, String name, String refreshToken, LocalDateTime refreshTokenExpiredAt) {
+    public User(Long id, File avatar, String email, String password, String name, String refreshToken, LocalDateTime refreshTokenExpiredAt) {
+        this.id = id;
         this.avatar = avatar;
         this.email = email;
         this.password = password;
