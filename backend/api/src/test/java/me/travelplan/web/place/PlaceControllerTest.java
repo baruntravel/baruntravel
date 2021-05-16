@@ -3,6 +3,7 @@ package me.travelplan.web.place;
 import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
 import me.travelplan.service.file.domain.File;
+import me.travelplan.service.place.PlaceLikeService;
 import me.travelplan.service.place.PlaceReviewService;
 import me.travelplan.service.place.PlaceService;
 import me.travelplan.service.place.domain.Place;
@@ -38,7 +39,7 @@ public class PlaceControllerTest extends MvcTest {
     @MockBean
     private PlaceService placeService;
     @MockBean
-    private PlaceReviewService placeReviewService;
+    private PlaceLikeService placeLikeService;
 
     @Test
     @WithMockCustomUser
