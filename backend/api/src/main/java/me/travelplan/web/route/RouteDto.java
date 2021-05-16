@@ -49,7 +49,7 @@ public class RouteDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class RouteCreator {
+    public static class Creator {
         private String name;
         private String avatar;
     }
@@ -82,7 +82,7 @@ public class RouteDto {
         private Long id;
         private String content;
         private Double score;
-        private String createdBy;
+        private RouteDto.Creator creator;
         private Integer likeCount;
         private boolean likeCheck;
         private List<FileDto> files;

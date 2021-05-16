@@ -28,7 +28,7 @@ public class RouteResponse {
         public LocalDateTime createdAt;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         public LocalDateTime updatedAt;
-        private RouteDto.RouteCreator creator;
+        private RouteDto.Creator creator;
         private List<RouteDto.RoutePlace> places;
     }
 
