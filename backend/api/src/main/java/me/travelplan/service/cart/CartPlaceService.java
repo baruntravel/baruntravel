@@ -3,7 +3,7 @@ package me.travelplan.service.cart;
 import lombok.RequiredArgsConstructor;
 import me.travelplan.service.cart.domain.CartPlace;
 import me.travelplan.service.cart.exception.CartPlaceNotFoundException;
-import me.travelplan.service.cart.exception.PlaceExistedException;
+import me.travelplan.service.cart.exception.PlaceDuplicatedException;
 import me.travelplan.service.cart.repository.CartPlaceRepository;
 import me.travelplan.service.place.PlaceService;
 import me.travelplan.service.place.domain.Place;
@@ -29,7 +29,7 @@ public class CartPlaceService {
             placeService.updateDetail(place.getId());
         }
         if (cartPlaceRepository.findByPlaceIdAndCreatedBy(place.getId(), user).isPresent()) {
-            throw new PlaceExistedException();
+            throw new PlaceDuplicatedException();
         }
         CartPlace cartPlace = CartPlace.create(place, cartPlaceRepository.findMaxOrderByCreatedBy(user));
         cartPlaceRepository.save(cartPlace);

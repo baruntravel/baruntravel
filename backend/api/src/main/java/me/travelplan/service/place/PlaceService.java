@@ -6,23 +6,18 @@ import me.travelplan.component.kakaomap.KakaoMapPlace;
 import me.travelplan.component.kakaomap.KakaoMapService;
 import me.travelplan.service.file.repository.FileRepository;
 import me.travelplan.service.place.domain.Place;
-import me.travelplan.service.place.domain.PlaceLike;
 import me.travelplan.service.place.domain.PlaceReview;
 import me.travelplan.service.place.exception.PlaceNotFoundException;
 import me.travelplan.service.place.exception.PlaceNotUpdatableException;
-import me.travelplan.service.place.exception.PlaceReviewNotFoundException;
-import me.travelplan.service.place.exception.PlaceReviewNotUpdatableException;
 import me.travelplan.service.place.repository.PlaceImageRepository;
 import me.travelplan.service.place.repository.PlaceLikeRepository;
 import me.travelplan.service.place.repository.PlaceRepository;
 import me.travelplan.service.place.repository.PlaceReviewRepository;
 import me.travelplan.service.user.domain.User;
-import me.travelplan.web.place.PlaceRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -66,7 +61,7 @@ public class PlaceService {
     }
 
     //    @Async
-    private void updateDetail(Long id) {
+    public void updateDetail(Long id) {
         try {
             Place place = placeRepository.findById(id).orElseThrow(PlaceNotFoundException::new);
             KakaoMapPlace kakaoPlace = kakaoMapService.getKakaoMapPlace(id).orElseThrow();
