@@ -21,7 +21,7 @@ export const onLogin = (email, password) => {
       localStorage.setItem("refreshTokenExpiredAt", refreshTokenExpiredAt);
       return axios
         .get("/auth/me")
-        .then((res) => [true, res.data.email, res.data.name]);
+        .then((res) => [true, res.data.email, res.data.name, res.data.avatar]);
     })
     .catch((error) => {
       console.error(error);
@@ -30,11 +30,6 @@ export const onLogin = (email, password) => {
 };
 
 export const onRegister = async (formData) => {
-  // const data = {
-  //   name,
-  //   email,
-  //   password,
-  // };
   const result = await axios
     .post("/auth/register", formData, {
       headers: { "Content-Type": "multipart/form-data" },

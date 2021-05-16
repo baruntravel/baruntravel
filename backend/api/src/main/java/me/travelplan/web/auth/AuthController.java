@@ -8,9 +8,9 @@ import me.travelplan.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+@RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/auth")
-@RestController
 public class AuthController {
     private final UserService userService;
     private final UserMapper userMapper;
@@ -22,16 +22,18 @@ public class AuthController {
         userService.create(userMapper.toEntity(request));
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
     public AuthResponse.Login login(@RequestBody AuthRequest.Login request) {
         return authService.login(request.getEmail(), request.getPassword());
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/me")
     public AuthResponse.Me me(@CurrentUser CustomUserDetails currentUser) {
-        return authService.me(currentUser);
+        return userMapper.toMe(userService.getMe(currentUser.getUser()));
     }
 
+    @PostMapping("/update")
+    public void update(AuthRequest.Update request, @CurrentUser CustomUserDetails customUserDetails) {
+        userService.update(request, customUserDetails.getUser());
+    }
 }

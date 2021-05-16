@@ -17,9 +17,11 @@ import { useHistory } from "react-router-dom";
 import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
 
 const { kakao } = window;
+
 const PlaceDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
   const [needLogin, setNeedLogin] = useState(false);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
@@ -73,6 +75,46 @@ const PlaceDetailPage = (props) => {
     onUploadPlaceReview(placeId, formData);
   }, []);
 
+  useEffect(() => {
+    async function getPlaceDetail() {
+      // place 디테일 정보를 불러오는 함수
+      const placeDetailInfo = await onReceivePlace(placeId);
+      if (placeDetailInfo) {
+        const images = placeDetailInfo.images.map((image) => image.url);
+        makeMapImage(placeDetailInfo.x, placeDetailInfo.y);
+        setPlaceDetail(placeDetailInfo);
+        setImages(images);
+      }
+    }
+    async function getReviewList() {
+      // 해당 place의 리뷰를 받아오는 함수
+      const reviews = await onReceivePlaceReview(placeId);
+      setReviewDatas(reviews);
+    }
+    // map image 만드는 함수
+    function makeMapImage(x, y) {
+      let markerPosition = new kakao.maps.LatLng(y, x);
+      let marker = {
+        position: markerPosition,
+      };
+      let staticMapContainer = document.getElementById("staticMap"),
+        staticMapOption = {
+          center: new kakao.maps.LatLng(y, x),
+          level: 4,
+          marker: marker,
+        };
+      let staticMap = new kakao.maps.StaticMap(
+        staticMapContainer,
+        staticMapOption
+      );
+    }
+    // placeDetail 받아오는 곳
+    getPlaceDetail();
+    getReviewList();
+    window.scrollTo(0, 0);
+    setLoading(false);
+  }, []);
+
   const afterSliderChange = useCallback((index) => {
     setImageIndex(index);
   }, []);
@@ -83,44 +125,15 @@ const PlaceDetailPage = (props) => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
-  useEffect(() => {
-    async function getPlaceDetail() {
-      // place 디테일 정보를 불러오는 함수
-      const placeDetailInfo = await onReceivePlace(placeId);
-      if (placeDetailInfo) {
-        const images = placeDetailInfo.images.map((image) => image.url);
-        setPlaceDetail(placeDetailInfo);
-        setImages(images);
-      }
-    }
-    async function getReviewList() {
-      // 해당 place의 리뷰를 받아오는 함수
-      const reviews = await onReceivePlaceReview(placeId);
-      setReviewDatas(reviews);
-    }
-    getPlaceDetail();
-    getReviewList();
-
-    let markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
-    let marker = {
-      position: markerPosition,
-    };
-    let staticMapContainer = document.getElementById("staticMap"),
-      staticMapOption = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
-        level: 4,
-        marker: marker,
-      };
-    let staticMap = new kakao.maps.StaticMap(
-      staticMapContainer,
-      staticMapOption
-    );
-    window.scrollTo(0, 0);
-  }, []);
-
   if (!userStates.isLogin) {
     // 로그인 하지 않았을 때 접근 불가 -> 추후에 API 수정 후 고쳐야됨
     history.push("/");
+  }
+  if (loading) {
+    return <div>로딩</div>;
+  }
+  if (!placeDetail) {
+    return <div>place 정보가 없습니다.</div>;
   }
   return (
     <div className={styles.PlaceDetailPage}>
@@ -174,7 +187,9 @@ const PlaceDetailPage = (props) => {
         </div>
         <div className={styles.buttonBox}>
           <button className={styles.button}>장바구니 카트에 담기</button>
-          <span className={styles.wishCount}>{`${4}명이 좋아해요`}</span>
+          <span
+            className={styles.wishCount}
+          >{`${placeDetail.likeCount}명이 좋아해요`}</span>
         </div>
         <div className={styles.reviewList}>
           <ReviewList

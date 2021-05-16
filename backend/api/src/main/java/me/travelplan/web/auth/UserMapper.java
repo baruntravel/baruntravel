@@ -20,4 +20,9 @@ public interface UserMapper {
     @Mapping(target = "refreshToken", expression = "java(UUID.randomUUID().toString())")
     @Mapping(target = "refreshTokenExpiredAt", expression = "java(LocalDateTime.now())")
     User toEntity(AuthRequest.Register request);
+
+    @Mapping(target = "email",source = "email")
+    @Mapping(target = "name",source = "name")
+    @Mapping(target = "avatar",source = "user.avatar.url")
+    AuthResponse.Me toMe(User user);
 }

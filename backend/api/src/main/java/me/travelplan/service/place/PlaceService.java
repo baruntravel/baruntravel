@@ -1,20 +1,19 @@
 package me.travelplan.service.place;
 
 import lombok.RequiredArgsConstructor;
-import me.travelplan.service.file.domain.File;
-import me.travelplan.service.file.repository.FileRepository;
+import lombok.extern.slf4j.Slf4j;
 import me.travelplan.component.kakaomap.KakaoMapPlace;
 import me.travelplan.component.kakaomap.KakaoMapService;
+import me.travelplan.service.file.repository.FileRepository;
 import me.travelplan.service.place.domain.Place;
+import me.travelplan.service.place.domain.PlaceLike;
+import me.travelplan.service.place.domain.PlaceReview;
 import me.travelplan.service.place.exception.PlaceNotFoundException;
 import me.travelplan.service.place.exception.PlaceNotUpdatableException;
 import me.travelplan.service.place.exception.PlaceReviewNotFoundException;
 import me.travelplan.service.place.exception.PlaceReviewNotUpdatableException;
-import me.travelplan.service.place.domain.PlaceImage;
-import me.travelplan.service.place.domain.PlaceLike;
 import me.travelplan.service.place.repository.PlaceImageRepository;
 import me.travelplan.service.place.repository.PlaceLikeRepository;
-import me.travelplan.service.place.domain.PlaceReview;
 import me.travelplan.service.place.repository.PlaceRepository;
 import me.travelplan.service.place.repository.PlaceReviewRepository;
 import me.travelplan.service.user.domain.User;
@@ -23,11 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
-@Transactional
 public class PlaceService {
     private final PlaceRepository placeRepository;
     private final PlaceReviewRepository placeReviewRepository;
@@ -35,30 +33,19 @@ public class PlaceService {
     private final KakaoMapService kakaoMapService;
     private final FileRepository fileRepository;
     private final PlaceImageRepository placeImageRepository;
+    private final PlaceReviewService placeReviewService;
+    private final PlaceLikeService placeLikeService;
 
-    @Transactional(readOnly = true)
+    /*************************************
+     *              Place
+     *************************************/
+
     public Place getOne(Long id) {
         return placeRepository.findByIdWithCategory(id).orElseThrow(PlaceNotFoundException::new);
     }
 
-    @Transactional(readOnly = true)
-    public List<PlaceReview> getReviews(Long placeId) {
-        Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
-        return place.getReviews();
-    }
 
-    public PlaceReview createReview(Long placeId, PlaceReview placeReview) {
-        Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
-        placeReview.setPlace(place);
-        return placeReviewRepository.save(placeReview);
-    }
-
-    public PlaceReview updateReview(PlaceReview changed) {
-        PlaceReview before = placeReviewRepository.findById(changed.getId()).orElseThrow(PlaceReviewNotFoundException::new);
-        before.update(changed);
-        return placeReviewRepository.save(before);
-    }
-
+    @Transactional
     public void delete(Long reviewId) {
         placeReviewRepository.deleteById(reviewId);
     }
@@ -71,46 +58,47 @@ public class PlaceService {
         }
     }
 
-    public void checkReviewUpdatable(Long placeReviewId, User user) {
-        PlaceReview review = placeReviewRepository.findById(placeReviewId).orElseThrow(PlaceReviewNotFoundException::new);
-
-        if (!review.getCreatedBy().getId().equals(user.getId())) {
-            throw new PlaceReviewNotUpdatableException();
-        }
-    }
-
-    public void createOrDeleteLike(Long placeId, User user) {
-        Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
-        Optional<PlaceLike> optionalPlaceLike = placeLikeRepository.findByPlaceIdAndCreatedBy(placeId, user);
-        if (optionalPlaceLike.isEmpty()) {
-            placeLikeRepository.save(PlaceLike.create(place));
-        }
-        if (optionalPlaceLike.isPresent()) {
-            PlaceLike placeLike = optionalPlaceLike.get();
-            placeLikeRepository.delete(placeLike);
-        }
-    }
-
     //    @Async
     public void updateDetail(Long id) {
-        Place place = placeRepository.findById(id).orElseThrow(PlaceNotFoundException::new);
-        KakaoMapPlace kakaoPlace = kakaoMapService.getKakaoMapPlace(id);
-
-        if (kakaoPlace == null) {
-            return;
+        try {
+            Place place = placeRepository.findById(id).orElseThrow(PlaceNotFoundException::new);
+            KakaoMapPlace kakaoPlace = kakaoMapService.getKakaoMapPlace(id).orElseThrow();
+            place.setFromKakaoMapPlace(kakaoPlace);
+        } catch (Exception e) {
+            log.error(e.getMessage());
         }
+    }
 
-        List<File> images = kakaoPlace.getPhotos().stream()
-                .map(photo -> File.createExternalImage(photo.getImageUrl()))
-                .collect(Collectors.toList());
 
-        images = fileRepository.saveAll(images);
+    /*************************************
+     *          Place Review
+     *************************************/
 
-        List<PlaceImage> placeImages = images.stream()
-                .map(image -> PlaceImage.builder().place(place).file(image).build())
-                .collect(Collectors.toList());
-        placeImageRepository.saveAll(placeImages);
+    public List<PlaceReview> getReviews(Long placeId) {
+        Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
+        return place.getReviews();
+    }
 
-        place.setFromKakaoMapPlace(kakaoPlace);
+    @Transactional
+    public PlaceReview createReview(PlaceReview review) {
+        return placeReviewService.createReview(review);
+    }
+
+    @Transactional
+    public PlaceReview updateReview(PlaceReview after) {
+        return placeReviewService.updateReview(after);
+    }
+
+    public void checkReviewUpdatable(Long placeReviewId, User user) {
+        placeReviewService.checkReviewUpdatable(placeReviewId, user);
+    }
+
+
+    /*************************************
+     *          Place Like
+     *************************************/
+
+    public void createOrDeleteLike(Long placeId, User user) {
+        placeLikeService.createOrDeleteLike(placeId, user);
     }
 }

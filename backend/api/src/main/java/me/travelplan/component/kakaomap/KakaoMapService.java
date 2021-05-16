@@ -12,6 +12,7 @@ import software.amazon.awssdk.services.lambda.model.LambdaException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -19,7 +20,7 @@ public class KakaoMapService {
     private final LambdaClient lambdaClient;
     private final ObjectMapper objectMapper;
 
-    public KakaoMapPlace getKakaoMapPlace(Long placeId) {
+    public Optional<KakaoMapPlace> getKakaoMapPlace(Long placeId) {
         try {
             HashMap<String, Object> payloadMap = new HashMap<>();
             payloadMap.put("body", "{\"placeId\": " + placeId + "}");
@@ -36,10 +37,10 @@ public class KakaoMapService {
 
             Map<String, String> responseMap = objectMapper.readValue(json, Map.class);
             String body = objectMapper.writeValueAsString(responseMap.get("body"));
-            return objectMapper.readValue(body, KakaoMapPlace.class);
+            return Optional.of(objectMapper.readValue(body, KakaoMapPlace.class));
         } catch (LambdaException | JsonProcessingException ex) {
             // ignore
-            return null;
+            return Optional.empty();
         }
     }
 }

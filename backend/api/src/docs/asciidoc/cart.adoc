@@ -16,23 +16,29 @@
 `POST /cart/place`
 
 요청 HTTP
-
-- Body
 include::{snippets}/cart-addPlace/http-request.adoc[]
 include::{snippets}/cart-addPlace/request-fields.adoc[]
 
 성공 응답 HTTP
 include::{snippets}/cart-addPlace/http-response.adoc[]
 
+=== 카트에 담겨있는 장소 순서 수정
+
+`PUT /cart/place`
+
+요청 HTTP
+include::{snippets}/cart-update-place-order/http-request.adoc[]
+include::{snippets}/cart-update-place-order/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/cart-update-place-order/http-response.adoc[]
+
 === 카트에 담겨있는 장소에 메모 추가
 
 `PUT /cart/place/{placeId}/memo`
 
 요청 HTTP
-
 include::{snippets}/cart-addMemo/path-parameters.adoc[]
-
-- Body
 include::{snippets}/cart-addMemo/http-request.adoc[]
 include::{snippets}/cart-addMemo/request-fields.adoc[]
 
@@ -44,8 +50,6 @@ include::{snippets}/cart-addMemo/http-response.adoc[]
 `GET /cart/my`
 
 요청 HTTP
-
-- Body
 include::{snippets}/cart-getMy/http-request.adoc[]
 
 성공 응답 HTTP
@@ -57,8 +61,6 @@ include::{snippets}/cart-getMy/response-fields.adoc[]
 `DELETE /cart/place/{placeId}`
 
 요청 HTTP
-
-- Body
 include::{snippets}/cart-deleteOnePlace/http-request.adoc[]
 include::{snippets}/cart-deleteOnePlace/path-parameters.adoc[]
 
@@ -70,8 +72,6 @@ include::{snippets}/cart-deleteOnePlace/http-response.adoc[]
 `DELETE /cart/place`
 
 요청 HTTP
-
-- Body
 include::{snippets}/cart-deleteAllPlace/http-request.adoc[]
 
 성공 응답 HTTP

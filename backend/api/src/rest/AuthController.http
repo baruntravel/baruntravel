@@ -17,7 +17,6 @@ testname
 Content-Disposition: form-data; name="avatar"; filename="enjoy.png"
 
 < ./../main/resources/mock/images/enjoy.png
---boundary
 
 ###
 POST {{apiUrl}}/auth/login
@@ -31,6 +30,57 @@ client.global.set("refreshToken", "Bearer " + response.body.refreshToken);
 client.log("Auth Token : " + client.global.get("authorizationToken"));
 client.log("RefreshToken : " + client.global.get("refreshToken"));
 %}
+
+###
+
+POST {{apiUrl}}/auth/update
+Authorization: {{authorizationToken}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="name";
+
+update name
+
+--boundary
+Content-Disposition: form-data; name="avatarChange";
+
+true
+--boundary
+Content-Disposition: form-data; name="avatar"; filename="enjoy.png"
+
+< ./../main/resources/mock/images/enjoy.png
+###
+
+POST {{apiUrl}}/auth/update
+Authorization: {{authorizationToken}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="name";
+
+update name!!!
+
+--boundary
+Content-Disposition: form-data; name="avatarChange";
+
+true
+
+###
+
+POST {{apiUrl}}/auth/update
+Authorization: {{authorizationToken}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="name";
+
+changeName
+
+--boundary
+Content-Disposition: form-data; name="avatarChange";
+
+false
 
 ###
 GET {{apiUrl}}/auth/me

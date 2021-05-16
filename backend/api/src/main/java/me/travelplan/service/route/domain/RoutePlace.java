@@ -31,10 +31,20 @@ public class RoutePlace {
         this.route = route;
     }
 
+    private void update(Integer order) {
+        this.order = order;
+    }
+
     public static RoutePlace create(Place place, Integer order) {
         return RoutePlace.builder()
                 .place(place)
                 .order(order)
                 .build();
+    }
+
+    public static void swapOrder(RoutePlace firstRoutePlace,RoutePlace secondRoutePlace){
+        Integer tempOrder = firstRoutePlace.getOrder();
+        firstRoutePlace.update(secondRoutePlace.getOrder());
+        secondRoutePlace.update(tempOrder);
     }
 }

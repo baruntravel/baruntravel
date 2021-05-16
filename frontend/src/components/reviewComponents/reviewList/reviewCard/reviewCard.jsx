@@ -2,10 +2,9 @@ import React, { useCallback, useState } from "react";
 import styles from "./reviewCard.module.css";
 import { Rate } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
-import { getYear, getMonth, getDate } from "date-fns";
+// import { getYear, getMonth, getDate } from "date-fns";
 import { LikeOutlined, LikeTwoTone, UserOutlined } from "@ant-design/icons";
 import PostImages from "../../postImages/postImages";
-import ImagesZoom from "../../imagesZoom/imagesZoom";
 const ReviewCard = ({
   review,
   review: {

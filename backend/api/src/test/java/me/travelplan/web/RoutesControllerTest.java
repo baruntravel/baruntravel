@@ -46,11 +46,37 @@ public class RoutesControllerTest extends MvcTest {
 
     @Test
     @WithMockCustomUser
-    @DisplayName("내 경로들 가져오기 테스트(이름만)")
+    @DisplayName("내 경로들 가져오기 테스트")
     public void getMyTest() throws Exception {
         List<Route> routes = new ArrayList<>();
-        routes.add(Route.builder().id(1L).name("첫번째 경로").build());
-        routes.add(Route.builder().id(2L).name("두번째 경로").build());
+        Route route1 = Route.builder().id(1L).name("첫번째 경로").build();
+        route1.addPlace(RoutePlace.builder().order(1).place(
+                Place.builder()
+                        .id(122L)
+                        .name("테스트 장소 이름")
+                        .x(97.123)
+                        .address("서울")
+                        .y(122.123)
+                        .url("https://www.naver.com")
+                        .category(PlaceCategory.builder().id("CE7").name("카페").build())
+                        .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
+                        .build()
+        ).build());
+        routes.add(route1);
+        Route route2 = Route.builder().id(2L).name("두번째 경로").build();
+        route2.addPlace(RoutePlace.builder().order(1).place(
+                Place.builder()
+                        .id(123L)
+                        .name("테스트 장소 이름")
+                        .x(97.123)
+                        .address("부산")
+                        .y(122.123)
+                        .url("https://www.naver.com")
+                        .category(PlaceCategory.builder().id("CE7").name("카페").build())
+                        .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
+                        .build()
+        ).build());
+        routes.add(route2);
 
         given(routeService.getByUser(any())).willReturn(routes);
 
@@ -59,13 +85,16 @@ public class RoutesControllerTest extends MvcTest {
         );
 
         results.andExpect(status().isOk())
+                .andDo(print())
                 .andDo(document("routes-getMy",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         responseFields(
                                 fieldWithPath("routes").type(JsonFieldType.ARRAY).description("경로들"),
                                 fieldWithPath("routes[].id").type(JsonFieldType.NUMBER).description("경로 식별자"),
-                                fieldWithPath("routes[].name").type(JsonFieldType.STRING).description("경로 이름")
+                                fieldWithPath("routes[].name").type(JsonFieldType.STRING).description("경로 이름"),
+                                fieldWithPath("routes[].places[].id").type(JsonFieldType.NUMBER).description("장소 식별자"),
+                                fieldWithPath("routes[].places[].name").type(JsonFieldType.STRING).description("장소 이름")
                         )
                 ));
     }

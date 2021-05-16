@@ -15,6 +15,7 @@ public class CartPlaceDto {
         private String address;
         private String memo;
         private String url;
+        private Integer order;
         private boolean likeCheck;
     }
 }
