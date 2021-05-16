@@ -1,11 +1,15 @@
 package me.travelplan.web.place;
 
+import me.travelplan.service.file.domain.File;
 import me.travelplan.service.place.domain.Place;
+import me.travelplan.service.place.domain.PlaceImage;
+import me.travelplan.service.place.domain.PlaceReview;
 import me.travelplan.service.user.domain.User;
-import me.travelplan.web.common.FileDto;
+import me.travelplan.web.FileDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Mapper(
@@ -13,18 +17,21 @@ import java.util.stream.Collectors;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR
 )
 public interface PlaceMapper {
-    default PlaceResponse.GetOne entityToGetOneDto(Place place, User user) {
-        return PlaceResponse.GetOne.builder()
+    default PlaceDto.Response entityToResponseDto(Place place, User currentUser) {
+        return PlaceDto.Response.builder()
                 .name(place.getName())
                 .address(place.getAddress())
                 .x(place.getX())
                 .y(place.getY())
-                .category(place.getCategory().getName())
+                .categoryId(place.getCategory().getId())
+                .categoryName(place.getCategory().getName())
+                .url(place.getUrl())
+                .thumbnailUrl(Optional.ofNullable(place.getThumbnail()).orElse(File.createExternalImage("")).getUrl())
+                .images(place.getImages().stream().map(PlaceImage::getFile).map(File::getUrl).map(FileDto.Image::new).collect(Collectors.toList()))
+                .isLike(place.getPlaceLikes().stream().anyMatch(placeLike -> currentUser.getId().equals(placeLike.getCreatedBy().getId())))
+                .likes(place.getPlaceLikes().size())
+                .score(place.getReviews().stream().mapToDouble(PlaceReview::getScore).average().orElse(0.0))
                 .openHour(place.getOpenHour())
-                .images(place.getImages().stream().map(placeImage -> FileDto.builder().url(placeImage.getFile().getUrl()).build()).collect(Collectors.toList()))
-                .score(place.getAverageReviewScore())
-                .likeCount(place.getPlaceLikes().size())
-                .likeCheck(place.isLike(user))
                 .build();
     }
 }

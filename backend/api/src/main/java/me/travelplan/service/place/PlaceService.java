@@ -17,10 +17,6 @@ public class PlaceService {
     private final PlaceRepository placeRepository;
     private final KakaoMapService kakaoMapService;
 
-    /*************************************
-     *              Place
-     *************************************/
-
     public Place getOne(Long id) {
         return placeRepository.findByIdWithCategory(id).orElseThrow(PlaceNotFoundException::new);
     }

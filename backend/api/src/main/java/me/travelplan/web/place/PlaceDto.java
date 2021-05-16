@@ -1,43 +1,35 @@
 package me.travelplan.web.place;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
-import me.travelplan.web.UserDto;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import me.travelplan.web.FileDto;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class PlaceDto {
     public static class Request {
-        private Long id;
-        private String name;
-        private String url;
-        private Double x;
-        private Double y;
-        private String address;
-        private String categoryId;
+        // TODO
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Response {
-        private Long id;
-        private String name;
-        private String url;
-        private Double x;
-        private Double y;
-        private String address;
-        private String categoryId;
-        private String thumbnailUrl;
-        private List<String> images;
-    }
-
-    public static class Place {
-        private Long id;
-        private String name;
-        private String url;
-        private Double x;
-        private Double y;
-        private String address;
-        private String categoryId;
+        private final Long id;
+        private final String name;
+        private final String url;
+        private final Double x;
+        private final Double y;
+        private final String address;
+        private final Double score;
+        private final String categoryId;
+        private final String categoryName;
+        private final String thumbnailUrl;
+        private final List<FileDto.Image> images;
+        private final Integer likes;
+        private final Boolean isLike;
+        private final String openHour;
     }
 }

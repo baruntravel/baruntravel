@@ -72,15 +72,19 @@ public class PlaceControllerTest extends MvcTest {
                                 parameterWithName("id").description("장소 식별자")
                         ),
                         responseFields(
+                                fieldWithPath("id").description("장소 식별자"),
+                                fieldWithPath("url").description("장소 url (카카오 지도 URL)"),
+                                fieldWithPath("thumbnailUrl").description("장소 썸네일 이미지 경로"),
                                 fieldWithPath("name").description("장소 이름"),
                                 fieldWithPath("address").description("장소 주소"),
                                 fieldWithPath("openHour").description("장소 영업 시간"),
-                                fieldWithPath("category").description("장소 카테고리 이름"),
+                                fieldWithPath("categoryId").description("장소 카테고리 아이디"),
+                                fieldWithPath("categoryName").description("장소 카테고리 이름"),
                                 fieldWithPath("score").description("장소 평점"),
+                                fieldWithPath("likes").description("장소 좋아요 개수"),
                                 fieldWithPath("x").description("장소 x좌표"),
                                 fieldWithPath("y").description("장소 y좌표"),
-                                fieldWithPath("likeCount").description("장소 좋아요 개수"),
-                                fieldWithPath("likeCheck").description("로그인 유저가 장소 좋아요를 눌렀다면 true"),
+                                fieldWithPath("isLike").description("로그인 유저가 장소 좋아요를 눌렀다면 true"),
                                 fieldWithPath("images[].url").description("장소 이미지 url")
                         )
                 ));
