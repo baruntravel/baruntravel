@@ -29,12 +29,39 @@ Authorization: {{authorizationToken}}
   "categoryId": "CE7",
   "categoryName": "카페"
 }
+###
+
+POST {{apiUrl}}/cart/place
+Content-Type: application/json;charset=UTF-8
+Authorization: {{authorizationToken}}
+
+{
+  "id": 8174854,
+  "name": "오장동흥남집 본점",
+  "url": "https://place.map.kakao.com/8174854",
+  "x": 37.554619995803215,
+  "y": 126.91083170563417,
+  "address": "서울 중구 마른내로 114 (우)04559",
+  "categoryId": "CE7",
+  "categoryName": "카페"
+}
 
 ###
 
 GET {{apiUrl}}/cart/my
 Content-Type: application/json;charset=UTF-8
 Authorization: {{authorizationToken}}
+
+###
+
+PUT {{apiUrl}}/cart/place
+Content-Type: application/json;charset=UTF-8
+Authorization: {{authorizationToken}}
+
+{
+  "firstPlaceId": 1797997961,
+  "secondPlaceId": 1440347564
+}
 
 ###
 

@@ -74,7 +74,7 @@ public interface RouteMapper {
         Double centerX = map.get("centerX");
         Double centerY = map.get("centerY");
 
-        RouteDto.RouteCreator.RouteCreatorBuilder creatorBuilder = RouteDto.RouteCreator.builder()
+        RouteDto.Creator.CreatorBuilder creatorBuilder = RouteDto.Creator.builder()
                 .name(route.getCreatedBy().getName());
         if (route.getCreatedBy().getAvatar() != null) {
             creatorBuilder.avatar(route.getCreatedBy().getAvatar().getUrl());
@@ -149,21 +149,28 @@ public interface RouteMapper {
 
     default RouteResponse.ReviewList entityToResponseReviewList(List<RouteReview> reviews, CustomUserDetails customUserDetails) {
         return RouteResponse.ReviewList.builder()
-                .reviews(reviews.stream().map(routeReview -> RouteDto.ReviewResponse.builder()
-                        .id(routeReview.getId())
-                        .content(routeReview.getContent())
-                        .score(routeReview.getScore())
-                        .likeCheck(routeReview.isLike(customUserDetails))
-                        .likeCount(routeReview.getRouteReviewLikes().size())
-                        .createdBy(routeReview.getCreatedBy().getName())
-                        .files(routeReview.getRouteReviewFiles().stream()
-                                .map(routeReviewFile -> FileDto.builder()
-                                        .url(routeReviewFile.getFile().getUrl())
-                                        .build())
-                                .collect(Collectors.toList()))
-                        .createdAt(routeReview.getCreatedAt())
-                        .updatedAt(routeReview.getUpdatedAt())
-                        .build()).collect(Collectors.toList()))
+                .reviews(reviews.stream().map(routeReview -> {
+                    RouteDto.Creator.CreatorBuilder creatorBuilder = RouteDto.Creator.builder()
+                            .name(routeReview.getCreatedBy().getName());
+                    if (routeReview.getCreatedBy().getAvatar() != null) {
+                        creatorBuilder.avatar(routeReview.getCreatedBy().getAvatar().getUrl());
+                    }
+                    return RouteDto.ReviewResponse.builder()
+                            .id(routeReview.getId())
+                            .content(routeReview.getContent())
+                            .score(routeReview.getScore())
+                            .likeCheck(routeReview.isLike(customUserDetails))
+                            .likeCount(routeReview.getRouteReviewLikes().size())
+                            .creator(creatorBuilder.build())
+                            .files(routeReview.getRouteReviewFiles().stream()
+                                    .map(routeReviewFile -> FileDto.builder()
+                                            .url(routeReviewFile.getFile().getUrl())
+                                            .build())
+                                    .collect(Collectors.toList()))
+                            .createdAt(routeReview.getCreatedAt())
+                            .updatedAt(routeReview.getUpdatedAt())
+                            .build();
+                }).collect(Collectors.toList()))
                 .build();
     }
 

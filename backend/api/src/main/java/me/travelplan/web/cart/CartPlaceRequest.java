@@ -28,4 +28,13 @@ public class CartPlaceRequest {
     public static class AddMemo {
         private String memo;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateOrder {
+        private Long firstPlaceId;
+        private Long secondPlaceId;
+    }
 }

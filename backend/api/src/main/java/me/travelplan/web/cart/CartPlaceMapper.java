@@ -31,6 +31,7 @@ public interface CartPlaceMapper {
                     .categoryId(cartPlace.getPlace().getCategory().getId())
                     .categoryName(cartPlace.getPlace().getCategory().getName())
                     .memo(cartPlace.getMemo())
+                    .order(cartPlace.getOrder())
                     .likeCheck(cartPlace.getPlace().isLike(user))
                     .url(cartPlace.getPlace().getUrl())
                     .build();
