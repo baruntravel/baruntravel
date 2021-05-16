@@ -5,6 +5,7 @@ import lombok.*;
 import me.travelplan.web.UserDto;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,7 +15,9 @@ public class PlaceReviewDto {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     @NoArgsConstructor
     public static class Request {
+        @NotBlank
         private Double score;
+        @NotBlank
         private String content;
         private List<MultipartFile> images;
     }
@@ -23,14 +26,14 @@ public class PlaceReviewDto {
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Response {
-        private Long id;
-        private Double score;
-        private String content;
-        private List<String> images;
-        private UserDto.Response createdBy;
+        private final Long id;
+        private final Double score;
+        private final String content;
+        private final List<String> images;
+        private final UserDto.Response createdBy;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        public LocalDateTime createdAt;
+        public final LocalDateTime createdAt;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        public LocalDateTime updatedAt;
+        public final LocalDateTime updatedAt;
     }
 }

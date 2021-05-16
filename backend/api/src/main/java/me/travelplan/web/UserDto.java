@@ -10,8 +10,8 @@ public class UserDto {
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Response {
-        private String name;
-        private String email;
-        private String avatarUrl;
+        private final String name;
+        private final String email;
+        private final String avatarUrl;
     }
 }

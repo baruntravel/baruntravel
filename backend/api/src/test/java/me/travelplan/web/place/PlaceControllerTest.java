@@ -93,48 +93,6 @@ public class PlaceControllerTest extends MvcTest {
     }
 
     @Test
-    public void getReviewsTest() throws Exception {
-        // given
-        List<PlaceReview> reviews = new ArrayList<>();
-
-        PlaceReview review1 = PlaceReview.builder().id(1L).score(3.5).content("안녕하세요 첫번째 리뷰입니다. 재미있었어요!").build();
-        review1.setCreatedAt(LocalDateTime.now());
-        review1.setUpdatedAt(LocalDateTime.now());
-        PlaceReview review2 = PlaceReview.builder().id(2L).score(4.5).content("재미있게 잘 놀다 갑니다!").build();
-        review2.setCreatedAt(LocalDateTime.now());
-        review2.setUpdatedAt(LocalDateTime.now());
-
-        reviews.add(review1);
-        reviews.add(review2);
-
-        given(placeService.getReviews(any())).willReturn(reviews);
-
-        // when
-        ResultActions results = mockMvc.perform(
-                get("/place/{id}/review", 1L)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding("UTF-8")
-        );
-
-        results.andExpect(status().isOk())
-                .andDo(document("place-getReviews",
-                        getDocumentRequest(),
-                        getDocumentResponse(),
-                        pathParameters(
-                                parameterWithName("id").description("장소 식별자")
-                        ),
-                        responseFields(
-                                fieldWithPath("reviews").type(JsonFieldType.ARRAY).description("리뷰 목록"),
-                                fieldWithPath("reviews[].id").type(JsonFieldType.NUMBER).description("리뷰 식별자"),
-                                fieldWithPath("reviews[].content").type(JsonFieldType.STRING).description("리뷰 내용"),
-                                fieldWithPath("reviews[].score").type(JsonFieldType.NUMBER).description("리뷰 점수"),
-                                fieldWithPath("reviews[].createdAt").type(JsonFieldType.STRING).description("리뷰 작성일시"),
-                                fieldWithPath("reviews[].updatedAt").type(JsonFieldType.STRING).description("리뷰 수정일시")
-                        )
-                ));
-    }
-
-    @Test
     @WithMockCustomUser
     @DisplayName("장소 좋아요 테스트")
     public void createPlaceLikeTest() throws Exception {

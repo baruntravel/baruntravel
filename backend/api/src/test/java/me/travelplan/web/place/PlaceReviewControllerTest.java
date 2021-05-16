@@ -6,6 +6,7 @@ import me.travelplan.service.place.PlaceReviewService;
 import me.travelplan.service.place.domain.PlaceReview;
 import me.travelplan.service.user.domain.User;
 import me.travelplan.web.place.review.PlaceReviewController;
+import me.travelplan.web.place.review.PlaceReviewMapperImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,6 +18,8 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static me.travelplan.ApiDocumentUtils.getDocumentRequest;
 import static me.travelplan.ApiDocumentUtils.getDocumentResponse;
@@ -24,9 +27,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PlaceReviewController.class)
@@ -52,7 +55,7 @@ public class PlaceReviewControllerTest extends MvcTest {
                 .build();
         mockReview.setCreatedAt(LocalDateTime.now());
         mockReview.setUpdatedAt(LocalDateTime.now());
-        mockReview.setCreatedBy(User.builder().name("mockUser").email("mock@mock.com").build());
+        mockReview.setCreatedBy(User.builder().name("이렐리아").email("mock@mock.com").build());
         given(placeReviewService.createReview(any(), any())).willReturn(mockReview);
 
         // when
@@ -97,7 +100,7 @@ public class PlaceReviewControllerTest extends MvcTest {
                 .build();
         mockReview.setCreatedAt(LocalDateTime.now());
         mockReview.setUpdatedAt(LocalDateTime.now());
-        mockReview.setCreatedBy(User.builder().name("mockUser").email("mock@mock.com").build());
+        mockReview.setCreatedBy(User.builder().name("아칼리").email("mock@mock.com").build());
         given(placeReviewService.updateReview(any(), any())).willReturn(mockReview);
         Mockito.doNothing().when(placeReviewService).checkReviewUpdatable(any(), any());
 
@@ -161,4 +164,54 @@ public class PlaceReviewControllerTest extends MvcTest {
                         )
                 ));
     }
+
+    @Test
+    @DisplayName("장소 리뷰 가져오기 테스트")
+    public void getReviewsTest() throws Exception {
+        // given
+        List<PlaceReview> reviews = new ArrayList<>();
+
+        PlaceReview review1 = PlaceReview.builder().id(1L).score(3.5).content("안녕하세요 첫번째 리뷰입니다. 재미있었어요!").build();
+        review1.setCreatedBy(User.builder().name("라이언").email("mock@mock.com").build());
+        review1.setCreatedAt(LocalDateTime.now());
+        review1.setUpdatedAt(LocalDateTime.now());
+        PlaceReview review2 = PlaceReview.builder().id(2L).score(4.5).content("재미있게 잘 놀다 갑니다!").build();
+        review2.setCreatedBy(User.builder().name("벨코즈").email("mock@mock.com").build());
+        review2.setCreatedAt(LocalDateTime.now());
+        review2.setUpdatedAt(LocalDateTime.now());
+
+        reviews.add(review1);
+        reviews.add(review2);
+
+        given(placeReviewService.getReviews(any())).willReturn(reviews);
+
+        // when
+        ResultActions results = mockMvc.perform(
+                get("/place/{id}/review", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(document("place-getReviews",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("id").description("장소 식별자")
+                        ),
+                        responseFields(
+                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("리뷰 식별자"),
+                                fieldWithPath("[].content").type(JsonFieldType.STRING).description("리뷰 내용"),
+                                fieldWithPath("[].score").type(JsonFieldType.NUMBER).description("리뷰 점수"),
+                                fieldWithPath("[].images").type(JsonFieldType.ARRAY).description("리뷰 이미지 경로들"),
+                                fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("리뷰 작성일시"),
+                                fieldWithPath("[].updatedAt").type(JsonFieldType.STRING).description("리뷰 수정일시"),
+                                fieldWithPath("[].createdBy").type(JsonFieldType.OBJECT).description("리뷰 생성자"),
+                                fieldWithPath("[].createdBy.name").type(JsonFieldType.STRING).description("리뷰 생성자 이름"),
+                                fieldWithPath("[].createdBy.email").type(JsonFieldType.STRING).description("리뷰 생성자 이메일"),
+                                fieldWithPath("[].createdBy.avatarUrl").type(JsonFieldType.STRING).description("리뷰 생성자 아바타 이미지 경로")
+                        )
+                ));
+    }
+
 }

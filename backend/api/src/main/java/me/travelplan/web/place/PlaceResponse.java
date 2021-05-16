@@ -23,18 +23,4 @@ public class PlaceResponse {
         private Double score;
         private List<FileDto> images;
     }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    public static class Review {
-        private PlaceDto.ReviewResponse review;
-    }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    public static class Reviews {
-        private List<PlaceDto.ReviewResponse> reviews;
-    }
 }
