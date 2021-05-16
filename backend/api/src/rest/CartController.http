@@ -38,6 +38,17 @@ Authorization: {{authorizationToken}}
 
 ###
 
+PUT {{apiUrl}}/cart/place
+Content-Type: application/json;charset=UTF-8
+Authorization: {{authorizationToken}}
+
+{
+  "firstPlaceId": 1797997961,
+  "secondPlaceId": 1440347564
+}
+
+###
+
 PUT {{apiUrl}}/cart/place/1797997961/memo
 Content-Type: application/json;charset=UTF-8
 Authorization: {{authorizationToken}}

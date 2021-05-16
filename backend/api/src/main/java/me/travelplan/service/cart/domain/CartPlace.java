@@ -36,4 +36,14 @@ public class CartPlace extends BaseEntity {
                 .order(maxOrder + 1)
                 .build();
     }
+
+    private void updateOrder(Integer order) {
+        this.order = order;
+    }
+
+    public static void swapOrder(CartPlace firstCartPlace, CartPlace secondCartPlace) {
+        Integer tempOrder = firstCartPlace.getOrder();
+        firstCartPlace.updateOrder(secondCartPlace.getOrder());
+        secondCartPlace.updateOrder(tempOrder);
+    }
 }

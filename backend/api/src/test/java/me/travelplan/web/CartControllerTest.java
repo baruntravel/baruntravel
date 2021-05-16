@@ -2,8 +2,8 @@ package me.travelplan.web;
 
 import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
-import me.travelplan.service.cart.domain.CartPlace;
 import me.travelplan.service.cart.CartPlaceService;
+import me.travelplan.service.cart.domain.CartPlace;
 import me.travelplan.service.file.domain.File;
 import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.domain.PlaceCategory;
@@ -157,6 +157,33 @@ public class CartControllerTest extends MvcTest {
 
     @Test
     @WithMockCustomUser
+    @DisplayName("카트에 담겨있는 장소 순서 수정")
+    public void updateOrder() throws Exception {
+        CartPlaceRequest.UpdateOrder request = CartPlaceRequest.UpdateOrder.builder()
+                .firstPlaceId(123L)
+                .secondPlaceId(124L)
+                .build();
+
+        ResultActions results = mockMvc.perform(
+                put("/cart/place")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(document("cart-update-place-order",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestFields(
+                                fieldWithPath("firstPlaceId").type(JsonFieldType.NUMBER).description("장소 식별자"),
+                                fieldWithPath("secondPlaceId").type(JsonFieldType.NUMBER).description("장소 식별자")
+                        )
+                ));
+    }
+
+    @Test
+    @WithMockCustomUser
     @DisplayName("카트에 담겨있는 장소에 메모 추가")
     public void addMemo() throws Exception {
         CartPlaceRequest.AddMemo request = CartPlaceRequest.AddMemo.builder()
@@ -164,7 +191,7 @@ public class CartControllerTest extends MvcTest {
                 .build();
 
         ResultActions results = mockMvc.perform(
-                put("/cart/place/{placeId}/memo",123L)
+                put("/cart/place/{placeId}/memo", 123L)
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8")

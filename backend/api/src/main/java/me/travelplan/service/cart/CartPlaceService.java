@@ -45,6 +45,12 @@ public class CartPlaceService {
         cartPlace.addMemo(request.getMemo());
     }
 
+    public void updatePlaceOrder(CartPlaceRequest.UpdateOrder request, User user) {
+        CartPlace firstCartPlace = cartPlaceRepository.findByPlaceIdAndCreatedBy(request.getFirstPlaceId(), user).orElseThrow(CartPlaceNotFoundException::new);
+        CartPlace secondCartPlace = cartPlaceRepository.findByPlaceIdAndCreatedBy(request.getSecondPlaceId(), user).orElseThrow(CartPlaceNotFoundException::new);
+        CartPlace.swapOrder(firstCartPlace, secondCartPlace);
+    }
+
     public void deleteOnePlace(Long placeId, User user) {
         cartPlaceRepository.deleteByPlaceIdAndCreatedBy(placeId, user);
     }
