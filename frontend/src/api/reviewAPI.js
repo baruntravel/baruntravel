@@ -1,7 +1,8 @@
 import axios from "axios";
 
-export const onUploadRouteReview = async (routeId, formData) => {
-  await axios
+// 경로 리뷰 API
+export const onUploadRouteReview = (routeId, formData) => {
+  return axios
     .post(`/route/${routeId}/review`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
@@ -45,6 +46,7 @@ export const onDeleteRouteReview = async (routeId) => {
     });
 };
 
+// 장소 리뷰 API
 export const onReceivePlaceReview = (placeId) => {
   // 장소 리뷰 받아오기
   return axios
@@ -57,3 +59,19 @@ export const onReceivePlaceReview = (placeId) => {
       return false;
     });
 };
+
+export const onUploadPlaceReview = (placeId, formData) => {
+  return axios
+    .post(`/place/${placeId}/review`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    .then((res) => true)
+    .catch((error) => {
+      console.error(error);
+      throw new Error(`unExpected Error ${error}`);
+    });
+};
+
+// export const onEditPlaceReview = (placeId, routeId, formData) => {
+//   return axios
+// }

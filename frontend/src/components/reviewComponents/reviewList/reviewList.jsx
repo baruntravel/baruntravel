@@ -58,7 +58,13 @@ const ReviewList = ({
     },
     [onDeleteReview, setReviewDatas]
   );
-
+  const onHandleEditReview = useCallback(
+    (formData) => {
+      // 수정할 리뷰 ID를 받아와야한다.
+      onEditReview(selectedCard.id, formData);
+    },
+    [onEditReview, selectedCard]
+  );
   const viewListDate = () => {
     console.log("최신순");
     newRef.current.style = "color:black; opacity:1";
@@ -167,7 +173,7 @@ const ReviewList = ({
       >
         <ReviewForm
           prevReview={selectedCard}
-          onUploadReview={onEditReview}
+          onUploadReview={onHandleEditReview}
           onClose={onCloseEditForm}
         />
       </Drawer>

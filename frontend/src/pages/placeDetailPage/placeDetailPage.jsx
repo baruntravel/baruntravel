@@ -13,46 +13,46 @@ import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
 import { onReceivePlace } from "../../api/placeAPI";
-import { onReceivePlaceReview } from "../../api/reviewAPI";
+import { onReceivePlaceReview, onUploadPlaceReview } from "../../api/reviewAPI";
+import { useHistory } from "react-router-dom";
 
 const { kakao } = window;
 const PlaceDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
+  const history = useHistory();
   const [needLogin, setNeedLogin] = useState(false);
-  const [reviewWrite, setReviewWrite] = useState(false);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const [liked, setLiked] = useState(false);
   const [images, setImages] = useState([]); // 보여줄 메인 이미지 저장소
   const [placeDetail, setPlaceDetail] = useState({});
   const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
+  const [moreReview, setMoreReview] = useState(false);
+
   // test 용 place id
   const placeId = 7855876;
+
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);
   }, []);
   const onCloseZoom = useCallback(() => {
     setShowImagesZoom(false);
   }, []);
-  const onClickReviewWrite = useCallback(() => {
-    if (userStates.isLogin) {
-      setReviewWrite(true);
-    } else {
-      setNeedLogin(true);
-    }
-  }, [userStates]);
-  const onCloseReviewWrite = useCallback(() => {
-    setReviewWrite(false);
-  }, []);
-  const afterSliderChange = useCallback((index) => {
-    setImageIndex(index);
-  }, []);
-  const portalAuthClose = useCallback(() => {
+
+  const onClosePortalAuth = useCallback(() => {
     setNeedLogin(false);
   }, []);
-  const portalAuthOpen = useCallback(() => {
+  const onOpenPortalAuth = useCallback(() => {
     setNeedLogin(true);
   }, []);
+
+  const onOpenMoreReview = useCallback(() => {
+    setMoreReview(true);
+  }, []);
+  const onCloseMoreReview = useCallback(() => {
+    setMoreReview(false);
+  }, []);
+
   const onClickLike = useCallback(() => {
     if (userStates.isLogin) {
       console.log("좋아요 API 호출");
@@ -64,6 +64,13 @@ const PlaceDetailPage = (props) => {
   const onClickUnlike = useCallback(() => {
     console.log("좋아요 취소 API 호출");
     setLiked(false);
+  }, []);
+  const onUploadReview = useCallback((formData) => {
+    onUploadPlaceReview(placeId, formData);
+  }, []);
+
+  const afterSliderChange = useCallback((index) => {
+    setImageIndex(index);
   }, []);
   const settings = {
     dots: false,
@@ -107,12 +114,16 @@ const PlaceDetailPage = (props) => {
     window.scrollTo(0, 0);
   }, []);
 
+  if (!userStates.isLogin) {
+    // 로그인 하지 않았을 때 접근 불가 -> 추후에 API 수정 후 고쳐야됨
+    history.push("/");
+  }
   return (
     <div className={styles.PlaceDetailPage}>
       <DetailHeader
         liked={liked}
         needLogin={needLogin}
-        portalAuthOpen={portalAuthOpen}
+        onOpenPortalAuth={onOpenPortalAuth}
         onClickLike={onClickLike}
         onClickUnlike={onClickUnlike}
       />
@@ -161,23 +172,15 @@ const PlaceDetailPage = (props) => {
           <ReviewList
             userStates={userStates}
             reviewDatas={reviewDatas}
-            onClickReviewWrite={onClickReviewWrite}
+            onOpenPortalAuth={onOpenPortalAuth}
+            onUploadReview={onUploadReview}
           />
         </div>
       </div>
-      <Drawer
-        visible={reviewWrite}
-        placement="bottom"
-        height="100vh"
-        bodyStyle={{ padding: 0 }}
-        onClose={onCloseReviewWrite}
-      >
-        <ReviewForm />
-      </Drawer>
       {showImagesZoom && (
         <ImagesZoom images={images} onClose={onCloseZoom} index={imageIndex} />
       )}
-      {needLogin && <PortalAuth onClose={portalAuthClose} />}
+      {needLogin && <PortalAuth onClose={onClosePortalAuth} />}
     </div>
   );
 };

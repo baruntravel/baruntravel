@@ -12,7 +12,7 @@ const DetailHeader = ({
   liked,
   category,
   needLogin,
-  portalAuthOpen,
+  onOpenPortalAuth,
   onClickLike,
   onClickUnlike,
 }) => {

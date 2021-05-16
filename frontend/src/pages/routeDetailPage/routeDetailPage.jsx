@@ -68,13 +68,18 @@ const RouteDetailPage = (props) => {
     setMoreReview(false);
   }, []);
 
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
+  const handleSetReviewDatas = useCallback((updated) => {
+    setReviewDatas(updated);
+  }, []);
+  const onUploadReview = useCallback((formData) => {
+    onUploadRouteReview(1, formData); // 추후에 root ID 동적으로 받아오는 걸 구현 후 수정
+  }, []);
+  const onEditReview = useCallback((reviewId, formData) => {
+    onEditRouteReview(reviewId, formData);
+  }, []);
+  const onDeleteReview = useCallback((id) => {
+    onDeleteRouteReview(id);
+  }, []);
 
   const afterSliderChange = useCallback(
     (index) => {
@@ -83,18 +88,14 @@ const RouteDetailPage = (props) => {
     },
     [images]
   );
-  const handleSetReviewDatas = useCallback((updated) => {
-    setReviewDatas(updated);
-  }, []);
-  const onDeleteReview = useCallback((id) => {
-    onDeleteRouteReview(id);
-  }, []);
-  const onUploadReview = useCallback((formData) => {
-    onUploadRouteReview(1, formData);
-  }, []);
-  const onEditReview = useCallback((reviewId, formData) => {
-    onEditRouteReview(reviewId, formData);
-  }, []);
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+
   useEffect(() => {
     async function getRouteDetailInf() {
       // 루트 상세페이지의 정보를 받아옴

@@ -2,17 +2,19 @@ import styles from "./reviewForm.module.css";
 import { Card, Rate } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import React, { useCallback, useRef, useState } from "react";
-import { getYear, getMonth, getDate } from "date-fns";
+// import { getYear, getMonth, getDate } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages } from "@fortawesome/free-solid-svg-icons";
 import ReviewImageEdit from "./reviewImageEdit/reviewImageEdit";
 import useInput from "../../../hooks/useInput";
 
-const ReviewForm = ({ item, onClose, onUploadReview, prevReview }) => {
+const ReviewForm = ({ onClose, onUploadReview, prevReview }) => {
   const [images, setImages] = useState({}); // 미리보기용 URL 저장소
   const [files, setFiles] = useState({}); // 이미지 file 저장
-  const [inputContext, handleInputContext] = useInput(prevReview.content || "");
-  const [rate, setRate] = useState(prevReview.score || 5);
+  const [inputContext, handleInputContext] = useInput(
+    prevReview ? prevReview.content : ""
+  );
+  const [rate, setRate] = useState(prevReview ? prevReview.score : 5);
   const imageInput = useRef();
   const onSubmit = useCallback(
     (e) => {
@@ -23,7 +25,7 @@ const ReviewForm = ({ item, onClose, onUploadReview, prevReview }) => {
       }); // formData.getAll("images") 를 하면 모두 담겨있는 것을 확인했다.
       formData.append("content", inputContext);
       formData.append("score", rate);
-      onUploadReview(prevReview.id || 1, formData);
+      onUploadReview(formData);
       onClose();
       // image update API 호출
     },
