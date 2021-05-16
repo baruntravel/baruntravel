@@ -11,6 +11,7 @@ import me.travelplan.service.place.domain.PlaceCategory;
 import me.travelplan.service.place.domain.PlaceImage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -43,8 +44,9 @@ public class PlaceControllerTest extends MvcTest {
 
     @Test
     @WithMockCustomUser
-    @DisplayName("장소 단건 조회 테스트")
-    public void getOnePlaceTest() throws Exception {
+    @DisplayName("아이디로 장소 가져오기")
+    public void getByIdPlaceTest() throws Exception {
+        // given
         Place place = Place.builder()
                 .id(1L)
                 .name("옥동식 서교점")
@@ -56,16 +58,17 @@ public class PlaceControllerTest extends MvcTest {
                 .category(PlaceCategory.builder().id("FD6").name("음식점").build())
                 .url("https://place.map.kakao.com/1797997961")
                 .build();
-
         given(placeService.getById(any())).willReturn(place);
 
+        // when
         ResultActions results = mockMvc.perform(
                 get("/place/{id}", 1)
         );
 
+        // then
         results.andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("place-getOne",
+                .andDo(document("place-get",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
@@ -99,7 +102,7 @@ public class PlaceControllerTest extends MvcTest {
         );
 
         results.andExpect(status().isOk())
-                .andDo(document("place-like-create-delete",
+                .andDo(document("place-like",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
