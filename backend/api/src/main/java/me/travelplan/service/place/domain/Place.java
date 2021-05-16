@@ -9,6 +9,7 @@ import me.travelplan.service.user.domain.User;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Builder
@@ -61,7 +62,10 @@ public class Place extends BaseEntity {
         try {
             this.detailStatus = PlaceDetailStatus.COMPLETE;
             this.thumbnail = File.createExternalImage(kakaoMapPlace.getThumbnail());
-            kakaoMapPlace.getPhotos().forEach(photo -> this.addImage(File.createExternalImage(photo.getImageUrl())));
+            this.images = kakaoMapPlace.getPhotos().stream()
+                    .map(photo -> File.createExternalImage(photo.getImageUrl()))
+                    .map(file -> PlaceImage.builder().place(this).file(file).build())
+                    .collect(Collectors.toList());
             this.openHour = kakaoMapPlace.getOpenHour().get(0).getTimeList().get(0).getTimeSE();
         } catch (Exception ex) {
             // ignore

@@ -27,8 +27,8 @@ public class PlaceController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/{placeId}/review")
-    public void createReview(@PathVariable Long placeId, @RequestBody PlaceRequest.PutReview request) {
-        placeService.createReview(placeMapper.placeIdAndRequestToEntity(placeId, request));
+    public void createReview(@PathVariable Long placeId, PlaceRequest.PutReview request) {
+        placeService.createReview(request);
     }
 
     @ResponseStatus(HttpStatus.OK)

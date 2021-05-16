@@ -17,6 +17,7 @@ import me.travelplan.service.place.repository.PlaceLikeRepository;
 import me.travelplan.service.place.repository.PlaceRepository;
 import me.travelplan.service.place.repository.PlaceReviewRepository;
 import me.travelplan.service.user.domain.User;
+import me.travelplan.web.place.PlaceRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,8 +87,10 @@ public class PlaceService {
     }
 
     @Transactional
-    public PlaceReview createReview(PlaceReview review) {
-        return placeReviewService.createReview(review);
+    public PlaceReview createReview(PlaceRequest.PutReview request) {
+        // TODO Place Review 파일 업로드 개발중이었음
+//        return placeReviewService.createReview(review);
+        return PlaceReview.builder().build();
     }
 
     @Transactional

@@ -6,6 +6,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE places_reviews SET deleted_at=CURRENT_TIMESTAMP WHERE `id`=?")
@@ -26,6 +28,10 @@ public class PlaceReview extends BaseEntity {
 
     private Double score;
     private String content;
+
+    @OneToMany(mappedBy = "place")
+    @Builder.Default
+    private List<PlaceReviewImage> images = new ArrayList<>();
 
     public void setPlace(Place place) {
         this.place = place;
