@@ -4,27 +4,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.travelplan.component.kakaomap.KakaoMapPlace;
 import me.travelplan.component.kakaomap.KakaoMapService;
-import me.travelplan.service.file.repository.FileRepository;
 import me.travelplan.service.place.domain.Place;
-import me.travelplan.service.place.domain.PlaceReview;
 import me.travelplan.service.place.exception.PlaceNotFoundException;
-import me.travelplan.service.place.exception.PlaceNotUpdatableException;
-import me.travelplan.service.place.repository.PlaceImageRepository;
-import me.travelplan.service.place.repository.PlaceLikeRepository;
 import me.travelplan.service.place.repository.PlaceRepository;
-import me.travelplan.service.place.repository.PlaceReviewRepository;
-import me.travelplan.service.user.domain.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class PlaceService {
     private final PlaceRepository placeRepository;
-    private final PlaceLikeService placeLikeService;
     private final KakaoMapService kakaoMapService;
 
     /*************************************
