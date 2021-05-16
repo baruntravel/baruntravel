@@ -73,12 +73,12 @@ Content-Type: multipart/form-data; boundary=WebAppBoundary
 --WebAppBoundary
 Content-Disposition: form-data; name="files"; filename="enjoy.png"
 
-< C:\Users\Administrator\Desktop\baruntravel\baruntravel\backend\api\src\main\resources\mock\images\enjoy.png
+< ./../main/resources/mock/images/enjoy.png
 
 --WebAppBoundary
 Content-Disposition: form-data; name="files"; filename="enjoy2.png"
 
-< C:\Users\Administrator\Desktop\baruntravel\baruntravel\backend\api\src\main\resources\mock\images\enjoy2.png
+< ./../main/resources/mock/images/enjoy2.png
 
 --WebAppBoundary
 Content-Disposition: form-data; name="content"
@@ -120,7 +120,7 @@ Content-Type: multipart/form-data; boundary=WebAppBoundary
 --WebAppBoundary
 Content-Disposition: form-data; name="files"; filename="enjoy2.png"
 
-< C:\Users\Administrator\Desktop\baruntravel\baruntravel\backend\api\src\main\resources\mock\images\enjoy2.png
+< ./../main/resources/mock/images/enjoy2.png
 
 --WebAppBoundary
 Content-Disposition: form-data; name="content"
