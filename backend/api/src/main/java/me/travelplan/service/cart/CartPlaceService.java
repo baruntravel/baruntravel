@@ -53,6 +53,9 @@ public class CartPlaceService {
 
     public void deleteOnePlace(Long placeId, User user) {
         cartPlaceRepository.deleteByPlaceIdAndCreatedBy(placeId, user);
+
+        List<CartPlace> cartPlace = cartPlaceRepository.findAllByCreatedBy(user);
+        CartPlace.updateAllOrder(cartPlace);
     }
 
     public void deleteAllPlace(User user) {

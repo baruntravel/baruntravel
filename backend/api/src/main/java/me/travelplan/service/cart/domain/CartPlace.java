@@ -5,6 +5,7 @@ import me.travelplan.config.jpa.BaseEntity;
 import me.travelplan.service.place.domain.Place;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Builder
@@ -26,6 +27,10 @@ public class CartPlace extends BaseEntity {
     @JoinColumn(name = "place_id")
     private Place place;
 
+    private void updateOrder(Integer order) {
+        this.order = order;
+    }
+
     public void addMemo(String memo) {
         this.memo = memo;
     }
@@ -37,8 +42,11 @@ public class CartPlace extends BaseEntity {
                 .build();
     }
 
-    private void updateOrder(Integer order) {
-        this.order = order;
+    public static void updateAllOrder(List<CartPlace> cartPlaces) {
+        int i = 1;
+        for (CartPlace cartPlace : cartPlaces) {
+            cartPlace.updateOrder(i++);
+        }
     }
 
     public static void swapOrder(CartPlace firstCartPlace, CartPlace secondCartPlace) {

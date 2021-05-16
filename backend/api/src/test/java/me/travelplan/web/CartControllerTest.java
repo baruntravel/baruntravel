@@ -98,6 +98,7 @@ public class CartControllerTest extends MvcTest {
                         .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .memo("첫번째 테스트 메모입니다~!")
+                .order(1)
                 .build();
         cartPlaceList.add(cartPlace1);
         CartPlace cartPlace2 = CartPlace.builder()
@@ -112,6 +113,7 @@ public class CartControllerTest extends MvcTest {
                         .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .memo("두번째 테스트 메모입니다~!")
+                .order(2)
                 .build();
         cartPlaceList.add(cartPlace2);
         CartPlace cartPlace3 = CartPlace.builder()
@@ -126,6 +128,7 @@ public class CartControllerTest extends MvcTest {
                         .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .memo("세번째 테스트 메모입니다~!")
+                .order(3)
                 .build();
         cartPlaceList.add(cartPlace3);
 
@@ -149,6 +152,7 @@ public class CartControllerTest extends MvcTest {
                                 fieldWithPath("places[].memo").description("장소에 대한 메모 (메모가 없다면 null)"),
                                 fieldWithPath("places[].likeCheck").description("장소 좋아요"),
                                 fieldWithPath("places[].url").description("장소 URL"),
+                                fieldWithPath("places[].order").description("카트에 담긴 장소 순서"),
                                 fieldWithPath("places[].categoryId").description("장소 카테고리 식별자"),
                                 fieldWithPath("places[].categoryName").description("장소 카테고리 이름")
                         )

@@ -34,7 +34,5 @@ public class CartPlaceRepositoryImpl implements CartPlaceRepositoryCustom {
                 .where(cartPlace.createdBy.eq(user))
                 .orderBy(cartPlace.order.asc())
                 .fetch();
-
-
     }
 }
