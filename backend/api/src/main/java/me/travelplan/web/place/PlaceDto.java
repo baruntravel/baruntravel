@@ -17,25 +17,4 @@ public class PlaceDto {
         private String address;
         private String categoryId;
     }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    @NoArgsConstructor
-    public static class ReviewRequest {
-        Double score;
-        String content;
-        List<MultipartFile> images;
-    }
-
-    public static class ReviewResponse {
-        public Long id;
-        public String content;
-        public Double score;
-
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        public LocalDateTime createdAt;
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        public LocalDateTime updatedAt;
-    }
 }

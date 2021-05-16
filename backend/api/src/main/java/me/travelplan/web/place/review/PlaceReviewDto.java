@@ -31,9 +31,10 @@ public class PlaceReviewDto {
         private final String content;
         private final List<String> images;
         private final UserDto.Response createdBy;
+        private final boolean isMine;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        public final LocalDateTime createdAt;
+        private final LocalDateTime createdAt;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        public final LocalDateTime updatedAt;
+        private final LocalDateTime updatedAt;
     }
 }

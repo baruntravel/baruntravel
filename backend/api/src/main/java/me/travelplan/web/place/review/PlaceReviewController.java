@@ -18,21 +18,21 @@ public class PlaceReviewController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<PlaceReviewDto.Response> getReviews(@PathVariable Long placeId) {
-        return placeReviewMapper.entityToResponseDto(placeReviewService.getReviews(placeId));
+    public List<PlaceReviewDto.Response> getReviews(@PathVariable Long placeId, @CurrentUser CustomUserDetails userDetails) {
+        return placeReviewMapper.entityToResponseDto(placeReviewService.getReviews(placeId), userDetails.getUser());
    }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public PlaceReviewDto.Response create(@PathVariable Long placeId, PlaceReviewDto.Request request) {
-        return placeReviewMapper.entityToResponseDto(placeReviewService.createReview(placeId, request));
+    public PlaceReviewDto.Response create(@PathVariable Long placeId, PlaceReviewDto.Request request, @CurrentUser CustomUserDetails userDetails) {
+        return placeReviewMapper.entityToResponseDto(placeReviewService.createReview(placeId, request), userDetails.getUser());
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{reviewId}")
     public PlaceReviewDto.Response update(@PathVariable Long reviewId, PlaceReviewDto.Request request, @CurrentUser CustomUserDetails userDetails) {
         placeReviewService.checkReviewUpdatable(reviewId, userDetails.getUser());
-        return placeReviewMapper.entityToResponseDto(placeReviewService.updateReview(reviewId, request));
+        return placeReviewMapper.entityToResponseDto(placeReviewService.updateReview(reviewId, request), userDetails.getUser());
     }
 
     @ResponseStatus(HttpStatus.OK)
