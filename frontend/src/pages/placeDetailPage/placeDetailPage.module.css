@@ -50,6 +50,7 @@
 .body__placeLocation {
   padding: 32px 0;
   border-bottom: 2px solid lightgrey;
+  margin-bottom: 12px;
 }
 
 .body__locationTitle {
@@ -67,6 +68,27 @@
   width: 100%;
   height: 100%;
   border-radius: 12px;
+}
+.buttonBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.button {
+  width: 90%;
+  border: none;
+  color: #25b8f8;
+  background-color: whitesmoke;
+  font-size: 1.1em;
+  font-weight: 500;
+  border-radius: 12px;
+  margin-bottom: 6px;
+}
+.wishCount {
+  font-size: 0.8em;
+  color: grey;
 }
 .reviewList {
   padding-top: 24px;

@@ -22,7 +22,7 @@ const ShoppingItem = memo(
     const onHandleDelete = useCallback(() => {
       setConfirmPortalTrue();
       deleteClickedItemId(item.id);
-    }, []);
+    }, [item]);
     return (
       <div className={styles.shoppingItem}>
         <div className={styles.placeInfo}>

@@ -28,9 +28,7 @@ const DeleteConfirm = ({ deleteItemId, onDeleteItem, onClose }) => {
         <div ref={portalRef} className={styles.confirmBox}>
           <div className={styles.textBox}>
             <p className={styles.deleteText}>정말 삭제하시겠습니까?</p>
-            <p className={styles.confirmText}>
-              장바구니에서 삭제하면 복구할 수 없습니다.
-            </p>
+            <p className={styles.confirmText}>삭제하시면 복구할 수 없습니다.</p>
             <p className={styles.confirmText}>삭제하시겠습니까?</p>
           </div>
           <div className={styles.buttonBox}>
