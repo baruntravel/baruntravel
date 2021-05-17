@@ -9,20 +9,19 @@ import DeleteConfirm from "../../components/common/deleteConfirm/deleteConfirm";
 import CategoryBar from "../../components/map/hotplaceMap/categoryBar/categoryBar";
 import PlaceCard from "../../components/placeCard/placeCard";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userState, userCart } from "../../recoil/userState";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
-
 import {
   onAddCart,
   onDeleteCartItem,
   onDeleteCartAll,
   onReceiveCart,
 } from "../../api/cartAPI";
+import SideProfileToggle from "../../components/common/sideProfileToggle/sideProfileToggle";
 const HotplacePage = () => {
   const placeListRef = useRef();
   const searchRef = useRef();
@@ -185,14 +184,18 @@ const HotplacePage = () => {
             onChange={handleInputKeyword}
             value={inputKeyword || ""}
           />
+          <div className={styles.toggle}>
+            <ShoppingCartOutlined
+              className={styles.cartIcon}
+              onClick={setCartVisibleTrue}
+            />
+          </div>
         </form>
-        <div className={styles.toggle}>
-          <ShoppingCartOutlined
-            className={styles.cartIcon}
-            onClick={setCartVisibleTrue}
-          />
+        <div className={styles.profileToggle}>
+          <SideProfileToggle />
         </div>
       </div>
+
       <div className={styles.mapContainer}>
         <HotplaceMap
           searchRef={searchRef}
