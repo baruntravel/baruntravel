@@ -21,6 +21,9 @@ const { kakao } = window;
 const PlaceDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
   const history = useHistory();
+
+  const placeId = window.location.pathname.split("/").pop(); // url 마지막 부분이 ID이다.
+
   const [loading, setLoading] = useState(false);
   const [needLogin, setNeedLogin] = useState(false);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
@@ -30,9 +33,6 @@ const PlaceDetailPage = (props) => {
   const [placeDetail, setPlaceDetail] = useState({});
   const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
   const [moreReview, setMoreReview] = useState(false);
-
-  // test 용 place id
-  const placeId = 7855876;
 
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);

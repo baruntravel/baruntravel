@@ -29,6 +29,8 @@ const RouteDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
   const history = useHistory();
 
+  const routeId = window.location.pathname.split("/").pop(); // url 마지막 부분이 ID이다.
+
   const [loading, setLoading] = useState(true);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
@@ -40,8 +42,6 @@ const RouteDetailPage = (props) => {
   const [images, setImages] = useState([]); // 이미지와 이름을 같이 저장
   const [postImages, setPostImages] = useState([]); // 이미지만 저장 (줌을 위한 이미지)
   const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
-
-  const routeId = 1;
 
   const onCloseInputName = useCallback(() => {
     setOpenInputName(false);
