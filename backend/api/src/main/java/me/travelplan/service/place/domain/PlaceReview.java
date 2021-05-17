@@ -23,21 +23,20 @@ public class PlaceReview extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     private Place place;
 
     private Double score;
     private String content;
 
-    @OneToMany(mappedBy = "place")
+    @OneToMany(mappedBy = "review")
     @Builder.Default
     private List<PlaceReviewImage> images = new ArrayList<>();
 
     public void setPlace(Place place) {
         this.place = place;
     }
-
 
     public void update(PlaceReviewDto.Request changed) {
         this.score = changed.getScore();

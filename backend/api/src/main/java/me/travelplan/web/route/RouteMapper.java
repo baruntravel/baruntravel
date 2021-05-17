@@ -25,8 +25,6 @@ import java.util.stream.Collectors;
 public interface RouteMapper {
     RouteResponse.RouteId toRouteIdResponse(Route route);
 
-    RouteResponse.ReviewId toReviewIdResponse(RouteReview review);
-
     default Place toPlace(RouteRequest.AddPlace request) {
         return Place.builder()
                 .id(request.getPlace().getId())
@@ -147,32 +145,4 @@ public interface RouteMapper {
         });
         return getList;
     }
-
-    default RouteResponse.ReviewList entityToResponseReviewList(List<RouteReview> reviews, CustomUserDetails customUserDetails) {
-        return RouteResponse.ReviewList.builder()
-                .reviews(reviews.stream().map(routeReview -> {
-                    RouteDto.Creator.CreatorBuilder creatorBuilder = RouteDto.Creator.builder()
-                            .name(routeReview.getCreatedBy().getName());
-                    if (routeReview.getCreatedBy().getAvatar() != null) {
-                        creatorBuilder.avatar(routeReview.getCreatedBy().getAvatar().getUrl());
-                    }
-                    return RouteDto.ReviewResponse.builder()
-                            .id(routeReview.getId())
-                            .content(routeReview.getContent())
-                            .score(routeReview.getScore())
-                            .likeCheck(routeReview.isLike(customUserDetails))
-                            .likeCount(routeReview.getRouteReviewLikes().size())
-                            .creator(creatorBuilder.build())
-                            .files(routeReview.getRouteReviewFiles().stream()
-                                    .map(RouteReviewFile::getFile)
-                                    .map(File::getUrl)
-                                    .map(FileDto.Image::new)
-                                    .collect(Collectors.toList()))
-                            .createdAt(routeReview.getCreatedAt())
-                            .updatedAt(routeReview.getUpdatedAt())
-                            .build();
-                }).collect(Collectors.toList()))
-                .build();
-    }
-
 }

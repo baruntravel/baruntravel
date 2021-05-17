@@ -1,16 +1,14 @@
-package me.travelplan.web;
+package me.travelplan.web.route;
 
 import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
 import me.travelplan.service.file.domain.File;
 import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.domain.PlaceCategory;
+import me.travelplan.service.route.RouteService;
 import me.travelplan.service.route.domain.Route;
 import me.travelplan.service.route.domain.RoutePlace;
-import me.travelplan.service.route.RouteService;
 import me.travelplan.service.user.domain.User;
-import me.travelplan.web.route.RouteMapperImpl;
-import me.travelplan.web.route.RoutesController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -37,9 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(RoutesController.class)
-@Import({
-        RouteMapperImpl.class
-})
+@Import(RouteMapperImpl.class)
 public class RoutesControllerTest extends MvcTest {
     @MockBean
     private RouteService routeService;

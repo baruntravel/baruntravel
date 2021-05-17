@@ -39,30 +39,4 @@ public class RouteController {
     public void createOrUpdateLike(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
         routeService.createOrDeleteLike(id, userDetails.getUser());
     }
-
-    @PostMapping("/{id}/review")
-    @ResponseStatus(HttpStatus.CREATED)
-    public RouteResponse.ReviewId createReview(@PathVariable Long id, RouteRequest.CreateOrUpdateReview request) {
-        return routeMapper.toReviewIdResponse(routeService.createReview(request, id));
-    }
-
-    @GetMapping("/{id}/reviews")
-    public RouteResponse.ReviewList getReviewList(@PathVariable Long id, @CurrentUser CustomUserDetails customUserDetails) {
-        return routeMapper.entityToResponseReviewList(routeService.getReviewList(id), customUserDetails);
-    }
-
-    @PostMapping("/review/{id}")
-    public void updateReview(@PathVariable Long id, RouteRequest.CreateOrUpdateReview request, @CurrentUser CustomUserDetails userDetails) {
-        routeService.updateReview(id, request, userDetails.getUser());
-    }
-
-    @PostMapping("/review/{id}/like")
-    public void createOrUpdateReviewLike(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
-        routeService.createOrDeleteReviewLike(id, userDetails.getUser());
-    }
-
-    @DeleteMapping("/review/{id}")
-    public void deleteReview(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
-        routeService.deleteReview(id, userDetails.getUser());
-    }
 }

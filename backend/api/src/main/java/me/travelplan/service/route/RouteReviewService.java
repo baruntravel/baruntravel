@@ -17,14 +17,16 @@ import me.travelplan.service.route.repository.RouteReviewRepository;
 import me.travelplan.service.user.domain.User;
 import me.travelplan.web.route.RouteRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
-class RouteReviewService {
+public class RouteReviewService {
     private final RouteRepository routeRepository;
     private final RouteReviewRepository routeReviewRepository;
     private final RouteReviewLikeRepository routeReviewLikeRepository;
@@ -40,6 +42,7 @@ class RouteReviewService {
         return routeReviewRepository.save(routeReview);
     }
 
+    @Transactional(readOnly = true)
     public List<RouteReview> getList(Long id) {
         return routeReviewRepository.findAllByRouteId(id);
     }
@@ -66,7 +69,7 @@ class RouteReviewService {
         routeReviewRepository.deleteById(id);
     }
 
-    public void createOrDeleteReviewLike(Long id, User user) {
+    public void createOrDeleteLike(Long id, User user) {
         RouteReview route = routeReviewRepository.findById(id).orElseThrow(RouteReviewNotFoundException::new);
         Optional<RouteReviewLike> optionalRouteReviewLike = routeReviewLikeRepository.findByRouteReviewIdAndCreatedBy(id, user);
         if (optionalRouteReviewLike.isEmpty()) {

@@ -1,4 +1,4 @@
-package me.travelplan.web;
+package me.travelplan.web.auth;
 
 import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
