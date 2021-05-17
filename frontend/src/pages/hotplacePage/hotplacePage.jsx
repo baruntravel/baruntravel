@@ -4,6 +4,8 @@ import HotplaceMap from "../../components/map/hotplaceMap/hotplaceMap";
 import useInput from "../../hooks/useInput";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { Drawer } from "antd";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faList } from "@fortawesome/free-solid-svg-icons";
 import ShoppingCart from "../../components/common/shoppingCart/shoppingCart";
 import DeleteConfirm from "../../components/common/deleteConfirm/deleteConfirm";
 import CategoryBar from "../../components/map/hotplaceMap/categoryBar/categoryBar";
@@ -22,6 +24,7 @@ import {
   onReceiveCart,
 } from "../../api/cartAPI";
 import SideProfileToggle from "../../components/common/sideProfileToggle/sideProfileToggle";
+import PortalPlaceList from "../../components/portalPlaceList/portalPlaceList";
 
 const HotplacePage = () => {
   const placeListRef = useRef();
@@ -38,27 +41,12 @@ const HotplacePage = () => {
   const [cartVisible, setCartVisible] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [confirmPortal, setConfirmPortal] = useState(false);
-  const [place, setPlace] = useState({});
+  const [place, setPlace] = useState({}); // 현재 선택된 place
   const [inputKeyword, handleInputKeyword] = useInput();
   const [searchPlace, setSearchPlace] = useState(""); // 입력받은 keyword 저장
   const [searchPlaces, setSearchPlaces] = useState([]);
   const [markerIndex, setMarkerIndex] = useState();
-
-  useEffect(() => {
-    async function receiveCart() {
-      const cartItems = await onReceiveCart();
-      if (cartItems) {
-        setShoppingItems(cartItems);
-      }
-    }
-    if (userStates.isLogin) {
-      receiveCart();
-    }
-  }, [userStates]);
-
-  useEffect(() => {
-    setShoppingItemsRecoil(shoppingItems); // 페이지에서 shopping Items state가 변경되면 전역으로도 바꿔줘야함.
-  }, [setShoppingItemsRecoil, shoppingItems]);
+  const [openListPortal, setOpenListPortal] = useState();
 
   const setCartVisibleTrue = useCallback(() => {
     if (userStates.isLogin) {
@@ -166,6 +154,29 @@ const HotplacePage = () => {
     setNeedLogin(false);
   }, []);
 
+  const onOpenListPortal = useCallback(() => {
+    setOpenListPortal(true);
+  }, []);
+  const onCloseListPortal = useCallback(() => {
+    setOpenListPortal(false);
+  }, []);
+
+  useEffect(() => {
+    async function receiveCart() {
+      const cartItems = await onReceiveCart();
+      if (cartItems) {
+        setShoppingItems(cartItems);
+      }
+    }
+    if (userStates.isLogin) {
+      receiveCart();
+    }
+  }, [userStates]);
+
+  useEffect(() => {
+    setShoppingItemsRecoil(shoppingItems); // 페이지에서 shopping Items state가 변경되면 전역으로도 바꿔줘야함.
+  }, [setShoppingItemsRecoil, shoppingItems]);
+
   const settings = {
     dots: false,
     infinite: true,
@@ -209,6 +220,14 @@ const HotplacePage = () => {
         />
       </div>
       <div ref={placeListRef} className={styles.carouselContainer}>
+        <div className={styles.mapButtonBox}>
+          <button
+            className={styles.listPortalButton}
+            onClick={onOpenListPortal}
+          >
+            <FontAwesomeIcon icon={faList} color="white" size="lg" />
+          </button>
+        </div>
         <Slider
           ref={sliderRef}
           {...settings}
@@ -266,6 +285,9 @@ const HotplacePage = () => {
         />
       )}
       {needLogin && <PortalAuth onClose={portalAuthClose} />}
+      {openListPortal && (
+        <PortalPlaceList onClose={onCloseListPortal} places={searchPlaces} />
+      )}
     </div>
   );
 };
