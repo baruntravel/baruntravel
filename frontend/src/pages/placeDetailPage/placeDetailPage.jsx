@@ -15,6 +15,7 @@ import { onReceivePlace } from "../../api/placeAPI";
 import { onReceivePlaceReview, onUploadPlaceReview } from "../../api/reviewAPI";
 import { useHistory } from "react-router-dom";
 import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
+import Loading from "../../components/common/loading/loading";
 
 const { kakao } = window;
 
@@ -24,7 +25,7 @@ const PlaceDetailPage = (props) => {
 
   const placeId = window.location.pathname.split("/").pop(); // url 마지막 부분이 ID이다.
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // 처음에는 로딩이 필요하다
   const [needLogin, setNeedLogin] = useState(false);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
@@ -113,11 +114,12 @@ const PlaceDetailPage = (props) => {
     getReviewList();
     window.scrollTo(0, 0);
     setLoading(false);
-  }, []);
+  }, [placeId]);
 
   const afterSliderChange = useCallback((index) => {
     setImageIndex(index);
   }, []);
+
   const settings = {
     dots: false,
     infinite: true,
@@ -130,7 +132,11 @@ const PlaceDetailPage = (props) => {
     history.push("/");
   }
   if (loading) {
-    return <div>로딩</div>;
+    return (
+      <>
+        <Loading />
+      </>
+    );
   }
   if (!placeDetail) {
     return <div>place 정보가 없습니다.</div>;

@@ -24,6 +24,7 @@ import { getRouteDetail } from "../../api/routeAPI";
 import { StarFilled } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
+import Loading from "../../components/common/loading/loading";
 
 const RouteDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
@@ -112,7 +113,7 @@ const RouteDetailPage = (props) => {
     getRouteDetailInfo();
     getReviewList();
     setLoading(false);
-  }, [history, userStates]);
+  }, [history, routeId, userStates]);
 
   const settings = {
     dots: false,
@@ -128,7 +129,11 @@ const RouteDetailPage = (props) => {
   }
 
   if (loading) {
-    return <div>hi</div>;
+    return (
+      <>
+        <Loading />
+      </>
+    );
   }
   return (
     <div className={styles.RouteDetailPage}>
