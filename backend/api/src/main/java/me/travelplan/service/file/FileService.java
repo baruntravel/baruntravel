@@ -21,6 +21,9 @@ public class FileService {
     private final S3Uploader s3Uploader;
 
     public File upload(MultipartFile file) {
+        if (file == null) {
+            return null;
+        }
         return fileRepository.save(File.create(s3Uploader.upload(file)));
     }
 
@@ -32,7 +35,7 @@ public class FileService {
         return fileRepository.saveAll(savedFiles.stream().map(File::create).collect(Collectors.toList()));
     }
 
-    public void deleteById(Long fileId){
+    public void deleteById(Long fileId) {
         fileRepository.deleteById(fileId);
     }
 }

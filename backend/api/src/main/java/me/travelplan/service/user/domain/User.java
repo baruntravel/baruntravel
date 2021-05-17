@@ -6,9 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import me.travelplan.config.jpa.BaseEntity;
 import me.travelplan.service.file.domain.File;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -46,5 +48,16 @@ public class User extends BaseEntity {
 
     public void updateAvatar(File updateAvatar) {
         this.avatar = updateAvatar;
+    }
+
+    public static User create(String name, String email, String password, File avatar, PasswordEncoder passwordEncoder) {
+        return User.builder()
+                .name(name)
+                .email(email)
+                .password(passwordEncoder.encode(password))
+                .avatar(avatar)
+                .refreshToken(UUID.randomUUID().toString())
+                .refreshTokenExpiredAt(LocalDateTime.now())
+                .build();
     }
 }
