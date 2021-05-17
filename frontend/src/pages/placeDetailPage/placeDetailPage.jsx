@@ -72,9 +72,12 @@ const PlaceDetailPage = (props) => {
   const handleSetReviewDatas = useCallback((updated) => {
     setReviewDatas(updated);
   }, []);
-  const onUploadReview = useCallback((formData) => {
-    onUploadPlaceReview(placeId, formData);
-  }, []);
+  const onUploadReview = useCallback(
+    (formData) => {
+      onUploadPlaceReview(placeId, formData);
+    },
+    [placeId]
+  );
 
   useEffect(() => {
     async function getPlaceDetail() {
@@ -104,16 +107,13 @@ const PlaceDetailPage = (props) => {
           level: 4,
           marker: marker,
         };
-      let staticMap = new kakao.maps.StaticMap(
-        staticMapContainer,
-        staticMapOption
-      );
+      new kakao.maps.StaticMap(staticMapContainer, staticMapOption);
     }
     // placeDetail 받아오는 곳
     getPlaceDetail();
     getReviewList();
     window.scrollTo(0, 0);
-    setLoading(false);
+    setLoading(false); // loading을 조금 더 자연스럽게하는 방법을 추후에 생각해보자
   }, [placeId]);
 
   const afterSliderChange = useCallback((index) => {
@@ -177,6 +177,9 @@ const PlaceDetailPage = (props) => {
             </div>
             <span className={styles.body__address}>{placeDetail.address}</span>
           </div>
+          <span className={styles.body__openHour}>
+            영업시간 : {placeDetail.openHour}
+          </span>
         </div>
         <div className={styles.body__placeLocation}>
           <div className={styles.body__titleContainer}>
@@ -203,6 +206,7 @@ const PlaceDetailPage = (props) => {
             reviewDatas={reviewDatas}
             onOpenPortalAuth={onOpenPortalAuth}
             onUploadReview={onUploadReview}
+            setReviewDatas={handleSetReviewDatas}
           />
         </div>
         <div className={styles.buttonBox}>

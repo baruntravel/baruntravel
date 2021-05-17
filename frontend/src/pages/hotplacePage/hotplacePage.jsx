@@ -39,7 +39,7 @@ const HotplacePage = () => {
   const [confirmPortal, setConfirmPortal] = useState(false);
   const [place, setPlace] = useState({});
   const [inputKeyword, handleInputKeyword] = useInput();
-  const [searchPlace, setSearchPlace] = useState("");
+  const [searchPlace, setSearchPlace] = useState(""); // 검색용 keyword
   const [searchPlaces, setSearchPlaces] = useState([]);
   const [markerIndex, setMarkerIndex] = useState();
 
@@ -156,9 +156,9 @@ const HotplacePage = () => {
     [setShoppingItems]
   );
 
-  const resetCartAll = useCallback(async () => {
+  const resetCartAll = useCallback(() => {
     setShoppingItems([]);
-    await onDeleteCartAll();
+    onDeleteCartAll();
   }, [setShoppingItems]);
 
   const portalAuthClose = useCallback(() => {
@@ -223,7 +223,7 @@ const HotplacePage = () => {
                 onHandleDelete={handleDeleteItem}
                 addShoppingCart={addShoppingCart}
                 isLiked={
-                  shoppingItems.filter((item) => item.id == place.id).length
+                  shoppingItems.filter((item) => item.id == place.id).length // 우리 API 호출 시 id가 number, 카카오 API 호출 시 id가 String 얕은 비교
                 }
               />
             </div>

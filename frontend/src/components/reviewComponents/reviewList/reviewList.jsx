@@ -66,7 +66,6 @@ const ReviewList = ({
     [onEditReview, selectedCard]
   );
   const viewListDate = () => {
-    console.log("최신순");
     newRef.current.style = "color:black; opacity:1";
     recommendRef.current.style = "color:gray; opacity: 0.8;";
     setReviewDatas((prev) => {
@@ -84,7 +83,6 @@ const ReviewList = ({
     });
   };
   const viewListLikeCount = () => {
-    console.log("추천순");
     newRef.current.style = "color:gray; opacity: 0.8;";
     recommendRef.current.style = "color:black; opacity:1";
     setReviewDatas((prev) => {
