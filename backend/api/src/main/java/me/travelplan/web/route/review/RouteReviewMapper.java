@@ -5,8 +5,9 @@ import me.travelplan.service.file.domain.File;
 import me.travelplan.service.route.domain.RouteReview;
 import me.travelplan.service.route.domain.RouteReviewFile;
 import me.travelplan.web.common.FileDto;
-import me.travelplan.web.route.RouteDto;
-import me.travelplan.web.route.RouteResponse;
+import me.travelplan.web.common.UserDto;
+import me.travelplan.web.route.review.dto.RouteReviewDto;
+import me.travelplan.web.route.review.dto.RouteReviewResponse;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
@@ -18,24 +19,25 @@ import java.util.stream.Collectors;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR
 )
 public interface RouteReviewMapper {
-    RouteResponse.ReviewId toReviewIdResponse(RouteReview review);
+    RouteReviewResponse.GetOnlyId toReviewIdResponse(RouteReview review);
 
-    default RouteResponse.ReviewList entityToResponseReviewList(List<RouteReview> reviews, CustomUserDetails customUserDetails) {
-        return RouteResponse.ReviewList.builder()
+    default RouteReviewResponse.GetList entityToResponseReviewList(List<RouteReview> reviews, CustomUserDetails customUserDetails) {
+        return RouteReviewResponse.GetList.builder()
                 .reviews(reviews.stream().map(routeReview -> {
-                    RouteDto.Creator.CreatorBuilder creatorBuilder = RouteDto.Creator.builder()
+                    UserDto.Response.ResponseBuilder userDtoBuilder = UserDto.Response.builder()
+                            .email(routeReview.getCreatedBy().getEmail())
                             .name(routeReview.getCreatedBy().getName());
                     if (routeReview.getCreatedBy().getAvatar() != null) {
-                        creatorBuilder.avatar(routeReview.getCreatedBy().getAvatar().getUrl());
+                        userDtoBuilder.avatarUrl(routeReview.getCreatedBy().getAvatar().getUrl());
                     }
-                    return RouteDto.ReviewResponse.builder()
+                    return RouteReviewDto.Response.builder()
                             .id(routeReview.getId())
                             .content(routeReview.getContent())
                             .score(routeReview.getScore())
-                            .likeCheck(routeReview.isLike(customUserDetails))
-                            .likeCount(routeReview.getRouteReviewLikes().size())
-                            .creator(creatorBuilder.build())
-                            .files(routeReview.getRouteReviewFiles().stream()
+                            .isLike(routeReview.isLike(customUserDetails))
+                            .likes(routeReview.getRouteReviewLikes().size())
+                            .creator(userDtoBuilder.build())
+                            .images(routeReview.getRouteReviewFiles().stream()
                                     .map(RouteReviewFile::getFile)
                                     .map(File::getUrl)
                                     .map(FileDto.Image::new)

@@ -6,6 +6,8 @@ import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.service.route.RouteService;
 import me.travelplan.service.route.domain.Route;
 import me.travelplan.web.common.PageRequest;
+import me.travelplan.web.route.dto.RouteRequest;
+import me.travelplan.web.route.dto.RouteResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.web.bind.annotation.GetMapping;

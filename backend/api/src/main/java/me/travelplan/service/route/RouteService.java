@@ -14,7 +14,7 @@ import me.travelplan.service.route.repository.RouteLikeRepository;
 import me.travelplan.service.route.repository.RoutePlaceRepository;
 import me.travelplan.service.route.repository.RouteRepository;
 import me.travelplan.service.user.domain.User;
-import me.travelplan.web.route.RouteRequest;
+import me.travelplan.web.route.dto.RouteRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

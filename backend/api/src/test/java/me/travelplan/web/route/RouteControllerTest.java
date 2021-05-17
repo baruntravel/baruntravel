@@ -9,6 +9,8 @@ import me.travelplan.service.route.RouteService;
 import me.travelplan.service.route.domain.Route;
 import me.travelplan.service.route.domain.RoutePlace;
 import me.travelplan.service.user.domain.User;
+import me.travelplan.web.route.dto.RouteDto;
+import me.travelplan.web.route.dto.RouteRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -197,6 +199,7 @@ public class RouteControllerTest extends MvcTest {
         route.setUpdatedAt(LocalDateTime.of(2021, 4, 14, 9, 0).plusDays(5));
         route.setCreatedBy(User.builder()
                 .name("테스트유저")
+                .email("test@test.com")
                 .avatar(File.builder()
                         .url("https://s3.ap-northeast-2.amazonaws.com/s3.baruntravel.me/CFGueDdj5pCNzEoCk26e8gY5FgWwOuFhiMfVyzOlU7D7ckIlZHHGad6yCCxa.png")
                         .build()).build());
@@ -223,8 +226,9 @@ public class RouteControllerTest extends MvcTest {
                                 fieldWithPath("score").type(JsonFieldType.NUMBER).description("경로 평점"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("경로 생성 날짜"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("경로 수정 날짜"),
-                                fieldWithPath("creator.name").type(JsonFieldType.STRING).description("경로의 생성자 이름"),
-                                fieldWithPath("creator.avatar").type(JsonFieldType.STRING).description("경로의 생성자의 프로필 이미지 url (없다면 null)"),
+                                fieldWithPath("creator.name").type(JsonFieldType.STRING).description("경로 생성한 사람의 이름"),
+                                fieldWithPath("creator.email").type(JsonFieldType.STRING).description("경로 생성한 사람의 이메일"),
+                                fieldWithPath("creator.avatarUrl").type(JsonFieldType.STRING).description("경로의 생성한 사람의 프로필 이미지 url (없다면 null)"),
                                 fieldWithPath("places").type(JsonFieldType.ARRAY).description("경로의 장소들"),
                                 fieldWithPath("places[].id").type(JsonFieldType.NUMBER).description("장소 식별자"),
                                 fieldWithPath("places[].address").type(JsonFieldType.STRING).description("장소 주소"),

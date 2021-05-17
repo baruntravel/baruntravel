@@ -7,9 +7,10 @@ import me.travelplan.service.file.domain.FileType;
 import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.domain.PlaceCategory;
 import me.travelplan.service.route.domain.Route;
-import me.travelplan.service.route.domain.RouteReview;
-import me.travelplan.service.route.domain.RouteReviewFile;
-import me.travelplan.web.common.FileDto;
+import me.travelplan.web.common.UserDto;
+import me.travelplan.web.route.dto.RouteDto;
+import me.travelplan.web.route.dto.RouteRequest;
+import me.travelplan.web.route.dto.RouteResponse;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
@@ -73,10 +74,11 @@ public interface RouteMapper {
         Double centerX = map.get("centerX");
         Double centerY = map.get("centerY");
 
-        RouteDto.Creator.CreatorBuilder creatorBuilder = RouteDto.Creator.builder()
+        UserDto.Response.ResponseBuilder userDtoBuilder = UserDto.Response.builder()
+                .email(route.getCreatedBy().getEmail())
                 .name(route.getCreatedBy().getName());
         if (route.getCreatedBy().getAvatar() != null) {
-            creatorBuilder.avatar(route.getCreatedBy().getAvatar().getUrl());
+            userDtoBuilder.avatarUrl(route.getCreatedBy().getAvatar().getUrl());
         }
 
         return RouteResponse.GetOne.builder()
@@ -84,7 +86,7 @@ public interface RouteMapper {
                 .centerX(centerX)
                 .centerY(centerY)
                 .score(route.getAverageReviewScore())
-                .creator(creatorBuilder.build())
+                .creator(userDtoBuilder.build())
                 .createdAt(route.getCreatedAt())
                 .updatedAt(route.getUpdatedAt())
                 .reviewCount(route.getRouteReviews().size())
@@ -136,8 +138,8 @@ public interface RouteMapper {
                     .name(route.getName())
                     .centerX(centerX)
                     .centerY(centerY)
-                    .likeCheck(route.isLike(customUserDetails))
-                    .likeCount(route.getRouteLikes().size())
+                    .likes(route.getRouteLikes().size())
+                    .isLike(route.isLike(customUserDetails))
                     .createdBy(route.getCreatedBy().getName())
                     .places(routePlaces)
                     .build();

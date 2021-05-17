@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import me.travelplan.security.userdetails.CurrentUser;
 import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.service.route.RouteService;
+import me.travelplan.web.route.dto.RouteRequest;
+import me.travelplan.web.route.dto.RouteResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

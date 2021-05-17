@@ -105,7 +105,7 @@ class RouteReviewControllerTest extends MvcTest {
                     .build();
             routeReview.setCreatedAt(LocalDateTime.of(2021, 4, 14, 9, 0));
             routeReview.setUpdatedAt(LocalDateTime.of(2021, 4, 14, 9, 0).plusDays(5));
-            routeReview.setCreatedBy(User.builder().name("테스트유저").avatar(File.builder().url("https://s3.ap-northeast-2.amazonaws.com/s3.baruntravel.me/NVKd7InpFVTtespa79wvLKMj7MyGdovTroWJI7nInwpF4symIR4J3VQLpTxn.png").build()).build());
+            routeReview.setCreatedBy(User.builder().name("테스트유저").email("test@test.com").avatar(File.builder().url("https://s3.ap-northeast-2.amazonaws.com/s3.baruntravel.me/NVKd7InpFVTtespa79wvLKMj7MyGdovTroWJI7nInwpF4symIR4J3VQLpTxn.png").build()).build());
             return routeReview;
         }).collect(Collectors.toList());
 
@@ -128,11 +128,12 @@ class RouteReviewControllerTest extends MvcTest {
                                 fieldWithPath("reviews[].id").type(JsonFieldType.NUMBER).description("경로 리뷰 식별자"),
                                 fieldWithPath("reviews[].content").type(JsonFieldType.STRING).description("경로 리뷰 내용"),
                                 fieldWithPath("reviews[].score").type(JsonFieldType.NUMBER).description("경로 리뷰 점수"),
-                                fieldWithPath("reviews[].likeCount").type(JsonFieldType.NUMBER).description("경로 리뷰 좋아요 개수"),
-                                fieldWithPath("reviews[].likeCheck").type(JsonFieldType.BOOLEAN).description("로그인 유저가 해당 경로 리뷰에 좋아요를 눌렀다면 true"),
+                                fieldWithPath("reviews[].likes").type(JsonFieldType.NUMBER).description("경로 리뷰 좋아요 개수"),
+                                fieldWithPath("reviews[].isLike").type(JsonFieldType.BOOLEAN).description("로그인 유저가 해당 경로 리뷰에 좋아요를 눌렀다면 true"),
                                 fieldWithPath("reviews[].creator.name").type(JsonFieldType.STRING).description("경로 리뷰 작성자 이름"),
-                                fieldWithPath("reviews[].creator.avatar").type(JsonFieldType.STRING).description("경로 리뷰 작성자 프로필 이미지"),
-                                fieldWithPath("reviews[].files[].url").type(JsonFieldType.STRING).description("경로 리뷰에 첨부되어 있는 파일 url"),
+                                fieldWithPath("reviews[].creator.email").type(JsonFieldType.STRING).description("경로 리뷰 작성자 이메일"),
+                                fieldWithPath("reviews[].creator.avatarUrl").type(JsonFieldType.STRING).description("경로 리뷰 작성자 프로필 이미지"),
+                                fieldWithPath("reviews[].images[].url").type(JsonFieldType.STRING).description("경로 리뷰에 첨부되어 있는 파일 url"),
                                 fieldWithPath("reviews[].createdAt").type(JsonFieldType.STRING).description("경로 리뷰 생성날짜"),
                                 fieldWithPath("reviews[].updatedAt").type(JsonFieldType.STRING).description("경로 리뷰 수정날짜")
                         )

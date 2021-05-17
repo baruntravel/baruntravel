@@ -1,7 +1,8 @@
-package me.travelplan.web.route;
+package me.travelplan.web.route.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+import me.travelplan.web.common.UserDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,10 +26,10 @@ public class RouteResponse {
         private Integer reviewCount;
         private Double score;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        public LocalDateTime createdAt;
+        private LocalDateTime createdAt;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-        public LocalDateTime updatedAt;
-        private RouteDto.Creator creator;
+        private LocalDateTime updatedAt;
+        private UserDto.Response creator;
         private List<RouteDto.RoutePlace> places;
     }
 
@@ -48,24 +49,9 @@ public class RouteResponse {
         private String name;
         private Double centerX;
         private Double centerY;
-        private Integer likeCount;
-        private boolean likeCheck;
         private String createdBy;
+        private Integer likes;
+        private Boolean isLike;
         private List<RouteDto.RoutePlace> places;
     }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class ReviewId {
-        private Long id;
-    }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class ReviewList {
-        private List<RouteDto.ReviewResponse> reviews;
-    }
-
 }

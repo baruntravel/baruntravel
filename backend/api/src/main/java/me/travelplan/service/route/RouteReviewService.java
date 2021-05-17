@@ -15,7 +15,7 @@ import me.travelplan.service.route.repository.RouteReviewFileRepository;
 import me.travelplan.service.route.repository.RouteReviewLikeRepository;
 import me.travelplan.service.route.repository.RouteReviewRepository;
 import me.travelplan.service.user.domain.User;
-import me.travelplan.web.route.RouteRequest;
+import me.travelplan.web.route.review.dto.RouteReviewRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +33,7 @@ public class RouteReviewService {
     private final RouteReviewFileRepository routeReviewFileRepository;
     private final FileService fileService;
 
-    public RouteReview create(RouteRequest.CreateOrUpdateReview request, Long id) {
+    public RouteReview create(RouteReviewRequest.CreateOrUpdateReview request, Long id) {
         Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
         List<File> files = fileService.uploadFiles(request.getFiles());
         List<RouteReviewFile> routeReviewFiles = files.stream().map(RouteReviewFile::create).collect(Collectors.toList());
@@ -47,7 +47,7 @@ public class RouteReviewService {
         return routeReviewRepository.findAllByRouteId(id);
     }
 
-    public void update(Long id, RouteRequest.CreateOrUpdateReview request, User user) {
+    public void update(Long id, RouteReviewRequest.CreateOrUpdateReview request, User user) {
         RouteReview routeReview = routeReviewRepository.findById(id).orElseThrow(RouteReviewNotFoundException::new);
         permissionCheck(user, routeReview);
         reviewFileDelete(routeReview);

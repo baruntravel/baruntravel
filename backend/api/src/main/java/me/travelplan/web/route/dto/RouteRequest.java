@@ -1,8 +1,6 @@
-package me.travelplan.web.route;
+package me.travelplan.web.route.dto;
 
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
-
 
 import java.util.List;
 
@@ -29,16 +27,6 @@ public class RouteRequest {
     @NoArgsConstructor
     public static class AddPlace {
         private RouteDto.RoutePlace place;
-    }
-
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class CreateOrUpdateReview {
-        private String content;
-        private Double score;
-        List<MultipartFile> files;
     }
 
     @Getter
