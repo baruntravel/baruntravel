@@ -10,9 +10,8 @@ const PlaceCard = ({ place, onHandleDelete, addShoppingCart, isLiked }) => {
     onHandleDelete(place.id);
   }, [onHandleDelete, place]);
   const onHandleLike = useCallback(() => {
-    console.log(place);
     addShoppingCart(place);
-  }, [place]);
+  }, [addShoppingCart, place]);
   const onClickCard = useCallback(
     (event) => {
       if (

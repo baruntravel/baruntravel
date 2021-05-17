@@ -66,7 +66,7 @@ const ShoppingCart = memo(
           onClose();
         }
       },
-      [items, resetCartAll]
+      [items, onClose, resetCartAll]
     );
     return (
       <>
