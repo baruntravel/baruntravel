@@ -22,6 +22,7 @@ import {
   onReceiveCart,
 } from "../../api/cartAPI";
 import SideProfileToggle from "../../components/common/sideProfileToggle/sideProfileToggle";
+
 const HotplacePage = () => {
   const placeListRef = useRef();
   const searchRef = useRef();
@@ -30,16 +31,16 @@ const HotplacePage = () => {
 
   const userStates = useRecoilValue(userState);
   const [needLogin, setNeedLogin] = useState(false);
-  // recoil과 beautiful-dnd가 concurrent 문제로 충돌이 나여 전역관리와 페이지 단 관리 두가지를 모두해줘야함.
+  // recoil과 beautiful-dnd가 concurrent 문제로 충돌이 나서 전역관리와 페이지내 관리 두가지를 모두 해줘야함.
   const [shoppingItems, setShoppingItems] = useState([]);
-  const setShoppingItemsRecoil = useSetRecoilState(userCart);
+  const setShoppingItemsRecoil = useSetRecoilState(userCart); // recoil 전역으로 카트를 관리하는 이유 : 매번 API 호출 후 조회하면 네트워크 성능상 Bad, 따라서 호출한 것 처럼 흉내내기 위함.
 
   const [cartVisible, setCartVisible] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [confirmPortal, setConfirmPortal] = useState(false);
   const [place, setPlace] = useState({});
   const [inputKeyword, handleInputKeyword] = useInput();
-  const [searchPlace, setSearchPlace] = useState(""); // 검색용 keyword
+  const [searchPlace, setSearchPlace] = useState(""); // 입력받은 keyword 저장
   const [searchPlaces, setSearchPlaces] = useState([]);
   const [markerIndex, setMarkerIndex] = useState();
 
@@ -56,7 +57,7 @@ const HotplacePage = () => {
   }, [userStates]);
 
   useEffect(() => {
-    setShoppingItemsRecoil(shoppingItems);
+    setShoppingItemsRecoil(shoppingItems); // 페이지에서 shopping Items state가 변경되면 전역으로도 바꿔줘야함.
   }, [setShoppingItemsRecoil, shoppingItems]);
 
   const setCartVisibleTrue = useCallback(() => {
