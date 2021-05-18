@@ -1,0 +1,14 @@
+.SortBox {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  padding-top: 12px;
+  margin-bottom: 12px;
+}
+.reviewList__new {
+  margin-right: 16px;
+}
+.reviewList__recommend {
+  opacity: 0.8;
+  color: gray;
+}

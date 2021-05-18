@@ -11,6 +11,7 @@ import PlaceDetailPage from "./pages/placeDetailPage/placeDetailPage";
 import AllRoute from "./pages/mainPage/selectRoute/allRoute/allRoute";
 import AllArea from "./pages/mainPage/selectArea/allArea/allArea";
 import DetailProfile from "./components/detailProfile/detailProfile";
+import PlaceContentBox from "./components/placeContentBox/placeContentBox";
 
 function App() {
   return (
@@ -59,7 +60,7 @@ function App() {
 
           {/* 테스트 */}
           <Route exact path="/test">
-            <RouteDetailPage />
+            <PlaceContentBox />
           </Route>
         </Router>
       </RecoilRoot>
