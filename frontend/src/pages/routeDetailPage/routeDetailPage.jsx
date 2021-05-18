@@ -24,10 +24,13 @@ import { getRouteDetail } from "../../api/routeAPI";
 import { StarFilled } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
+import Loading from "../../components/common/loading/loading";
 
 const RouteDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
   const history = useHistory();
+
+  const routeId = window.location.pathname.split("/").pop(); // url 마지막 부분이 ID이다.
 
   const [loading, setLoading] = useState(true);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
@@ -40,8 +43,6 @@ const RouteDetailPage = (props) => {
   const [images, setImages] = useState([]); // 이미지와 이름을 같이 저장
   const [postImages, setPostImages] = useState([]); // 이미지만 저장 (줌을 위한 이미지)
   const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
-
-  const routeId = 1;
 
   const onCloseInputName = useCallback(() => {
     setOpenInputName(false);
@@ -112,7 +113,7 @@ const RouteDetailPage = (props) => {
     getRouteDetailInfo();
     getReviewList();
     setLoading(false);
-  }, [history, userStates]);
+  }, [history, routeId, userStates]);
 
   const settings = {
     dots: false,
@@ -128,7 +129,11 @@ const RouteDetailPage = (props) => {
   }
 
   if (loading) {
-    return <div>hi</div>;
+    return (
+      <>
+        <Loading />
+      </>
+    );
   }
   return (
     <div className={styles.RouteDetailPage}>

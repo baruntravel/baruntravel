@@ -58,7 +58,7 @@ const HotplacePage = () => {
 
   useEffect(() => {
     setShoppingItemsRecoil(shoppingItems);
-  }, [shoppingItems]);
+  }, [setShoppingItemsRecoil, shoppingItems]);
 
   const setCartVisibleTrue = useCallback(() => {
     if (userStates.isLogin) {
