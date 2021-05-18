@@ -12,6 +12,7 @@ import AllRoute from "./pages/mainPage/selectRoute/allRoute/allRoute";
 import AllArea from "./pages/mainPage/selectArea/allArea/allArea";
 import DetailProfile from "./components/detailProfile/detailProfile";
 import PlaceContentBox from "./components/placeContentBox/placeContentBox";
+import AreaPage from "./pages/areaPage/areaPage";
 
 function App() {
   return (
@@ -56,6 +57,10 @@ function App() {
 
           <Route exact path="/detailProfile">
             <DetailProfile />
+          </Route>
+
+          <Route exact path="/test2">
+            <AreaPage />
           </Route>
 
           {/* 테스트 */}

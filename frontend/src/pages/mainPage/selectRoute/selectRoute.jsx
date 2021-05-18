@@ -1,5 +1,5 @@
 import styles from "./selectRoute.module.css";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { usersRouteItems } from "../../../recoil/routeAtom";
 import { useRecoilState } from "recoil";
 
@@ -13,13 +13,9 @@ const SelectRoute = () => {
     // 인기 루트 10개 이하만
     for (let i = 0; i < (routeList.length < 10 ? routeList.length : 10); i++) {
       routeArray.push(
-        <Link to={"/route"} key={i}>
-          <div className={styles.routeBox}>
-            <li className={styles.route} key={i}>
-              {routeList[i].routeName}
-            </li>
-          </div>
-        </Link>
+        <div onClick={() => history.push({ pathname: "/route", state: { id: i } })} className={styles.routeBox} key={i}>
+          <li className={styles.route}>{routeList[i].routeName}</li>
+        </div>
       );
     }
     return routeArray;

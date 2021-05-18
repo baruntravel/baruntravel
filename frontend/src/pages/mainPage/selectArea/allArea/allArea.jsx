@@ -1,5 +1,5 @@
 import styles from "./allArea.module.css";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import areaList from "../../../../assets/areaList.json";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -24,17 +24,19 @@ const AllArea = () => {
         <ul className={styles.areaList}>
           {areaList.map((area, index) => {
             return (
-              <Link to="/place" key={index}>
-                <li className={styles.areaBox}>
-                  <div className={styles.box_left}>
-                    <div className={styles.logo}></div>
-                  </div>
-                  <div className={styles.box_right}>
-                    <h4 className={styles.areaTitle}>{area.kor}</h4>
-                    <h5 className={styles.areaSubtitle}>{area.kor}</h5>
-                  </div>
-                </li>
-              </Link>
+              <li
+                onClick={() => history.push({ pathname: "/place", state: { id: index } })}
+                className={styles.areaBox}
+                key={index}
+              >
+                <div className={styles.box_left}>
+                  <div className={styles.logo}></div>
+                </div>
+                <div className={styles.box_right}>
+                  <h4 className={styles.areaTitle}>{area.kor}</h4>
+                  <h5 className={styles.areaSubtitle}>{area.kor}</h5>
+                </div>
+              </li>
             );
           })}
         </ul>

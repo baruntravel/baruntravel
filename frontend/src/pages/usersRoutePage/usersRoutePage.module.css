@@ -5,14 +5,14 @@
   justify-content: center;
   align-items: center;
   user-select: none;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .navbarContainer {
   position: fixed;
   width: 95%;
   z-index: 5;
-  top: 3%;
+  top: 1%;
 }
 
 .routeCarousel {
