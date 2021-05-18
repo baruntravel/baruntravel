@@ -1,5 +1,5 @@
 import styles from "./allRoute.module.css";
-import { Link, useHistory, useHitory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { usersRouteItems } from "../../../../recoil/routeAtom";
 import { useRecoilState } from "recoil";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,17 +27,19 @@ const AllRoute = () => {
         <ul className={styles.routeList}>
           {routeList.map((route, index) => {
             return (
-              <Link to={`/route`} key={index}>
-                <li className={styles.routeBox}>
-                  <div className={styles.box_left}>
-                    <div className={styles.logo}></div>
-                  </div>
-                  <div className={styles.box_right}>
-                    <h4 className={styles.areaTitle}>{route.routeName}</h4>
-                    <h5 className={styles.areaSubtitle}>{route.creator}</h5>
-                  </div>
-                </li>
-              </Link>
+              <li
+                onClick={() => history.push({ pathname: "/route", state: { id: index } })}
+                className={styles.routeBox}
+                key={index}
+              >
+                <div className={styles.box_left}>
+                  <div className={styles.logo}></div>
+                </div>
+                <div className={styles.box_right}>
+                  <h4 className={styles.areaTitle}>{route.routeName}</h4>
+                  <h5 className={styles.areaSubtitle}>{route.creator}</h5>
+                </div>
+              </li>
             );
           })}
         </ul>

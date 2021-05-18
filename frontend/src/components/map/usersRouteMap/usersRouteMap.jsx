@@ -1,8 +1,9 @@
 import styles from "./usersRouteMap.module.css";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { getRoutesByRange } from "../../../api/routeAPI";
 
-const UsersRouteMap = ({ routes, places, mapHandler }) => {
+const UsersRouteMap = ({ places, mapHandler, routes }) => {
   const { kakao } = window;
   const [map, setMap] = useState();
   const [markers, setMarkers] = useState([]);
@@ -30,11 +31,12 @@ const UsersRouteMap = ({ routes, places, mapHandler }) => {
     }
 
     function boundsHandler(map) {
-      kakao.maps.event.addListener(map, "dragend", function () {
+      kakao.maps.event.addListener(map, "dragend", async function () {
         let bounds = map.getBounds();
         let swLatlng = bounds.getSouthWest();
         let neLatlng = bounds.getNorthEast();
-        // console.log(swLatlng, neLatlng);
+        // const tmpRoutes = await getRoutesByRange(swLatlng, neLatlng);
+        // routesHandler(tmpRoutes);
       });
     }
   }, []);
@@ -49,16 +51,6 @@ const UsersRouteMap = ({ routes, places, mapHandler }) => {
 
     let path = addPath();
     return () => removePath(path); //Unmount 직전에 path 지움
-
-    // map && // 지도 확대시 path 잠시 없앰
-    //   kakao.maps.event.addListener(map, "zoom_start", function () {
-    //     path.setMap(null);
-    //   });
-
-    // map && // 지도 확대 끝날시 path 다시 나타냄
-    //   kakao.maps.event.addListener(map, "zoom_changed", function () {
-    //     path.setMap(map);
-    //   });
 
     function displayMarker(infowindow) {
       removeMarker();
