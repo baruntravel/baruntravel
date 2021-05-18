@@ -3,3 +3,19 @@
   flex-direction: row;
   justify-content: space-between;
 }
+.imageBox {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-gap: 8px;
+}
+.imageContainer {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

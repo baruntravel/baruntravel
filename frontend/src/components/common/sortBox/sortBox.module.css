@@ -6,16 +6,18 @@
   /* margin-bottom: 12px; */
 }
 .SortBox span {
-  font-weight: 800;
+  font-weight: 900;
 }
 .reviewList__new {
-  font-weight: 800;
   margin-right: 16px;
+  opacity: 0.8;
+  color: gray;
 }
 .reviewList__recommend {
   opacity: 0.8;
   color: gray;
 }
 .pink__color {
+  opacity: 1;
   color: #ed6ab8;
 }

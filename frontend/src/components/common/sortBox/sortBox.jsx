@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import styles from "./sortBox.module.css";
 
 const SortBox = ({ onHandleRecommend, onHandleNewest }) => {
@@ -6,13 +6,19 @@ const SortBox = ({ onHandleRecommend, onHandleNewest }) => {
   const recommendRef = useRef();
 
   const onSortByRecommend = useCallback(() => {
-    onHandleRecommend();
-    // recommendRef.current.style.~~
+    // onHandleRecommend();
+    recommendRef.current.classList.add(styles["pink__color"]);
+    newRef.current.classList.remove(styles["pink__color"]);
   }, [onHandleRecommend]);
   const onSortByDate = useCallback(() => {
-    onHandleNewest();
-    // newRef.current.style.
+    // onHandleNewest();
+    newRef.current.classList.add(styles["pink__color"]);
+    recommendRef.current.classList.remove(styles["pink__color"]);
   }, [onHandleNewest]);
+
+  useEffect(() => {
+    newRef.current.classList.add(styles["pink__color"]);
+  }, []);
   return (
     <div className={styles.SortBox}>
       <span
