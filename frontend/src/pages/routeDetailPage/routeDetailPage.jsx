@@ -10,34 +10,39 @@ import Avatar from "antd/lib/avatar/avatar";
 import ReviewList from "../../components/reviewComponents/reviewList/reviewList";
 import ImagesZoom from "../../components/reviewComponents/imagesZoom/imagesZoom";
 import { Drawer } from "antd";
-import ReviewForm from "../../components/reviewComponents/reviewForm/reviewForm";
-import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
 import InputRootName from "../../components/common/inputRootName/inputRootName";
-import { onReceiveRouteReview, onUploadRouteReview } from "../../api/reviewAPI";
+import {
+  onDeleteRouteReview,
+  onEditRouteReview,
+  onReceiveRouteReview,
+  onUploadRouteReview,
+} from "../../api/reviewAPI";
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
 import { getRouteDetail } from "../../api/routeAPI";
 import { StarFilled } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
+import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
+import Loading from "../../components/common/loading/loading";
 
 const RouteDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
   const history = useHistory();
+
+  const routeId = window.location.pathname.split("/").pop(); // url 마지막 부분이 ID이다.
+
   const [loading, setLoading] = useState(true);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const [imagePlaceName, setImagePlaceName] = useState("");
-  const [reviewWrite, setReviewWrite] = useState(false);
   const [moreReview, setMoreReview] = useState(false);
   const [openInputName, setOpenInputName] = useState(false);
   const [needLogin, setNeedLogin] = useState(false);
-  const [routeDetail, setRouteDetail] = useState([]);
+  const [routeDetail, setRouteDetail] = useState({});
   const [images, setImages] = useState([]); // 이미지와 이름을 같이 저장
   const [postImages, setPostImages] = useState([]); // 이미지만 저장 (줌을 위한 이미지)
   const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
-
-  const routeId = 1;
 
   const onCloseInputName = useCallback(() => {
     setOpenInputName(false);
@@ -51,18 +56,11 @@ const RouteDetailPage = (props) => {
   const onClose = useCallback(() => {
     setShowImagesZoom(false);
   }, []);
-  const onClosePortaAuth = useCallback(() => {
-    setNeedLogin(false);
+  const onOpenPortalAuth = useCallback(() => {
+    setNeedLogin(true);
   }, []);
-  const onClickReviewWrite = useCallback(() => {
-    if (userStates.isLogin) {
-      setReviewWrite(true);
-    } else {
-      setNeedLogin(true);
-    }
-  }, [userStates]);
-  const onCloseReviewWrite = useCallback(() => {
-    setReviewWrite(false);
+  const onClosePortalAuth = useCallback(() => {
+    setNeedLogin(false);
   }, []);
   const onOpenMoreReview = useCallback(() => {
     setMoreReview(true);
@@ -70,16 +68,22 @@ const RouteDetailPage = (props) => {
   const onCloseMoreReview = useCallback(() => {
     setMoreReview(false);
   }, []);
-  const onUploadReview = useCallback((formData) => {
-    onUploadRouteReview(1, formData);
+
+  const handleSetReviewDatas = useCallback((updated) => {
+    setReviewDatas(updated);
   }, []);
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
+  const onUploadReview = useCallback(
+    (formData) => {
+      onUploadRouteReview(routeId, formData); // 추후에 root ID 동적으로 받아오는 걸 구현 후 수정
+    },
+    [routeId]
+  );
+  const onEditReview = useCallback((reviewId, formData) => {
+    onEditRouteReview(reviewId, formData);
+  }, []);
+  const onDeleteReview = useCallback((id) => {
+    onDeleteRouteReview(id);
+  }, []);
 
   const afterSliderChange = useCallback(
     (index) => {
@@ -89,54 +93,50 @@ const RouteDetailPage = (props) => {
     [images]
   );
 
-  // const [reviewDatas, setReviewDatas] = useState([
-  //   {
-  //     createdAt: new Date(2011, 0, 1, 0, 0, 0, 0),
-  //     likeCount: 5,
-  //   },
-  //   {
-  //     createdAt: new Date(2011, 0, 1, 0, 0, 0, 2),
-  //     likeCount: 6,
-  //   },
-  //   {
-  //     createdAt: new Date(2011, 0, 1, 0, 0, 0, 1),
-  //     likeCount: 7,
-  //   },
-  //   {
-  //     createdAt: new Date(2011, 0, 1, 0, 0, 0, 4),
-  //     likeCount: 3,
-  //   },
-  // ]);
-  const handleSetReviewDatas = (updated) => {
-    setReviewDatas(updated);
-  };
   useEffect(() => {
     if (!userStates.isLogin) {
       // 로그인 하지않으면 기존 페이지로 이동
       history.push("/");
     }
-    async function getRouteDetailInf() {
+    async function getRouteDetailInfo() {
       // 루트 상세페이지의 정보를 받아옴
-      const route = await getRouteDetail(1);
+      const route = await getRouteDetail(routeId);
       setRouteDetail(route);
       const route_images =
         route && route.places.map((place) => [place.image, place.name]);
       const images = route_images.filter((item) => item[0]); // 이미지가 존재하는것만 뽑아낸다.
       setPostImages(images.map((img) => img[0])); // 이미지만 뽑아서 저장
-      setImages(images); // 이미지와 이름만 저장
+      setImages(images); // 이미지와 이름을 세트로 저장
       setImagePlaceName(images[0][1]); // 첫 이미지의 장소 이름 저장
     }
     async function getReviewList() {
       const reviews = await onReceiveRouteReview(routeId);
       setReviewDatas(reviews);
     }
-    getRouteDetailInf();
+    getRouteDetailInfo();
     getReviewList();
     setLoading(false);
-  }, [history, userStates.isLogin]);
+  }, [history, routeId, userStates]);
+
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+
+  if (!userStates.isLogin) {
+    // 로그인 하지않으면 기존 페이지로 이동
+    history.push("/");
+  }
 
   if (loading) {
-    return <div>hi</div>;
+    return (
+      <>
+        <Loading />
+      </>
+    );
   }
   return (
     <div className={styles.RouteDetailPage}>
@@ -145,7 +145,7 @@ const RouteDetailPage = (props) => {
         <Slider {...settings} afterChange={(index) => afterSliderChange(index)}>
           {images.map((v, index) => (
             <div key={index} className={styles.imageContainer}>
-              <img className={styles.img} src={v[0]} />
+              <img className={styles.img} src={v[0]} alt="upload image" />
             </div>
           ))}
         </Slider>
@@ -205,9 +205,13 @@ const RouteDetailPage = (props) => {
         </div>
         <div className={styles.reviewList}>
           <ReviewList
-            onClickReviewWrite={onClickReviewWrite}
+            onOpenPortalAuth={onOpenPortalAuth}
+            onDeleteReview={onDeleteReview}
+            onUploadReview={onUploadReview}
+            onEditReview={onEditReview}
             reviewDatas={reviewDatas}
             setReviewDatas={handleSetReviewDatas}
+            userStates={userStates}
           />
         </div>
         <div className={styles.buttonBox}>
@@ -217,17 +221,7 @@ const RouteDetailPage = (props) => {
           >{`${4}개의 리뷰 더보기`}</button>
         </div>
       </section>
-      <Drawer
-        className={styles.reviewFormDrawer}
-        visible={reviewWrite}
-        placement="bottom"
-        height="100vh"
-        bodyStyle={{ padding: 0 }}
-        onClose={onCloseReviewWrite}
-      >
-        <ReviewForm onUploadReview={onUploadReview} />
-      </Drawer>
-      <Drawer
+      <Drawer // 리뷰 더보기
         className={styles.reviewListDrawer}
         visible={moreReview}
         placement="right"
@@ -240,7 +234,6 @@ const RouteDetailPage = (props) => {
       >
         <MoreReviewList
           setReviewDatas={handleSetReviewDatas}
-          onClickReviewWrite={onClickReviewWrite}
           onCloseMoreReview={onCloseMoreReview}
           reviewDatas={reviewDatas}
         />
@@ -249,7 +242,7 @@ const RouteDetailPage = (props) => {
         <ImagesZoom images={postImages} onClose={onClose} index={imageIndex} />
       )}
       {openInputName && <InputRootName onClose={onCloseInputName} />}
-      {needLogin && <PortalAuth onClose={onClosePortaAuth} />}
+      {needLogin && <PortalAuth onClose={onClosePortalAuth} />}
     </div>
   );
 };

@@ -2,8 +2,8 @@ package me.travelplan.web;
 
 import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
-import me.travelplan.service.cart.domain.CartPlace;
 import me.travelplan.service.cart.CartPlaceService;
+import me.travelplan.service.cart.domain.CartPlace;
 import me.travelplan.service.file.domain.File;
 import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.domain.PlaceCategory;
@@ -98,6 +98,7 @@ public class CartControllerTest extends MvcTest {
                         .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .memo("첫번째 테스트 메모입니다~!")
+                .order(1)
                 .build();
         cartPlaceList.add(cartPlace1);
         CartPlace cartPlace2 = CartPlace.builder()
@@ -112,6 +113,7 @@ public class CartControllerTest extends MvcTest {
                         .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .memo("두번째 테스트 메모입니다~!")
+                .order(2)
                 .build();
         cartPlaceList.add(cartPlace2);
         CartPlace cartPlace3 = CartPlace.builder()
@@ -126,6 +128,7 @@ public class CartControllerTest extends MvcTest {
                         .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .memo("세번째 테스트 메모입니다~!")
+                .order(3)
                 .build();
         cartPlaceList.add(cartPlace3);
 
@@ -149,8 +152,36 @@ public class CartControllerTest extends MvcTest {
                                 fieldWithPath("places[].memo").description("장소에 대한 메모 (메모가 없다면 null)"),
                                 fieldWithPath("places[].likeCheck").description("장소 좋아요"),
                                 fieldWithPath("places[].url").description("장소 URL"),
+                                fieldWithPath("places[].order").description("카트에 담긴 장소 순서"),
                                 fieldWithPath("places[].categoryId").description("장소 카테고리 식별자"),
                                 fieldWithPath("places[].categoryName").description("장소 카테고리 이름")
+                        )
+                ));
+    }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("카트에 담겨있는 장소 순서 수정")
+    public void updateOrder() throws Exception {
+        CartPlaceRequest.UpdateOrder request = CartPlaceRequest.UpdateOrder.builder()
+                .firstPlaceId(123L)
+                .secondPlaceId(124L)
+                .build();
+
+        ResultActions results = mockMvc.perform(
+                put("/cart/place")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(document("cart-update-place-order",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestFields(
+                                fieldWithPath("firstPlaceId").type(JsonFieldType.NUMBER).description("장소 식별자"),
+                                fieldWithPath("secondPlaceId").type(JsonFieldType.NUMBER).description("장소 식별자")
                         )
                 ));
     }
@@ -164,7 +195,7 @@ public class CartControllerTest extends MvcTest {
                 .build();
 
         ResultActions results = mockMvc.perform(
-                put("/cart/place/{placeId}/memo",123L)
+                put("/cart/place/{placeId}/memo", 123L)
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8")

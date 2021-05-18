@@ -4,6 +4,10 @@
 }
 .userProfile {
   display: flex;
+  justify-content: space-between;
+}
+.profileBox {
+  display: flex;
 }
 .userName {
   display: flex;

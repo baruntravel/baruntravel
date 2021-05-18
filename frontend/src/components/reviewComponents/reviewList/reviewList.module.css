@@ -35,12 +35,14 @@
   width: 100%;
   justify-content: flex-end;
   padding-top: 12px;
+  margin-bottom: 12px;
 }
 .reviewList__recommend {
   opacity: 0.8;
   color: gray;
 }
 .reviewContainer {
+  margin-top: 8px;
   padding-bottom: 2px;
   border-bottom: 2px solid lightgrey;
   padding-top: 12px;

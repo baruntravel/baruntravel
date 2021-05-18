@@ -6,47 +6,56 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { StarFilled } from "@ant-design/icons";
 import { Drawer } from "antd";
-import ReviewForm from "../../components/reviewComponents/reviewForm/reviewForm";
 import ReviewList from "../../components/reviewComponents/reviewList/reviewList";
 import ImagesZoom from "../../components/reviewComponents/imagesZoom/imagesZoom";
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
+import { onReceivePlace } from "../../api/placeAPI";
+import { onReceivePlaceReview, onUploadPlaceReview } from "../../api/reviewAPI";
+import { useHistory } from "react-router-dom";
+import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
+import Loading from "../../components/common/loading/loading";
 
 const { kakao } = window;
+
 const PlaceDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
-  const [needLogin, setNeedLogin] = useState(false);
+  const history = useHistory();
 
-  const [reviewWrite, setReviewWrite] = useState(false);
+  const placeId = window.location.pathname.split("/").pop(); // url 마지막 부분이 ID이다.
+
+  const [loading, setLoading] = useState(true); // 처음에는 로딩이 필요하다
+  const [needLogin, setNeedLogin] = useState(false);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
   const [liked, setLiked] = useState(false);
+  const [images, setImages] = useState([]); // 보여줄 메인 이미지 저장소
+  const [placeDetail, setPlaceDetail] = useState({});
+  const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
+  const [moreReview, setMoreReview] = useState(false);
+
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);
   }, []);
   const onCloseZoom = useCallback(() => {
     setShowImagesZoom(false);
   }, []);
-  const onClickReviewWrite = useCallback(() => {
-    if (userStates.isLogin) {
-      setReviewWrite(true);
-    } else {
-      setNeedLogin(true);
-    }
-  }, [userStates]);
-  const onCloseReviewWrite = useCallback(() => {
-    setReviewWrite(false);
-  }, []);
-  const afterSliderChange = useCallback((index) => {
-    setImageIndex(index);
-  }, []);
-  const portalAuthClose = useCallback(() => {
+
+  const onClosePortalAuth = useCallback(() => {
     setNeedLogin(false);
   }, []);
-  const portalAuthOpen = useCallback(() => {
+  const onOpenPortalAuth = useCallback(() => {
     setNeedLogin(true);
   }, []);
+
+  const onOpenMoreReview = useCallback(() => {
+    setMoreReview(true);
+  }, []);
+  const onCloseMoreReview = useCallback(() => {
+    setMoreReview(false);
+  }, []);
+
   const onClickLike = useCallback(() => {
     if (userStates.isLogin) {
       console.log("좋아요 API 호출");
@@ -59,12 +68,58 @@ const PlaceDetailPage = (props) => {
     console.log("좋아요 취소 API 호출");
     setLiked(false);
   }, []);
-  const images = [
-    "https://blog.hmgjournal.com/images_n/contents/171013_N1.png",
-    "https://blog.hmgjournal.com/images_n/contents/171013_N1.png",
-    "https://blog.hmgjournal.com/images_n/contents/171013_N1.png",
-    "https://blog.hmgjournal.com/images_n/contents/171013_N1.png",
-  ];
+
+  const handleSetReviewDatas = useCallback((updated) => {
+    setReviewDatas(updated);
+  }, []);
+  const onUploadReview = useCallback(
+    (formData) => {
+      onUploadPlaceReview(placeId, formData);
+    },
+    [placeId]
+  );
+
+  useEffect(() => {
+    async function getPlaceDetail() {
+      // place 디테일 정보를 불러오는 함수
+      const placeDetailInfo = await onReceivePlace(placeId);
+      if (placeDetailInfo) {
+        const images = placeDetailInfo.images.map((image) => image.url);
+        makeMapImage(placeDetailInfo.x, placeDetailInfo.y);
+        setPlaceDetail(placeDetailInfo);
+        setImages(images);
+      }
+    }
+    async function getReviewList() {
+      // 해당 place의 리뷰를 받아오는 함수
+      const reviews = await onReceivePlaceReview(placeId);
+      setReviewDatas(reviews);
+    }
+    // map image 만드는 함수
+    function makeMapImage(x, y) {
+      let markerPosition = new kakao.maps.LatLng(y, x);
+      let marker = {
+        position: markerPosition,
+      };
+      let staticMapContainer = document.getElementById("staticMap"),
+        staticMapOption = {
+          center: new kakao.maps.LatLng(y, x),
+          level: 4,
+          marker: marker,
+        };
+      new kakao.maps.StaticMap(staticMapContainer, staticMapOption);
+    }
+    // placeDetail 받아오는 곳
+    getPlaceDetail();
+    getReviewList();
+    window.scrollTo(0, 0);
+    setLoading(false); // loading을 조금 더 자연스럽게하는 방법을 추후에 생각해보자
+  }, [placeId]);
+
+  const afterSliderChange = useCallback((index) => {
+    setImageIndex(index);
+  }, []);
+
   const settings = {
     dots: false,
     infinite: true,
@@ -72,49 +127,26 @@ const PlaceDetailPage = (props) => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
-  useEffect(() => {
-    let markerPosition = new kakao.maps.LatLng(33.450701, 126.570667);
-    let marker = {
-      position: markerPosition,
-    };
-    let staticMapContainer = document.getElementById("staticMap"),
-      staticMapOption = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
-        level: 4,
-        marker: marker,
-      };
-    let staticMap = new kakao.maps.StaticMap(
-      staticMapContainer,
-      staticMapOption
+  if (!userStates.isLogin) {
+    // 로그인 하지 않았을 때 접근 불가 -> 추후에 API 수정 후 고쳐야됨
+    history.push("/");
+  }
+  if (loading) {
+    return (
+      <>
+        <Loading />
+      </>
     );
-    window.scrollTo(0, 0);
-  }, []);
-
-  const [reviewDatas, setReviewDatas] = useState([
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 0),
-      likeCount: 5,
-    },
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 2),
-      likeCount: 6,
-    },
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 1),
-      likeCount: 7,
-    },
-    {
-      createdAt: new Date(2011, 0, 1, 0, 0, 0, 4),
-      likeCount: 3,
-    },
-  ]);
-
+  }
+  if (!placeDetail) {
+    return <div>place 정보가 없습니다.</div>;
+  }
   return (
     <div className={styles.PlaceDetailPage}>
       <DetailHeader
         liked={liked}
         needLogin={needLogin}
-        portalAuthOpen={portalAuthOpen}
+        onOpenPortalAuth={onOpenPortalAuth}
         onClickLike={onClickLike}
         onClickUnlike={onClickUnlike}
       />
@@ -127,52 +159,84 @@ const PlaceDetailPage = (props) => {
           ))}
         </Slider>
         <div className={styles.imageCounter}>
-          <span> {imageIndex + 1} / 21 </span>
+          <span>
+            {imageIndex + 1} / {images.length}
+          </span>
         </div>
       </div>
       <div className={styles.body}>
         <div className={styles.body__header}>
-          <h1 className={styles.body__placeName}>Place이름</h1>
+          <h1 className={styles.body__placeName}>{placeDetail.name}</h1>
           <div className={styles.body__placeInfo}>
             <div className={styles.body__rate}>
               <StarFilled style={{ color: "#eb2f96" }} />
-              <span className={styles.body__score}>4</span>
-              <span className={styles.body__reviewCount}>(6)</span>
+              <span className={styles.body__score}>{placeDetail.score}</span>
+              <span className={styles.body__reviewCount}>
+                ({reviewDatas.length})
+              </span>
             </div>
-            <span className={styles.body__address}>장소 주소</span>
+            <span className={styles.body__address}>{placeDetail.address}</span>
           </div>
+          <span className={styles.body__openHour}>
+            영업시간 : {placeDetail.openHour}
+          </span>
         </div>
         <div className={styles.body__placeLocation}>
           <div className={styles.body__titleContainer}>
             <h2 className={styles.body__locationTitle}>위치</h2>
           </div>
           <div className={styles.body__addressContainer}>
-            <span className={styles.body__placeAddress}>서울시 ~~~구 ~~~</span>
+            <span className={styles.body__placeAddress}>
+              {placeDetail.address}
+            </span>
           </div>
           <div className={styles.body__mapContainer}>
-            <div id="staticMap" className={styles.body__map}></div>
+            <div id="staticMap" className={styles.body__map} />
           </div>
+        </div>
+        <div className={styles.buttonBox}>
+          <button className={styles.button}>장바구니 카트에 담기</button>
+          <span
+            className={styles.wishCount}
+          >{`${placeDetail.likeCount}명이 좋아해요`}</span>
         </div>
         <div className={styles.reviewList}>
           <ReviewList
+            userStates={userStates}
             reviewDatas={reviewDatas}
-            onClickReviewWrite={onClickReviewWrite}
+            onOpenPortalAuth={onOpenPortalAuth}
+            onUploadReview={onUploadReview}
+            setReviewDatas={handleSetReviewDatas}
           />
         </div>
+        <div className={styles.buttonBox}>
+          <button
+            className={styles.button}
+            onClick={onOpenMoreReview}
+          >{`${4}개의 리뷰 더보기`}</button>
+        </div>
       </div>
-      <Drawer
-        visible={reviewWrite}
-        placement="bottom"
-        height="100vh"
+      <Drawer // 리뷰 더보기
+        className={styles.reviewListDrawer}
+        visible={moreReview}
+        placement="right"
+        width="100vw"
         bodyStyle={{ padding: 0 }}
-        onClose={onCloseReviewWrite}
+        closeIcon={false}
+        style={{
+          overflowY: "hidden",
+        }}
       >
-        <ReviewForm />
+        <MoreReviewList
+          setReviewDatas={handleSetReviewDatas}
+          onCloseMoreReview={onCloseMoreReview}
+          reviewDatas={reviewDatas}
+        />
       </Drawer>
       {showImagesZoom && (
         <ImagesZoom images={images} onClose={onCloseZoom} index={imageIndex} />
       )}
-      {needLogin && <PortalAuth onClose={portalAuthClose} />}
+      {needLogin && <PortalAuth onClose={onClosePortalAuth} />}
     </div>
   );
 };

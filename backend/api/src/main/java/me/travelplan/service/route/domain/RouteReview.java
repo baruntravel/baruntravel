@@ -2,7 +2,7 @@ package me.travelplan.service.route.domain;
 
 import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
-import me.travelplan.service.user.domain.User;
+import me.travelplan.security.userdetails.CustomUserDetails;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -33,18 +33,18 @@ public class RouteReview extends BaseEntity {
 
     @OneToMany(mappedBy = "routeReview", cascade = CascadeType.PERSIST)
     @Builder.Default
-    private List<RouteReviewFile> routeReviewFiles = new ArrayList<>();
+    private final List<RouteReviewFile> routeReviewFiles = new ArrayList<>();
 
     @OneToMany(mappedBy = "routeReview", cascade = CascadeType.REMOVE)
     @Builder.Default
-    private List<RouteReviewLike> routeReviewLikes = new ArrayList<>();
+    private final List<RouteReviewLike> routeReviewLikes = new ArrayList<>();
 
-    public void setRoute(Route route) {
+    private void setRoute(Route route) {
         this.route = route;
         route.getRouteReviews().add(this);
     }
 
-    public void addRouteReviewFiles(List<RouteReviewFile> routeReviewFiles) {
+    private void addRouteReviewFiles(List<RouteReviewFile> routeReviewFiles) {
         routeReviewFiles.forEach(reviewFile -> {
             this.routeReviewFiles.add(reviewFile);
             reviewFile.setRouteReview(this);
@@ -56,8 +56,8 @@ public class RouteReview extends BaseEntity {
         this.content = content;
     }
 
-    public boolean isLike(User user) {
-        return this.routeReviewLikes.stream().anyMatch(routeLike -> routeLike.getCreatedBy().getId().equals(user.getId()));
+    public boolean isLike(CustomUserDetails customUserDetails) {
+        return customUserDetails != null && this.routeReviewLikes.stream().anyMatch(routeLike -> routeLike.getCreatedBy().getId().equals(customUserDetails.getUser().getId()));
     }
 
     public static RouteReview create(Double score, String content, List<RouteReviewFile> routeReviewFiles, Route route) {

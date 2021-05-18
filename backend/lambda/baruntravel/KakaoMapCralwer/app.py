@@ -1,14 +1,20 @@
 import json
 import requests
+from fake_useragent import UserAgent
 
 def lambda_handler(event, context):
+    ua = UserAgent()
     body = json.loads(event["body"])
 
     placeId = body["placeId"]
     uri = "https://place.map.kakao.com/main/v/{}".format(placeId)
 
-    res = requests.get(uri)
+    headers = {
+        'User-Agent': ua.random,
+    }
+    res = requests.get(uri, headers=headers)
     try:
+        print(res.text)
         place = json.loads(res.text)
 
         periodList = []

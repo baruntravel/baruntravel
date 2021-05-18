@@ -5,7 +5,7 @@ import me.travelplan.WithMockCustomUser;
 import me.travelplan.service.file.domain.File;
 import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.domain.PlaceCategory;
-import me.travelplan.service.route.*;
+import me.travelplan.service.route.RouteService;
 import me.travelplan.service.route.domain.Route;
 import me.travelplan.service.route.domain.RoutePlace;
 import me.travelplan.service.route.domain.RouteReview;
@@ -52,57 +52,6 @@ public class RouteControllerTest extends MvcTest {
     @MockBean
     RouteService routeService;
 
-    private String getCreateOrUpdateRequest() {
-        return "{\n" +
-                "  \"name\": \"나의 테스트 경로\",\n" +
-                "  \"places\": [\n" +
-                "    {\n" +
-                "      \"id\" : 123,\n" +
-                "      \"image\" : \"https://www.gn.go.kr/tour/images/tour/main_new/mvisual_img07.jpg\",\n" +
-                "      \"name\" : \"강릉바닷가\",\n" +
-                "      \"url\" : \"https://www.gn.go.kr/tour/index.do\",\n" +
-                "      \"x\" : 37.748125,\n" +
-                "      \"y\" : 128.878996,\n" +
-                "      \"category\" : \"CE7\",\n" +
-                "      \"order\" : 1\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"id\" : 124,\n" +
-                "      \"image\" : \"https://cf.bstatic.com/xdata/images/hotel/270x200/129750773.jpg?k=d338049190ff48b19261ee5f516ee563aaeb8aeb97c4774c1e171e402cf25891&o=\",\n" +
-                "      \"name\" : \"강릉 어린이집\",\n" +
-                "      \"url\" : \"https://kr.hotels.com/go/south-korea/kr-best-gangneung-things-to-do\",\n" +
-                "      \"x\" : 37.748130,\n" +
-                "      \"y\" : 128.8789333,\n" +
-                "      \"category\" : \"CE7\",\n" +
-                "      \"order\" : 2\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}";
-    }
-
-    @Test
-    @WithMockCustomUser
-    @DisplayName("이름만 있는 빈 경로 생성 테스트")
-    public void createEmptyTest() throws Exception {
-        String request = "{\"name\" : \"Test Name\"}";
-
-        ResultActions results = mockMvc.perform(
-                post("/route/empty")
-                        .content(request)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding("UTF-8")
-        );
-
-        results.andExpect(status().isCreated())
-                .andDo(document("route-createEmpty",
-                        getDocumentRequest(),
-                        getDocumentResponse(),
-                        requestFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("경로 이름")
-                        )
-                ));
-    }
-
     @Test
     @WithMockCustomUser
     @DisplayName("경로 생성 테스트")
@@ -117,6 +66,8 @@ public class RouteControllerTest extends MvcTest {
                 .places(routeDtos)
                 .build();
 
+        given(routeService.create(any())).willReturn(Route.builder().id(1L).name("테스트경로").build());
+
         ResultActions results = mockMvc.perform(
                 post("/route")
                         .content(objectMapper.writeValueAsString(request))
@@ -125,6 +76,7 @@ public class RouteControllerTest extends MvcTest {
         );
 
         results.andExpect(status().isCreated())
+                .andDo(print())
                 .andDo(document("route-create",
                         getDocumentRequest(),
                         getDocumentResponse(),
@@ -132,41 +84,40 @@ public class RouteControllerTest extends MvcTest {
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("경로 이름"),
                                 fieldWithPath("places[].id").type(JsonFieldType.NUMBER).description("장소 식별자"),
                                 fieldWithPath("places[].order").type(JsonFieldType.NUMBER).description("장소들 정렬 순서 (사용할 필요가 있는지 검토 필요)")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("생성된 경로 식별자"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("생성된 경로 이름")
                         )
                 ));
     }
 
     @Test
     @WithMockCustomUser
-    @DisplayName("경로 수정 테스트")
+    @DisplayName("경로 수정(장소순서) 테스트")
     public void updateTest() throws Exception {
-        String request = getCreateOrUpdateRequest();
+        RouteRequest.Update request = RouteRequest.Update.builder()
+                .firstPlaceId(123L)
+                .secondPlaceId(124L)
+                .build();
 
         ResultActions results = mockMvc.perform(
                 put("/route/{id}", 1)
-                        .content(request)
+                        .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8")
         );
 
         results.andExpect(status().isOk())
-                .andDo(document("route-update",
+                .andDo(document("route-update-place-order",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
                                 parameterWithName("id").description("경로 식별자")
                         ),
                         requestFields(
-                                fieldWithPath("name").type(JsonFieldType.STRING).description("경로 이륾"),
-                                fieldWithPath("places").type(JsonFieldType.ARRAY).description("장소들 정보"),
-                                fieldWithPath("places[].id").type(JsonFieldType.NUMBER).description("카카오톡에서 제공한 장소 식별자"),
-                                fieldWithPath("places[].image").type(JsonFieldType.STRING).description("장소 이미지 URL"),
-                                fieldWithPath("places[].name").type(JsonFieldType.STRING).description("장소 이름"),
-                                fieldWithPath("places[].url").type(JsonFieldType.STRING).description("장소 URL"),
-                                fieldWithPath("places[].x").type(JsonFieldType.NUMBER).description("장소 X값"),
-                                fieldWithPath("places[].y").type(JsonFieldType.NUMBER).description("장소 Y값"),
-                                fieldWithPath("places[].category").type(JsonFieldType.STRING).description("카테고리 분류 코드"),
-                                fieldWithPath("places[].order").type(JsonFieldType.NUMBER).description("장소들 정렬 순서 (사용할 필요가 있는지 검토 필요)")
+                                fieldWithPath("firstPlaceId").type(JsonFieldType.NUMBER).description("장소 식별자"),
+                                fieldWithPath("secondPlaceId").type(JsonFieldType.NUMBER).description("장소 식별자")
                         )
                 ));
     }
@@ -255,7 +206,11 @@ public class RouteControllerTest extends MvcTest {
 
         route.setCreatedAt(LocalDateTime.of(2021, 4, 14, 9, 0));
         route.setUpdatedAt(LocalDateTime.of(2021, 4, 14, 9, 0).plusDays(5));
-        route.setCreatedBy(User.builder().name("테스트유저").build());
+        route.setCreatedBy(User.builder()
+                .name("테스트유저")
+                .avatar(File.builder()
+                        .url("https://s3.ap-northeast-2.amazonaws.com/s3.baruntravel.me/CFGueDdj5pCNzEoCk26e8gY5FgWwOuFhiMfVyzOlU7D7ckIlZHHGad6yCCxa.png")
+                        .build()).build());
 
         given(routeService.getOne(any())).willReturn(route);
 
@@ -277,9 +232,10 @@ public class RouteControllerTest extends MvcTest {
                                 fieldWithPath("centerY").type(JsonFieldType.NUMBER).description("경로의 중심 Y좌표"),
                                 fieldWithPath("reviewCount").type(JsonFieldType.NUMBER).description("경로 댓글 개수"),
                                 fieldWithPath("score").type(JsonFieldType.NUMBER).description("경로 평점"),
-                                fieldWithPath("createdBy").type(JsonFieldType.STRING).description("경로의 생성자 이름"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("경로 생성 날짜"),
                                 fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("경로 수정 날짜"),
+                                fieldWithPath("creator.name").type(JsonFieldType.STRING).description("경로의 생성자 이름"),
+                                fieldWithPath("creator.avatar").type(JsonFieldType.STRING).description("경로의 생성자의 프로필 이미지 url (없다면 null)"),
                                 fieldWithPath("places").type(JsonFieldType.ARRAY).description("경로의 장소들"),
                                 fieldWithPath("places[].id").type(JsonFieldType.NUMBER).description("장소 식별자"),
                                 fieldWithPath("places[].address").type(JsonFieldType.STRING).description("장소 주소"),
@@ -302,6 +258,8 @@ public class RouteControllerTest extends MvcTest {
         InputStream is2 = new ClassPathResource("mock/images/enjoy2.png").getInputStream();
         MockMultipartFile mockFile1 = new MockMultipartFile("files", "mock_file1.jpg", "image/jpg", is1.readAllBytes());
         MockMultipartFile mockFile2 = new MockMultipartFile("files", "mock_file2.jpg", "image/jpg", is2.readAllBytes());
+
+        given(routeService.createReview(any(),any())).willReturn(RouteReview.builder().id(1L).build());
 
         ResultActions results = mockMvc.perform(
                 fileUpload("/route/{id}/review", 1)
@@ -327,6 +285,9 @@ public class RouteControllerTest extends MvcTest {
                         requestParameters(
                                 parameterWithName("content").description("경로 리뷰 내용"),
                                 parameterWithName("score").description("경로 점수")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("생성된 경로 리뷰 식별자")
                         )
                 ));
     }
@@ -348,7 +309,7 @@ public class RouteControllerTest extends MvcTest {
                     .build();
             routeReview.setCreatedAt(LocalDateTime.of(2021, 4, 14, 9, 0));
             routeReview.setUpdatedAt(LocalDateTime.of(2021, 4, 14, 9, 0).plusDays(5));
-            routeReview.setCreatedBy(User.builder().name("테스트유저").build());
+            routeReview.setCreatedBy(User.builder().name("테스트유저").avatar(File.builder().url("https://s3.ap-northeast-2.amazonaws.com/s3.baruntravel.me/NVKd7InpFVTtespa79wvLKMj7MyGdovTroWJI7nInwpF4symIR4J3VQLpTxn.png").build()).build());
             return routeReview;
         }).collect(Collectors.toList());
 
@@ -368,15 +329,16 @@ public class RouteControllerTest extends MvcTest {
                                 parameterWithName("id").description("경로 식별자")
                         ),
                         responseFields(
-                                fieldWithPath("reviews[].id").description("경로 리뷰 식별자"),
-                                fieldWithPath("reviews[].content").description("경로 리뷰 내용"),
-                                fieldWithPath("reviews[].score").description("경로 리뷰 점수"),
-                                fieldWithPath("reviews[].likeCount").description("경로 리뷰 좋아요 개수"),
-                                fieldWithPath("reviews[].likeCheck").description("로그인 유저가 해당 경로 리뷰에 좋아요를 눌렀다면 true"),
-                                fieldWithPath("reviews[].createdBy").description("경로 리뷰 작성자"),
-                                fieldWithPath("reviews[].files[].url").description("경로 리뷰에 첨부되어 있는 파일 url"),
-                                fieldWithPath("reviews[].createdAt").description("경로 리뷰 생성날짜"),
-                                fieldWithPath("reviews[].updatedAt").description("경로 리뷰 수정날짜")
+                                fieldWithPath("reviews[].id").type(JsonFieldType.NUMBER).description("경로 리뷰 식별자"),
+                                fieldWithPath("reviews[].content").type(JsonFieldType.STRING).description("경로 리뷰 내용"),
+                                fieldWithPath("reviews[].score").type(JsonFieldType.NUMBER).description("경로 리뷰 점수"),
+                                fieldWithPath("reviews[].likeCount").type(JsonFieldType.NUMBER).description("경로 리뷰 좋아요 개수"),
+                                fieldWithPath("reviews[].likeCheck").type(JsonFieldType.BOOLEAN).description("로그인 유저가 해당 경로 리뷰에 좋아요를 눌렀다면 true"),
+                                fieldWithPath("reviews[].creator.name").type(JsonFieldType.STRING).description("경로 리뷰 작성자 이름"),
+                                fieldWithPath("reviews[].creator.avatar").type(JsonFieldType.STRING).description("경로 리뷰 작성자 프로필 이미지"),
+                                fieldWithPath("reviews[].files[].url").type(JsonFieldType.STRING).description("경로 리뷰에 첨부되어 있는 파일 url"),
+                                fieldWithPath("reviews[].createdAt").type(JsonFieldType.STRING).description("경로 리뷰 생성날짜"),
+                                fieldWithPath("reviews[].updatedAt").type(JsonFieldType.STRING).description("경로 리뷰 수정날짜")
                         )
                 ));
     }

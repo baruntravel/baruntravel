@@ -15,27 +15,29 @@ const PlaceListModal = ({ routes, modalHandler }) => {
                 <h2>{routes[value].routeName}</h2>
                 <h3>{routes[value].creator}</h3>
               </div>
-              {routes[value].places.map(({ id, placeName, placeUrl, addressName, category }, index) => {
-                return (
-                  <Link to={`place/${id}`} key={index}>
-                    <div className={styles.placeCard}>
-                      <div className={styles.col2}>
-                        <div className={styles.row1}>
-                          <h2>{placeName}</h2>
-                          <h3>{category}</h3>
+              {routes[value].places.map(
+                ({ id, placeName, placeUrl, addressName, category }, index) => {
+                  return (
+                    <Link to={`place/${id}`} key={index}>
+                      <div className={styles.placeCard}>
+                        <div className={styles.col2}>
+                          <div className={styles.row1}>
+                            <h2>{placeName}</h2>
+                            <h3>{category}</h3>
+                          </div>
+                          <div className={styles.row2}>
+                            <h3>{addressName}</h3>
+                            <h3>02-2222-3333</h3>
+                          </div>
                         </div>
-                        <div className={styles.row2}>
-                          <h3>{addressName}</h3>
-                          <h3>02-2222-3333</h3>
+                        <div className={styles.col3}>
+                          <div className={styles.thumbnail}></div>
                         </div>
                       </div>
-                      <div className={styles.col3}>
-                        <div className={styles.thumbnail}></div>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
+                    </Link>
+                  );
+                }
+              )}
             </div>
           );
         })}

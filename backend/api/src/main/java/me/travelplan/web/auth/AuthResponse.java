@@ -3,9 +3,9 @@ package me.travelplan.web.auth;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import me.travelplan.security.jwt.Token;
-import me.travelplan.service.user.domain.User;
 
 import java.time.LocalDateTime;
 
@@ -32,13 +32,11 @@ public class AuthResponse {
     }
 
     @Getter
+    @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Me {
         private String email;
         private String name;
-
-        public static Me from(User user) {
-            return new Me(user.getEmail(), user.getName());
-        }
+        private String avatar;
     }
 }

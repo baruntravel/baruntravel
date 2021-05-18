@@ -2,8 +2,9 @@ DROP TABLE IF EXISTS `carts_places`;
 CREATE TABLE `carts_places`
 (
     `id`         BIGINT   NOT NULL AUTO_INCREMENT,
-    `place_id`   BIGINT   NOT NULL,
+    `order`      INT      NOT NULL,
     `memo`       VARCHAR(1000),
+    `place_id`   BIGINT   NOT NULL,
     `created_at` DATETIME NOT NULL,
     `updated_at` DATETIME DEFAULT NULL,
     `deleted_at` DATETIME DEFAULT NULL,

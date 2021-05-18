@@ -1,6 +1,6 @@
 import { HeartOutlined, HeartTwoTone } from "@ant-design/icons";
 import { Rate } from "antd";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import styles from "./placeCard.module.css";
 const PlaceCard = ({ place, onHandleDelete, addShoppingCart, isLiked }) => {
@@ -8,10 +8,10 @@ const PlaceCard = ({ place, onHandleDelete, addShoppingCart, isLiked }) => {
   const likeIconRef = useRef();
   const onClickDelete = useCallback(() => {
     onHandleDelete(place.id);
-  }, [onHandleDelete, place.id]);
-  const onHandleLike = () => {
+  }, [onHandleDelete, place]);
+  const onHandleLike = useCallback(() => {
     addShoppingCart(place);
-  };
+  }, [addShoppingCart, place]);
   const onClickCard = useCallback(
     (event) => {
       if (
@@ -22,7 +22,7 @@ const PlaceCard = ({ place, onHandleDelete, addShoppingCart, isLiked }) => {
       }
       history.push(`/place/${place.id}`);
     },
-    [history, place.id]
+    [history, place]
   );
 
   const placeAddress =

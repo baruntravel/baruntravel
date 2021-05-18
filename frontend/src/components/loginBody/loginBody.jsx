@@ -28,7 +28,11 @@ const LoginBody = ({ onClickRegister, onClose }) => {
     async (event) => {
       event.preventDefault();
       setLoading(true);
-      const [isLogin, userEmail, userName] = await onLogin(email, password);
+      const [isLogin, userEmail, userName, avatar] = await onLogin(
+        email,
+        password
+      );
+      console.log(isLogin, userEmail, userName, avatar);
       updateUserLogin(isLogin, userEmail, userName);
       setLoading(false);
       if (isLogin) {

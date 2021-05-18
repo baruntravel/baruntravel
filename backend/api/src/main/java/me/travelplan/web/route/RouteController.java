@@ -14,12 +14,6 @@ public class RouteController {
     private final RouteService routeService;
     private final RouteMapper routeMapper;
 
-    @PostMapping("/empty")
-    @ResponseStatus(HttpStatus.CREATED)
-    public RouteResponse.RouteId createEmpty(@RequestBody RouteRequest.CreateEmpty request) {
-        return routeMapper.toRouteIdResponse(routeService.createEmpty(routeMapper.toEntity(request)));
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RouteResponse.RouteId create(@RequestBody RouteRequest.Create request) {
@@ -27,8 +21,8 @@ public class RouteController {
     }
 
     @PutMapping("/{id}")
-    public void update(@PathVariable Long id, @RequestBody RouteRequest.CreateOrUpdate request) {
-        routeService.update(routeMapper.toEntity(request, id));
+    public void updatePlaceOrder(@PathVariable Long id, @RequestBody RouteRequest.Update request, @CurrentUser CustomUserDetails customUserDetails) {
+        routeService.updatePlaceOrder(id, request, customUserDetails.getUser());
     }
 
     @GetMapping("/{id}")
@@ -48,13 +42,13 @@ public class RouteController {
 
     @PostMapping("/{id}/review")
     @ResponseStatus(HttpStatus.CREATED)
-    public void createReview(@PathVariable Long id, RouteRequest.CreateOrUpdateReview request) {
-        routeService.createReview(request, id);
+    public RouteResponse.ReviewId createReview(@PathVariable Long id, RouteRequest.CreateOrUpdateReview request) {
+        return routeMapper.toReviewIdResponse(routeService.createReview(request, id));
     }
 
     @GetMapping("/{id}/reviews")
     public RouteResponse.ReviewList getReviewList(@PathVariable Long id, @CurrentUser CustomUserDetails customUserDetails) {
-        return routeMapper.entityToResponseReviewList(routeService.getReviewList(id), customUserDetails.getUser());
+        return routeMapper.entityToResponseReviewList(routeService.getReviewList(id), customUserDetails);
     }
 
     @PostMapping("/review/{id}")

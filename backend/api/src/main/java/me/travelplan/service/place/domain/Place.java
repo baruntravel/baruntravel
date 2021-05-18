@@ -37,15 +37,15 @@ public class Place extends BaseEntity {
 
     @OneToMany(mappedBy = "place")
     @Builder.Default
-    private List<PlaceReview> reviews = new ArrayList<>();
+    private final List<PlaceReview> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "place")
     @Builder.Default
-    private List<PlaceLike> placeLikes = new ArrayList<>();
+    private final List<PlaceLike> placeLikes = new ArrayList<>();
     /**
      * Detail
      */
-    @OneToMany(mappedBy = "place")
+    @OneToMany(mappedBy = "place", cascade = CascadeType.PERSIST)
     private List<PlaceImage> images;
     private String openHour;
 
@@ -53,10 +53,15 @@ public class Place extends BaseEntity {
         return this.placeLikes.stream().anyMatch(placeLike -> placeLike.getCreatedBy().getId().equals(user.getId()));
     }
 
+    public void addImage(File image) {
+        this.images.add(PlaceImage.builder().place(this).file(image).build());
+    }
+
     public Place setFromKakaoMapPlace(KakaoMapPlace kakaoMapPlace) {
-        this.detailStatus = PlaceDetailStatus.COMPLETE;
-        this.thumbnail = File.createExternalImage(kakaoMapPlace.getThumbnail());
         try {
+            this.detailStatus = PlaceDetailStatus.COMPLETE;
+            this.thumbnail = File.createExternalImage(kakaoMapPlace.getThumbnail());
+            kakaoMapPlace.getPhotos().forEach(photo -> this.addImage(File.createExternalImage(photo.getImageUrl())));
             this.openHour = kakaoMapPlace.getOpenHour().get(0).getTimeList().get(0).getTimeSE();
         } catch (Exception ex) {
             // ignore
@@ -65,7 +70,7 @@ public class Place extends BaseEntity {
         return this;
     }
 
-    public Double getReviewScoreAvg() {
+    public Double getAverageReviewScore() {
         return this.reviews.stream().mapToDouble(PlaceReview::getScore).average().orElse(0);
     }
 }
