@@ -72,9 +72,12 @@ const RouteDetailPage = (props) => {
   const handleSetReviewDatas = useCallback((updated) => {
     setReviewDatas(updated);
   }, []);
-  const onUploadReview = useCallback((formData) => {
-    onUploadRouteReview(1, formData); // 추후에 root ID 동적으로 받아오는 걸 구현 후 수정
-  }, []);
+  const onUploadReview = useCallback(
+    (formData) => {
+      onUploadRouteReview(routeId, formData); // 추후에 root ID 동적으로 받아오는 걸 구현 후 수정
+    },
+    [routeId]
+  );
   const onEditReview = useCallback((reviewId, formData) => {
     onEditRouteReview(reviewId, formData);
   }, []);
@@ -97,7 +100,7 @@ const RouteDetailPage = (props) => {
     }
     async function getRouteDetailInfo() {
       // 루트 상세페이지의 정보를 받아옴
-      const route = await getRouteDetail(1);
+      const route = await getRouteDetail(routeId);
       setRouteDetail(route);
       const route_images =
         route && route.places.map((place) => [place.image, place.name]);

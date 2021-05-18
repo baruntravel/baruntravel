@@ -30,12 +30,13 @@
 }
 .body__header {
   padding-top: 32px;
-  padding-bottom: 24px;
+  padding-bottom: 16px;
   border-bottom: 2px solid lightgrey;
 }
 .body__placeInfo {
   display: flex;
   margin-top: 4px;
+  margin-bottom: 8px;
 }
 
 .body__score,
@@ -59,6 +60,11 @@
 }
 .body__addressContainer {
   margin-bottom: 24px;
+}
+.body__openHour {
+  margin-top: 12px;
+  opacity: 0.8;
+  font-size: 12px;
 }
 .body__mapContainer {
   height: 218px;

@@ -23,7 +23,6 @@ const HotplaceMap = ({
   }, [place]);
 
   useEffect(() => {
-    const placeOverlay = new kakao.maps.CustomOverlay({ zIndex: 1 });
     let markers = [];
     let keyword;
     let currCategory = "";
@@ -70,7 +69,6 @@ const HotplaceMap = ({
     function searchPlacesWithKeyword() {
       if (!currCategory && keyword) {
         //keyword로 검색했을 때,
-        placeOverlay.setMap(null);
         removeMarker();
         ps.keywordSearch(keyword, placesSearchKeywordCB, {
           useMapBounds: true,
@@ -84,8 +82,6 @@ const HotplaceMap = ({
       if (!currCategory) {
         return;
       } else {
-        // 커스텀 오버레이를 숨깁니다
-        placeOverlay.setMap(null);
         // 지도에 표시되고 있는 마커를 제거합니다
         removeMarker();
         ps.categorySearch(currCategory, placesSearchCB, {
@@ -212,7 +208,6 @@ const HotplaceMap = ({
     // 카테고리를 클릭했을 때 호출되는 함수입니다
     function onClickCategory() {
       let id = this.id;
-      placeOverlay.setMap(null);
       currCategory = id;
       searchPlaces();
     }

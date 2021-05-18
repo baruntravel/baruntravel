@@ -1,3 +1,6 @@
+body {
+  overflow: hidden;
+}
 .HotplacePage {
   display: flex;
   flex-direction: column;
@@ -6,19 +9,21 @@
   align-items: center;
   overflow-x: hidden;
 }
-
 .searchContainer {
   display: flex;
   position: absolute;
   align-items: center;
   top: 3%;
-  width: 90%;
-  height: 6vh;
+  width: 80%;
   z-index: 1002;
-  background-color: white;
 }
 .form {
-  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  height: 6vh;
+  background-color: white;
 }
 .inputBar {
   padding-left: 5%;
@@ -35,20 +40,35 @@
   width: 20%;
   color: #00acee;
 }
+.profileToggle {
+  margin-left: 12px;
+}
 .carouselContainer {
   position: absolute;
   bottom: 8%;
   /* height: 17vh; */
   width: 95%;
   z-index: 1001;
-  background-color: white;
   border-radius: 12px;
   display: none;
+}
+.mapButtonBox {
+  display: flex;
+  justify-content: flex-end;
+}
+.listPortalButton {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background-color: #1890ff;
+  border: none;
+  outline: none;
+  padding: 8px;
+  margin-bottom: 4px;
 }
 .placeCardContainer {
   height: 17vh;
   width: 90%;
   margin: auto;
+  background-color: white;
 }
 .mapContainer {
   width: 100%;
