@@ -13,6 +13,7 @@ import AllArea from "./pages/mainPage/selectArea/allArea/allArea";
 import DetailProfile from "./components/detailProfile/detailProfile";
 import PlaceContentBox from "./components/placeContentBox/placeContentBox";
 import AreaPage from "./pages/areaPage/areaPage";
+import DetailReviewHeader from "./components/common/detailReviewHeader/detailReviewHeader";
 
 function App() {
   return (
@@ -65,7 +66,7 @@ function App() {
 
           {/* 테스트 */}
           <Route exact path="/test">
-            <PlaceContentBox />
+            <DetailReviewHeader />
           </Route>
         </Router>
       </RecoilRoot>

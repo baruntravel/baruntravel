@@ -102,7 +102,7 @@ const PlaceContentBox = () => {
           entries.forEach(function (entry) {
             if (entry.isIntersecting) {
               let lazyImage = entry.target;
-              console.log(lazyImage);
+              lazyImage.classList.remove(styles["lazy"]);
               lazyImage.src = lazyImage.dataset.src;
               lazyImageObserver.unobserve(lazyImage);
             }
@@ -124,11 +124,20 @@ const PlaceContentBox = () => {
         <SortBox />
       </div>
       <div ref={imageBoxRef} className={styles.imageBox}>
-        {images.map((item, index) => (
-          <div key={index} className={styles.imageContainer}>
-            <img className={styles.img} data-src={item.url} alt="" />
-          </div>
-        ))}
+        {images.map(
+          (
+            item,
+            index // 이미지를 받아오면 해당 이미지의 id를 key로 넣고 그 key를 이용해서 리뷰 창 띄워주기
+          ) => (
+            <div key={index} className={styles.imageContainer}>
+              <img
+                className={`${styles.img} ${styles.lazy}`}
+                data-src={item.url}
+                alt=""
+              />
+            </div>
+          )
+        )}
       </div>
     </div>
   );
