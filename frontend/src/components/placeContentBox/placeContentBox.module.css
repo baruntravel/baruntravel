@@ -6,11 +6,12 @@
 .imageBox {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  /* grid-template-rows: minmax(150px); */
   grid-gap: 8px;
 }
 .imageContainer {
   display: inline-block;
+  min-height: 150px;
   width: 100%;
   height: 100%;
 }

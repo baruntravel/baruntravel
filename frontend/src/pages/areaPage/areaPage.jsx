@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useCallback, useState } from "react";
 import Navbar from "../../components/common/navbar/navbar";
 import RouteContentBox from "./routeContentBox/routeContentBox";
-import PlaceContentBox from "./placeContentBox/placeContentBox";
+import PlaceContentBox from "../../components/placeContentBox/placeContentBox";
 
 const AreaPage = () => {
   const location = useLocation();
