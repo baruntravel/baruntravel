@@ -25,7 +25,9 @@ const AreaPage = () => {
             플레이스
           </button>
         </div>
-        <div className={styles.contentBox}>{tabBox === "route" ? <RouteContentBox /> : <PlaceContentBox />}</div>
+        <div className={styles.contentBox}>
+          {tabBox === "route" ? <RouteContentBox area={area} /> : <PlaceContentBox />}
+        </div>
         <div className={styles.floatingIcon}></div>
       </div>
     </div>

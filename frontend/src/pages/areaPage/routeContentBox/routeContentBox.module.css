@@ -10,3 +10,7 @@
   display: flex;
   justify-content: space-between;
 }
+
+.routeCards {
+  width: 95%;
+}
