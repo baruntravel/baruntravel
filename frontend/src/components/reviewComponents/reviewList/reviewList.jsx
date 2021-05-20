@@ -116,7 +116,7 @@ const ReviewList = ({
           <div key={index} className={styles.reviewContainer}>
             <ReviewCard
               review={item}
-              isUserReview={item.createdBy === userStates.name}
+              isUserReview={item.creator.name === userStates.name}
               onOpenDeleteConfirm={onOpenConfirm}
               onHandleSelected={onHandleSelected}
               onOpenEditForm={onOpenEditForm}

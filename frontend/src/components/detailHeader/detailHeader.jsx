@@ -4,13 +4,16 @@ import {
   LeftOutlined,
   LikeOutlined,
   LikeTwoTone,
+  ShoppingTwoTone,
 } from "@ant-design/icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import styles from "./detailHeader.module.css";
 
 const DetailHeader = ({
   liked,
-  category,
+  name,
   needLogin,
   onOpenPortalAuth,
   onClickLike,
@@ -22,24 +25,27 @@ const DetailHeader = ({
       <div className={styles.navigation} role="뒤로 가기">
         <div className={styles.navigationBtn}>
           <div className={styles.navigationIcon}>
-            <LeftOutlined />
+            <LeftOutlined style={{ color: "#ED6AB8" }} />
           </div>
-          <div className={styles.categoryBox}>
-            <span className={styles.category}>{category || "카테고리"}</span>
+          <div className={styles.nameBox}>
+            <span className={styles.name}>{name || "해당 이름"}</span>
           </div>
         </div>
       </div>
       <div className={styles.serviceIcons}>
+        <div className={styles.bag}>
+          <ShoppingTwoTone className={styles.icon} twoToneColor="#ED6AB8" />
+        </div>
         <div className={styles.heart}>
           {liked ? (
-            <LikeTwoTone
-              className={styles.likeBtn}
+            <HeartTwoTone
+              className={styles.icon}
               twoToneColor="#eb2f96"
               onClick={onClickUnlike}
             />
           ) : (
-            <LikeOutlined
-              className={styles.likeBtn}
+            <HeartOutlined
+              className={styles.icon}
               style={{ color: "grey" }}
               onClick={onClickLike}
             />

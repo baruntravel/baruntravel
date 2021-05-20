@@ -1,17 +1,18 @@
 import React, { useCallback, useState } from "react";
 import styles from "./reviewCard.module.css";
 import { Rate } from "antd";
-import Avatar from "antd/lib/avatar/avatar";
 // import { getYear, getMonth, getDate } from "date-fns";
-import { LikeOutlined, LikeTwoTone, UserOutlined } from "@ant-design/icons";
+import { LikeOutlined, LikeTwoTone } from "@ant-design/icons";
 import PostImages from "../../postImages/postImages";
+import ReviewUserProfile from "../../../common/reviewUserProfile/reviewUserProfile";
+
 const ReviewCard = ({
   review,
   review: {
     id,
     content,
     score,
-    createdBy,
+    creator: { name, avatar },
     likeCount,
     likeCheck,
     files,
@@ -22,6 +23,7 @@ const ReviewCard = ({
   onOpenDeleteConfirm,
   onHandleSelected,
   onOpenEditForm,
+  isDetail,
 }) => {
   const [liked, setLiked] = useState(likeCheck); // post의 좋아요를 누른 사람들 중 유저가 있는 지 확인하는 작업,
   const onUnlike = () => {
@@ -38,20 +40,13 @@ const ReviewCard = ({
   }, [onHandleSelected, onOpenEditForm, review]);
   return (
     <div className={styles.ReviewCard}>
-      <div className={styles.userProfile}>
-        <div className={styles.profileBox}>
-          <Avatar src={""} size="large" icon={<UserOutlined />} />
-          <div className={styles.userName}>
-            <strong className={styles.nickname}>{createdBy}</strong>
-          </div>
-        </div>
-        {isUserReview && (
-          <div className={styles.editBox}>
-            <span onClick={onClickEdit}>수정</span>
-            <span onClick={onClickDelete}>삭제</span>
-          </div>
-        )}
-      </div>
+      <ReviewUserProfile
+        avatar={avatar}
+        name={name}
+        isUserReview={isUserReview}
+        onClickEdit={onClickEdit}
+        onClickDelete={onClickDelete}
+      />
       <div className={styles.content}>
         <div className={styles.info}>
           <div className={styles.info__first}>
@@ -71,11 +66,14 @@ const ReviewCard = ({
           </section>
         </div>
       </div>
-      {files.length > 0 && (
-        <div className={styles.imageContainer}>
-          <PostImages images={files.map((file) => file.url)} />
-        </div>
-      )}
+      {files.length > 0 &&
+        (isDetail ? (
+          files.map((file) => <img src={file.url} className={styles.image} />)
+        ) : (
+          <div className={styles.imageContainer}>
+            <PostImages images={files.map((file) => file.url)} />
+          </div>
+        ))}
       <div className={styles.review__bottom}>
         <div>
           {liked ? (

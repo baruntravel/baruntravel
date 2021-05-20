@@ -6,7 +6,7 @@
 .imageBox {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  /* grid-template-rows: minmax(150px); */
+  grid-auto-rows: 1fr;
   grid-gap: 8px;
 }
 .imageContainer {
