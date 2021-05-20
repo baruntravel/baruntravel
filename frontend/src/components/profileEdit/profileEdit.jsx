@@ -7,18 +7,21 @@ import useInput from "../../hooks/useInput";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../recoil/userState";
 import { onEditProfile, onGetMe } from "../../api/authAPI";
+import Loading from "../common/loading/loading";
 const ProfileEdit = memo(({ userStates, onClose, onUpdateUserProfile }) => {
   const imageInputRef = useRef();
 
+  const [loading, setLoading] = useState(false);
   const [updateImageUrl, setUpdateImageUrl] = useState();
   const [updateImageFile, setUpdateImageFile] = useState(null);
   const [nickname, onHandleNickname, setNickName] = useInput("");
-  const [updateDone, setUpdateDone] = useState(false);
 
   const onChangeImage = useCallback((e) => {
     const file = e.target.files[0];
-    setUpdateImageFile(file);
-    setUpdateImageUrl(URL.createObjectURL(file));
+    if (file) {
+      setUpdateImageFile(file);
+      setUpdateImageUrl(URL.createObjectURL(file));
+    }
   }, []);
   const onClickImageUpload = useCallback(() => {
     imageInputRef.current.click();
@@ -26,20 +29,20 @@ const ProfileEdit = memo(({ userStates, onClose, onUpdateUserProfile }) => {
   const onClickEdit = useCallback(
     async (e) => {
       e.preventDefault();
+      setLoading(true);
       const isAvatarChange = updateImageFile ? true : false; // 업데이트 된 파일이 있다면 바뀌었다.
       const formData = new FormData();
 
       formData.append("name", nickname);
       formData.append("avatarChange", isAvatarChange);
-      formData.append("avatar", updateImageFile);
+      updateImageFile && formData.append("avatar", updateImageFile);
       const result = await onEditProfile(formData);
       if (result) {
         const data = await onGetMe();
-        console.log(data);
         onUpdateUserProfile(data);
-        setUpdateDone(true);
+        setLoading(false);
+        setUpdateImageFile(false);
       }
-      //result가 트루일 때 -> 변경이 완료됐음을 알려준다.
     },
     [nickname, onUpdateUserProfile, updateImageFile]
   );
@@ -47,8 +50,13 @@ const ProfileEdit = memo(({ userStates, onClose, onUpdateUserProfile }) => {
   useEffect(() => {
     userStates.avatar && setUpdateImageUrl(userStates.avatar);
     userStates.name && setNickName(userStates.name);
-  }, [userStates]);
+  }, [setNickName, userStates]);
 
+  if (loading) {
+    <>
+      <Loading />
+    </>;
+  }
   return (
     <div className={styles.ProfileEdit}>
       <header className={styles.header}>

@@ -83,7 +83,7 @@ const SideMyProfile = ({ handleClose }) => {
             />
             <div className={styles.nicknameBox}>
               <span>Welcome!</span>
-              <span className={styles.nickname}>User Nickname</span>
+              <span className={styles.nickname}>{userStates.name}</span>
             </div>
           </div>
         ) : (
