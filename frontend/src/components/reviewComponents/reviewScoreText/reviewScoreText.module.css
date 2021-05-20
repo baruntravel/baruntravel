@@ -1,0 +1,16 @@
+.ReviewScoreText {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 24px;
+}
+.rate {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+}
+.rateBox {
+  display: flex;
+}
+.score {
+  margin-left: 8px;
+}

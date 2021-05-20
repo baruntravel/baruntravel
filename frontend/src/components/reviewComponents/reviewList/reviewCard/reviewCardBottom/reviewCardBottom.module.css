@@ -1,0 +1,9 @@
+.review__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  bottom: 0;
+}
+.date {
+  color: grey;
+}

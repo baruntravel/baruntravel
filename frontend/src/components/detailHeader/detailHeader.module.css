@@ -13,7 +13,13 @@
   display: flex;
   flex-direction: row;
 }
-.likeBtn {
+.nameBox {
+  margin-left: 14px;
+}
+.icon {
   font-size: 18px;
   padding-right: 8px;
+}
+.serviceIcons {
+  display: flex;
 }

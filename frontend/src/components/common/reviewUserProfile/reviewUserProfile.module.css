@@ -1,0 +1,13 @@
+.userProfile {
+  display: flex;
+  justify-content: space-between;
+}
+.profileBox {
+  display: flex;
+}
+.userName {
+  display: flex;
+  flex-direction: column;
+  margin-left: 12px;
+  justify-content: center;
+}
