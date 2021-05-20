@@ -1,10 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import SortBox from "../../components/common/sortBox/sortBox";
+import { useHistory } from "react-router-dom";
 
 import styles from "./placeContentBox.module.css";
 
 const PlaceContentBox = () => {
   // places : place id, place images
+  const history = useHistory();
   const imageBoxRef = useRef();
   const images = [
     {
@@ -92,6 +94,14 @@ const PlaceContentBox = () => {
       url: "https://i.pinimg.com/474x/18/07/90/180790ed94257c237355a7187580448d.jpg",
     },
   ];
+  const onClickImage = useCallback(
+    (e) => {
+      // e.target // target 자식 요소의 key를 id로 념겨준다
+      // 테스트용도는 review 1로 그냥 해버림
+      history.push("/review/detail/1");
+    },
+    [history]
+  );
   useEffect(() => {
     const image__Elements = Array.from(imageBoxRef.current.children).map(
       (imageContainer) => imageContainer.firstChild
@@ -123,7 +133,7 @@ const PlaceContentBox = () => {
         <span>아이콘 2개</span>
         <SortBox />
       </div>
-      <div ref={imageBoxRef} className={styles.imageBox}>
+      <div ref={imageBoxRef} className={styles.imageBox} onClick={onClickImage}>
         {images.map(
           (
             item,

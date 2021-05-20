@@ -61,6 +61,10 @@ function App() {
             <DetailProfile />
           </Route>
 
+          <Route exact path="/review/detail/:id">
+            <ReviewDetailPage />
+          </Route>
+
           <Route exact path="/test2">
             <AreaPage />
           </Route>

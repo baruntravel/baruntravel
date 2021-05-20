@@ -1,6 +1,8 @@
 import React from "react";
+import ReviewUserProfile from "../../components/common/reviewUserProfile/reviewUserProfile";
 import DetailHeader from "../../components/detailHeader/detailHeader";
-import ReviewCard from "../../components/reviewComponents/reviewList/reviewCard/reviewCard";
+import ReviewCardBottom from "../../components/reviewComponents/reviewList/reviewCard/reviewCardBottom/reviewCardBottom";
+import ReviewScoreText from "../../components/reviewComponents/reviewScoreText/reviewScoreText";
 import styles from "./reviewDetailPage.module.css";
 
 const ReviewDetailPage = (props) => {
@@ -41,10 +43,28 @@ const ReviewDetailPage = (props) => {
     createdAt: "2021-04-14 09:00:00",
     updatedAt: "2021-04-19 09:00:00",
   };
+
   return (
     <div className={styles.ReviewDetailPage}>
       <DetailHeader />
-      <ReviewCard isDetail={true} review={review} />
+      <div className={styles.reviewHeader}>
+        <ReviewUserProfile avatar={review.avatar} name={review.creator.name} />
+        <ReviewScoreText score={review.score} content={review.content} />
+      </div>
+      {review.files.map((file, index) => (
+        <img
+          key={index}
+          src={file.url}
+          className={styles.image}
+          alt="사용자 이미지"
+        />
+      ))}
+      <div className={styles.reviewBottom}>
+        <ReviewCardBottom
+          date={review.updatedAt || review.createdAt}
+          likeCount={review.likeCount}
+        />
+      </div>
     </div>
   );
 };
