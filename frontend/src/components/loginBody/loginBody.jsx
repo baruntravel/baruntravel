@@ -14,15 +14,15 @@ const LoginBody = ({ onClickRegister, onClose }) => {
   const [userStates, setUserStates] = useRecoilState(userState);
   const [shoppingItems, setShoppingItems] = useRecoilState(userCart);
   const [loginFail, setLoginFail] = useState(false);
-  const updateUserLogin = (isLogin, email, name) => {
-    setUserStates((prev) => {
-      const updated = { ...prev };
-      updated["isLogin"] = isLogin;
-      updated["email"] = email;
-      updated["name"] = name;
-      return updated;
-    });
-  };
+  const updateUserLogin = useCallback(
+    (isLogin, email, name, avatar) => {
+      setUserStates((prev) => {
+        const updated = { ...prev, isLogin, email, name, avatar };
+        return updated;
+      });
+    },
+    [setUserStates]
+  );
 
   const handleSubmit = useCallback(
     async (event) => {
@@ -32,8 +32,7 @@ const LoginBody = ({ onClickRegister, onClose }) => {
         email,
         password
       );
-      console.log(isLogin, userEmail, userName, avatar);
-      updateUserLogin(isLogin, userEmail, userName);
+      updateUserLogin(isLogin, userEmail, userName, avatar);
       setLoading(false);
       if (isLogin) {
         formRef.current.reset();

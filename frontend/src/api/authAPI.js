@@ -29,13 +29,22 @@ export const onLogin = (email, password) => {
     });
 };
 
+export const onGetMe = () => {
+  return axios
+    .get("/auth/me")
+    .then((res) => res.data)
+    .catch((error) => {
+      console.error(error);
+      throw new Error(`unExpected error ${error}`);
+    });
+};
+
 export const onRegister = async (formData) => {
   const result = await axios
     .post("/auth/register", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
     .then((res) => {
-      console.log(res);
       return true;
     })
     .catch((error) => {
@@ -48,4 +57,16 @@ export const onRegister = async (formData) => {
 export const onLogout = () => {
   axios.defaults.headers.common["Authorization"] = undefined;
   window.localStorage.clear();
+};
+
+export const onEditProfile = (formData) => {
+  return axios
+    .post("/auth/update", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    .then((res) => true)
+    .catch((error) => {
+      console.error(error);
+      return false;
+    });
 };
