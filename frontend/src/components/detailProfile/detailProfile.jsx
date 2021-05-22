@@ -2,7 +2,7 @@ import { UserOutlined } from "@ant-design/icons";
 import Avatar from "antd/lib/avatar/avatar";
 import React, { useEffect, useRef, useState } from "react";
 import { useCallback } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../recoil/userState";
 import styles from "./detailProfile.module.css";
@@ -11,8 +11,10 @@ import DetailProfileCondition from "./detailProfileCondition/detailProfileCondit
 const DetailProfile = (props) => {
   const userStates = useRecoilValue(userState);
   const history = useHistory();
+  const location = useLocation();
+
   // useEffect lifecycle method를 사용하지 않은 이유 -> 마운트 되어 렌더링 그려지는 모습이 0.1초동안 보여지는 것을 방지
-  const [selected, setSelected] = useState("내경로");
+  const [selected, setSelected] = useState(location.state?.link || "내경로");
 
   const selectorListRef = useRef();
 
@@ -24,6 +26,10 @@ const DetailProfile = (props) => {
   if (!userStates.isLogin) {
     history.push("/");
   }
+
+  useEffect(() => {
+    history.replace("/detailProfile", {});
+  }, []);
 
   return (
     <div className={styles.DetailProfile}>

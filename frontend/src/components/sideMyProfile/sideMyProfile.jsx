@@ -63,6 +63,17 @@ const SideMyProfile = ({ handleClose }) => {
   const goToHome = useCallback(() => {
     history.push("/");
   }, [history]);
+
+  const goToDetailProfile = useCallback(
+    (e) => {
+      const link = e.target.closest(`.${styles["section__tagBox"]}`).dataset
+        .link;
+      console.log(link);
+      history.push({ pathname: "/detailProfile", state: { link } });
+    },
+    [history]
+  );
+
   const resetList = useResetRecoilState(userState);
   const onHandleLogout = useCallback(() => {
     console.log("로그아웃");
@@ -80,6 +91,7 @@ const SideMyProfile = ({ handleClose }) => {
               style={{
                 border: "2px solid white",
               }}
+              icon={<UserOutlined />}
             />
             <div className={styles.nicknameBox}>
               <span>Welcome!</span>
@@ -111,25 +123,48 @@ const SideMyProfile = ({ handleClose }) => {
               </div>
               <span className={styles.section__tag}>시작하기</span>
             </div>
-            <div className={styles.section__tagBox}>
+            <div
+              className={styles.section__tagBox}
+              onClick={goToDetailProfile}
+              data-link="내경로"
+            >
               <div className={styles.icon}>
                 <DownloadOutlined />
               </div>
-              <span className={styles.section__tag}>내 일정</span>
+              <span className={styles.section__tag}>내 경로</span>
               <span className={styles.tag__count}>3</span>
             </div>
-            <div className={styles.section__tagBox}>
+            <div
+              className={styles.section__tagBox}
+              onClick={goToDetailProfile}
+              data-link="공유경로"
+            >
               <div className={styles.icon}>
                 <SwapOutlined />
               </div>
-              <span className={styles.section__tag}>공유 일정</span>
+              <span className={styles.section__tag}>공유 경로</span>
               <span className={styles.tag__count}>3</span>
             </div>
-            <div className={styles.section__tagBox}>
+            <div
+              className={styles.section__tagBox}
+              onClick={goToDetailProfile}
+              data-link="리뷰"
+            >
               <div className={styles.icon}>
                 <EditOutlined />
               </div>
               <span className={styles.section__tag}>리뷰</span>
+              <span className={styles.tag__count}>4</span>
+            </div>
+            <div
+              className={styles.section__tagBox}
+              onClick={goToDetailProfile}
+              data-link="좋아요"
+            >
+              <div className={styles.icon}>
+                <EditOutlined />
+              </div>
+              <span className={styles.section__tag}>좋아요</span>
               <span className={styles.tag__count}>4</span>
             </div>
             <div className={styles.section__tagBox}>
