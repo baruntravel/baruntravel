@@ -7,22 +7,9 @@ const SelectArea = () => {
   let history = useHistory();
   const showAllArea = () => history.push("/place-all");
 
-  const getAreaXY = (placeName) => {
-    let ps = new kakao.maps.services.Places(),
-      xy;
-
-    ps.keywordSearch(placeName, async function (result, status) {
-      if (status === kakao.maps.services.Status.OK) {
-        xy = await result[0];
-        return xy;
-      }
-    });
-  };
-
   // 인기지역 10개만 보여주고, 전체보기 누르면 전체 지역
   const AreaList = () => {
     let areaArray = [];
-    let xy;
     for (let i = 0; i < 10; i++) {
       areaArray.push(
         <div
