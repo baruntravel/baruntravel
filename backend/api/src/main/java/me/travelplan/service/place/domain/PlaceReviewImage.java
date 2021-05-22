@@ -10,16 +10,16 @@ import javax.persistence.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "places_images")
-public class PlaceImage {
+@Table(name = "places_reviews_images")
+public class PlaceReviewImage {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_id")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private File file;
 
-    @JoinColumn(name = "place_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Place place;
+    @JoinColumn(name = "review_id")
+    private PlaceReview review;
 }

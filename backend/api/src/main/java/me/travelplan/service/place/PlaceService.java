@@ -4,58 +4,42 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.travelplan.component.kakaomap.KakaoMapPlace;
 import me.travelplan.component.kakaomap.KakaoMapService;
-import me.travelplan.service.file.repository.FileRepository;
 import me.travelplan.service.place.domain.Place;
-import me.travelplan.service.place.domain.PlaceLike;
-import me.travelplan.service.place.domain.PlaceReview;
+import me.travelplan.service.place.domain.PlaceDetailStatus;
 import me.travelplan.service.place.exception.PlaceNotFoundException;
-import me.travelplan.service.place.exception.PlaceNotUpdatableException;
-import me.travelplan.service.place.exception.PlaceReviewNotFoundException;
-import me.travelplan.service.place.exception.PlaceReviewNotUpdatableException;
-import me.travelplan.service.place.repository.PlaceImageRepository;
-import me.travelplan.service.place.repository.PlaceLikeRepository;
+import me.travelplan.service.place.repository.PlaceCategoryRepository;
 import me.travelplan.service.place.repository.PlaceRepository;
-import me.travelplan.service.place.repository.PlaceReviewRepository;
-import me.travelplan.service.user.domain.User;
+import me.travelplan.web.place.PlaceDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class PlaceService {
     private final PlaceRepository placeRepository;
-    private final PlaceReviewRepository placeReviewRepository;
-    private final PlaceLikeRepository placeLikeRepository;
+    private final PlaceCategoryRepository placeCategoryRepository;
     private final KakaoMapService kakaoMapService;
-    private final FileRepository fileRepository;
-    private final PlaceImageRepository placeImageRepository;
-    private final PlaceReviewService placeReviewService;
-    private final PlaceLikeService placeLikeService;
 
-    /*************************************
-     *              Place
-     *************************************/
-
-    public Place getOne(Long id) {
-        return placeRepository.findByIdWithCategory(id).orElseThrow(PlaceNotFoundException::new);
+    public Place getById(Long placeId) {
+        return placeRepository.findByIdWithCategory(placeId).orElseThrow(PlaceNotFoundException::new);
     }
-
 
     @Transactional
-    public void delete(Long reviewId) {
-        placeReviewRepository.deleteById(reviewId);
-    }
-
-    public void checkUpdatable(Long placeId, User user) {
-        Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
-
-        if (!place.getCreatedBy().getId().equals(user.getId())) {
-            throw new PlaceNotUpdatableException();
-        }
+    public Place create(PlaceDto.Request placeDto) {
+        Place place = Place.builder()
+                .id(placeDto.getId())
+                .category(placeCategoryRepository.getOne(placeDto.getCategoryId()))
+                .name(placeDto.getName())
+                .url(placeDto.getUrl())
+                .address(placeDto.getAddress())
+                .x(placeDto.getX())
+                .y(placeDto.getY())
+                .detailStatus(PlaceDetailStatus.PENDING)
+                .build();
+        Place savedPlace = placeRepository.save(place);
+        this.updateDetail(savedPlace.getId());
+        return savedPlace;
     }
 
     //    @Async
@@ -67,38 +51,5 @@ public class PlaceService {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-    }
-
-
-    /*************************************
-     *          Place Review
-     *************************************/
-
-    public List<PlaceReview> getReviews(Long placeId) {
-        Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
-        return place.getReviews();
-    }
-
-    @Transactional
-    public PlaceReview createReview(PlaceReview review) {
-        return placeReviewService.createReview(review);
-    }
-
-    @Transactional
-    public PlaceReview updateReview(PlaceReview after) {
-        return placeReviewService.updateReview(after);
-    }
-
-    public void checkReviewUpdatable(Long placeReviewId, User user) {
-        placeReviewService.checkReviewUpdatable(placeReviewId, user);
-    }
-
-
-    /*************************************
-     *          Place Like
-     *************************************/
-
-    public void createOrDeleteLike(Long placeId, User user) {
-        placeLikeService.createOrDeleteLike(placeId, user);
     }
 }

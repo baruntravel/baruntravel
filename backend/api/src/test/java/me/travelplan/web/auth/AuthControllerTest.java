@@ -1,4 +1,4 @@
-package me.travelplan.web;
+package me.travelplan.web.auth;
 
 import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
@@ -8,7 +8,6 @@ import me.travelplan.service.file.domain.File;
 import me.travelplan.service.user.AuthService;
 import me.travelplan.service.user.UserService;
 import me.travelplan.service.user.domain.User;
-import me.travelplan.web.auth.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -33,15 +32,12 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AuthController.class)
 @Import({
-        UserMapperImpl.class,
-        PasswordEncoderMapper.class,
-        AvatarMapper.class,
+        UserMapperImpl.class
 })
 public class AuthControllerTest extends MvcTest {
     @MockBean
@@ -156,7 +152,7 @@ public class AuthControllerTest extends MvcTest {
                 fileUpload("/auth/update")
                         .file(mockFile)
                         .param("name", "updateName")
-                        .param("avatarChange","true")
+                        .param("avatarChange", "true")
                         .contentType(MediaType.MULTIPART_FORM_DATA)
                         .characterEncoding("UTF-8")
         );

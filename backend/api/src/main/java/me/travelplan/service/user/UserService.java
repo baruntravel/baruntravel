@@ -8,6 +8,7 @@ import me.travelplan.service.user.exception.EmailExistedException;
 import me.travelplan.service.user.exception.UserNotFoundException;
 import me.travelplan.service.user.repository.UserRepository;
 import me.travelplan.web.auth.AuthRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,13 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserRepository userRepository;
     private final FileService fileService;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public User create(User user) {
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+    public User create(AuthRequest.Register request) {
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new EmailExistedException();
         }
-        return userRepository.save(user);
+        File avatar = fileService.upload(request.getAvatar());
+        return userRepository.save(User.create(request.getName(), request.getEmail(), request.getPassword(), avatar, passwordEncoder));
     }
 
     public User getMe(User user) {

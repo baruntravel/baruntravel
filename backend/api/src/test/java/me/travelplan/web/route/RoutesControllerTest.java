@@ -1,16 +1,14 @@
-package me.travelplan.web;
+package me.travelplan.web.route;
 
 import me.travelplan.MvcTest;
 import me.travelplan.WithMockCustomUser;
 import me.travelplan.service.file.domain.File;
 import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.domain.PlaceCategory;
+import me.travelplan.service.route.RouteService;
 import me.travelplan.service.route.domain.Route;
 import me.travelplan.service.route.domain.RoutePlace;
-import me.travelplan.service.route.RouteService;
 import me.travelplan.service.user.domain.User;
-import me.travelplan.web.route.RouteMapperImpl;
-import me.travelplan.web.route.RoutesController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -37,9 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(RoutesController.class)
-@Import({
-        RouteMapperImpl.class
-})
+@Import(RouteMapperImpl.class)
 public class RoutesControllerTest extends MvcTest {
     @MockBean
     private RouteService routeService;
@@ -214,8 +210,8 @@ public class RoutesControllerTest extends MvcTest {
                                 fieldWithPath("content[].name").type(JsonFieldType.STRING).description("경로 이름"),
                                 fieldWithPath("content[].centerX").type(JsonFieldType.NUMBER).description("경로의 중심 X좌표"),
                                 fieldWithPath("content[].centerY").type(JsonFieldType.NUMBER).description("경로의 중심 Y좌표"),
-                                fieldWithPath("content[].likeCount").type(JsonFieldType.NUMBER).description("경로의 좋아요 개수"),
-                                fieldWithPath("content[].likeCheck").type(JsonFieldType.BOOLEAN).description("로그인 유저가 해당 경로에 좋아요를 눌렀다면 true"),
+                                fieldWithPath("content[].likes").type(JsonFieldType.NUMBER).description("경로의 좋아요 개수"),
+                                fieldWithPath("content[].isLike").type(JsonFieldType.BOOLEAN).description("로그인 유저가 해당 경로에 좋아요를 눌렀다면 true"),
                                 fieldWithPath("content[].createdBy").type(JsonFieldType.STRING).description("경로를 만든 사람"),
                                 fieldWithPath("content[].places").type(JsonFieldType.ARRAY).description("장소들 정보"),
                                 fieldWithPath("content[].places[].id").type(JsonFieldType.NUMBER).description("카카오톡에서 제공한 장소 식별자"),

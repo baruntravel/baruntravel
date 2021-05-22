@@ -9,13 +9,12 @@ import me.travelplan.service.place.repository.PlaceRepository;
 import me.travelplan.service.route.domain.Route;
 import me.travelplan.service.route.domain.RouteLike;
 import me.travelplan.service.route.domain.RoutePlace;
-import me.travelplan.service.route.domain.RouteReview;
 import me.travelplan.service.route.exception.RouteNotFoundException;
 import me.travelplan.service.route.repository.RouteLikeRepository;
 import me.travelplan.service.route.repository.RoutePlaceRepository;
 import me.travelplan.service.route.repository.RouteRepository;
 import me.travelplan.service.user.domain.User;
-import me.travelplan.web.route.RouteRequest;
+import me.travelplan.web.route.dto.RouteRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,6 @@ public class RouteService {
     private final PlaceRepository placeRepository;
     private final FileRepository fileRepository;
     private final RouteLikeRepository routeLikeRepository;
-    private final RouteReviewService routeReviewService;
 
     @Transactional(readOnly = true)
     public List<Route> getByUser(User user) {
@@ -92,25 +90,5 @@ public class RouteService {
             RouteLike routeLike = optionalRouteLike.get();
             routeLikeRepository.delete(routeLike);
         }
-    }
-
-    public RouteReview createReview(RouteRequest.CreateOrUpdateReview request, Long id) {
-        return routeReviewService.create(request, id);
-    }
-
-    public List<RouteReview> getReviewList(Long id) {
-        return routeReviewService.getList(id);
-    }
-
-    public void updateReview(Long id, RouteRequest.CreateOrUpdateReview request, User user) {
-        routeReviewService.update(id, request, user);
-    }
-
-    public void deleteReview(Long id, User user) {
-        routeReviewService.delete(id, user);
-    }
-
-    public void createOrDeleteReviewLike(Long id, User user) {
-        routeReviewService.createOrDeleteReviewLike(id, user);
     }
 }

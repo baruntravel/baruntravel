@@ -7,8 +7,10 @@ import me.travelplan.service.file.domain.FileType;
 import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.domain.PlaceCategory;
 import me.travelplan.service.route.domain.Route;
-import me.travelplan.service.route.domain.RouteReview;
-import me.travelplan.web.common.FileDto;
+import me.travelplan.web.common.UserDto;
+import me.travelplan.web.route.dto.RouteDto;
+import me.travelplan.web.route.dto.RouteRequest;
+import me.travelplan.web.route.dto.RouteResponse;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
@@ -23,8 +25,6 @@ import java.util.stream.Collectors;
 )
 public interface RouteMapper {
     RouteResponse.RouteId toRouteIdResponse(Route route);
-
-    RouteResponse.ReviewId toReviewIdResponse(RouteReview review);
 
     default Place toPlace(RouteRequest.AddPlace request) {
         return Place.builder()
@@ -74,10 +74,11 @@ public interface RouteMapper {
         Double centerX = map.get("centerX");
         Double centerY = map.get("centerY");
 
-        RouteDto.Creator.CreatorBuilder creatorBuilder = RouteDto.Creator.builder()
+        UserDto.Response.ResponseBuilder userDtoBuilder = UserDto.Response.builder()
+                .email(route.getCreatedBy().getEmail())
                 .name(route.getCreatedBy().getName());
         if (route.getCreatedBy().getAvatar() != null) {
-            creatorBuilder.avatar(route.getCreatedBy().getAvatar().getUrl());
+            userDtoBuilder.avatarUrl(route.getCreatedBy().getAvatar().getUrl());
         }
 
         return RouteResponse.GetOne.builder()
@@ -85,7 +86,7 @@ public interface RouteMapper {
                 .centerX(centerX)
                 .centerY(centerY)
                 .score(route.getAverageReviewScore())
-                .creator(creatorBuilder.build())
+                .creator(userDtoBuilder.build())
                 .createdAt(route.getCreatedAt())
                 .updatedAt(route.getUpdatedAt())
                 .reviewCount(route.getRouteReviews().size())
@@ -137,8 +138,8 @@ public interface RouteMapper {
                     .name(route.getName())
                     .centerX(centerX)
                     .centerY(centerY)
-                    .likeCheck(route.isLike(customUserDetails))
-                    .likeCount(route.getRouteLikes().size())
+                    .likes(route.getRouteLikes().size())
+                    .isLike(route.isLike(customUserDetails))
                     .createdBy(route.getCreatedBy().getName())
                     .places(routePlaces)
                     .build();
@@ -146,32 +147,4 @@ public interface RouteMapper {
         });
         return getList;
     }
-
-    default RouteResponse.ReviewList entityToResponseReviewList(List<RouteReview> reviews, CustomUserDetails customUserDetails) {
-        return RouteResponse.ReviewList.builder()
-                .reviews(reviews.stream().map(routeReview -> {
-                    RouteDto.Creator.CreatorBuilder creatorBuilder = RouteDto.Creator.builder()
-                            .name(routeReview.getCreatedBy().getName());
-                    if (routeReview.getCreatedBy().getAvatar() != null) {
-                        creatorBuilder.avatar(routeReview.getCreatedBy().getAvatar().getUrl());
-                    }
-                    return RouteDto.ReviewResponse.builder()
-                            .id(routeReview.getId())
-                            .content(routeReview.getContent())
-                            .score(routeReview.getScore())
-                            .likeCheck(routeReview.isLike(customUserDetails))
-                            .likeCount(routeReview.getRouteReviewLikes().size())
-                            .creator(creatorBuilder.build())
-                            .files(routeReview.getRouteReviewFiles().stream()
-                                    .map(routeReviewFile -> FileDto.builder()
-                                            .url(routeReviewFile.getFile().getUrl())
-                                            .build())
-                                    .collect(Collectors.toList()))
-                            .createdAt(routeReview.getCreatedAt())
-                            .updatedAt(routeReview.getUpdatedAt())
-                            .build();
-                }).collect(Collectors.toList()))
-                .build();
-    }
-
 }
