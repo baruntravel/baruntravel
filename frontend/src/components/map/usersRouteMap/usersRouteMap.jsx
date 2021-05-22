@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { getRoutesByRange } from "../../../api/routeAPI";
 
-const UsersRouteMap = ({ places, mapHandler, routes }) => {
+const UsersRouteMap = ({ places, mapHandler, routesHandler, routes }) => {
   const { kakao } = window;
   const [map, setMap] = useState();
   const [markers, setMarkers] = useState([]);
@@ -33,10 +33,11 @@ const UsersRouteMap = ({ places, mapHandler, routes }) => {
     function boundsHandler(map) {
       kakao.maps.event.addListener(map, "dragend", async function () {
         let bounds = map.getBounds();
-        let swLatlng = bounds.getSouthWest();
-        let neLatlng = bounds.getNorthEast();
-        // const tmpRoutes = await getRoutesByRange(swLatlng, neLatlng);
-        // routesHandler(tmpRoutes);
+        let ne = bounds.getNorthEast();
+        let sw = bounds.getSouthWest();
+        const { content } = await getRoutesByRange(ne, sw);
+        console.log(content);
+        // routesHandler(content);
       });
     }
   }, []);
