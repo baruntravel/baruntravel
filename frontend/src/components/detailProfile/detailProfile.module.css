@@ -24,7 +24,13 @@
   width: 100%;
   flex-basis: 1;
   justify-content: center;
+  transition: 1000;
 }
 .selector__title {
   text-align: center;
+}
+
+.selected__color {
+  opacity: 1;
+  color: #ed6ab8;
 }

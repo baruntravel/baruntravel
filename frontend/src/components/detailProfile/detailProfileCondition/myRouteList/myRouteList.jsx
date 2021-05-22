@@ -1,6 +1,6 @@
-import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { getMyRoute } from "../../../../api/routeAPI";
+import Loading from "../../../common/loading/loading";
 import RouteListCard from "../../../routeList/routeListCard/routeListCard";
 import styles from "./myRouteList.module.css";
 
@@ -19,15 +19,17 @@ const MyRouteList = (props) => {
   }, []);
   if (loading) {
     return (
-      <div className={styles.loading}>
-        <Spin size="large" />
-      </div>
+      <>
+        <Loading />
+      </>
     );
   }
   return (
     <div className={styles.MyRouteList}>
       {myRoute.length > 0 ? (
-        myRoute.map((route) => <RouteListCard routeName={route.name} />)
+        myRoute.map((route, index) => (
+          <RouteListCard key={index} routeName={route.name} />
+        ))
       ) : (
         <div>경로를 만들어봐요</div>
       )}

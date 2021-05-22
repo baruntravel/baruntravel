@@ -68,7 +68,6 @@ const SideMyProfile = ({ handleClose }) => {
     (e) => {
       const link = e.target.closest(`.${styles["section__tagBox"]}`).dataset
         .link;
-      console.log(link);
       history.push({ pathname: "/detailProfile", state: { link } });
     },
     [history]
