@@ -23,6 +23,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -39,18 +40,15 @@ class UserServiceTest {
     @DisplayName("회원가입 성공")
     public void create() throws Exception {
         AuthRequest.Register request = registerRequest();
-        User user = createUser();
 
-        given(userRepository.save(any())).willReturn(user);
-        given(fileService.upload(any())).willReturn(File.builder().name("files").build());
+        given(userRepository.findByEmail(request.getEmail())).willReturn(Optional.empty());
 
-        User createdUser = userService.create(request);
+        userService.create(request);
 
-        assertEquals(request.getName(), createdUser.getName());
-        assertEquals(request.getEmail(), createdUser.getEmail());
-        assertEquals(request.getPassword(), createdUser.getPassword());
-        assertEquals(request.getAvatar().getName(), createdUser.getAvatar().getName());
+        verify(userRepository).save(any());
+        verify(fileService).upload(any());
     }
+
 
     @Test
     @DisplayName("예외테스트: 회원가입시 이메일이 중복되었을 경우 예외 발생")
@@ -58,9 +56,21 @@ class UserServiceTest {
         AuthRequest.Register request = registerRequest();
         User user = createUser();
 
-        given(userRepository.findByEmail(request.getEmail())).willReturn(Optional.ofNullable(user));
+        given(userRepository.findByEmail(request.getEmail())).willReturn(Optional.of(user));
 
         assertThrows(EmailExistedException.class, () -> userService.create(request));
+    }
+
+    @Test
+    @DisplayName("내 정보 조회 성공")
+    public void getMe() {
+        User user = createUser();
+
+        given(userRepository.findByEmail(user.getEmail())).willReturn(Optional.of(user));
+
+        userService.getMe(user);
+
+        verify(userRepository).findByEmail(user.getEmail());
     }
 
     @Test
@@ -75,7 +85,7 @@ class UserServiceTest {
                 .build();
         User user = createUser();
 
-        given(userRepository.findByEmail(any())).willReturn(Optional.ofNullable(user));
+        given(userRepository.findByEmail(user.getEmail())).willReturn(Optional.of(user));
         given(fileService.upload(any())).willReturn(File.builder().name("updateFile").build());
 
         userService.update(request, user);
@@ -94,7 +104,7 @@ class UserServiceTest {
                 .build();
         User user = createUser();
 
-        given(userRepository.findByEmail(any())).willReturn(Optional.ofNullable(user));
+        given(userRepository.findByEmail(user.getEmail())).willReturn(Optional.of(user));
 
         userService.update(request, user);
 
