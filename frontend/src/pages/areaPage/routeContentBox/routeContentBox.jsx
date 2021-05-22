@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./routeContentBox.module.css";
 import MapButton from "./mapButton/mapButton";
-import SortBox from "../common/sortBox/sortBox";
+import SortBox from "../../../components/common/sortBox/sortBox";
 import RouteCard from "./routeCard/routeCard";
 
 const RouteContentBox = ({ area }) => {

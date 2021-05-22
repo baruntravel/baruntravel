@@ -11,7 +11,10 @@ import PlaceDetailPage from "./pages/placeDetailPage/placeDetailPage";
 import AllRoute from "./pages/mainPage/selectRoute/allRoute/allRoute";
 import AllArea from "./pages/mainPage/selectArea/allArea/allArea";
 import DetailProfile from "./components/detailProfile/detailProfile";
+import PlaceContentBox from "./components/placeContentBox/placeContentBox";
 import AreaPage from "./pages/areaPage/areaPage";
+import DetailReviewHeader from "./components/common/detailReviewHeader/detailReviewHeader";
+import ReviewDetailPage from "./pages/reviewDetailPage/reviewDetailPage";
 
 function App() {
   return (
@@ -58,13 +61,17 @@ function App() {
             <DetailProfile />
           </Route>
 
+          <Route exact path="/review/detail/:id">
+            <ReviewDetailPage />
+          </Route>
+
           <Route exact path="/test2">
             <AreaPage />
           </Route>
 
           {/* 테스트 */}
           <Route exact path="/test">
-            <RouteDetailPage />
+            <ReviewDetailPage />
           </Route>
         </Router>
       </RecoilRoot>

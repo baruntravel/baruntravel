@@ -1,0 +1,23 @@
+.SortBox {
+  display: flex;
+  /* width: 100%; */
+  justify-content: flex-end;
+  /* padding-top: 12px; */
+  /* margin-bottom: 12px; */
+}
+.SortBox span {
+  font-weight: 900;
+}
+.reviewList__new {
+  margin-right: 16px;
+  opacity: 0.8;
+  color: gray;
+}
+.reviewList__recommend {
+  opacity: 0.8;
+  color: gray;
+}
+.pink__color {
+  opacity: 1;
+  color: #ed6ab8;
+}

@@ -1,10 +1,11 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useState } from "react";
 import ReviewCard from "./reviewCard/reviewCard";
 import styles from "./reviewList.module.css";
 import { EditTwoTone } from "@ant-design/icons";
 import DeleteConfirm from "../../common/deleteConfirm/deleteConfirm";
 import { Drawer } from "antd";
 import ReviewForm from "../reviewForm/reviewForm";
+import SortBox from "../../common/sortBox/sortBox";
 
 const ReviewList = ({
   onOpenPortalAuth,
@@ -15,8 +16,6 @@ const ReviewList = ({
   reviewDatas,
   setReviewDatas,
 }) => {
-  const newRef = useRef();
-  const recommendRef = useRef();
   const [selectedCard, setSelectedCard] = useState(false);
   const [openDeleteConfrim, setOpenDeleteConfirm] = useState(false);
   const [openEditform, setOpenEditForm] = useState(false);
@@ -66,8 +65,6 @@ const ReviewList = ({
     [onEditReview, selectedCard]
   );
   const viewListDate = () => {
-    newRef.current.style = "color:black; opacity:1";
-    recommendRef.current.style = "color:gray; opacity: 0.8;";
     setReviewDatas((prev) => {
       const updated = [...prev];
       updated.sort((a, b) => {
@@ -83,8 +80,6 @@ const ReviewList = ({
     });
   };
   const viewListLikeCount = () => {
-    newRef.current.style = "color:gray; opacity: 0.8;";
-    recommendRef.current.style = "color:black; opacity:1";
     setReviewDatas((prev) => {
       const updated = [...prev];
       updated.sort((a, b) => {
@@ -111,29 +106,17 @@ const ReviewList = ({
             <EditTwoTone />
           </h2>
         </div>
-        <div className={styles.reviewList__case}>
-          <span
-            ref={newRef}
-            className={styles.reviewList__new}
-            onClick={viewListDate}
-          >
-            최신순
-          </span>
-          <span
-            ref={recommendRef}
-            className={styles.reviewList__recommend}
-            onClick={viewListLikeCount}
-          >
-            추천순
-          </span>
-        </div>
+        <SortBox
+          onHandleRecommend={viewListLikeCount}
+          onHandleNewest={viewListDate}
+        />
       </div>
       <div className={styles.reviewList__body}>
         {reviewDatas.map((item, index) => (
           <div key={index} className={styles.reviewContainer}>
             <ReviewCard
               review={item}
-              isUserReview={item.createdBy === userStates.name}
+              isUserReview={item.creator.name === userStates.name}
               onOpenDeleteConfirm={onOpenConfirm}
               onHandleSelected={onHandleSelected}
               onOpenEditForm={onOpenEditForm}

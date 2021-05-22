@@ -1,17 +1,18 @@
 import React, { useCallback, useState } from "react";
 import styles from "./reviewCard.module.css";
-import { Rate } from "antd";
-import Avatar from "antd/lib/avatar/avatar";
 // import { getYear, getMonth, getDate } from "date-fns";
-import { LikeOutlined, LikeTwoTone, UserOutlined } from "@ant-design/icons";
 import PostImages from "../../postImages/postImages";
+import ReviewUserProfile from "../../../common/reviewUserProfile/reviewUserProfile";
+import ReviewScoreText from "../../reviewScoreText/reviewScoreText";
+import ReviewCardBottom from "./reviewCardBottom/reviewCardBottom";
+
 const ReviewCard = ({
   review,
   review: {
     id,
     content,
     score,
-    createdBy,
+    creator: { name, avatar },
     likeCount,
     likeCheck,
     files,
@@ -38,69 +39,25 @@ const ReviewCard = ({
   }, [onHandleSelected, onOpenEditForm, review]);
   return (
     <div className={styles.ReviewCard}>
-      <div className={styles.userProfile}>
-        <div className={styles.profileBox}>
-          <Avatar src={""} size="large" icon={<UserOutlined />} />
-          <div className={styles.userName}>
-            <strong className={styles.nickname}>{createdBy}</strong>
-          </div>
-        </div>
-        {isUserReview && (
-          <div className={styles.editBox}>
-            <span onClick={onClickEdit}>수정</span>
-            <span onClick={onClickDelete}>삭제</span>
-          </div>
-        )}
-      </div>
-      <div className={styles.content}>
-        <div className={styles.info}>
-          <div className={styles.info__first}>
-            <Rate
-              className={styles.rate}
-              defaultValue={parseInt(score)}
-              disabled={true}
-              style={{
-                fontSize: "0.9em",
-                marginBottom: "12px",
-              }}
-            />
-            <span className={styles.score}>{parseInt(score)}</span>
-          </div>
-          <section>
-            <span className={styles.context}>{content}</span>
-          </section>
-        </div>
-      </div>
+      <ReviewUserProfile
+        avatar={avatar}
+        name={name}
+        isUserReview={isUserReview}
+        onClickEdit={onClickEdit}
+        onClickDelete={onClickDelete}
+      />
+      <ReviewScoreText content={content} score={score} />
       {files.length > 0 && (
         <div className={styles.imageContainer}>
           <PostImages images={files.map((file) => file.url)} />
         </div>
       )}
-      <div className={styles.review__bottom}>
-        <div>
-          {liked ? (
-            <LikeTwoTone
-              style={{ padding: "0.5em" }}
-              twoToneColor="#eb2f96"
-              key="Like"
-              onClick={onUnlike}
-            />
-          ) : (
-            <LikeOutlined
-              style={{ padding: "0.5em" }}
-              key="Like"
-              onClick={onUnlike}
-            />
-          )}
-          <span className={styles.likeCount}>{likeCount}</span>
-        </div>
-        {/* <span className={styles.date}>{`${getYear(
-          createdAt || updatedAt
-        )}.${getMonth(createdAt || updatedAt)}.${getDate(
-          createdAt || updatedAt
-        )}`}</span> */}
-        <span className={styles.date}>{createdAt || updatedAt}</span>
-      </div>
+      <ReviewCardBottom
+        liked={liked}
+        onUnlike={onUnlike}
+        date={updatedAt || createdAt}
+        likeCount={likeCount}
+      />
     </div>
   );
 };
