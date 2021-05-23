@@ -73,3 +73,17 @@ export const onWriteMemo = async (placeId, memo) => {
     });
   return result;
 };
+
+export const onEditOrder = (firstPlaceId, secondPlaceId) => {
+  const data = {
+    firstPlaceId,
+    secondPlaceId,
+  };
+  axios
+    .put(`/cart/place`, data)
+    .then((res) => true)
+    .catch((error) => {
+      console.error(error);
+      throw new Error(`unExpected error ${error}`);
+    });
+};

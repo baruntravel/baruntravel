@@ -33,7 +33,7 @@ function App() {
             <MainPage />
           </Route>
 
-          <Route exact path="/place">
+          <Route exact path="/kakaoPlace">
             <HotplacePage />
           </Route>
           <Route exact path="/place-all">

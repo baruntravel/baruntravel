@@ -1,12 +1,12 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { useRecoilState } from "recoil";
 import styles from "./shoppingCart.module.css";
 import ShoppingItem from "./shoppingItem/shoppingItem";
 import { makeRoute } from "../../../api/routeAPI";
 import InputRootName from "../inputRootName/inputRootName";
 import { HistoryOutlined } from "@ant-design/icons";
 import ResetConfirm from "../resetConfirm/resetConfirm";
+import { onEditOrder } from "../../../api/cartAPI";
 
 const ShoppingCart = memo(
   ({
@@ -53,6 +53,9 @@ const ShoppingCart = memo(
         }
         const updateItems = [...items];
         const droppedItem = items[source.index];
+        onEditOrder(droppedItem.id, updateItems[destination.index].id);
+        // onEditOrder(updateItems[destination.index].id, droppedItem.id);
+
         updateItems.splice(source.index, 1);
         updateItems.splice(destination.index, 0, droppedItem);
         updateShoppingCart(updateItems);
