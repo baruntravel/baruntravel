@@ -24,7 +24,7 @@
   width: 100%;
   flex-basis: 1;
   justify-content: center;
-  transition: 1000;
+  font-weight: 600;
 }
 .selector__title {
   text-align: center;
