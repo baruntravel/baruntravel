@@ -13,8 +13,8 @@ import AllArea from "./pages/mainPage/selectArea/allArea/allArea";
 import DetailProfile from "./components/detailProfile/detailProfile";
 import PlaceContentBox from "./components/placeContentBox/placeContentBox";
 import AreaPage from "./pages/areaPage/areaPage";
-import DetailReviewHeader from "./components/common/detailReviewHeader/detailReviewHeader";
 import ReviewDetailPage from "./pages/reviewDetailPage/reviewDetailPage";
+import OurPlacePage from "./pages/ourPlacePage/ourPlacePage";
 
 function App() {
   return (
@@ -36,6 +36,11 @@ function App() {
           <Route exact path="/kakaoPlace">
             <HotplacePage />
           </Route>
+
+          <Route exact path="/routePickPlace">
+            <OurPlacePage />
+          </Route>
+
           <Route exact path="/place-all">
             <AllArea />
           </Route>

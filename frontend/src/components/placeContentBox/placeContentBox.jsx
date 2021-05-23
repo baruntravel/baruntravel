@@ -156,6 +156,7 @@ const PlaceContentBox = () => {
       {/* <div className="functionBox"> */}
       <div className={styles.functionBox}>
         <div>
+          <span>임시 아이콘</span>
           <img
             src="https://i.pinimg.com/474x/ca/e2/e6/cae2e62f4c5141349e5c9b4d620dbf1e.jpg"
             style={{ width: "50px" }}

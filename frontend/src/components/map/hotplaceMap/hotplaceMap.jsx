@@ -102,7 +102,7 @@ const HotplaceMap = ({
         // 에러로 인해 검색결과가 나오지 않은 경우 해야할 처리가 있다면 이곳에 작성해 주세요
       }
     }
-    function overlayClickEvent(marker, place, index) {
+    function markerClickEvent(marker, place, index) {
       kakao.maps.event.addListener(marker, "click", function () {
         updateClickedPlace(place);
         clickedMarker(index);
@@ -125,14 +125,14 @@ const HotplaceMap = ({
           );
           // 마커와 검색결과 항목을 클릭 했을 때
           // 장소정보를 표출하도록 클릭 이벤트를 등록합니다
-          overlayClickEvent(marker, places[i], i);
+          markerClickEvent(marker, places[i], i);
         }
       } else if (keyword) {
         removeMarker();
         for (let i = 0; i < places.length; i++) {
           let placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
           let marker = addMarker(placePosition, i);
-          overlayClickEvent(marker, places[i], i);
+          markerClickEvent(marker, places[i], i);
         }
       }
     }
@@ -216,6 +216,7 @@ const HotplaceMap = ({
         searchRef.current.removeEventListener("submit", addSubmitKeyword);
     };
   }, []);
+
   return (
     <div className={styles.HotplaceMap}>
       <div className={styles.mapContainer}>
