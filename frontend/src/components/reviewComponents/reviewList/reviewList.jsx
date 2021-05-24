@@ -12,6 +12,8 @@ const ReviewList = ({
   onUploadReview,
   onDeleteReview,
   onEditReview,
+  onLikeReview,
+  onUnlikeReview,
   userStates,
   reviewDatas,
   setReviewDatas,
@@ -120,6 +122,8 @@ const ReviewList = ({
               onOpenDeleteConfirm={onOpenConfirm}
               onHandleSelected={onHandleSelected}
               onOpenEditForm={onOpenEditForm}
+              onLikeReview={onLikeReview}
+              onUnlikeReview={onUnlikeReview}
             />
           </div>
         ))}

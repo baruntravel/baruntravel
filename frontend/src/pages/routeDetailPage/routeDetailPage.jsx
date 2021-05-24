@@ -14,13 +14,14 @@ import InputRootName from "../../components/common/inputRootName/inputRootName";
 import {
   onDeleteRouteReview,
   onEditRouteReview,
+  onHandleRouteReviewLike,
   onReceiveRouteReview,
   onUploadRouteReview,
 } from "../../api/reviewAPI";
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
-import { getRouteDetail } from "../../api/routeAPI";
+import { getRouteDetail, onHandleRouteLike } from "../../api/routeAPI";
 import { StarFilled, UserOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
@@ -43,6 +44,17 @@ const RouteDetailPage = (props) => {
   const [images, setImages] = useState([]); // 이미지와 이름을 같이 저장
   const [postImages, setPostImages] = useState([]); // 이미지만 저장 (줌을 위한 이미지)
   const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
+
+  // 좋아요 테스트
+  const [liked, setLiked] = useState(false);
+  const onHandleLike = useCallback(() => {
+    setLiked(true);
+    onHandleRouteLike(routeId);
+  }, [routeId]);
+  const onHandleUnlike = useCallback(() => {
+    setLiked(false);
+    onHandleRouteLike(routeId);
+  }, [routeId]);
 
   const onCloseInputName = useCallback(() => {
     setOpenInputName(false);
@@ -84,6 +96,12 @@ const RouteDetailPage = (props) => {
   const onDeleteReview = useCallback((id) => {
     onDeleteRouteReview(id);
   }, []);
+  const onLikeReview = useCallback(() => {
+    onHandleRouteReviewLike(routeId);
+  }, [routeId]);
+  const onUnlikeReview = useCallback(() => {
+    onHandleRouteReviewLike(routeId);
+  }, [routeId]);
 
   const afterSliderChange = useCallback(
     (index) => {
@@ -140,7 +158,11 @@ const RouteDetailPage = (props) => {
   }
   return (
     <div className={styles.RouteDetailPage}>
-      <DetailHeader />
+      <DetailHeader
+        liked={liked}
+        onHandleLike={onHandleLike}
+        onHandleUnlike={onHandleUnlike}
+      />
       <div className={styles.sliderContainer} onClick={onZoom}>
         <Slider {...settings} afterChange={(index) => afterSliderChange(index)}>
           {images.map((v, index) => (
@@ -212,6 +234,8 @@ const RouteDetailPage = (props) => {
             onDeleteReview={onDeleteReview}
             onUploadReview={onUploadReview}
             onEditReview={onEditReview}
+            onLikeReview={onLikeReview}
+            onUnlikeReview={onUnlikeReview}
             reviewDatas={reviewDatas}
             setReviewDatas={handleSetReviewDatas}
             userStates={userStates}

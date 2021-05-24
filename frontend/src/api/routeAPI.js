@@ -61,3 +61,13 @@ export const getRoutesByRange = (sw, ne) => {
     });
   return routes;
 };
+
+export const onHandleRouteLike = (routeId) => {
+  axios
+    .post(`route/${routeId}/like`)
+    .then((res) => true)
+    .catch((error) => {
+      console.error(error);
+      throw new Error(`unExpected Error ${error}`);
+    });
+};

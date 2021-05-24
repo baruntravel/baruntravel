@@ -1,6 +1,8 @@
 import axios from "axios";
 
 // 경로 리뷰 API
+
+// 경로 생성
 export const onUploadRouteReview = (routeId, formData) => {
   return axios
     .post(`/route/${routeId}/review`, formData, {
@@ -13,6 +15,7 @@ export const onUploadRouteReview = (routeId, formData) => {
     });
 };
 
+// 경로 상세 정보 받아오기
 export const onReceiveRouteReview = async (routeId) => {
   const result = await axios
     .get(`/route/${routeId}/reviews`)
@@ -24,6 +27,7 @@ export const onReceiveRouteReview = async (routeId) => {
   return result;
 };
 
+// 경로 리뷰 수정하기
 export const onEditRouteReview = async (routeId, formData) => {
   return await axios
     .post(`/route/review/${routeId}`, formData, {
@@ -36,6 +40,7 @@ export const onEditRouteReview = async (routeId, formData) => {
     });
 };
 
+// 경로 리뷰 삭제하기
 export const onDeleteRouteReview = async (routeId) => {
   await axios
     .delete(`/route/review/${routeId}`)
@@ -43,6 +48,16 @@ export const onDeleteRouteReview = async (routeId) => {
     .catch((error) => {
       console.error(error);
       throw new Error(`unHandled error ${error}`);
+    });
+};
+
+export const onHandleRouteReviewLike = (routeId) => {
+  axios
+    .post(`/route/review/${routeId}/like`)
+    .then((res) => true)
+    .catch((error) => {
+      console.error(error);
+      throw new Error(`unExpected Error ${error}`);
     });
 };
 

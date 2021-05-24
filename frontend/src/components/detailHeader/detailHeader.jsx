@@ -16,8 +16,8 @@ const DetailHeader = ({
   name,
   needLogin,
   onOpenPortalAuth,
-  onClickLike,
-  onClickUnlike,
+  onHandleLike,
+  onHandleUnlike,
 }) => {
   // onShareDetail은 만약 공유하기 기능이 추가된다면 공유
   return (
@@ -41,13 +41,13 @@ const DetailHeader = ({
             <HeartTwoTone
               className={styles.icon}
               twoToneColor="#eb2f96"
-              onClick={onClickUnlike}
+              onClick={onHandleUnlike}
             />
           ) : (
             <HeartOutlined
               className={styles.icon}
               style={{ color: "grey" }}
-              onClick={onClickLike}
+              onClick={onHandleLike}
             />
           )}
         </div>
