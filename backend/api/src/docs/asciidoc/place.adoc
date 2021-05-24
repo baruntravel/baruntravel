@@ -17,23 +17,23 @@
 
 요청 HTTP
 
-include::{snippets}/place-getOne/http-request.adoc[]
-include::{snippets}/place-getOne/path-parameters.adoc[]
+include::{snippets}/place-get/http-request.adoc[]
+include::{snippets}/place-get/path-parameters.adoc[]
 
 성공 응답 HTTP
-include::{snippets}/place-getOne/http-response.adoc[]
-include::{snippets}/place-getOne/response-fields.adoc[]
+include::{snippets}/place-get/http-response.adoc[]
+include::{snippets}/place-get/response-fields.adoc[]
 
 === 좋아요 생성 or 삭제
 
 요청 HTTP
-include::{snippets}/place-like-create-delete/http-request.adoc[]
+include::{snippets}/place-like/http-request.adoc[]
 
 Path Variable
-include::{snippets}/place-like-create-delete/path-parameters.adoc[]
+include::{snippets}/place-like/path-parameters.adoc[]
 
 성공 응답 HTTP
-include::{snippets}/place-like-create-delete/http-response.adoc[]
+include::{snippets}/place-like/http-response.adoc[]
 
 == 리뷰 관련 API
 
@@ -52,43 +52,51 @@ include::{snippets}/place-getReviews/response-fields.adoc[]
 === 리뷰 생성
 
 요청 HTTP
-include::{snippets}/place-createReview/http-request.adoc[]
+
+include::{snippets}/place-review-create/http-request.adoc[]
 
 Path Variable
-include::{snippets}/place-createReview/path-parameters.adoc[]
 
-Request Body
-include::{snippets}/place-createReview/request-fields.adoc[]
+include::{snippets}/place-review-create/path-parameters.adoc[]
 
-성공 응답 HTTP
-include::{snippets}/place-createReview/http-response.adoc[]
+Request Param
+
+include::{snippets}/place-review-create/request-parameters.adoc[]
+
+성공 응답 HTTP Response Body
+
+include::{snippets}/place-review-create/response-body.adoc[]
 
 === 리뷰 수정
 
 요청 HTTP
-include::{snippets}/place-updateReviews/http-request.adoc[]
+
+include::{snippets}/place-review-update/http-request.adoc[]
 
 Path Variable
-include::{snippets}/place-updateReviews/path-parameters.adoc[]
+
+include::{snippets}/place-review-update/path-parameters.adoc[]
 
 Request Body
-include::{snippets}/place-updateReviews/request-fields.adoc[]
+
+include::{snippets}/place-review-update/request-parameters.adoc[]
 
 성공 응답 HTTP
-include::{snippets}/place-updateReviews/http-response.adoc[]
-include::{snippets}/place-updateReviews/response-fields.adoc[]
+
+include::{snippets}/place-review-update/http-response.adoc[]
+
+include::{snippets}/place-review-update/response-fields.adoc[]
 
 === 리뷰 삭제
 
 요청 HTTP
-include::{snippets}/place-updateReviews/http-request.adoc[]
+
+include::{snippets}/place-review-delete/http-request.adoc[]
 
 Path Variable
-include::{snippets}/place-updateReviews/path-parameters.adoc[]
 
-Request Body
-include::{snippets}/place-updateReviews/request-fields.adoc[]
+include::{snippets}/place-review-delete/path-parameters.adoc[]
 
 성공 응답 HTTP
-include::{snippets}/place-updateReviews/http-response.adoc[]
-include::{snippets}/place-updateReviews/response-fields.adoc[]
+
+include::{snippets}/place-review-delete/http-response.adoc[]
