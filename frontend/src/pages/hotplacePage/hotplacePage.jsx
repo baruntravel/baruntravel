@@ -9,9 +9,7 @@ import { faList } from "@fortawesome/free-solid-svg-icons";
 import ShoppingCart from "../../components/common/shoppingCart/shoppingCart";
 import DeleteConfirm from "../../components/common/deleteConfirm/deleteConfirm";
 import CategoryBar from "../../components/map/hotplaceMap/categoryBar/categoryBar";
-import PlaceCard from "../../components/placeCard/placeCard";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -41,7 +39,6 @@ const HotplacePage = () => {
 
   const [cartVisible, setCartVisible] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
-  const [confirmPortal, setConfirmPortal] = useState(false);
   const [place, setPlace] = useState({}); // 현재 선택된 place
   const [inputKeyword, handleInputKeyword] = useInput();
   const [searchPlace, setSearchPlace] = useState(""); // 입력받은 keyword 저장
@@ -58,12 +55,6 @@ const HotplacePage = () => {
   }, [userStates]);
   const setCartVisibleFalse = useCallback(() => {
     setCartVisible(false);
-  }, []);
-  const setConfirmPortalTrue = useCallback(() => {
-    setConfirmPortal(true);
-  }, []);
-  const setConfirmPortalFalse = useCallback(() => {
-    setConfirmPortal(false);
   }, []);
   const handleDeleteItem = useCallback(
     (id) => {
@@ -255,21 +246,15 @@ const HotplacePage = () => {
         >
           <ShoppingCart
             deleteClickedItemId={deleteClickedItemId}
-            setConfirmPortalTrue={setConfirmPortalTrue}
             updateShoppingCart={updateShoppingCart}
             updateMemoShoppingItem={updateMemoShoppingItem}
             resetCartAll={resetCartAll}
             onClose={setCartVisibleFalse}
             items={shoppingItems}
+            deleteItemId={deleteItemId}
+            onDeleteItem={handleDeleteItem}
           />
         </Drawer>
-      )}
-      {confirmPortal && (
-        <DeleteConfirm
-          deleteItemId={deleteItemId}
-          onDeleteItem={handleDeleteItem}
-          onClose={setConfirmPortalFalse}
-        />
       )}
       {needLogin && <PortalAuth onClose={portalAuthClose} />}
       {openListPortal && (

@@ -7,21 +7,22 @@ import InputRootName from "../inputRootName/inputRootName";
 import { HistoryOutlined } from "@ant-design/icons";
 import ResetConfirm from "../resetConfirm/resetConfirm";
 import { onEditOrder } from "../../../api/cartAPI";
+import DeleteConfirm from "../deleteConfirm/deleteConfirm";
 
 const ShoppingCart = memo(
   ({
     items,
-    setConfirmPortalTrue,
     updateShoppingCart,
     updateMemoShoppingItem,
     deleteClickedItemId,
     resetCartAll,
     onClose,
-    // routeName,
+    deleteItemId,
+    onDeleteItem,
   }) => {
-    // const routeName = "test경로"; // 경로 이름이 있을 경우 새로운 경로 이름 생성, (edit할 수도 있으니까?)
     const [openInputName, setOpenInputName] = useState(false);
     const [openResetConfirm, setOpenResetConfirm] = useState(false);
+    const [deleteConfirm, setDeleteConfirm] = useState(false);
 
     const onOpenInputName = useCallback(() => {
       if (items.length > 0) {
@@ -38,6 +39,12 @@ const ShoppingCart = memo(
     }, [items]);
     const onCloseResetConfirm = useCallback(() => {
       setOpenResetConfirm(false);
+    }, []);
+    const onOpenDeleteConfirm = useCallback(() => {
+      setDeleteConfirm(true);
+    }, []);
+    const onCloseDeleteConfirm = useCallback(() => {
+      setDeleteConfirm(false);
     }, []);
     const onDragEnd = useCallback(
       (result) => {
@@ -114,7 +121,7 @@ const ShoppingCart = memo(
                             <ShoppingItem
                               key={index}
                               item={item}
-                              setConfirmPortalTrue={setConfirmPortalTrue}
+                              onOpenDeleteConfirm={onOpenDeleteConfirm}
                               deleteClickedItemId={deleteClickedItemId}
                               updateShoppingCart={updateShoppingCart}
                               updateMemoShoppingItem={updateMemoShoppingItem}
@@ -140,6 +147,13 @@ const ShoppingCart = memo(
         )}
         {openResetConfirm && (
           <ResetConfirm onReset={resetCartAll} onClose={onCloseResetConfirm} />
+        )}
+        {deleteConfirm && (
+          <DeleteConfirm
+            deleteItemId={deleteItemId}
+            onDeleteItem={onDeleteItem}
+            onClose={onCloseDeleteConfirm}
+          />
         )}
       </>
     );
