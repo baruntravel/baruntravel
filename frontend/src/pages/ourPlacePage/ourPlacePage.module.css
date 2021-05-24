@@ -1,3 +1,23 @@
+.carouselContainer {
+  position: absolute;
+  bottom: 8%;
+  width: 95%;
+  z-index: 1001;
+  border-radius: 12px;
+  display: none;
+}
+.mapButtonBox {
+  display: flex;
+  justify-content: flex-end;
+}
+.listPortalButton {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background-color: #1890ff;
+  border: none;
+  outline: none;
+  padding: 8px;
+  margin-bottom: 4px;
+}
 .mapContainer {
   width: 100vw;
   height: 93vh;

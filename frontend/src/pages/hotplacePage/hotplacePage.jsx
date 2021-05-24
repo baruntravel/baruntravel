@@ -7,7 +7,6 @@ import { Drawer } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList } from "@fortawesome/free-solid-svg-icons";
 import ShoppingCart from "../../components/common/shoppingCart/shoppingCart";
-import DeleteConfirm from "../../components/common/deleteConfirm/deleteConfirm";
 import CategoryBar from "../../components/map/hotplaceMap/categoryBar/categoryBar";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "slick-carousel/slick/slick.css";
