@@ -1,3 +1,7 @@
+.mapContainer {
+  width: 100vw;
+  height: 93vh;
+}
 .categoryContainer {
   display: flex;
   position: absolute;

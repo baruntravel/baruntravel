@@ -25,6 +25,7 @@ import {
 } from "../../api/cartAPI";
 import SideProfileToggle from "../../components/common/sideProfileToggle/sideProfileToggle";
 import PortalPlaceList from "../../components/portalPlaceList/portalPlaceList";
+import PlaceSlider from "../../components/placeSlider/placeSlider";
 
 const HotplacePage = () => {
   const placeListRef = useRef();
@@ -105,6 +106,10 @@ const HotplacePage = () => {
     sliderRef.current.slickGoTo(index);
   }, []);
 
+  const onUpdateMarkerIndex = useCallback((index) => {
+    setMarkerIndex(index);
+  }, []);
+
   const deleteClickedItemId = useCallback((id) => {
     setDeleteItemId(id);
   }, []);
@@ -177,14 +182,6 @@ const HotplacePage = () => {
     setShoppingItemsRecoil(shoppingItems); // 페이지에서 shopping Items state가 변경되면 전역으로도 바꿔줘야함.
   }, [setShoppingItemsRecoil, shoppingItems]);
 
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
-
   return (
     <div className={styles.HotplacePage}>
       <div className={styles.searchContainer}>
@@ -228,27 +225,17 @@ const HotplacePage = () => {
             <FontAwesomeIcon icon={faList} color="white" size="lg" />
           </button>
         </div>
-        <Slider
-          ref={sliderRef}
-          {...settings}
-          afterChange={(index) => {
-            updateClickedPlace(searchPlaces[index]);
-            setMarkerIndex(index);
-          }}
-        >
-          {searchPlaces.map((place, index) => (
-            <div key={index} className={styles.placeCardContainer}>
-              <PlaceCard
-                place={place}
-                onHandleDelete={handleDeleteItem}
-                addShoppingCart={addShoppingCart}
-                isLiked={
-                  shoppingItems.filter((item) => item.id == place.id).length // 우리 API 호출 시 id가 number, 카카오 API 호출 시 id가 String 얕은 비교
-                }
-              />
-            </div>
-          ))}
-        </Slider>
+        <div className={styles.placeSliderContainer}>
+          <PlaceSlider
+            sliderRef={sliderRef}
+            updateClickedPlace={updateClickedPlace}
+            onUpdateMarkerIndex={onUpdateMarkerIndex}
+            searchPlaces={searchPlaces}
+            onHandleDelete={handleDeleteItem}
+            addShoppingCart={addShoppingCart}
+            shoppingItems={shoppingItems}
+          />
+        </div>
       </div>
       <div className={styles.categoryContainer}>
         <CategoryBar />
