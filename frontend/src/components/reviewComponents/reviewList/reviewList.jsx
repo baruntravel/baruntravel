@@ -66,36 +66,7 @@ const ReviewList = ({
     },
     [onEditReview, selectedCard]
   );
-  const viewListDate = () => {
-    setReviewDatas((prev) => {
-      const updated = [...prev];
-      updated.sort((a, b) => {
-        if (a.createdAt > b.createdAt) {
-          return 1;
-        } else if (a.createdAt < b.createdAt) {
-          return -1;
-        } else {
-          return 0;
-        }
-      });
-      return updated;
-    });
-  };
-  const viewListLikeCount = () => {
-    setReviewDatas((prev) => {
-      const updated = [...prev];
-      updated.sort((a, b) => {
-        if (a.likeCount < b.likeCount) {
-          return 1;
-        } else if (a.likeCount > b.likeCount) {
-          return -1;
-        } else {
-          return 0;
-        }
-      });
-      return updated;
-    });
-  };
+
   return (
     <div className={styles.reviewList}>
       <header className={styles.reviewList__header}>
@@ -110,8 +81,8 @@ const ReviewList = ({
         </div>
         <div className={styles.sortBoxContainer}>
           <SortBox
-            onHandleRecommend={viewListLikeCount}
-            onHandleNewest={viewListDate}
+          // onHandleRecommend={viewListLikeCount}
+          // onHandleNewest={viewListDate}
           />
         </div>
       </header>

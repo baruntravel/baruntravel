@@ -26,6 +26,7 @@ import { StarFilled, UserOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
 import Loading from "../../components/common/loading/loading";
+import PlaceInRouteDetail from "../../components/placeInRouteDetail/placeInRouteDetail";
 
 const RouteDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
@@ -81,12 +82,18 @@ const RouteDetailPage = (props) => {
     setMoreReview(false);
   }, []);
 
+  const onGetReviewList = useCallback(async () => {
+    const reviews = await onReceiveRouteReview(routeId);
+    setReviewDatas(reviews);
+  }, [routeId]);
+
   const handleSetReviewDatas = useCallback((updated) => {
     setReviewDatas(updated);
   }, []);
   const onUploadReview = useCallback(
-    (formData) => {
-      onUploadRouteReview(routeId, formData); // 추후에 root ID 동적으로 받아오는 걸 구현 후 수정
+    async (formData) => {
+      await onUploadRouteReview(routeId, formData); // 추후에 root ID 동적으로 받아오는 걸 구현 후 수정
+      onGetReviewList();
     },
     [routeId]
   );
@@ -127,12 +134,8 @@ const RouteDetailPage = (props) => {
       setImages(images); // 이미지와 이름을 세트로 저장
       setImagePlaceName(images[0][1]); // 첫 이미지의 장소 이름 저장
     }
-    async function getReviewList() {
-      const reviews = await onReceiveRouteReview(routeId);
-      setReviewDatas(reviews);
-    }
     getRouteDetailInfo();
-    getReviewList();
+    onGetReviewList();
     setLoading(false);
   }, [history, routeId, userStates]);
 
@@ -163,18 +166,23 @@ const RouteDetailPage = (props) => {
         onHandleLike={onHandleLike}
         onHandleUnlike={onHandleUnlike}
       />
-      <div className={styles.sliderContainer} onClick={onZoom}>
-        <Slider {...settings} afterChange={(index) => afterSliderChange(index)}>
-          {images.map((v, index) => (
-            <div key={index} className={styles.imageContainer}>
-              <img className={styles.img} src={v[0]} alt="upload" />
-            </div>
-          ))}
-        </Slider>
-        <div className={styles.slider__placeNameBox}>
-          <span className={styles.slider__placeName}>{imagePlaceName}</span>
+      {images && (
+        <div className={styles.sliderContainer} onClick={onZoom}>
+          <Slider
+            {...settings}
+            afterChange={(index) => afterSliderChange(index)}
+          >
+            {images.map((v, index) => (
+              <div key={index} className={styles.imageContainer}>
+                <img className={styles.img} src={v[0]} alt="upload" />
+              </div>
+            ))}
+          </Slider>
+          <div className={styles.slider__placeNameBox}>
+            <span className={styles.slider__placeName}>{imagePlaceName}</span>
+          </div>
         </div>
-      </div>
+      )}
       <section className={styles.body}>
         <div className={styles.authorBox}>
           <Avatar
@@ -217,7 +225,7 @@ const RouteDetailPage = (props) => {
             {routeDetail.places &&
               routeDetail.places.map((place, index) => (
                 <div key={index} className={styles.placeBox}>
-                  <PlaceCard place={place} />
+                  <PlaceInRouteDetail place={place} />
                 </div>
               ))}
           </div>

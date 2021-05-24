@@ -2,8 +2,6 @@ import {
   HeartOutlined,
   HeartTwoTone,
   LeftOutlined,
-  LikeOutlined,
-  LikeTwoTone,
   ShoppingTwoTone,
 } from "@ant-design/icons";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
