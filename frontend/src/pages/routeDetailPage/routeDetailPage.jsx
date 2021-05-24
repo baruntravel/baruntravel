@@ -226,7 +226,9 @@ const RouteDetailPage = (props) => {
           <button className={styles.button} onClick={onOpenInputName}>
             일정으로 담기
           </button>
-          <span className={styles.wishCount}>{`${4}명이 좋아해요`}</span>
+          <span
+            className={styles.wishCount}
+          >{`${routeDetail.reviewCount}명이 좋아해요`}</span>
         </div>
         <div className={styles.reviewList}>
           <ReviewList
@@ -236,35 +238,20 @@ const RouteDetailPage = (props) => {
             onEditReview={onEditReview}
             onLikeReview={onLikeReview}
             onUnlikeReview={onUnlikeReview}
-            reviewDatas={reviewDatas}
+            reviewDatas={moreReview ? reviewDatas : reviewDatas.slice(0, 4)}
             setReviewDatas={handleSetReviewDatas}
             userStates={userStates}
           />
         </div>
-        <div className={styles.buttonBox}>
-          <button
-            className={styles.button}
-            onClick={onOpenMoreReview}
-          >{`${4}개의 리뷰 더보기`}</button>
-        </div>
+        {routeDetail.reviewCount > 5 && (
+          <div className={styles.buttonBox}>
+            <button className={styles.button} onClick={onOpenMoreReview}>{`${
+              routeDetail.reviewCount - 4
+            }개의 리뷰 더보기`}</button>
+          </div>
+        )}
       </section>
-      <Drawer // 리뷰 더보기
-        className={styles.reviewListDrawer}
-        visible={moreReview}
-        placement="right"
-        width="100vw"
-        bodyStyle={{ padding: 0 }}
-        closeIcon={false}
-        style={{
-          overflowY: "hidden",
-        }}
-      >
-        <MoreReviewList
-          setReviewDatas={handleSetReviewDatas}
-          onCloseMoreReview={onCloseMoreReview}
-          reviewDatas={reviewDatas}
-        />
-      </Drawer>
+
       {showImagesZoom && (
         <ImagesZoom images={postImages} onClose={onClose} index={imageIndex} />
       )}

@@ -33,12 +33,12 @@ const ReviewCard = ({
     onLikeReview(id);
     setLiked(true);
     setLikeCount(likeCount + 1);
-  }, [likeCount, onLikeReview]);
+  }, [review, onLikeReview]);
   const onUnlike = useCallback(() => {
     onUnlikeReview(id);
     setLiked(false);
     setLikeCount(likeCount - 1);
-  }, [likeCount, onUnlikeReview]);
+  }, [review, onUnlikeReview]);
 
   const onClickDelete = useCallback(() => {
     onHandleSelected(review);

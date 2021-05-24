@@ -98,7 +98,7 @@ const ReviewList = ({
   };
   return (
     <div className={styles.reviewList}>
-      <div className={styles.reviewList__header}>
+      <header className={styles.reviewList__header}>
         <div className={styles.reviewList__first}>
           <div className={styles.reviewCountBox}>
             <h2>리뷰</h2>
@@ -108,11 +108,13 @@ const ReviewList = ({
             <EditTwoTone />
           </h2>
         </div>
-        <SortBox
-          onHandleRecommend={viewListLikeCount}
-          onHandleNewest={viewListDate}
-        />
-      </div>
+        <div className={styles.sortBoxContainer}>
+          <SortBox
+            onHandleRecommend={viewListLikeCount}
+            onHandleNewest={viewListDate}
+          />
+        </div>
+      </header>
       <div className={styles.reviewList__body}>
         {reviewDatas.map((item, index) => (
           <div key={index} className={styles.reviewContainer}>

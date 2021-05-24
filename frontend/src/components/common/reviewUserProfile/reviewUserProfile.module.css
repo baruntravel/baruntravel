@@ -11,3 +11,10 @@
   margin-left: 12px;
   justify-content: center;
 }
+.editBox {
+  color: gray;
+  opacity: 0.8;
+}
+.edit {
+  margin-right: 16px;
+}
