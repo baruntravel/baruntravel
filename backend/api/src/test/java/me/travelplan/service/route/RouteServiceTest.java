@@ -2,6 +2,7 @@ package me.travelplan.service.route;
 
 import me.travelplan.service.file.domain.File;
 import me.travelplan.service.place.domain.Place;
+import me.travelplan.service.place.exception.PlaceNotFoundException;
 import me.travelplan.service.place.repository.PlaceRepository;
 import me.travelplan.service.route.domain.Route;
 import me.travelplan.service.route.domain.RouteLike;
@@ -57,6 +58,19 @@ class RouteServiceTest {
 
         verify(placeRepository, times(2)).findById(any());
         verify(routeRepository).save(any());
+    }
+
+    @Test
+    @DisplayName("예외 테스트: 없는 장소를 경로에 추가하면 예외 발생")
+    public void createPlaceNotFound() {
+        RouteRequest.Create request = RouteRequest.Create.builder()
+                .name("테스트 경로")
+                .places(IntStream.range(0, 2).mapToObj(i -> RouteDto.RoutePlaceWithIdAndOrder.builder().id(1L + i).order(i + 1).build()).collect(Collectors.toList()))
+                .build();
+
+        given(placeRepository.findById(1L)).willReturn(Optional.empty());
+
+        assertThrows(PlaceNotFoundException.class, () -> routeService.create(request));
     }
 
     @Test

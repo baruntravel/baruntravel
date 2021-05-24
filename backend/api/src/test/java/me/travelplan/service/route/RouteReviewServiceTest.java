@@ -103,22 +103,33 @@ class RouteReviewServiceTest {
 
     @Test
     @DisplayName("예외 테스트: 경로 리뷰의 작성자가 아닌 사람이 수정할 경우 예외 발생")
-    public void updatePermissionException() throws Exception {
+    public void updatePermissionException() {
         User user = createUser(1L, "test@test.com");
         User exceptionUser = createUser(2L, "test2@test.com");
         RouteReview routeReview = createReview(user);
-        InputStream is = new ClassPathResource("mock/images/enjoy2.png").getInputStream();
-        MockMultipartFile mockFile = new MockMultipartFile("updateFile", "mock_file1.jpg", "image/jpg", is.readAllBytes());
 
         RouteReviewRequest.CreateOrUpdateReview request = RouteReviewRequest.CreateOrUpdateReview.builder()
                 .content("테스트 리뷰 수정")
                 .score(3.5)
-                .files(Collections.singletonList(mockFile))
                 .build();
 
         given(routeReviewRepository.findById(1L)).willReturn(Optional.of(routeReview));
 
         assertThrows(PermissionDeniedException.class, () -> routeReviewService.update(1L, request, exceptionUser));
+    }
+
+    @Test
+    @DisplayName("예외 테스트: 없는 경로 리뷰를 수정하려고 할 경우 예외 발생")
+    public void updateNotFound() {
+        User user = createUser(1L, "test@test.com");
+        RouteReviewRequest.CreateOrUpdateReview request = RouteReviewRequest.CreateOrUpdateReview.builder()
+                .content("테스트 리뷰 수정")
+                .score(3.5)
+                .build();
+
+        given(routeReviewRepository.findById(1L)).willReturn(Optional.empty());
+
+        assertThrows(RouteReviewNotFoundException.class, () -> routeReviewService.update(1L, request, user));
     }
 
     @Test
@@ -134,6 +145,16 @@ class RouteReviewServiceTest {
         verify(routeReviewFileRepository).deleteAllByFileIds(any());
         verify(fileService).deleteById(any());
         verify(routeReviewRepository).deleteById(1L);
+    }
+
+    @Test
+    @DisplayName("예외 테스트: 없는 경로 리뷰를 삭제하려고 할 경우 예외 발생")
+    public void deleteNotFound() {
+        User user = createUser(1L, "test@test.com");
+
+        given(routeReviewRepository.findById(1L)).willReturn(Optional.empty());
+
+        assertThrows(RouteReviewNotFoundException.class, () -> routeReviewService.delete(1L, user));
     }
 
     @Test
