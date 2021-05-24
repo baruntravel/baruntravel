@@ -12,7 +12,7 @@ const ReviewCard = ({
     id,
     content,
     score,
-    creator: { name, avatar },
+    creator: { name, avatarUrl, email },
     likes,
     isLike,
     images,
@@ -30,12 +30,12 @@ const ReviewCard = ({
   const [likeCount, setLikeCount] = useState(likes);
 
   const onLike = useCallback(() => {
-    onLikeReview();
+    onLikeReview(id);
     setLiked(true);
     setLikeCount(likeCount + 1);
   }, [likeCount, onLikeReview]);
   const onUnlike = useCallback(() => {
-    onUnlikeReview();
+    onUnlikeReview(id);
     setLiked(false);
     setLikeCount(likeCount - 1);
   }, [likeCount, onUnlikeReview]);
@@ -52,7 +52,7 @@ const ReviewCard = ({
   return (
     <div className={styles.ReviewCard}>
       <ReviewUserProfile
-        avatar={avatar}
+        avatar={avatarUrl}
         name={name}
         isUserReview={isUserReview}
         onClickEdit={onClickEdit}

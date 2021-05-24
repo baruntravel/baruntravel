@@ -51,9 +51,9 @@ export const onDeleteRouteReview = async (routeId) => {
     });
 };
 
-export const onHandleRouteReviewLike = (routeId) => {
+export const onHandleRouteReviewLike = (reviewId) => {
   axios
-    .post(`/route/review/${routeId}/like`)
+    .post(`/route/review/${reviewId}/like`)
     .then((res) => true)
     .catch((error) => {
       console.error(error);

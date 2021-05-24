@@ -96,12 +96,12 @@ const RouteDetailPage = (props) => {
   const onDeleteReview = useCallback((id) => {
     onDeleteRouteReview(id);
   }, []);
-  const onLikeReview = useCallback(() => {
-    onHandleRouteReviewLike(routeId);
-  }, [routeId]);
-  const onUnlikeReview = useCallback(() => {
-    onHandleRouteReviewLike(routeId);
-  }, [routeId]);
+  const onLikeReview = useCallback((reviewId) => {
+    onHandleRouteReviewLike(reviewId);
+  }, []);
+  const onUnlikeReview = useCallback((reviewId) => {
+    onHandleRouteReviewLike(reviewId);
+  }, []);
 
   const afterSliderChange = useCallback(
     (index) => {
