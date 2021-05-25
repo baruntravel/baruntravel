@@ -13,6 +13,7 @@ import me.travelplan.service.route.repository.RouteReviewFileRepository;
 import me.travelplan.service.route.repository.RouteReviewLikeRepository;
 import me.travelplan.service.route.repository.RouteReviewRepository;
 import me.travelplan.service.user.domain.User;
+import me.travelplan.web.route.review.dto.RouteReviewPageDto;
 import me.travelplan.web.route.review.dto.RouteReviewRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,11 +22,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -71,11 +76,14 @@ class RouteReviewServiceTest {
     @Test
     @DisplayName("경로 리뷰 목록 조회 성공")
     public void getList() {
-        given(routeReviewRepository.findAllByRouteId(1L)).willReturn(Collections.singletonList(RouteReview.builder().build()));
+        RouteReviewPageDto pageDto = new RouteReviewPageDto(1, 10);
+        Page<RouteReview> page = new PageImpl<>(IntStream.range(0, 2).mapToObj(i -> RouteReview.builder().build()).collect(Collectors.toList()), pageDto.of(), 2);
 
-        routeReviewService.getList(1L);
+        given(routeReviewRepository.findAllByRouteId(any(), any(), any())).willReturn(page);
 
-        verify(routeReviewRepository).findAllByRouteId(1L);
+        routeReviewService.getList(1L, pageDto);
+
+        verify(routeReviewRepository).findAllByRouteId(any(), any(), any());
     }
 
     @Test

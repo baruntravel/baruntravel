@@ -15,6 +15,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -33,8 +35,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -109,11 +110,14 @@ class RouteReviewControllerTest extends MvcTest {
             return routeReview;
         }).collect(Collectors.toList());
 
-        given(routeReviewService.getList(any())).willReturn(routeReviews);
+        given(routeReviewService.getList(any(),any())).willReturn(new PageImpl<>(routeReviews, PageRequest.of(0, 10), routeReviews.size()));
 
 
         ResultActions results = mockMvc.perform(
                 get("/route/{id}/reviews", 1)
+                        .param("page", "0")
+                        .param("size", "10")
+                        .param("sortType", "best")
         );
 
         results.andExpect(status().isOk())
@@ -121,21 +125,29 @@ class RouteReviewControllerTest extends MvcTest {
                 .andDo(document("route-review-list",
                         getDocumentRequest(),
                         getDocumentResponse(),
+                        requestParameters(
+                                parameterWithName("page").description("조회할 페이지"),
+                                parameterWithName("size").description("조회할 경로수"),
+                                parameterWithName("sortType").description("최신순: latest or null, 추천순: best")
+                        ),
                         pathParameters(
                                 parameterWithName("id").description("경로 식별자")
                         ),
-                        responseFields(
-                                fieldWithPath("reviews[].id").type(JsonFieldType.NUMBER).description("경로 리뷰 식별자"),
-                                fieldWithPath("reviews[].content").type(JsonFieldType.STRING).description("경로 리뷰 내용"),
-                                fieldWithPath("reviews[].score").type(JsonFieldType.NUMBER).description("경로 리뷰 점수"),
-                                fieldWithPath("reviews[].likes").type(JsonFieldType.NUMBER).description("경로 리뷰 좋아요 개수"),
-                                fieldWithPath("reviews[].isLike").type(JsonFieldType.BOOLEAN).description("로그인 유저가 해당 경로 리뷰에 좋아요를 눌렀다면 true"),
-                                fieldWithPath("reviews[].creator.name").type(JsonFieldType.STRING).description("경로 리뷰 작성자 이름"),
-                                fieldWithPath("reviews[].creator.email").type(JsonFieldType.STRING).description("경로 리뷰 작성자 이메일"),
-                                fieldWithPath("reviews[].creator.avatarUrl").type(JsonFieldType.STRING).description("경로 리뷰 작성자 프로필 이미지"),
-                                fieldWithPath("reviews[].images[].url").type(JsonFieldType.STRING).description("경로 리뷰에 첨부되어 있는 파일 url"),
-                                fieldWithPath("reviews[].createdAt").type(JsonFieldType.STRING).description("경로 리뷰 생성날짜"),
-                                fieldWithPath("reviews[].updatedAt").type(JsonFieldType.STRING).description("경로 리뷰 수정날짜")
+                        relaxedResponseFields(
+                                fieldWithPath("content[].id").type(JsonFieldType.NUMBER).description("경로 리뷰 식별자"),
+                                fieldWithPath("content[].content").type(JsonFieldType.STRING).description("경로 리뷰 내용"),
+                                fieldWithPath("content[].score").type(JsonFieldType.NUMBER).description("경로 리뷰 점수"),
+                                fieldWithPath("content[].likes").type(JsonFieldType.NUMBER).description("경로 리뷰 좋아요 개수"),
+                                fieldWithPath("content[].isLike").type(JsonFieldType.BOOLEAN).description("로그인 유저가 해당 경로 리뷰에 좋아요를 눌렀다면 true"),
+                                fieldWithPath("content[].creator.name").type(JsonFieldType.STRING).description("경로 리뷰 작성자 이름"),
+                                fieldWithPath("content[].creator.email").type(JsonFieldType.STRING).description("경로 리뷰 작성자 이메일"),
+                                fieldWithPath("content[].creator.avatarUrl").type(JsonFieldType.STRING).description("경로 리뷰 작성자 프로필 이미지"),
+                                fieldWithPath("content[].images[].url").type(JsonFieldType.STRING).description("경로 리뷰에 첨부되어 있는 파일 url"),
+                                fieldWithPath("content[].createdAt").type(JsonFieldType.STRING).description("경로 리뷰 생성날짜"),
+                                fieldWithPath("content[].updatedAt").type(JsonFieldType.STRING).description("경로 리뷰 수정날짜"),
+                                fieldWithPath("totalElements").description("전체 개수"),
+                                fieldWithPath("last").description("마지막 페이지인지 식별"),
+                                fieldWithPath("totalPages").description("전체 페이지")
                         )
                 ));
     }

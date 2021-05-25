@@ -103,12 +103,12 @@ Create Review Without File!
 --WebAppBoundary
 Content-Disposition: form-data; name="score"
 
-5.0
+3.6
 --WebAppBoundary--
 
 ###
 
-GET {{apiUrl}}/route/1/reviews
+GET {{apiUrl}}/route/1/reviews?size=10&page=1&sortType=best
 Authorization: {{ authorizationToken }}
 
 ###
