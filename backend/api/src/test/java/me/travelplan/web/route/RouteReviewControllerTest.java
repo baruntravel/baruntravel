@@ -115,7 +115,7 @@ class RouteReviewControllerTest extends MvcTest {
 
         ResultActions results = mockMvc.perform(
                 get("/route/{id}/reviews", 1)
-                        .param("page", "0")
+                        .param("page", "1")
                         .param("size", "10")
                         .param("sortType", "best")
         );
@@ -125,13 +125,13 @@ class RouteReviewControllerTest extends MvcTest {
                 .andDo(document("route-review-list",
                         getDocumentRequest(),
                         getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("id").description("경로 식별자")
+                        ),
                         requestParameters(
                                 parameterWithName("page").description("조회할 페이지"),
                                 parameterWithName("size").description("조회할 경로수"),
                                 parameterWithName("sortType").description("최신순: latest or null, 추천순: best")
-                        ),
-                        pathParameters(
-                                parameterWithName("id").description("경로 식별자")
                         ),
                         relaxedResponseFields(
                                 fieldWithPath("content[].id").type(JsonFieldType.NUMBER).description("경로 리뷰 식별자"),

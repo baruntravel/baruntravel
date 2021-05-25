@@ -123,7 +123,9 @@ include::{snippets}/route-review-like-create-delete/http-response.adoc[]
 `GET /route/{id}/reviews`
 
 요청 HTTP
+include::{snippets}/route-review-list/http-request.adoc[]
 include::{snippets}/route-review-list/path-parameters.adoc[]
+include::{snippets}/route-review-list/request-parameters.adoc[]
 
 성공 응답 HTTP
 include::{snippets}/route-review-list/http-response.adoc[]
