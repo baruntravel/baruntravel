@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(path = "/routes")
 public class RoutesController {
     private final RouteService routeService;

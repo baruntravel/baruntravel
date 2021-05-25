@@ -1,0 +1,60 @@
+###
+POST {{apiUrl}}/route
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+{
+  "name": "나의 테스트 경로",
+  "places": [
+    {
+      "id": 1797997961,
+      "order": 1
+    },
+    {
+      "id": 1440347564,
+      "order": 2
+    }
+  ]
+}
+
+###
+PUT {{apiUrl}}/route/3
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+{
+  "firstPlaceId": 1797997961,
+  "secondPlaceId": 1440347564
+}
+
+###
+PUT {{apiUrl}}/route/1/place
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+{
+  "place": {
+    "id": 123,
+    "image": "https://www.gn.go.kr/tour/images/tour/main_new/mvisual_img07.jpg",
+    "name": "강남",
+    "url": "https://www.gn.go.kr/tour/index.do",
+    "x": 37.748125,
+    "y": 128.878996,
+    "category": "CE7",
+    "order": 1
+  }
+}
+
+###
+GET {{apiUrl}}/route/1
+Authorization: {{ authorizationToken }}
+
+###
+GET {{apiUrl}}/routes/my
+Authorization: {{ authorizationToken }}
+
+###
+POST {{apiUrl}}/route/1/like
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+

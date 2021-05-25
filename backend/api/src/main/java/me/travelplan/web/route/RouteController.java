@@ -9,8 +9,8 @@ import me.travelplan.web.route.dto.RouteResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(path = "/route")
 public class RouteController {
     private final RouteService routeService;
@@ -38,7 +38,7 @@ public class RouteController {
     }
 
     @PostMapping("/{id}/like")
-    public void createOrUpdateLike(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
+    public void like(@PathVariable Long id, @CurrentUser CustomUserDetails userDetails) {
         routeService.createOrDeleteLike(id, userDetails.getUser());
     }
 }
