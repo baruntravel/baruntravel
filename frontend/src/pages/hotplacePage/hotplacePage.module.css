@@ -46,7 +46,6 @@ body {
 .carouselContainer {
   position: absolute;
   bottom: 8%;
-  /* height: 17vh; */
   width: 95%;
   z-index: 1001;
   border-radius: 12px;

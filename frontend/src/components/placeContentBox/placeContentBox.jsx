@@ -94,6 +94,10 @@ const PlaceContentBox = () => {
       url: "https://i.pinimg.com/474x/18/07/90/180790ed94257c237355a7187580448d.jpg",
     },
   ];
+
+  const onClickKakaoMap = useCallback(() => {
+    history.push("/kakaoPlace"); // state와 같이 보내면된다.
+  }, [history]);
   const onClickImage = useCallback(
     (e) => {
       // e.target // target 자식 요소의 key를 id로 념겨준다
@@ -130,7 +134,20 @@ const PlaceContentBox = () => {
     <div className={styles.PlaceContentBox}>
       {/* <div className="functionBox"> */}
       <div className={styles.functionBox}>
-        <span>아이콘 2개</span>
+        <div>
+          <span
+            onClick={() => {
+              history.push("/routePickPlace");
+            }}
+          >
+            임시 아이콘
+          </span>
+          <img
+            src="https://i.pinimg.com/474x/ca/e2/e6/cae2e62f4c5141349e5c9b4d620dbf1e.jpg"
+            style={{ width: "50px" }}
+            onClick={onClickKakaoMap}
+          />
+        </div>
         <SortBox />
       </div>
       <div ref={imageBoxRef} className={styles.imageBox} onClick={onClickImage}>
