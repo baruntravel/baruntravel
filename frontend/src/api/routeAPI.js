@@ -38,7 +38,7 @@ export const getRouteDetail = (routeId) => {
     });
 };
 
-// 상위 루트 10개씩 불러오는
+// TODO 상위 루트 N개씩 불러오는
 export const getFeaturedRoutes = (id) => {
   const routes = axios
     .get(`/route/${id}`)
@@ -52,12 +52,12 @@ export const getFeaturedRoutes = (id) => {
 
 // 왼밑, 오위 좌표로 루트들 불러옴
 export const getRoutesByRange = (ne, sw) => {
-  const routes = axios
+  return axios
     .get(`/routes/?page=0&size=3&maxX=${ne.La}&minX=${sw.La}&maxY=${ne.Ma}&minY=${sw.Ma}`)
     .then((res) => res.data)
     .catch((error) => {
       console.error(error);
-      throw new Error(`${error}`);
+      return false;
+      // throw new Error(`${error}`);
     });
-  return routes;
 };
