@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 public interface RouteRepositoryCustom {
-    Page<Route> findAllByCoordinate(Double maxX, Double minX, Double maxY, Double minY, Pageable pageable);
+    Page<Route> findAllByCoordinate(Double maxX, Double minX, Double maxY, Double minY, String sortType, Pageable pageable);
 
     Optional<Route> findByIdWithUser(Long id);
 }

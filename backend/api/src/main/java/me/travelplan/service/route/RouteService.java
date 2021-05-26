@@ -14,9 +14,9 @@ import me.travelplan.service.route.repository.RouteLikeRepository;
 import me.travelplan.service.route.repository.RoutePlaceRepository;
 import me.travelplan.service.route.repository.RouteRepository;
 import me.travelplan.service.user.domain.User;
+import me.travelplan.web.common.PageDto;
 import me.travelplan.web.route.dto.RouteRequest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,8 +58,8 @@ public class RouteService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Route> getList(RouteRequest.GetList request, Pageable pageable) {
-        return routeRepository.findAllByCoordinate(request.getMaxX(), request.getMinX(), request.getMaxY(), request.getMinY(), pageable);
+    public Page<Route> getList(RouteRequest.GetList request, PageDto pageDto) {
+        return routeRepository.findAllByCoordinate(request.getMaxX(), request.getMinX(), request.getMaxY(), request.getMinY(), pageDto.getSortType(), pageDto.of());
     }
 
     public void updatePlaceOrder(Long id, RouteRequest.Update request, User user) {

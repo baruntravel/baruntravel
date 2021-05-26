@@ -5,7 +5,7 @@ import me.travelplan.security.userdetails.CurrentUser;
 import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.service.route.RouteReviewService;
 import me.travelplan.service.route.domain.RouteReview;
-import me.travelplan.web.route.review.dto.RouteReviewPageDto;
+import me.travelplan.web.common.PageDto;
 import me.travelplan.web.route.review.dto.RouteReviewRequest;
 import me.travelplan.web.route.review.dto.RouteReviewResponse;
 import org.springframework.data.domain.Page;
@@ -29,7 +29,7 @@ public class RouteReviewController {
     }
 
     @GetMapping("/{id}/reviews")
-    public Page<RouteReviewResponse.GetList> getList(@PathVariable Long id, RouteReviewPageDto pageDto, @CurrentUser CustomUserDetails customUserDetails) {
+    public Page<RouteReviewResponse.GetList> getList(@PathVariable Long id, PageDto pageDto, @CurrentUser CustomUserDetails customUserDetails) {
         List<RouteReview> content = routeReviewService.getList(id, pageDto).getContent();
         List<RouteReviewResponse.GetList> getList = routeReviewMapper.entityToResponseReviewList(content, customUserDetails);
 

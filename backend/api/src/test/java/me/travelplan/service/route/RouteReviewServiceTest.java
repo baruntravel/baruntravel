@@ -13,7 +13,7 @@ import me.travelplan.service.route.repository.RouteReviewFileRepository;
 import me.travelplan.service.route.repository.RouteReviewLikeRepository;
 import me.travelplan.service.route.repository.RouteReviewRepository;
 import me.travelplan.service.user.domain.User;
-import me.travelplan.web.route.review.dto.RouteReviewPageDto;
+import me.travelplan.web.common.PageDto;
 import me.travelplan.web.route.review.dto.RouteReviewRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -93,7 +93,8 @@ class RouteReviewServiceTest {
     @Test
     @DisplayName("경로 리뷰 목록 조회 성공")
     public void getList() {
-        RouteReviewPageDto pageDto = new RouteReviewPageDto(1, 10);
+
+        PageDto pageDto = new PageDto(1, 10);
         Page<RouteReview> page = new PageImpl<>(IntStream.range(0, 2).mapToObj(i -> RouteReview.builder().build()).collect(Collectors.toList()), pageDto.of(), 2);
 
         given(routeReviewRepository.findAllByRouteId(any(), any(), any())).willReturn(page);

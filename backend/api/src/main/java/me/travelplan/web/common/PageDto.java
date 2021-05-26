@@ -1,15 +1,15 @@
-package me.travelplan.web.route.review.dto;
+package me.travelplan.web.common;
 
 import lombok.Getter;
 import org.springframework.data.domain.PageRequest;
 
 @Getter
-public class RouteReviewPageDto {
+public class PageDto {
     private int page;
     private int size;
     private String sortType;
 
-    public RouteReviewPageDto(int page, int size) {
+    public PageDto(int page, int size) {
         this.page = page;
         this.size = size;
     }
