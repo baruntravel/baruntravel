@@ -1,13 +1,15 @@
-package me.travelplan.web.common;
+package me.travelplan.web.route.review.dto;
 
 import lombok.Getter;
+import org.springframework.data.domain.PageRequest;
 
 @Getter
-public class PageRequest {
+public class RouteReviewPageDto {
     private int page;
     private int size;
+    private String sortType;
 
-    public PageRequest(int page, int size) {
+    public RouteReviewPageDto(int page, int size) {
         this.page = page;
         this.size = size;
     }
@@ -22,7 +24,11 @@ public class PageRequest {
         this.size = size > MAX_SIZE ? DEFAULT_SIZE : size;
     }
 
-    public org.springframework.data.domain.PageRequest of() {
-        return org.springframework.data.domain.PageRequest.of(page - 1, size);
+    public void setSortType(String sortType) {
+        this.sortType = sortType;
+    }
+
+    public PageRequest of() {
+        return PageRequest.of(page - 1, size);
     }
 }
