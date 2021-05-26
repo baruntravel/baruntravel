@@ -15,7 +15,7 @@ import me.travelplan.service.route.repository.RouteReviewFileRepository;
 import me.travelplan.service.route.repository.RouteReviewLikeRepository;
 import me.travelplan.service.route.repository.RouteReviewRepository;
 import me.travelplan.service.user.domain.User;
-import me.travelplan.web.route.review.dto.RouteReviewPageDto;
+import me.travelplan.web.common.PageDto;
 import me.travelplan.web.route.review.dto.RouteReviewRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -45,7 +45,7 @@ public class RouteReviewService {
     }
 
     @Transactional(readOnly = true)
-    public Page<RouteReview> getList(Long id, RouteReviewPageDto pageDto) {
+    public Page<RouteReview> getList(Long id, PageDto pageDto) {
         return routeReviewRepository.findAllByRouteId(id, pageDto.getSortType(), pageDto.of());
     }
 

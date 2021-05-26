@@ -10,7 +10,7 @@ import me.travelplan.service.route.exception.RouteNotFoundException;
 import me.travelplan.service.route.repository.RouteLikeRepository;
 import me.travelplan.service.route.repository.RouteRepository;
 import me.travelplan.service.user.domain.User;
-import me.travelplan.web.common.PageRequest;
+import me.travelplan.web.common.PageDto;
 import me.travelplan.web.route.dto.RouteDto;
 import me.travelplan.web.route.dto.RouteRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -123,14 +123,14 @@ class RouteServiceTest {
                 .minX(32.789)
                 .minY(123.789)
                 .build();
-        PageRequest pageRequest = new PageRequest(1, 10);
-        Page<Route> page = new PageImpl<>(Collections.singletonList(route), pageRequest.of(), 2);
+        PageDto pageDto = new PageDto(1, 10);
+        Page<Route> page = new PageImpl<>(Collections.singletonList(route), pageDto.of(), 2);
 
-        given(routeRepository.findAllByCoordinate(any(), any(), any(), any(), any())).willReturn(page);
+        given(routeRepository.findAllByCoordinate(any(), any(), any(), any(), any(), any())).willReturn(page);
 
-        routeService.getList(request, pageRequest.of());
+        routeService.getList(request, pageDto);
 
-        verify(routeRepository).findAllByCoordinate(any(), any(), any(), any(), any());
+        verify(routeRepository).findAllByCoordinate(any(), any(), any(), any(), any(),any());
     }
 
     @Test
