@@ -1,10 +1,9 @@
-import React from "react";
 import styles from "./mapButton.module.css";
 
-const MapButton = () => {
+const MapButton = ({ mapHandler }) => {
   return (
     <div className={styles.container}>
-      <button>Map</button>
+      <button onClick={mapHandler}>map</button>
     </div>
   );
 };
