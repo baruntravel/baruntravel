@@ -45,6 +45,9 @@ const RouteDetailPage = (props) => {
   const [images, setImages] = useState([]); // 이미지와 이름을 같이 저장
   const [postImages, setPostImages] = useState([]); // 이미지만 저장 (줌을 위한 이미지)
   const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(5);
+  const [sortType, setSortType] = useState("latest");
 
   // 좋아요 테스트
   const [liked, setLiked] = useState(false);
@@ -83,8 +86,8 @@ const RouteDetailPage = (props) => {
   }, []);
 
   const onGetReviewList = useCallback(async () => {
-    const reviews = await onReceiveRouteReview(routeId);
-    setReviewDatas(reviews);
+    const reviews = await onReceiveRouteReview(routeId, page, size, sortType);
+    setReviewDatas(reviews.content);
   }, [routeId]);
 
   const handleSetReviewDatas = useCallback((updated) => {
@@ -95,7 +98,7 @@ const RouteDetailPage = (props) => {
       await onUploadRouteReview(routeId, formData); // 추후에 root ID 동적으로 받아오는 걸 구현 후 수정
       onGetReviewList();
     },
-    [routeId]
+    [onGetReviewList, routeId]
   );
   const onEditReview = useCallback((reviewId, formData) => {
     onEditRouteReview(reviewId, formData);

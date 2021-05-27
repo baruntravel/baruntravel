@@ -16,15 +16,20 @@ export const onUploadRouteReview = (routeId, formData) => {
 };
 
 // 경로 상세 정보 받아오기
-export const onReceiveRouteReview = async (routeId) => {
-  const result = await axios
-    .get(`/route/${routeId}/reviews`)
-    .then((res) => res.data.reviews)
+export const onReceiveRouteReview = (routeId, page, size, sortType) => {
+  return axios
+    .get(`/route/${routeId}/reviews`, {
+      params: {
+        page,
+        size,
+        sortType,
+      },
+    })
+    .then((res) => res.data)
     .catch((error) => {
       console.log(error);
       throw new Error(`unExpected Error ${error}`);
     });
-  return result;
 };
 
 // 경로 리뷰 수정하기
