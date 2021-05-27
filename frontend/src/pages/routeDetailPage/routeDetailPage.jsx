@@ -221,9 +221,15 @@ const RouteDetailPage = (props) => {
           <div className={styles.contentBox}>
             <span className={styles.content}>이 장소를 다녀왔어요</span>
           </div>
-          <div className={styles.imageMap}>
-            <ImageMap places={routeDetail.places} />
-          </div>
+          {routeDetail && (
+            <div className={styles.imageMap}>
+              <ImageMap
+                places={routeDetail.places}
+                centerX={routeDetail.centerX}
+                centerY={routeDetail.centerY}
+              />
+            </div>
+          )}
           <div className={styles.placesBox}>
             {routeDetail.places &&
               routeDetail.places.map((place, index) => (
