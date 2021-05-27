@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { getRoutesByRange } from "../../../api/routeAPI";
 
+//여기서도 setMap이 아니고, mapHandler로 부모한테 넘겨줌
+//이 안에서 places 배열 생성해서 사용?
 const UsersRouteMap = ({ places, mapHandler, routesHandler, routes }) => {
   const { kakao } = window;
   const [map, setMap] = useState();

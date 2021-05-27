@@ -3,18 +3,16 @@ import { useHistory } from "react-router-dom";
 import { usersRouteItems } from "../../../recoil/routeAtom";
 import { useRecoilState } from "recoil";
 
-const SelectRoute = () => {
-  const [routeItems, setRouteItems] = useRecoilState(usersRouteItems);
+const SelectRoute = ({ routes }) => {
   let history = useHistory();
   const showAllRoute = () => history.push("/route-all");
   const RouteListElem = () => {
-    const routeList = Object.values(routeItems);
     let routeArray = [];
     // 인기 루트 10개 이하만
-    for (let i = 0; i < (routeList.length < 10 ? routeList.length : 10); i++) {
+    for (let i = 0; i < (routes.length < 10 ? routes.length : 10); i++) {
       routeArray.push(
         <div onClick={() => history.push({ pathname: "/route", state: { id: i } })} className={styles.routeBox} key={i}>
-          <li className={styles.route}>{routeList[i].routeName}</li>
+          <li className={styles.route}>{routes[i].name}</li>
         </div>
       );
     }
