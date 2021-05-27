@@ -6,17 +6,22 @@
   display: flex;
   justify-content: space-between;
   font-size: 18px;
+  margin-bottom: 8px;
 }
 .placeNameBox {
   display: flex;
-  justify-content: center;
+  width: 60%;
+  justify-content: space-between;
 }
 .placeName {
-  max-width: 70%;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   text-align: start;
+}
+.categoryBox {
+  display: flex;
+  align-items: center;
 }
 .category {
   margin-left: 8px;
@@ -37,4 +42,12 @@
   width: 100%;
   height: 30vh;
   object-fit: cover;
+}
+.endLine {
+  display: flex;
+  height: 2px;
+  width: 100%;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  background: wheat;
 }

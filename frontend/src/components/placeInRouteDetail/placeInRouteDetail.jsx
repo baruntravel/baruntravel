@@ -7,9 +7,12 @@ const PlaceInRouteDetail = ({
   place: { id, image, name, address, category },
 }) => {
   const history = useHistory();
-  const goToPlaceDetail = useCallback((e) => {
-    console.log(e.target.dataset.link);
-  }, []);
+  const goToPlaceDetail = useCallback(
+    (e) => {
+      history.push(`/place/${id}`);
+    },
+    [history, id]
+  );
   return (
     <div className={styles.PlaceInRouteDetail}>
       <header
@@ -21,6 +24,8 @@ const PlaceInRouteDetail = ({
           <span
             className={styles.placeName}
           >{`${name}dsasdasdasdasdasdasd`}</span>
+        </div>
+        <div className={styles.categoryBox}>
           <span className={styles.category}>{`(${category})`}</span>
         </div>
         <div className={styles.navigationIcon}>
@@ -32,6 +37,7 @@ const PlaceInRouteDetail = ({
         {/* <div className={styles.infoBox}>
           <span className={styles.address}>{address}</span>
         </div> */}
+        <div className={styles.endLine} />
       </section>
     </div>
   );
