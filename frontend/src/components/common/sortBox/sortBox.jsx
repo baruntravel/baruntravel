@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef } from "react";
+
 import styles from "./sortBox.module.css";
 
 const SortBox = ({ onHandleRecommend, onHandleNewest }) => {

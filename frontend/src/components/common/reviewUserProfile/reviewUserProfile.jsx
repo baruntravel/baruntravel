@@ -20,7 +20,9 @@ const ReviewUserProfile = ({
       </div>
       {isUserReview && (
         <div className={styles.editBox}>
-          <span onClick={onClickEdit}>수정</span>
+          <span className={styles.edit} onClick={onClickEdit}>
+            수정
+          </span>
           <span onClick={onClickDelete}>삭제</span>
         </div>
       )}
