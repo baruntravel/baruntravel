@@ -1,9 +1,9 @@
 import React from "react";
 import ReviewUserProfile from "../../components/common/reviewUserProfile/reviewUserProfile";
-import DetailHeader from "../../components/detailHeader/detailHeader";
-import ReviewCardBottom from "../../components/reviewComponents/reviewList/reviewCard/reviewCardBottom/reviewCardBottom";
-import ReviewScoreText from "../../components/reviewComponents/reviewScoreText/reviewScoreText";
+import DetailHeader from "../../components/common/detailHeader/detailHeader";
 import styles from "./reviewDetailPage.module.css";
+import ReviewCardBottom from "../../components/common/reviewComponents/reviewList/reviewCard/reviewCardBottom/reviewCardBottom";
+import ReviewScoreText from "../../components/common/reviewComponents/reviewScoreText/reviewScoreText";
 
 const ReviewDetailPage = (props) => {
   const review = {
