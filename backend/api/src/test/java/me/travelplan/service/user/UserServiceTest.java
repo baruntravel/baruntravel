@@ -6,6 +6,7 @@ import me.travelplan.service.user.domain.User;
 import me.travelplan.service.user.exception.EmailExistedException;
 import me.travelplan.service.user.repository.UserRepository;
 import me.travelplan.web.auth.AuthRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,6 +37,13 @@ class UserServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    private User user;
+
+    @BeforeEach
+    public void setUp() {
+        user = User.builder().id(1L).name("테스터").email("test@test.com").password("123456").avatar(File.builder().name("files").build()).build();
+    }
+
     @Test
     @DisplayName("회원가입 성공")
     public void create() throws Exception {
@@ -54,7 +62,6 @@ class UserServiceTest {
     @DisplayName("예외테스트: 회원가입시 이메일이 중복되었을 경우 예외 발생")
     public void ExistedEmail() throws Exception {
         AuthRequest.Register request = registerRequest();
-        User user = createUser();
 
         given(userRepository.findByEmail(request.getEmail())).willReturn(Optional.of(user));
 
@@ -64,8 +71,6 @@ class UserServiceTest {
     @Test
     @DisplayName("내 정보 조회 성공")
     public void getMe() {
-        User user = createUser();
-
         given(userRepository.findByEmail(user.getEmail())).willReturn(Optional.of(user));
 
         userService.getMe(user);
@@ -83,7 +88,6 @@ class UserServiceTest {
                 .avatar(mockFile)
                 .avatarChange(true)
                 .build();
-        User user = createUser();
 
         given(userRepository.findByEmail(user.getEmail())).willReturn(Optional.of(user));
         given(fileService.upload(any())).willReturn(File.builder().name("updateFile").build());
@@ -102,7 +106,6 @@ class UserServiceTest {
                 .avatar(null)
                 .avatarChange(true)
                 .build();
-        User user = createUser();
 
         given(userRepository.findByEmail(user.getEmail())).willReturn(Optional.of(user));
 
@@ -120,15 +123,6 @@ class UserServiceTest {
                 .email("test@test.com")
                 .password("123456")
                 .avatar(mockFile)
-                .build();
-    }
-
-    private User createUser() {
-        return User.builder()
-                .name("테스터")
-                .email("test@test.com")
-                .password("123456")
-                .avatar(File.builder().name("files").build())
                 .build();
     }
 }

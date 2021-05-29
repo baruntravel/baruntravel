@@ -185,6 +185,7 @@ public class RoutesControllerTest extends MvcTest {
                 get("/routes")
                         .param("page", "0")
                         .param("size", "10")
+                        .param("sortType","best")
                         .param("maxX", "37.5")
                         .param("minX", "36.5")
                         .param("maxY", "123.5")
@@ -200,6 +201,7 @@ public class RoutesControllerTest extends MvcTest {
                         requestParameters(
                                 parameterWithName("page").description("조회할 페이지"),
                                 parameterWithName("size").description("조회할 경로수"),
+                                parameterWithName("sortType").description("최신순: latest or null, 추천순: best"),
                                 parameterWithName("maxX").description("현지도에서 가장 큰 x좌표(가장 오른쪽 x좌표)"),
                                 parameterWithName("minX").description("현지도에서 가장 작은 x좌표(가장 왼쪽 x좌표)"),
                                 parameterWithName("maxY").description("현지도에서 가장 큰 y좌표(가장 위의 y좌표)"),

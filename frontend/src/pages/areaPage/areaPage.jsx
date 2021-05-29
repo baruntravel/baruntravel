@@ -9,13 +9,9 @@ const AreaPage = () => {
   const location = useLocation();
   const [area, setArea] = useState(location.state.areaKor);
   const [tabBox, setTabBox] = useState("route");
+  const onHandleRouteTab = useCallback(() => setTabBox("route"), []);
+  const onHandlePlaceTab = useCallback(() => setTabBox("place"), []);
 
-  const onHandleRouteTab = useCallback(() => {
-    setTabBox("route");
-  }, []);
-  const onHandlePlaceTab = useCallback(() => {
-    setTabBox("place");
-  }, []);
   return (
     <div className={styles.container}>
       <div className={styles.navbar}>
@@ -32,7 +28,7 @@ const AreaPage = () => {
           </button>
         </div>
         <div className={styles.contentBox}>
-          {tabBox === "route" ? <RouteContentBox /> : <PlaceContentBox />}
+          {tabBox === "route" ? <RouteContentBox area={area} /> : <PlaceContentBox />}
         </div>
         <div className={styles.floatingIcon}></div>
       </div>

@@ -6,11 +6,11 @@ import me.travelplan.service.route.domain.RouteReview;
 import me.travelplan.service.route.domain.RouteReviewFile;
 import me.travelplan.web.common.FileDto;
 import me.travelplan.web.common.UserDto;
-import me.travelplan.web.route.review.dto.RouteReviewDto;
 import me.travelplan.web.route.review.dto.RouteReviewResponse;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,31 +21,32 @@ import java.util.stream.Collectors;
 public interface RouteReviewMapper {
     RouteReviewResponse.GetOnlyId toReviewIdResponse(RouteReview review);
 
-    default RouteReviewResponse.GetList entityToResponseReviewList(List<RouteReview> reviews, CustomUserDetails customUserDetails) {
-        return RouteReviewResponse.GetList.builder()
-                .reviews(reviews.stream().map(routeReview -> {
-                    UserDto.Response.ResponseBuilder userDtoBuilder = UserDto.Response.builder()
-                            .email(routeReview.getCreatedBy().getEmail())
-                            .name(routeReview.getCreatedBy().getName());
-                    if (routeReview.getCreatedBy().getAvatar() != null) {
-                        userDtoBuilder.avatarUrl(routeReview.getCreatedBy().getAvatar().getUrl());
-                    }
-                    return RouteReviewDto.Response.builder()
-                            .id(routeReview.getId())
-                            .content(routeReview.getContent())
-                            .score(routeReview.getScore())
-                            .isLike(routeReview.isLike(customUserDetails))
-                            .likes(routeReview.getRouteReviewLikes().size())
-                            .creator(userDtoBuilder.build())
-                            .images(routeReview.getRouteReviewFiles().stream()
-                                    .map(RouteReviewFile::getFile)
-                                    .map(File::getUrl)
-                                    .map(FileDto.Image::new)
-                                    .collect(Collectors.toList()))
-                            .createdAt(routeReview.getCreatedAt())
-                            .updatedAt(routeReview.getUpdatedAt())
-                            .build();
-                }).collect(Collectors.toList()))
-                .build();
+    default List<RouteReviewResponse.GetList> entityToResponseReviewList(List<RouteReview> reviews, CustomUserDetails customUserDetails) {
+        List<RouteReviewResponse.GetList> list = new ArrayList<>();
+        reviews.forEach(review -> {
+            UserDto.Response.ResponseBuilder userDtoBuilder = UserDto.Response.builder()
+                    .email(review.getCreatedBy().getEmail())
+                    .name(review.getCreatedBy().getName());
+            if (review.getCreatedBy().getAvatar() != null) {
+                userDtoBuilder.avatarUrl(review.getCreatedBy().getAvatar().getUrl());
+            }
+            RouteReviewResponse.GetList getList = RouteReviewResponse.GetList.builder()
+                    .id(review.getId())
+                    .content(review.getContent())
+                    .score(review.getScore())
+                    .createdAt(review.getCreatedAt())
+                    .updatedAt(review.getUpdatedAt())
+                    .isLike(review.isLike(customUserDetails))
+                    .likes(review.getRouteReviewLikes().size())
+                    .images(review.getRouteReviewFiles().stream()
+                            .map(RouteReviewFile::getFile)
+                            .map(File::getUrl)
+                            .map(FileDto.Image::new)
+                            .collect(Collectors.toList()))
+                    .creator(userDtoBuilder.build())
+                    .build();
+            list.add(getList);
+        });
+        return list;
     }
 }

@@ -14,17 +14,19 @@ import InputRootName from "../../components/common/inputRootName/inputRootName";
 import {
   onDeleteRouteReview,
   onEditRouteReview,
+  onHandleRouteReviewLike,
   onReceiveRouteReview,
   onUploadRouteReview,
 } from "../../api/reviewAPI";
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
-import { getRouteDetail } from "../../api/routeAPI";
+import { getRouteDetail, onHandleRouteLike } from "../../api/routeAPI";
 import { StarFilled, UserOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
 import Loading from "../../components/common/loading/loading";
+import PlaceInRouteDetail from "../../components/placeInRouteDetail/placeInRouteDetail";
 
 const RouteDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
@@ -43,6 +45,20 @@ const RouteDetailPage = (props) => {
   const [images, setImages] = useState([]); // 이미지와 이름을 같이 저장
   const [postImages, setPostImages] = useState([]); // 이미지만 저장 (줌을 위한 이미지)
   const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(5);
+  const [sortType, setSortType] = useState("latest");
+
+  // 좋아요 테스트
+  const [liked, setLiked] = useState(false);
+  const onHandleLike = useCallback(() => {
+    setLiked(true);
+    onHandleRouteLike(routeId);
+  }, [routeId]);
+  const onHandleUnlike = useCallback(() => {
+    setLiked(false);
+    onHandleRouteLike(routeId);
+  }, [routeId]);
 
   const onCloseInputName = useCallback(() => {
     setOpenInputName(false);
@@ -69,20 +85,32 @@ const RouteDetailPage = (props) => {
     setMoreReview(false);
   }, []);
 
+  const onGetReviewList = useCallback(async () => {
+    const reviews = await onReceiveRouteReview(routeId, page, size, sortType);
+    setReviewDatas(reviews.content);
+  }, [routeId]);
+
   const handleSetReviewDatas = useCallback((updated) => {
     setReviewDatas(updated);
   }, []);
   const onUploadReview = useCallback(
-    (formData) => {
-      onUploadRouteReview(routeId, formData); // 추후에 root ID 동적으로 받아오는 걸 구현 후 수정
+    async (formData) => {
+      await onUploadRouteReview(routeId, formData); // 추후에 root ID 동적으로 받아오는 걸 구현 후 수정
+      onGetReviewList();
     },
-    [routeId]
+    [onGetReviewList, routeId]
   );
   const onEditReview = useCallback((reviewId, formData) => {
     onEditRouteReview(reviewId, formData);
   }, []);
   const onDeleteReview = useCallback((id) => {
     onDeleteRouteReview(id);
+  }, []);
+  const onLikeReview = useCallback((reviewId) => {
+    onHandleRouteReviewLike(reviewId);
+  }, []);
+  const onUnlikeReview = useCallback((reviewId) => {
+    onHandleRouteReviewLike(reviewId);
   }, []);
 
   const afterSliderChange = useCallback(
@@ -109,12 +137,8 @@ const RouteDetailPage = (props) => {
       setImages(images); // 이미지와 이름을 세트로 저장
       setImagePlaceName(images[0][1]); // 첫 이미지의 장소 이름 저장
     }
-    async function getReviewList() {
-      const reviews = await onReceiveRouteReview(routeId);
-      setReviewDatas(reviews);
-    }
     getRouteDetailInfo();
-    getReviewList();
+    onGetReviewList();
     setLoading(false);
   }, [history, routeId, userStates]);
 
@@ -140,19 +164,28 @@ const RouteDetailPage = (props) => {
   }
   return (
     <div className={styles.RouteDetailPage}>
-      <DetailHeader />
-      <div className={styles.sliderContainer} onClick={onZoom}>
-        <Slider {...settings} afterChange={(index) => afterSliderChange(index)}>
-          {images.map((v, index) => (
-            <div key={index} className={styles.imageContainer}>
-              <img className={styles.img} src={v[0]} alt="upload" />
-            </div>
-          ))}
-        </Slider>
-        <div className={styles.slider__placeNameBox}>
-          <span className={styles.slider__placeName}>{imagePlaceName}</span>
+      <DetailHeader
+        liked={liked}
+        onHandleLike={onHandleLike}
+        onHandleUnlike={onHandleUnlike}
+      />
+      {images && (
+        <div className={styles.sliderContainer} onClick={onZoom}>
+          <Slider
+            {...settings}
+            afterChange={(index) => afterSliderChange(index)}
+          >
+            {images.map((v, index) => (
+              <div key={index} className={styles.imageContainer}>
+                <img className={styles.img} src={v[0]} alt="upload" />
+              </div>
+            ))}
+          </Slider>
+          <div className={styles.slider__placeNameBox}>
+            <span className={styles.slider__placeName}>{imagePlaceName}</span>
+          </div>
         </div>
-      </div>
+      )}
       <section className={styles.body}>
         <div className={styles.authorBox}>
           <Avatar
@@ -188,14 +221,20 @@ const RouteDetailPage = (props) => {
           <div className={styles.contentBox}>
             <span className={styles.content}>이 장소를 다녀왔어요</span>
           </div>
-          <div className={styles.imageMap}>
-            <ImageMap places={routeDetail.places} />
-          </div>
+          {routeDetail && (
+            <div className={styles.imageMap}>
+              <ImageMap
+                places={routeDetail.places}
+                centerX={routeDetail.centerX}
+                centerY={routeDetail.centerY}
+              />
+            </div>
+          )}
           <div className={styles.placesBox}>
             {routeDetail.places &&
               routeDetail.places.map((place, index) => (
                 <div key={index} className={styles.placeBox}>
-                  <PlaceCard place={place} />
+                  <PlaceInRouteDetail place={place} />
                 </div>
               ))}
           </div>
@@ -204,7 +243,9 @@ const RouteDetailPage = (props) => {
           <button className={styles.button} onClick={onOpenInputName}>
             일정으로 담기
           </button>
-          <span className={styles.wishCount}>{`${4}명이 좋아해요`}</span>
+          <span
+            className={styles.wishCount}
+          >{`${routeDetail.reviewCount}명이 좋아해요`}</span>
         </div>
         <div className={styles.reviewList}>
           <ReviewList
@@ -212,35 +253,22 @@ const RouteDetailPage = (props) => {
             onDeleteReview={onDeleteReview}
             onUploadReview={onUploadReview}
             onEditReview={onEditReview}
-            reviewDatas={reviewDatas}
+            onLikeReview={onLikeReview}
+            onUnlikeReview={onUnlikeReview}
+            reviewDatas={moreReview ? reviewDatas : reviewDatas.slice(0, 4)}
             setReviewDatas={handleSetReviewDatas}
             userStates={userStates}
           />
         </div>
-        <div className={styles.buttonBox}>
-          <button
-            className={styles.button}
-            onClick={onOpenMoreReview}
-          >{`${4}개의 리뷰 더보기`}</button>
-        </div>
+        {routeDetail.reviewCount > 5 && (
+          <div className={styles.buttonBox}>
+            <button className={styles.button} onClick={onOpenMoreReview}>{`${
+              routeDetail.reviewCount - 4
+            }개의 리뷰 더보기`}</button>
+          </div>
+        )}
       </section>
-      <Drawer // 리뷰 더보기
-        className={styles.reviewListDrawer}
-        visible={moreReview}
-        placement="right"
-        width="100vw"
-        bodyStyle={{ padding: 0 }}
-        closeIcon={false}
-        style={{
-          overflowY: "hidden",
-        }}
-      >
-        <MoreReviewList
-          setReviewDatas={handleSetReviewDatas}
-          onCloseMoreReview={onCloseMoreReview}
-          reviewDatas={reviewDatas}
-        />
-      </Drawer>
+
       {showImagesZoom && (
         <ImagesZoom images={postImages} onClose={onClose} index={imageIndex} />
       )}
