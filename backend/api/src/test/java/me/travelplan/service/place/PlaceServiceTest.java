@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -58,9 +59,10 @@ public class PlaceServiceTest {
     @Test
     @DisplayName("장소 하나 가져오기")
     public void getById() {
-        given(placeRepository.findByIdWithCategory(any())).willReturn(Optional.of(Place.builder().build()));
-        placeService.getById(1L);
+        given(placeRepository.findByIdWithCategory(any())).willReturn(Optional.of(Place.builder().id(1L).build()));
+        Place place = placeService.getById(1L);
         verify(placeRepository, times(1)).findByIdWithCategory(any());
+        assertEquals(place.getId(), 1L);
     }
 
     @Test
@@ -69,6 +71,4 @@ public class PlaceServiceTest {
         given(placeRepository.findByIdWithCategory(any())).willReturn(Optional.empty());
         assertThrows(PlaceNotFoundException.class, () -> placeService.getById(1L));
     }
-
-
 }
