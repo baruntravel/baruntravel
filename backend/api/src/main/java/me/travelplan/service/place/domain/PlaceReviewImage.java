@@ -22,4 +22,9 @@ public class PlaceReviewImage {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")
     private PlaceReview review;
+
+    public PlaceReviewImage setPlaceReview(PlaceReview review) {
+        this.review = review;
+        return this;
+    }
 }
