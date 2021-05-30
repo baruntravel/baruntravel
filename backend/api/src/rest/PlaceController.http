@@ -23,6 +23,11 @@ Content-Disposition: form-data; name="score";
 
 4.5
 --boundary
+Content-Disposition: form-data; name="images"; filename="enjoy.png"
+
+< ./../main/resources/mock/images/enjoy.png
+
+--boundary
 
 ###
 
@@ -38,6 +43,11 @@ Updated Content
 Content-Disposition: form-data; name="score";
 
 3.5
+--boundary
+Content-Disposition: form-data; name="images"; filename="enjoy.png"
+
+< ./../main/resources/mock/images/enjoy.png
+
 --boundary
 
 ###

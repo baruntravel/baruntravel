@@ -42,7 +42,6 @@ public class PlaceReviewService {
             images = fileService.uploadFiles(reviewDto.getImages())
                             .stream().map(file -> PlaceReviewImage.builder().file(file).build())
                             .collect(Collectors.toList());
-            images = placeReviewImageRepository.saveAll(images);
         }
 
         PlaceReview review = PlaceReview.from(reviewDto, place, images);

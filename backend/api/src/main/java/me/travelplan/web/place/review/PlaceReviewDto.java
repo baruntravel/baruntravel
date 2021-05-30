@@ -14,6 +14,8 @@ import java.util.List;
 public class PlaceReviewDto {
     @Getter
     @Setter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     @NoArgsConstructor
     public static class Request {
         @NotBlank

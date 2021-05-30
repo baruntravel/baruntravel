@@ -22,7 +22,7 @@ public class UserDto {
             return Response.builder()
                     .name(user.getName())
                     .email(user.getEmail())
-                    .avatarUrl(Optional.ofNullable(user.getAvatar()).orElse(File.createExternalImage("")).getUrl())
+//                    .avatarUrl(Optional.ofNullable(user.getAvatar()).orElse(File.createExternalImage("")).getUrl())
                     .build();
         }
     }
