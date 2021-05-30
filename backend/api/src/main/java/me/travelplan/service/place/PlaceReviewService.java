@@ -9,6 +9,7 @@ import me.travelplan.service.place.exception.PlaceNotFoundException;
 import me.travelplan.service.place.exception.PlaceReviewNotFoundException;
 import me.travelplan.service.place.exception.PlaceReviewNotUpdatableException;
 import me.travelplan.service.place.repository.PlaceRepository;
+import me.travelplan.service.place.repository.PlaceReviewImageRepository;
 import me.travelplan.service.place.repository.PlaceReviewRepository;
 import me.travelplan.service.user.domain.User;
 import me.travelplan.web.place.review.PlaceReviewDto;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class PlaceReviewService {
     private final PlaceRepository placeRepository;
     private final PlaceReviewRepository placeReviewRepository;
+    private final PlaceReviewImageRepository placeReviewImageRepository;
     private final FileService fileService;
 
     public List<PlaceReview> getReviews(Long placeId) {
@@ -34,11 +36,13 @@ public class PlaceReviewService {
     @Transactional
     public PlaceReview createReview(Long placeId, PlaceReviewDto.Request reviewDto) {
         Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
+
         List<PlaceReviewImage> images = new ArrayList<>();
         if (!reviewDto.getImages().isEmpty()) {
             images = fileService.uploadFiles(reviewDto.getImages())
                             .stream().map(file -> PlaceReviewImage.builder().file(file).build())
                             .collect(Collectors.toList());
+            images = placeReviewImageRepository.saveAll(images);
         }
 
         PlaceReview review = PlaceReview.from(reviewDto, place, images);
@@ -54,6 +58,7 @@ public class PlaceReviewService {
             images = fileService.uploadFiles(reviewDto.getImages())
                     .stream().map(file -> PlaceReviewImage.builder().file(file).review(review).build())
                     .collect(Collectors.toList());
+            images = placeReviewImageRepository.saveAll(images);
         }
         review.update(reviewDto, images);
 
