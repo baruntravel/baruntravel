@@ -142,7 +142,7 @@ public class PlaceReviewControllerTest extends MvcTest {
                                 fieldWithPath("createdBy").type(JsonFieldType.OBJECT).description("리뷰 생성자"),
                                 fieldWithPath("createdBy.name").type(JsonFieldType.STRING).description("리뷰 생성자 이름"),
                                 fieldWithPath("createdBy.email").type(JsonFieldType.STRING).description("리뷰 생성자 이메일"),
-                                fieldWithPath("createdBy.avatarUrl").type(JsonFieldType.STRING).description("리뷰 생성자 아바타 이미지 경로")
+                                fieldWithPath("createdBy.avatarUrl").description("리뷰 생성자 아바타 이미지 경로")
                         )
                 ));
     }
@@ -223,7 +223,7 @@ public class PlaceReviewControllerTest extends MvcTest {
                                 fieldWithPath("[].createdBy").type(JsonFieldType.OBJECT).description("리뷰 생성자"),
                                 fieldWithPath("[].createdBy.name").type(JsonFieldType.STRING).description("리뷰 생성자 이름"),
                                 fieldWithPath("[].createdBy.email").type(JsonFieldType.STRING).description("리뷰 생성자 이메일"),
-                                fieldWithPath("[].createdBy.avatarUrl").type(JsonFieldType.STRING).description("리뷰 생성자 아바타 이미지 경로")
+                                fieldWithPath("[].createdBy.avatarUrl").description("리뷰 생성자 아바타 이미지 경로")
                         )
                 ));
     }

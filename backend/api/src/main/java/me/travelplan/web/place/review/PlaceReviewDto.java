@@ -22,6 +22,7 @@ public class PlaceReviewDto {
         private Double score;
         @NotBlank
         private String content;
+        @Builder.Default
         private List<MultipartFile> images = new ArrayList<>();
     }
 
