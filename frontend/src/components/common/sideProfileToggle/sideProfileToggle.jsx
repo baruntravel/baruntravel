@@ -2,8 +2,8 @@ import React, { useCallback, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import SideMyProfile from "../sideMyProfile/sideMyProfile";
-import { Drawer } from "antd";
 import styles from "./sideProfileToggle.module.css";
+import { Drawer } from "antd";
 
 const SideProfileToggle = (props) => {
   const [openSideProfile, setOpenSideProfile] = useState(false);

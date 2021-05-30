@@ -1,5 +1,4 @@
 import { HeartOutlined, HeartTwoTone } from "@ant-design/icons";
-import { Rate } from "antd";
 import React, { useCallback, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import styles from "./placeCard.module.css";

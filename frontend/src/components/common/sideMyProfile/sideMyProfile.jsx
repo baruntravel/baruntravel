@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from "react";
 import styles from "./sideMyProfile.module.css";
-
 import { useRecoilState, useResetRecoilState } from "recoil";
 import Avatar from "antd/lib/avatar/avatar";
 import { useHistory } from "react-router-dom";
@@ -173,7 +172,7 @@ const SideMyProfile = ({ handleClose }) => {
         visible={openEditProfile}
         width={"100vw"}
         bodyStyle={{ padding: 0 }}
-        zIndex={1005}
+        // zIndex={1005}
       >
         <ProfileEdit
           userStates={userStates}
