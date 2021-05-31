@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styles from "./usersRoutePage.module.css";
 import { useLocation } from "react-router-dom";
 import UsersRouteMap from "../../components/map/usersRouteMap/usersRouteMap";
@@ -26,11 +26,17 @@ const UsersRoutePage = () => {
   const [modalToggle, setModalToggle] = useState(false);
   const [searchHere, setSearchHere] = useState(false);
 
-  const mapHandler = (map) => setMap(map);
+  const mapHandler = useCallback((map) => setMap(map), []);
+
   const routesHandler = (routes) => setRoutes(routes);
-  const indexHandler = (index) => setIndex(index);
-  const modalHandler = () => setModalToggle(!modalToggle);
+  const indexHandler = (index) => {
+    setIndex(index);
+  };
+
+  const modalHandler = useCallback(() => setModalToggle(!modalToggle), [modalToggle]);
+
   const zoomHandler = (level) => map.setLevel(level, { animate: { duration: 120 } });
+
   const searchHereHandler = (e) => {
     //Todo
     e.target.style = searchHere ? "background-color: white;" : "background-color: black;";
@@ -61,7 +67,7 @@ const UsersRoutePage = () => {
             <button
               className={styles.plusButton}
               onClick={() => {
-                map && zoomHandler(map.getLevel() - 1);
+                zoomHandler(map.getLevel() - 1);
               }}
             >
               <FontAwesomeIcon icon={faPlus} color="#7B8293" size="lg" />
@@ -69,7 +75,7 @@ const UsersRoutePage = () => {
             <button
               className={styles.minusButton}
               onClick={() => {
-                map && zoomHandler(map.getLevel() + 1);
+                zoomHandler(map.getLevel() + 1);
               }}
             >
               <FontAwesomeIcon icon={faMinus} color="#7B8293" size="lg" />
