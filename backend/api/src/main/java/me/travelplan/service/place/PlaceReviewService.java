@@ -69,6 +69,11 @@ public class PlaceReviewService {
         placeReviewRepository.deleteById(placeReviewId);
     }
 
+    @Transactional
+    public void deleteReviewImage(Long placeReviewImageId) {
+        placeReviewImageRepository.deleteById(placeReviewImageId);
+    }
+
     public void checkReviewUpdatable(Long placeReviewId, User user) {
         PlaceReview review = placeReviewRepository.findById(placeReviewId).orElseThrow(PlaceReviewNotFoundException::new);
 

@@ -41,4 +41,11 @@ public class PlaceReviewController {
         placeReviewService.checkReviewUpdatable(reviewId, userDetails.getUser());
         placeReviewService.deleteReview(reviewId);
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{reviewId}/image/{reviewImageId}")
+    public void deleteImage(@PathVariable Long reviewId,  @PathVariable Long reviewImageId, @CurrentUser CustomUserDetails userDetails) {
+        placeReviewService.checkReviewUpdatable(reviewId, userDetails.getUser());
+        placeReviewService.deleteReviewImage(reviewImageId);
+    }
 }
