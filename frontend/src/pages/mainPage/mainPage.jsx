@@ -8,6 +8,7 @@ import SelectArea from "../../components/mainPage/selectArea/selectArea";
 import { getFeaturedRoutes as fetchRoutes } from "../../api/routeAPI";
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
+import AddSuccessConfirm from "../../components/common/addSuccessConfirm/addSuccessConfirm";
 const MainPage = () => {
   const userStates = useRecoilValue(userState);
   const [mainRoutes, setMainRoutes] = useState({});
@@ -49,6 +50,8 @@ const MainPage = () => {
         <SelectArea />
         <SelectRoute />
       </div>
+      {/* test */}
+      <AddSuccessConfirm />
     </div>
   );
 };
