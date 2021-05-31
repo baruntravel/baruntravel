@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useCallback } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useRecoilValue } from "recoil";
+import DetailProfileBottom from "../../components/detailProfilePage/detailProfileBottom/detailProfileBottom";
 import DetailProfileCondition from "../../components/detailProfilePage/detailProfileCondition/detailProfileCondition";
 import { userState } from "../../recoil/userState";
 import styles from "./detailProfilePage.module.css";
@@ -86,6 +87,9 @@ const DetailProfilePage = (props) => {
           <DetailProfileCondition selected={selected} />
         </div>
       </section>
+      <div className={styles.bottom}>
+        <DetailProfileBottom />
+      </div>
     </div>
   );
 };

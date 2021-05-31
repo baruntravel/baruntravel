@@ -1,0 +1,31 @@
+.MyRouteCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.routeBox {
+  display: flex;
+  flex-basis: 55%;
+}
+.buttonBox {
+  display: flex;
+  margin-left: 1%;
+  flex-basis: 44%;
+  justify-content: space-between;
+}
+
+.seeButton,
+.uploadButton {
+  width: 47%;
+  border: none;
+  padding: 4px;
+  color: white;
+  border-radius: 8px;
+}
+
+.seeButton {
+  background-color: #c4c4c4;
+}
+.uploadButton {
+  background-color: #80e3e3;
+}

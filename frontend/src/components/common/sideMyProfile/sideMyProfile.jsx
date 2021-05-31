@@ -21,8 +21,6 @@ import ProfileEdit from "../profileEdit/profileEdit";
 import { onLogout } from "../../../api/authAPI";
 
 const SideMyProfile = ({ handleClose }) => {
-  // const [myRouteList, setMyRouteList] = useRecoilState(myRouteCart);
-  // myRouteList는 Navbar에서 받아오는 것으로?
   const [userStates, setUserStates] = useRecoilState(userState);
   const isLogin = userStates.isLogin;
   const history = useHistory();
@@ -75,7 +73,6 @@ const SideMyProfile = ({ handleClose }) => {
 
   const resetList = useResetRecoilState(userState);
   const onHandleLogout = useCallback(() => {
-    console.log("로그아웃");
     resetList();
     onLogout();
   }, [resetList]);
@@ -206,7 +203,6 @@ const SideMyProfile = ({ handleClose }) => {
         visible={openEditProfile}
         width={"100vw"}
         bodyStyle={{ padding: 0 }}
-        // zIndex={1005}
       >
         <ProfileEdit
           userStates={userStates}
