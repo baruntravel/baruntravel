@@ -38,7 +38,7 @@ export const getRouteDetail = (routeId) => {
     });
 };
 
-// 상위 루트 10개씩 불러오는
+// TODO 상위 루트 N개씩 불러오는
 export const getFeaturedRoutes = (id) => {
   const routes = axios
     .get(`/route/${id}`)
@@ -51,13 +51,23 @@ export const getFeaturedRoutes = (id) => {
 };
 
 // 왼밑, 오위 좌표로 루트들 불러옴
-export const getRoutesByRange = (sw, ne) => {
-  const routes = axios
-    .get(`/route/${sw},${ne}`)
+export const getRoutesByRange = (ne, sw) => {
+  return axios
+    .get(`/routes/?page=0&size=5&maxX=${ne.La}&minX=${sw.La}&maxY=${ne.Ma}&minY=${sw.Ma}`)
     .then((res) => res.data)
     .catch((error) => {
       console.error(error);
-      throw new Error(`${error}`);
+      return false;
+      // throw new Error(`${error}`);
     });
-  return routes;
+};
+
+export const onHandleRouteLike = (routeId) => {
+  axios
+    .post(`route/${routeId}/like`)
+    .then((res) => true)
+    .catch((error) => {
+      console.error(error);
+      throw new Error(`unExpected Error ${error}`);
+    });
 };

@@ -1,9 +1,9 @@
 package me.travelplan.service.route.repository;
 
 import me.travelplan.service.route.domain.RouteReview;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface RouteReviewRepositoryCustom {
-    List<RouteReview> findAllByRouteId(Long routeId);
+    Page<RouteReview> findAllByRouteId(Long routeId, String sortType, Pageable pageable);
 }

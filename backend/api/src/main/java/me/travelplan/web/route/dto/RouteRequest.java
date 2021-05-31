@@ -31,7 +31,9 @@ public class RouteRequest {
 
     @Getter
     @Setter
+    @Builder
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class GetList {
         private Double maxX;
         private Double minX;

@@ -1,21 +1,21 @@
 import React, { useCallback, useEffect, useState } from "react";
-import DetailHeader from "../../components/detailHeader/detailHeader";
 import styles from "./placeDetailPage.module.css";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+// import "../kakaoMapPage/node_modules/slick-carousel/slick/slick.css";
+// import "../kakaoMapPage/node_modules/slick-carousel/slick/slick-theme.css";
 import { StarFilled } from "@ant-design/icons";
 import { Drawer } from "antd";
-import ReviewList from "../../components/reviewComponents/reviewList/reviewList";
-import ImagesZoom from "../../components/reviewComponents/imagesZoom/imagesZoom";
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
 import { onReceivePlace } from "../../api/placeAPI";
 import { onReceivePlaceReview, onUploadPlaceReview } from "../../api/reviewAPI";
 import { useHistory } from "react-router-dom";
-import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
 import Loading from "../../components/common/loading/loading";
+import DetailHeader from "../../components/common/detailHeader/detailHeader";
+import ImagesZoom from "../../components/common/reviewComponents/imagesZoom/imagesZoom";
+import MoreReviewList from "../../components/common/reviewComponents/moreReviewList/moreReviewList";
+import ReviewList from "../../components/common/reviewComponents/reviewList/reviewList";
 
 const { kakao } = window;
 

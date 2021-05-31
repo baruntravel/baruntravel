@@ -1,9 +1,6 @@
 package me.travelplan.web.route.review.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -11,6 +8,7 @@ import java.util.List;
 public class RouteReviewRequest {
     @Getter
     @Setter
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateOrUpdateReview {

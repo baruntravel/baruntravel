@@ -1,13 +1,13 @@
 import { FormOutlined } from "@ant-design/icons";
 import React, { memo, useCallback, useState } from "react";
-import PlaceCard from "../../../placeCard/placeCard";
+import PlaceCard from "../../placeCard/placeCard";
 import MemoForm from "../../memoForm/memoForm";
 import styles from "./shoppingItem.module.css";
 
 const ShoppingItem = memo(
   ({
     item,
-    setConfirmPortalTrue,
+    onOpenDeleteConfirm,
     deleteClickedItemId,
     updateMemoShoppingItem,
   }) => {
@@ -20,9 +20,9 @@ const ShoppingItem = memo(
       setOpenMemo(false);
     }, []);
     const onHandleDelete = useCallback(() => {
-      setConfirmPortalTrue();
+      onOpenDeleteConfirm();
       deleteClickedItemId(item.id);
-    }, [deleteClickedItemId, item, setConfirmPortalTrue]);
+    }, [deleteClickedItemId, item, onOpenDeleteConfirm]);
     return (
       <div className={styles.shoppingItem}>
         <div className={styles.placeInfo}>

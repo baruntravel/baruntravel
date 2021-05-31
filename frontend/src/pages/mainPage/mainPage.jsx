@@ -1,19 +1,18 @@
 import styles from "./mainPage.module.css";
 import { useState, useEffect } from "react";
 import Navbar from "../../components/common/navbar/navbar";
-import Banner from "./banner/banner";
-import SelectArea from "./selectArea/selectArea";
-import SelectRoute from "./selectRoute/selectRoute";
+import Banner from "../../components/mainPage/banner/banner";
+import SelectRoute from "../../components/mainPage/selectRoute/selectRoute";
+import SelectArea from "../../components/mainPage/selectArea/selectArea";
+
 import { getFeaturedRoutes as fetchRoutes } from "../../api/routeAPI";
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
-
 const MainPage = () => {
   const userStates = useRecoilValue(userState);
   const [mainRoutes, setMainRoutes] = useState({});
   //TODO : mainRoute(object) state에 places[] 넣기!
   //그리고 나서, SelectRoute로 routes props전달
-
   useEffect(() => {
     // getFeaturedRoutes(1);
   }, []);

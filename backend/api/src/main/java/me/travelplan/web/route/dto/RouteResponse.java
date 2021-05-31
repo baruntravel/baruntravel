@@ -21,16 +21,16 @@ public class RouteResponse {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class GetOne {
         private String name;
+        private Double score;
         private Double centerX;
         private Double centerY;
         private Integer reviewCount;
-        private Double score;
+        private UserDto.Response creator;
+        private List<RouteDto.RoutePlace> places;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime createdAt;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime updatedAt;
-        private UserDto.Response creator;
-        private List<RouteDto.RoutePlace> places;
     }
 
     @Getter

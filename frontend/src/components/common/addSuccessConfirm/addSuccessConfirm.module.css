@@ -1,0 +1,20 @@
+.AddSuccessConfirm {
+  display: flex;
+  position: absolute;
+  bottom: 15vh;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.messageBox {
+  display: flex;
+  width: 60%;
+  background-color: whitesmoke;
+  padding: 12px;
+  border-radius: 16px;
+  align-items: center;
+  justify-content: center;
+}
+.iconBox {
+  padding-right: 12px;
+}

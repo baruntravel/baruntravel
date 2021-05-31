@@ -14,9 +14,9 @@ import me.travelplan.service.route.repository.RouteLikeRepository;
 import me.travelplan.service.route.repository.RoutePlaceRepository;
 import me.travelplan.service.route.repository.RouteRepository;
 import me.travelplan.service.user.domain.User;
+import me.travelplan.web.common.PageDto;
 import me.travelplan.web.route.dto.RouteRequest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,11 +35,6 @@ public class RouteService {
     private final FileRepository fileRepository;
     private final RouteLikeRepository routeLikeRepository;
 
-    @Transactional(readOnly = true)
-    public List<Route> getByUser(User user) {
-        return routeRepository.findByCreatedBy(user);
-    }
-
     public Route create(RouteRequest.Create request) {
         List<RoutePlace> routePlaces = request.getPlaces().stream()
                 .map(place -> {
@@ -52,6 +47,21 @@ public class RouteService {
         return routeRepository.save(route);
     }
 
+    @Transactional(readOnly = true)
+    public List<Route> getByUser(User user) {
+        return routeRepository.findByCreatedBy(user);
+    }
+
+    @Transactional(readOnly = true)
+    public Route getOne(Long id) {
+        return routeRepository.findByIdWithUser(id).orElseThrow(RouteNotFoundException::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Route> getList(RouteRequest.GetList request, PageDto pageDto) {
+        return routeRepository.findAllByCoordinate(request.getMaxX(), request.getMinX(), request.getMaxY(), request.getMinY(), pageDto.getSortType(), pageDto.of());
+    }
+
     public void updatePlaceOrder(Long id, RouteRequest.Update request, User user) {
         Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
         if (!route.getCreatedBy().getId().equals(user.getId())) {
@@ -62,10 +72,6 @@ public class RouteService {
         RoutePlace.swapOrder(firstRoutePlace, secondRoutePlace);
     }
 
-    @Transactional(readOnly = true)
-    public Route getOne(Long id) {
-        return routeRepository.findByIdWithUser(id).orElseThrow(RouteNotFoundException::new);
-    }
 
     public Route addPlace(Long id, Place place) {
         Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
@@ -73,11 +79,6 @@ public class RouteService {
         route.addPlace(RoutePlace.builder().order(0).route(route).place(place).build());
         route.calculateCoordinate(route.getRoutePlaces());
         return routeRepository.save(route);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<Route> getList(RouteRequest.GetList request, Pageable pageable) {
-        return routeRepository.findAllByCoordinate(request.getMaxX(), request.getMinX(), request.getMaxY(), request.getMinY(), pageable);
     }
 
     public void createOrDeleteLike(Long id, User user) {
