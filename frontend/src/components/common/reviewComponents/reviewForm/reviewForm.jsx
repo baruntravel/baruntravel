@@ -9,11 +9,14 @@ import ReviewImageEdit from "./reviewImageEdit/reviewImageEdit";
 import useInput from "../../../../hooks/useInput";
 
 const ReviewForm = ({ onClose, onUploadReview, prevReview }) => {
-  const [images, setImages] = useState({}); // 미리보기용 URL 저장소
+  const [images, setImages] = useState(
+    prevReview ? prevReview.images.map((image) => image.url) : {}
+  ); // 미리보기용 URL 저장소
   const [files, setFiles] = useState({}); // 이미지 file 저장
   const [inputContext, handleInputContext] = useInput(
     prevReview ? prevReview.content : ""
   );
+  console.log(prevReview.images);
   const [rate, setRate] = useState(prevReview ? prevReview.score : 5);
   const imageInput = useRef();
   const onSubmit = useCallback(
@@ -29,7 +32,7 @@ const ReviewForm = ({ onClose, onUploadReview, prevReview }) => {
       onClose();
       // image update API 호출
     },
-    [files, inputContext, onClose, onUploadReview, prevReview, rate]
+    [files, inputContext, onClose, onUploadReview, rate]
   );
   const onChangeRate = useCallback((number) => {
     setRate(number);

@@ -77,7 +77,7 @@ const DetailProfilePage = (props) => {
             <span className={styles.selector__title}>좋아요</span>
           </li>
           <li className={styles.selector} data-link="공유경로">
-            <span className={styles.selector__title}>공유 경로</span>
+            <span className={styles.selector__title}>내 게시물</span>
           </li>
           <li className={styles.selector} data-link="리뷰">
             <span className={styles.selector__title}>리뷰</span>
