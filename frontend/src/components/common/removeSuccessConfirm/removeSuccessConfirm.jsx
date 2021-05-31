@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import Portal from "../../portal/portal";
-import styles from "./addSuccessConfirm.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import styles from "./removeSuccessConfirm.module.css";
 
-const AddSuccessConfirm = ({ onClose, name }) => {
+const RemoveSuccessConfirm = ({ onClose }) => {
   const messageRef = useRef();
   useEffect(() => {
     messageRef.current.classList.remove("fade-in");
@@ -15,13 +15,13 @@ const AddSuccessConfirm = ({ onClose, name }) => {
   }, [onClose]);
   return (
     <Portal>
-      <div className={styles.AddSuccessConfirm}>
+      <div className={styles.RemoveSuccessConfirm}>
         <div ref={messageRef} className={`${styles.messageBox} fadein`}>
           <div className={styles.iconBox}>
             <FontAwesomeIcon icon={faHeart} size="lg" color="red" />
           </div>
           <div className={styles.message}>
-            <span>위시리스트에 저장완료</span>
+            <span>위시리스트에서 삭제완료</span>
           </div>
         </div>
       </div>
@@ -29,4 +29,4 @@ const AddSuccessConfirm = ({ onClose, name }) => {
   );
 };
 
-export default AddSuccessConfirm;
+export default RemoveSuccessConfirm;

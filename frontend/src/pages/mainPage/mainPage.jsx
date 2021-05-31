@@ -8,13 +8,11 @@ import SelectArea from "../../components/mainPage/selectArea/selectArea";
 import { getFeaturedRoutes as fetchRoutes } from "../../api/routeAPI";
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
-import AddSuccessConfirm from "../../components/common/addSuccessConfirm/addSuccessConfirm";
 const MainPage = () => {
   const userStates = useRecoilValue(userState);
   const [mainRoutes, setMainRoutes] = useState({});
   //TODO : mainRoute(object) state에 places[] 넣기!
   //그리고 나서, SelectRoute로 routes props전달
-
   useEffect(() => {
     // getFeaturedRoutes(1);
   }, []);
@@ -50,8 +48,6 @@ const MainPage = () => {
         <SelectArea />
         <SelectRoute />
       </div>
-      {/* test */}
-      <AddSuccessConfirm />
     </div>
   );
 };
