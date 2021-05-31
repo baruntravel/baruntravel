@@ -100,3 +100,13 @@ include::{snippets}/place-review-delete/path-parameters.adoc[]
 성공 응답 HTTP
 
 include::{snippets}/place-review-delete/http-response.adoc[]
+
+=== 리뷰 이미지 삭제
+
+요청 HTTP
+
+include::{snippets}/place-review-image-delete/http-request.adoc[]
+
+Path Variable
+
+include::{snippets}/place-review-image-delete/path-parameters.adoc[]

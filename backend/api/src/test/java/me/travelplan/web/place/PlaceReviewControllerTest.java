@@ -27,6 +27,8 @@ import static me.travelplan.ApiDocumentUtils.getDocumentRequest;
 import static me.travelplan.ApiDocumentUtils.getDocumentResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -224,6 +226,32 @@ public class PlaceReviewControllerTest extends MvcTest {
                                 fieldWithPath("[].createdBy.name").type(JsonFieldType.STRING).description("리뷰 생성자 이름"),
                                 fieldWithPath("[].createdBy.email").type(JsonFieldType.STRING).description("리뷰 생성자 이메일"),
                                 fieldWithPath("[].createdBy.avatarUrl").description("리뷰 생성자 아바타 이미지 경로")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("장소 리뷰 이미지 삭제 테스트")
+    public void deleteReviewImageTest() throws Exception {
+        // given
+        doNothing().when(placeReviewService).checkReviewUpdatable(any(), any());
+        doNothing().when(placeReviewService).deleteReviewImage(any());
+
+        // when
+        ResultActions results = mockMvc.perform(
+                delete("/place/{placeId}/review/{reviewId}/image/{reviewImageId}", 1L, 1L, 2L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(document("place-review-image-delete",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("placeId").description("장소 식별자"),
+                                parameterWithName("reviewId").description("장소 리뷰 식별자"),
+                                parameterWithName("reviewImageId").description("장소 리뷰 이미지 식별자")
                         )
                 ));
     }
