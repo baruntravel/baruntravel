@@ -34,6 +34,10 @@ public class PlaceReview extends BaseEntity {
     @Builder.Default
     private List<PlaceReviewImage> images = new ArrayList<>();
 
+    @OneToMany(mappedBy = "placeReview", cascade = CascadeType.REMOVE)
+    @Builder.Default
+    private List<PlaceReviewLike> placeReviewLikes = new ArrayList<>();
+
     public void setPlace(Place place) {
         this.place = place;
     }

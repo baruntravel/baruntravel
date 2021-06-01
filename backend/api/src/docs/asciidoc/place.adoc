@@ -67,6 +67,15 @@ include::{snippets}/place-review-create/request-parameters.adoc[]
 
 include::{snippets}/place-review-create/response-body.adoc[]
 
+=== 리뷰 좋아요
+
+요청 HTTP
+include::{snippets}/place-review-like-create-delete/http-request.adoc[]
+include::{snippets}/place-review-like-create-delete/path-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/place-review-like-create-delete/http-response.adoc[]
+
 === 리뷰 수정
 
 요청 HTTP

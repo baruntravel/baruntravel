@@ -55,3 +55,9 @@ Authorization: {{ authorizationToken }}
 POST {{apiUrl}}/place/123/like
 Content-Type: application/json
 Authorization: {{ authorizationToken }}
+
+###
+
+POST {{apiUrl}}/place/1440347564/review/1/like
+Content-Type: application/json
+Authorization: {{ authorizationToken }}

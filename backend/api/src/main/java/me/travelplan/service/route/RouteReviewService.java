@@ -81,8 +81,8 @@ public class RouteReviewService {
             routeReviewLikeRepository.save(RouteReviewLike.create(route));
         }
         if (optionalRouteReviewLike.isPresent()) {
-            RouteReviewLike routeLike = optionalRouteReviewLike.get();
-            routeReviewLikeRepository.delete(routeLike);
+            RouteReviewLike routeReviewLike = optionalRouteReviewLike.get();
+            routeReviewLikeRepository.delete(routeReviewLike);
         }
     }
 

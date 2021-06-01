@@ -207,7 +207,7 @@ class RouteReviewServiceTest {
 
     @Test
     @DisplayName("경로 리뷰 좋아요 생성 성공")
-    public void createOrDeleteLike() {
+    public void createLike() {
         given(routeReviewRepository.findById(1L)).willReturn(Optional.of(review));
         given(routeReviewLikeRepository.findByRouteReviewIdAndCreatedBy(any(), any())).willReturn(Optional.empty());
 
@@ -218,7 +218,7 @@ class RouteReviewServiceTest {
 
     @Test
     @DisplayName("경로 리뷰 좋아요 삭제 성공")
-    public void DeleteLike() {
+    public void deleteLike() {
         given(routeReviewRepository.findById(1L)).willReturn(Optional.of(review));
         given(routeReviewLikeRepository.findByRouteReviewIdAndCreatedBy(any(), any())).willReturn(Optional.of(RouteReviewLike.builder().build()));
 
@@ -229,7 +229,7 @@ class RouteReviewServiceTest {
 
     @Test
     @DisplayName("예외테스트: 없는 경로를 좋아요하면 예외 발생")
-    public void DeleteLikeNotFoundRoute() {
+    public void createOrDeleteLikeNotFoundRouteReview() {
         given(routeReviewRepository.findById(1L)).willReturn(Optional.empty());
 
         assertThrows(RouteReviewNotFoundException.class, () -> routeReviewService.createOrDeleteLike(1L, user));

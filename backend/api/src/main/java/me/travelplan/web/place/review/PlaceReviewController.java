@@ -48,4 +48,11 @@ public class PlaceReviewController {
         placeReviewService.checkReviewUpdatable(reviewId, userDetails.getUser());
         placeReviewService.deleteReviewImage(reviewImageId);
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/{reviewId}/like")
+    public void like(@PathVariable Long reviewId, @CurrentUser CustomUserDetails userDetails) {
+        placeReviewService.createOrDeleteLike(reviewId, userDetails.getUser());
+    }
+
 }

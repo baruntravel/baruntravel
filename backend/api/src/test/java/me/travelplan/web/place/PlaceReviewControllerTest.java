@@ -260,4 +260,23 @@ public class PlaceReviewControllerTest extends MvcTest {
                 ));
     }
 
+    @Test
+    @WithMockCustomUser
+    @DisplayName("장소 리뷰 좋아요 테스트")
+    public void createPlaceReviewLikeTest() throws Exception {
+        ResultActions results = mockMvc.perform(
+                post("/place/{placeId}/review/{reviewId}/like", 1,1)
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("place-review-like-create-delete",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("placeId").description("장소 식별자"),
+                                parameterWithName("reviewId").description("장소 리뷰 식별자")
+                        )
+                ));
+    }
 }
