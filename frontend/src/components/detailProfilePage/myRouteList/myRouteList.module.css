@@ -1,4 +1,8 @@
-.loading {
+.MyRouteList {
   display: flex;
-  margin-top: 15vh;
+  flex-direction: column;
+  padding: 0 16px;
+}
+.cardContainer {
+  margin-bottom: 24px;
 }

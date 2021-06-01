@@ -6,7 +6,7 @@ const LogoutConfirm = ({ onClose, onLogout }) => {
   const handleLogout = useCallback(() => {
     onLogout();
     onClose();
-  }, []);
+  }, [onClose, onLogout]);
   const handleClose = (event) => {
     if (
       portalRef.current &&

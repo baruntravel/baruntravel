@@ -24,7 +24,20 @@
   width: 100%;
   flex-basis: 1;
   justify-content: center;
+  font-weight: 600;
 }
 .selector__title {
   text-align: center;
+}
+
+.selected__color {
+  opacity: 1;
+  color: #ed6ab8;
+}
+.listView {
+  width: 100%;
+  height: 60vh;
+}
+.bottom {
+  padding: 0 24px;
 }
