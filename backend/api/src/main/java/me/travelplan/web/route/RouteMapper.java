@@ -50,7 +50,7 @@ public interface RouteMapper {
         List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
 
         route.getRoutePlaces().forEach(routePlace -> {
-            var routePlaceBuilder = RouteDto.RoutePlace.builder();
+            RouteDto.RoutePlace.RoutePlaceBuilder routePlaceBuilder = RouteDto.RoutePlace.builder();
             routePlaceBuilder.order(routePlace.getOrder());
 
             Place place = routePlace.getPlace();
@@ -70,23 +70,17 @@ public interface RouteMapper {
                 routePlaces.add(builder.build());
             }
         });
+
         HashMap<String, Double> map = route.calculateCenterCoordinate();
         Double centerX = map.get("centerX");
         Double centerY = map.get("centerY");
-
-        UserDto.Response.ResponseBuilder userDtoBuilder = UserDto.Response.builder()
-                .email(route.getCreatedBy().getEmail())
-                .name(route.getCreatedBy().getName());
-        if (route.getCreatedBy().getAvatar() != null) {
-            userDtoBuilder.avatarUrl(route.getCreatedBy().getAvatar().getUrl());
-        }
 
         return RouteResponse.GetOne.builder()
                 .name(route.getName())
                 .centerX(centerX)
                 .centerY(centerY)
                 .score(route.getAverageReviewScore())
-                .creator(userDtoBuilder.build())
+                .creator(UserDto.Response.from(route.getCreatedBy()))
                 .createdAt(route.getCreatedAt())
                 .updatedAt(route.getUpdatedAt())
                 .reviewCount(route.getRouteReviews().size())

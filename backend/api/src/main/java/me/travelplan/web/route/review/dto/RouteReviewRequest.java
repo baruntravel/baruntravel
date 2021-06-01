@@ -14,6 +14,6 @@ public class RouteReviewRequest {
     public static class CreateOrUpdateReview {
         private String content;
         private Double score;
-        List<MultipartFile> files;
+        private List<MultipartFile> files;
     }
 }
