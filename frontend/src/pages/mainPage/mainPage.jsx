@@ -10,11 +10,10 @@ import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
 const MainPage = () => {
   const userStates = useRecoilValue(userState);
-  const [mainRoutes, setMainRoutes] = useState({});
+  const [mainRoutes, setMainRoutes] = useState([]);
   //TODO : mainRoute(object) state에 places[] 넣기!
   //그리고 나서, SelectRoute로 routes props전달
   // const userStates = useRecoilValue(userState);
-
   //TODO : route 추천순으로 가져오기
 
   useEffect(() => {
