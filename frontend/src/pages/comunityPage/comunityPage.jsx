@@ -1,7 +1,7 @@
 import styles from "./comunityPage.module.css";
 import { useLocation } from "react-router-dom";
 import { useCallback, useState } from "react";
-import Navbar from "../../components/common/navbar/navbar";
+import Header from "../../components/common/header/header";
 import RouteContentBox from "../../components/comunityPage/routeContentBox/routeContentBox";
 import PlaceContentBox from "../../components/comunityPage/placeContentBox/placeContentBox";
 const ComunityPage = () => {
@@ -14,7 +14,7 @@ const ComunityPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.navbar}>
-        <Navbar />
+        <Header />
       </div>
       <div className={styles.areaTitle}>{area}</div>
       <div className={styles.body}>
@@ -27,11 +27,7 @@ const ComunityPage = () => {
           </button>
         </div>
         <div className={styles.contentBox}>
-          {tabBox === "route" ? (
-            <RouteContentBox area={area} />
-          ) : (
-            <PlaceContentBox />
-          )}
+          {tabBox === "route" ? <RouteContentBox area={area} /> : <PlaceContentBox />}
         </div>
         <div className={styles.floatingIcon}></div>
       </div>

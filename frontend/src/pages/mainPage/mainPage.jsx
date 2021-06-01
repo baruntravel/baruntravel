@@ -1,6 +1,6 @@
 import styles from "./mainPage.module.css";
 import { useState, useEffect } from "react";
-import Navbar from "../../components/common/navbar/navbar";
+import Header from "../../components/common/header/header";
 import Banner from "../../components/mainPage/banner/banner";
 import SelectRoute from "../../components/mainPage/selectRoute/selectRoute";
 import SelectArea from "../../components/mainPage/selectArea/selectArea";
@@ -30,7 +30,7 @@ const MainPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <Navbar />
+        <Header />
       </div>
       <div className={styles.body}>
         <h1>
