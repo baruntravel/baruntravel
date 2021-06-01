@@ -37,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -76,7 +77,7 @@ class RouteReviewServiceTest {
         InputStream is = new ClassPathResource("mock/images/enjoy2.png").getInputStream();
         MockMultipartFile mockFile = new MockMultipartFile("updateFile", "mock_file1.jpg", "image/jpg", is.readAllBytes());
 
-        RouteReviewRequest.CreateOrUpdateReview request = RouteReviewRequest.CreateOrUpdateReview.builder()
+        RouteReviewRequest.Create request = RouteReviewRequest.Create.builder()
                 .content("테스트 리뷰의 내용입니다.")
                 .score(5.0)
                 .files(Collections.singletonList(mockFile))
@@ -105,20 +106,24 @@ class RouteReviewServiceTest {
     }
 
     @Test
-    @DisplayName("경로 리뷰 수정 성공")
-    public void update() throws Exception {
+    @DisplayName("경로 리뷰 수정 성공(파일 수정)")
+    public void updateWithFile() throws Exception {
         InputStream is = new ClassPathResource("mock/images/enjoy2.png").getInputStream();
         MockMultipartFile mockFile = new MockMultipartFile("updateFile", "mock_file1.jpg", "image/jpg", is.readAllBytes());
 
-        RouteReviewRequest.CreateOrUpdateReview request = RouteReviewRequest.CreateOrUpdateReview.builder()
+        RouteReviewRequest.Update request = RouteReviewRequest.Update.builder()
                 .content("테스트 리뷰 수정")
                 .score(3.5)
                 .files(Collections.singletonList(mockFile))
+                .fileChange(true)
                 .build();
 
         given(routeReviewRepository.findById(1L)).willReturn(Optional.of(review));
 
         routeReviewService.update(1L, request, user);
+
+        verify(routeReviewFileRepository).deleteAllByFileIds(any());
+        verify(routeReviewFileRepository).saveAll(any());
 
         assertEquals(request.getScore(), review.getScore());
         assertEquals(request.getContent(), review.getContent());
@@ -126,9 +131,30 @@ class RouteReviewServiceTest {
     }
 
     @Test
+    @DisplayName("경로 리뷰 수정 성공(파일 수정 X)")
+    public void updateWithOutFile() {
+        RouteReviewRequest.Update request = RouteReviewRequest.Update.builder()
+                .content("테스트 리뷰 수정")
+                .score(3.5)
+                .files(Collections.emptyList())
+                .fileChange(false)
+                .build();
+
+        given(routeReviewRepository.findById(1L)).willReturn(Optional.of(review));
+
+        routeReviewService.update(1L, request, user);
+
+        verify(routeReviewFileRepository, times(0)).deleteAllByFileIds(any());
+        verify(routeReviewFileRepository, times(0)).saveAll(any());
+
+        assertEquals(request.getScore(), review.getScore());
+        assertEquals(request.getContent(), review.getContent());
+    }
+
+    @Test
     @DisplayName("예외 테스트: 경로 리뷰의 작성자가 아닌 사람이 수정할 경우 예외 발생")
     public void updatePermissionException() {
-        RouteReviewRequest.CreateOrUpdateReview request = RouteReviewRequest.CreateOrUpdateReview.builder()
+        RouteReviewRequest.Update request = RouteReviewRequest.Update.builder()
                 .content("테스트 리뷰 수정")
                 .score(3.5)
                 .build();
@@ -141,7 +167,7 @@ class RouteReviewServiceTest {
     @Test
     @DisplayName("예외 테스트: 없는 경로 리뷰를 수정하려고 할 경우 예외 발생")
     public void updateNotFound() {
-        RouteReviewRequest.CreateOrUpdateReview request = RouteReviewRequest.CreateOrUpdateReview.builder()
+        RouteReviewRequest.Update request = RouteReviewRequest.Update.builder()
                 .content("테스트 리뷰 수정")
                 .score(3.5)
                 .build();

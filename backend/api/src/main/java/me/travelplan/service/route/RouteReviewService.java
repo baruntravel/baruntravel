@@ -35,7 +35,7 @@ public class RouteReviewService {
     private final RouteReviewFileRepository routeReviewFileRepository;
     private final FileService fileService;
 
-    public RouteReview create(RouteReviewRequest.CreateOrUpdateReview request, Long id) {
+    public RouteReview create(RouteReviewRequest.Create request, Long id) {
         Route route = routeRepository.findById(id).orElseThrow(RouteNotFoundException::new);
         List<File> files = fileService.uploadFiles(request.getFiles());
         List<RouteReviewFile> routeReviewFiles = files.stream().map(RouteReviewFile::create).collect(Collectors.toList());
@@ -49,17 +49,20 @@ public class RouteReviewService {
         return routeReviewRepository.findAllByRouteId(id, pageDto.getSortType(), pageDto.of());
     }
 
-    public void update(Long id, RouteReviewRequest.CreateOrUpdateReview request, User user) {
+    public void update(Long id, RouteReviewRequest.Update request, User user) {
         RouteReview routeReview = routeReviewRepository.findById(id).orElseThrow(RouteReviewNotFoundException::new);
         permissionCheck(user, routeReview);
-        reviewFileDelete(routeReview);
+        if (request.getFileChange()) {
+            reviewFileDelete(routeReview);
+            if (request.getFiles() != null) {
+                List<File> fileList = fileService.uploadFiles(request.getFiles());
 
-        List<File> fileList = fileService.uploadFiles(request.getFiles());
-
-        List<RouteReviewFile> routeReviewFiles = fileList.stream()
-                .map(f -> RouteReviewFile.builder().file(f).routeReview(routeReview).build())
-                .collect(Collectors.toList());
-        routeReviewFileRepository.saveAll(routeReviewFiles);
+                List<RouteReviewFile> routeReviewFiles = fileList.stream()
+                        .map(f -> RouteReviewFile.builder().file(f).routeReview(routeReview).build())
+                        .collect(Collectors.toList());
+                routeReviewFileRepository.saveAll(routeReviewFiles);
+            }
+        }
 
         routeReview.update(request.getScore(), request.getContent());
     }
