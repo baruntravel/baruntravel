@@ -1,8 +1,7 @@
-import Modal from "antd/lib/modal/Modal";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import LoginBody from "../../components/loginBody/loginBody";
+import LoginBody from "../../components/portal/loginBody/loginBody";
 import Portal from "../../components/portal/portal";
-import RegisterBody from "../../components/registerBody/registerBody";
+import RegisterBody from "../../components/portal/registerBody/registerBody";
 import styles from "./portalAuth.module.css";
 
 const PortalAuth = ({ onClose, handleLoading }) => {

@@ -1,0 +1,70 @@
+.ImagesZoom {
+  background-color: #00000080;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 90%;
+  width: 90%;
+  margin: auto;
+  background-color: transparent;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 15%;
+}
+.closeBtn {
+  background-color: transparent;
+  border: none;
+  font-size: 2em;
+  float: right;
+}
+
+.carousel {
+  height: 65%;
+}
+.carousel__Body {
+  height: 60vh;
+}
+.imgContainer {
+  max-height: 60vh;
+}
+.img {
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+.btnBox {
+  display: flex;
+  justify-content: center;
+}
+
+.prevBtn,
+.nextBtn {
+  margin: 1em;
+  font-size: 2em;
+  background-color: transparent;
+  border: none;
+}
+
+.closeBtn:focus,
+.prevBtn:focus,
+.nextBtn:focus {
+  outline: none;
+}
+.closeBtn:hover,
+.prevBtn:hover,
+.nextBtn:hover {
+  transform: scale(1.1);
+}

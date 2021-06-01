@@ -1,11 +1,11 @@
 import React, { useCallback, useRef, useState } from "react";
-import CategoryBar from "../../components/map/hotplaceMap/categoryBar/categoryBar";
-import OurPlaceMap from "../../components/map/ourPlaceMap/ourPlaceMap";
+import CategoryBar from "../../components/common/categoryBar/categoryBar";
+import SharedPlaceMap from "../../components/sharedPlacePage/sharedPlaceMap/sharedPlaceMap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./ourPlacePage.module.css";
-import PortalPlaceList from "../../components/portalPlaceList/portalPlaceList";
+import PortalPlaceList from "../../components/portal/portalPlaceList/portalPlaceList";
 
 const OurPlacePage = (props) => {
   const placeListRef = useRef();
@@ -32,7 +32,7 @@ const OurPlacePage = (props) => {
         </div>
       </div>
       <div className={styles.mapContainer}>
-        <OurPlaceMap />
+        <SharedPlaceMap />
       </div>
       <div className={styles.categoryContainer}>
         <CategoryBar />
