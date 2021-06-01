@@ -2,7 +2,7 @@ import { LikeOutlined, LikeTwoTone } from "@ant-design/icons";
 import React from "react";
 import styles from "./reviewCardBottom.module.css";
 
-const ReviewCardBottom = ({ liked, onLike, onUnlike, likeCount, date }) => {
+const ReviewCardBottom = ({ liked, onUnlike, likeCount, date }) => {
   return (
     <div className={styles.review__bottom}>
       <div>
@@ -17,7 +17,7 @@ const ReviewCardBottom = ({ liked, onLike, onUnlike, likeCount, date }) => {
           <LikeOutlined
             style={{ padding: "0.5em" }}
             key="Like"
-            onClick={onLike}
+            onClick={onUnlike}
           />
         )}
         <span className={styles.likeCount}>{likeCount}</span>

@@ -2,6 +2,8 @@ import {
   HeartOutlined,
   HeartTwoTone,
   LeftOutlined,
+  LikeOutlined,
+  LikeTwoTone,
   ShoppingTwoTone,
 } from "@ant-design/icons";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,8 +16,8 @@ const DetailHeader = ({
   name,
   needLogin,
   onOpenPortalAuth,
-  onHandleLike,
-  onHandleUnlike,
+  onClickLike,
+  onClickUnlike,
 }) => {
   // onShareDetail은 만약 공유하기 기능이 추가된다면 공유
   return (
@@ -39,13 +41,13 @@ const DetailHeader = ({
             <HeartTwoTone
               className={styles.icon}
               twoToneColor="#eb2f96"
-              onClick={onHandleUnlike}
+              onClick={onClickUnlike}
             />
           ) : (
             <HeartOutlined
               className={styles.icon}
               style={{ color: "grey" }}
-              onClick={onHandleLike}
+              onClick={onClickLike}
             />
           )}
         </div>

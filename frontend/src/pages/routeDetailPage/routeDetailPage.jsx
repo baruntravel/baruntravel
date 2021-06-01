@@ -1,15 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+// import "../kakaoMapPage/node_modules/slick-carousel/slick/slick.css";
+// import "../kakaoMapPage/node_modules/slick-carousel/slick/slick-theme.css";
 import styles from "./routeDetailPage.module.css";
-import DetailHeader from "../../components/detailHeader/detailHeader";
-import ImageMap from "../../components/map/imageMap/imageMap";
-import PlaceCard from "../../components/placeCard/placeCard";
+import DetailHeader from "../../components/common/detailHeader/detailHeader";
+import ImageMap from "../../components/routeDetailPage/imageMap/imageMap";
 import Avatar from "antd/lib/avatar/avatar";
-import ReviewList from "../../components/reviewComponents/reviewList/reviewList";
-import ImagesZoom from "../../components/reviewComponents/imagesZoom/imagesZoom";
-import { Drawer } from "antd";
+import { getRouteDetail, onHandleRouteLike } from "../../api/routeAPI";
 import InputRootName from "../../components/common/inputRootName/inputRootName";
 import {
   onDeleteRouteReview,
@@ -21,12 +18,12 @@ import {
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
-import { getRouteDetail, onHandleRouteLike } from "../../api/routeAPI";
 import { StarFilled, UserOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
-import MoreReviewList from "../../components/reviewComponents/moreReviewList/moreReviewList";
 import Loading from "../../components/common/loading/loading";
-import PlaceInRouteDetail from "../../components/placeInRouteDetail/placeInRouteDetail";
+import PlaceInRouteDetail from "../../components/routeDetailPage/placeInRouteDetail/placeInRouteDetail";
+import ImagesZoom from "../../components/common/reviewComponents/imagesZoom/imagesZoom";
+import ReviewList from "../../components/common/reviewComponents/reviewList/reviewList";
 
 const RouteDetailPage = (props) => {
   const userStates = useRecoilValue(userState);

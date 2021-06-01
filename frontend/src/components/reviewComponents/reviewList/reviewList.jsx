@@ -12,8 +12,6 @@ const ReviewList = ({
   onUploadReview,
   onDeleteReview,
   onEditReview,
-  onLikeReview,
-  onUnlikeReview,
   userStates,
   reviewDatas,
   setReviewDatas,
@@ -66,10 +64,39 @@ const ReviewList = ({
     },
     [onEditReview, selectedCard]
   );
-
+  const viewListDate = () => {
+    setReviewDatas((prev) => {
+      const updated = [...prev];
+      updated.sort((a, b) => {
+        if (a.createdAt > b.createdAt) {
+          return 1;
+        } else if (a.createdAt < b.createdAt) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+      return updated;
+    });
+  };
+  const viewListLikeCount = () => {
+    setReviewDatas((prev) => {
+      const updated = [...prev];
+      updated.sort((a, b) => {
+        if (a.likeCount < b.likeCount) {
+          return 1;
+        } else if (a.likeCount > b.likeCount) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+      return updated;
+    });
+  };
   return (
     <div className={styles.reviewList}>
-      <header className={styles.reviewList__header}>
+      <div className={styles.reviewList__header}>
         <div className={styles.reviewList__first}>
           <div className={styles.reviewCountBox}>
             <h2>리뷰</h2>
@@ -79,13 +106,11 @@ const ReviewList = ({
             <EditTwoTone />
           </h2>
         </div>
-        <div className={styles.sortBoxContainer}>
-          <SortBox
-          // onHandleRecommend={viewListLikeCount}
-          // onHandleNewest={viewListDate}
-          />
-        </div>
-      </header>
+        <SortBox
+          onHandleRecommend={viewListLikeCount}
+          onHandleNewest={viewListDate}
+        />
+      </div>
       <div className={styles.reviewList__body}>
         {reviewDatas.map((item, index) => (
           <div key={index} className={styles.reviewContainer}>
@@ -95,8 +120,6 @@ const ReviewList = ({
               onOpenDeleteConfirm={onOpenConfirm}
               onHandleSelected={onHandleSelected}
               onOpenEditForm={onOpenEditForm}
-              onLikeReview={onLikeReview}
-              onUnlikeReview={onUnlikeReview}
             />
           </div>
         ))}

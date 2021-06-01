@@ -1,6 +1,6 @@
 import { FormOutlined } from "@ant-design/icons";
 import React, { memo, useCallback, useState } from "react";
-import PlaceCard from "../../../placeCard/placeCard";
+import PlaceCard from "../../placeCard/placeCard";
 import MemoForm from "../../memoForm/memoForm";
 import styles from "./shoppingItem.module.css";
 

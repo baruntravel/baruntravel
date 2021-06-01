@@ -1,0 +1,65 @@
+.container {
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  width: 100%;
+  height: 100%;
+}
+
+.row1 {
+  display: flex;
+  margin: 8px 10%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.routeName {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.creator {
+  font-size: 15px;
+  color: #6aafe6;
+}
+
+.heartButton {
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+
+.row2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 100%;
+  padding: 0 12px;
+  justify-items: center;
+  align-items: center;
+}
+
+.col1 {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.col1 .places {
+  color: black;
+  width: 80%;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
+.col1 .index {
+  background-color: #1890ff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 4px;
+}

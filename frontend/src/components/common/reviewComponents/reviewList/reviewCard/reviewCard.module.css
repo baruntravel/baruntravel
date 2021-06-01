@@ -1,0 +1,16 @@
+.ReviewCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.imageContainer {
+  width: 100%;
+  height: 30vh;
+  margin-bottom: 12px;
+}
+.image {
+  width: 100%;
+}
+.context {
+  font-size: 1.2em;
+}
