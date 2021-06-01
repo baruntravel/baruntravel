@@ -20,12 +20,12 @@ public class PlaceReviewController {
     @GetMapping
     public List<PlaceReviewDto.Response> getReviews(@PathVariable Long placeId, @CurrentUser CustomUserDetails userDetails) {
         return placeReviewMapper.entityToResponseDto(placeReviewService.getReviews(placeId), userDetails.getUser());
-   }
+    }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public PlaceReviewDto.Response create(@PathVariable Long placeId, PlaceReviewDto.Request placeReviewDto, @CurrentUser CustomUserDetails userDetails) {
-        return placeReviewMapper.entityToResponseDto(placeReviewService.createReview(placeId, placeReviewDto), userDetails.getUser());
+    public PlaceReviewDto.GetOnlyId create(@PathVariable Long placeId, PlaceReviewDto.Request placeReviewDto) {
+        return placeReviewMapper.toReviewId(placeReviewService.createReview(placeId, placeReviewDto));
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -40,5 +40,12 @@ public class PlaceReviewController {
     public void delete(@PathVariable Long reviewId, @CurrentUser CustomUserDetails userDetails) {
         placeReviewService.checkReviewUpdatable(reviewId, userDetails.getUser());
         placeReviewService.deleteReview(reviewId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{reviewId}/image/{reviewImageId}")
+    public void deleteImage(@PathVariable Long reviewId, @PathVariable Long reviewImageId, @CurrentUser CustomUserDetails userDetails) {
+        placeReviewService.checkReviewUpdatable(reviewId, userDetails.getUser());
+        placeReviewService.deleteReviewImage(reviewImageId);
     }
 }

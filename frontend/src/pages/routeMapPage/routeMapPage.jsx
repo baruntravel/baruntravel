@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styles from "./routeMapPage.module.css";
 import { useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -18,22 +18,19 @@ const RouteMapPage = () => {
   const [routes, setRoutes] = useRecoilState(usersRouteItems); // Todo : routeAPI로 불러오기
   const [myState, setMyState] = useRecoilState(userState);
   const [places, setPlaces] = useState([]);
-  const [index, setIndex] = useState(location.state.id);
+  const [index, setIndex] = useState(location.state === undefined ? 0 : location.state.id);
   const [map, setMap] = useState();
   const [modalToggle, setModalToggle] = useState(false);
   const [searchHere, setSearchHere] = useState(false);
 
-  const mapHandler = (map) => setMap(map);
+  const mapHandler = useCallback((map) => setMap(map), []);
   const routesHandler = (routes) => setRoutes(routes);
   const indexHandler = (index) => setIndex(index);
   const modalHandler = () => setModalToggle(!modalToggle);
-  const zoomHandler = (level) =>
-    map.setLevel(level, { animate: { duration: 120 } });
+  const zoomHandler = (level) => map.setLevel(level, { animate: { duration: 120 } });
   const searchHereHandler = (e) => {
     //Todo
-    e.target.style = searchHere
-      ? "background-color: white;"
-      : "background-color: black;";
+    e.target.style = searchHere ? "background-color: white;" : "background-color: black;";
     setSearchHere(!searchHere);
   };
 
@@ -50,16 +47,8 @@ const RouteMapPage = () => {
       <div className={styles.navbarContainer}>
         <Navbar />
       </div>
-      <RouteMap
-        mapHandler={mapHandler}
-        routesHandler={routesHandler}
-        places={places}
-        routes={routes}
-      />
-      <div
-        className={styles.routeCarousel}
-        onDragStart={(e) => e.preventDefault()}
-      >
+      <RouteMap mapHandler={mapHandler} routesHandler={routesHandler} places={places} routes={routes} />
+      <div className={styles.routeCarousel} onDragStart={(e) => e.preventDefault()}>
         <div className={styles.box1}>
           <div className={styles.searchHere}>
             <button onClick={searchHereHandler} />
@@ -69,7 +58,7 @@ const RouteMapPage = () => {
             <button
               className={styles.plusButton}
               onClick={() => {
-                map && zoomHandler(map.getLevel() - 1);
+                zoomHandler(map.getLevel() - 1);
               }}
             >
               <FontAwesomeIcon icon={faPlus} color="#7B8293" size="lg" />
@@ -77,7 +66,7 @@ const RouteMapPage = () => {
             <button
               className={styles.minusButton}
               onClick={() => {
-                map && zoomHandler(map.getLevel() + 1);
+                zoomHandler(map.getLevel() + 1);
               }}
             >
               <FontAwesomeIcon icon={faMinus} color="#7B8293" size="lg" />
@@ -87,11 +76,7 @@ const RouteMapPage = () => {
             </button>
           </div>
         </div>
-        <RouteCarousel
-          initialIndex={index}
-          routes={routes}
-          indexHandler={(e) => indexHandler(e)}
-        />
+        <RouteCarousel initialIndex={index} routes={routes} indexHandler={(e) => indexHandler(e)} />
       </div>
 
       {modalToggle && (

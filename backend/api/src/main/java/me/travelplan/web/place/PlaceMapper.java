@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public interface PlaceMapper {
     default PlaceDto.Response entityToResponseDto(Place place, User currentUser) {
         return PlaceDto.Response.builder()
+                .id(place.getId())
                 .name(place.getName())
                 .address(place.getAddress())
                 .x(place.getX())

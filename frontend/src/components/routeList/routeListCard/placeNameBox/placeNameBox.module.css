@@ -1,0 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap");
+
+.PlaceNameBox {
+  display: flex;
+  width: 100%;
+  padding: 5%;
+  background-color: transparent;
+  border-bottom: 2px solid wheat;
+}
+.icon {
+  color: pink;
+}
+.nameBox {
+  margin-bottom: 2%;
+}
+.placeInfo {
+  margin-top: 2%;
+  width: 100%;
+}
+.deleteBox {
+  display: flex;
+  align-items: center;
+  float: right;
+}
+.deleteBtn {
+  background-color: transparent;
+  border: none;
+}
+.placeName {
+  padding-left: 3%;
+  font-size: 110%;
+  font-family: "Do Hyeon", sans-serif;
+}
+.address {
+  color: gray;
+}
+.bottom {
+  display: flex;
+  margin-right: 5%;
+  flex-direction: row-reverse;
+}
+.more,
+.review {
+  margin-right: 5%;
+  margin-left: 5%;
+  color: #25b8f8;
+}
+.review:hover {
+  cursor: pointer;
+}

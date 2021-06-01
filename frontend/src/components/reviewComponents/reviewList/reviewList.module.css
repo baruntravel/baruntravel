@@ -1,0 +1,34 @@
+.reviewList {
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+}
+.reviewList__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.reviewList__first {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.reviewCountBox {
+  display: flex;
+  flex-direction: row;
+}
+.reviewCount {
+  margin-left: 12px;
+  color: #25b8f8;
+}
+
+.reviewContainer {
+  margin-top: 8px;
+  padding-bottom: 2px;
+  border-bottom: 2px solid lightgrey;
+  padding-top: 12px;
+}

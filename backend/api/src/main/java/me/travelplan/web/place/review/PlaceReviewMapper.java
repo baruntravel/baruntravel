@@ -10,7 +10,6 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Mapper(
@@ -18,6 +17,8 @@ import java.util.stream.Collectors;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR
 )
 public interface PlaceReviewMapper {
+    PlaceReviewDto.GetOnlyId toReviewId(PlaceReview review);
+
     default List<PlaceReviewDto.Response> entityToResponseDto(List<PlaceReview> reviews, User currentUser) {
         return reviews.stream().map(review -> this.entityToResponseDto(review, currentUser)).collect(Collectors.toList());
     }
@@ -28,13 +29,7 @@ public interface PlaceReviewMapper {
                 .content(review.getContent())
                 .score(review.getScore())
                 .images(review.getImages().stream().map(PlaceReviewImage::getFile).map(File::getUrl).map(FileDto.Image::new).collect(Collectors.toList()))
-                .createdBy(
-                        UserDto.Response.builder()
-                            .name(review.getCreatedBy().getName())
-                            .email(review.getCreatedBy().getName())
-                            .avatarUrl(Optional.ofNullable(review.getCreatedBy().getAvatar()).orElse(File.createExternalImage("")).getUrl())
-                            .build()
-                )
+                .createdBy(UserDto.Response.from(review.getCreatedBy()))
                 .createdAt(review.getCreatedAt())
                 .updatedAt(review.getUpdatedAt())
                 .mine(review.getCreatedBy().getId().equals(currentUser.getId()))
