@@ -32,6 +32,8 @@ public interface PlaceReviewMapper {
                 .createdBy(UserDto.Response.from(review.getCreatedBy()))
                 .createdAt(review.getCreatedAt())
                 .updatedAt(review.getUpdatedAt())
+                .isLike(review.isLike(currentUser))
+                .likes(review.getPlaceReviewLikes().size())
                 .mine(review.getCreatedBy().getId().equals(currentUser.getId()))
                 .build();
     }

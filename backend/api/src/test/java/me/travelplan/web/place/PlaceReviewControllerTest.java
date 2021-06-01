@@ -141,6 +141,8 @@ public class PlaceReviewControllerTest extends MvcTest {
                                 fieldWithPath("content").type(JsonFieldType.STRING).description("리뷰 내용"),
                                 fieldWithPath("score").type(JsonFieldType.NUMBER).description("리뷰 점수"),
                                 fieldWithPath("mine").type(JsonFieldType.BOOLEAN).description("내가 작성한 리뷰인지 boolean"),
+                                fieldWithPath("likes").type(JsonFieldType.NUMBER).description("장소 리뷰 좋아요 개수"),
+                                fieldWithPath("isLike").type(JsonFieldType.BOOLEAN).description("로그인 유저가 해당 장소 리뷰에 좋아요를 눌렀다면 true"),
                                 fieldWithPath("images").type(JsonFieldType.ARRAY).description("리뷰 이미지들"),
                                 fieldWithPath("images[].url").type(JsonFieldType.STRING).description("리뷰 이미지 경로들"),
                                 fieldWithPath("createdAt").type(JsonFieldType.STRING).description("리뷰 작성일시"),
@@ -211,6 +213,7 @@ public class PlaceReviewControllerTest extends MvcTest {
         );
 
         results.andExpect(status().isOk())
+                .andDo(print())
                 .andDo(document("place-getReviews",
                         getDocumentRequest(),
                         getDocumentResponse(),
@@ -222,6 +225,8 @@ public class PlaceReviewControllerTest extends MvcTest {
                                 fieldWithPath("[].content").type(JsonFieldType.STRING).description("리뷰 내용"),
                                 fieldWithPath("[].score").type(JsonFieldType.NUMBER).description("리뷰 점수"),
                                 fieldWithPath("[].mine").type(JsonFieldType.BOOLEAN).description("내가 작성한 리뷰인지 boolean"),
+                                fieldWithPath("[].likes").type(JsonFieldType.NUMBER).description("장소 리뷰 좋아요 개수"),
+                                fieldWithPath("[].isLike").type(JsonFieldType.BOOLEAN).description("로그인 유저가 해당 장소 리뷰에 좋아요를 눌렀다면 true"),
                                 fieldWithPath("[].images").type(JsonFieldType.ARRAY).description("리뷰 이미지들"),
                                 fieldWithPath("[].images[].url").type(JsonFieldType.STRING).description("리뷰 이미지 경로들"),
                                 fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("리뷰 작성일시"),

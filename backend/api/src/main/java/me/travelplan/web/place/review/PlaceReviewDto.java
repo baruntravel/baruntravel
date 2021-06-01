@@ -35,6 +35,8 @@ public class PlaceReviewDto {
         private final String content;
         private final List<FileDto.Image> images;
         private final UserDto.Response createdBy;
+        private final Integer likes;
+        private final Boolean isLike;
         private final boolean mine;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         private final LocalDateTime createdAt;

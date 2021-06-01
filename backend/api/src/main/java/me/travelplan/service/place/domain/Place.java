@@ -54,10 +54,6 @@ public class Place extends BaseEntity {
         return this.placeLikes.stream().anyMatch(placeLike -> placeLike.getCreatedBy().getId().equals(user.getId()));
     }
 
-    public void addImage(File image) {
-        this.images.add(PlaceImage.builder().place(this).file(image).build());
-    }
-
     public Place setFromKakaoMapPlace(KakaoMapPlace kakaoMapPlace) {
         try {
             this.detailStatus = PlaceDetailStatus.COMPLETE;
@@ -67,7 +63,7 @@ public class Place extends BaseEntity {
                     .map(file -> PlaceImage.builder().place(this).file(file).build())
                     .collect(Collectors.toList());
             this.openHour = kakaoMapPlace.getOpenHour().get(0).getTimeList().get(0).getTimeSE();
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
             // ignore
         }
 
