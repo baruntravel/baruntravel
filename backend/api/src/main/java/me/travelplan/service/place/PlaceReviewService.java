@@ -61,7 +61,7 @@ public class PlaceReviewService {
         }
         review.update(reviewDto, images);
 
-        return placeReviewRepository.save(review);
+        return review;
     }
 
     @Transactional

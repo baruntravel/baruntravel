@@ -10,7 +10,6 @@ import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Mapper(
@@ -18,6 +17,8 @@ import java.util.stream.Collectors;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR
 )
 public interface PlaceReviewMapper {
+    PlaceReviewDto.GetOnlyId toReviewId(PlaceReview review);
+
     default List<PlaceReviewDto.Response> entityToResponseDto(List<PlaceReview> reviews, User currentUser) {
         return reviews.stream().map(review -> this.entityToResponseDto(review, currentUser)).collect(Collectors.toList());
     }

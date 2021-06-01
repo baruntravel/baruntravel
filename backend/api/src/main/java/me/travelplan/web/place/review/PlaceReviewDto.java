@@ -41,4 +41,11 @@ public class PlaceReviewDto {
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
         private final LocalDateTime updatedAt;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class GetOnlyId {
+        private Long id;
+    }
 }

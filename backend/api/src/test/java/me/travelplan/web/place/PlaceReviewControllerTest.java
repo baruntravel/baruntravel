@@ -28,12 +28,12 @@ import static me.travelplan.ApiDocumentUtils.getDocumentResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PlaceReviewController.class)
@@ -73,6 +73,7 @@ public class PlaceReviewControllerTest extends MvcTest {
 
         // then
         results.andExpect(status().isCreated())
+                .andDo(print())
                 .andDo(document("place-review-create",
                         getDocumentRequest(),
                         getDocumentResponse(),
@@ -82,6 +83,9 @@ public class PlaceReviewControllerTest extends MvcTest {
                         requestParameters(
                                 parameterWithName("content").description("리뷰 내용"),
                                 parameterWithName("score").description("리뷰 점수")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("리뷰 식별자")
                         )
                 ));
     }

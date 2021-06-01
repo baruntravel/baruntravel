@@ -4,10 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import me.travelplan.service.file.domain.File;
 import me.travelplan.service.user.domain.User;
-
-import java.util.Optional;
 
 public class UserDto {
     @Getter
@@ -19,11 +16,13 @@ public class UserDto {
         private final String avatarUrl;
 
         public static Response from(User user) {
-            return Response.builder()
+            ResponseBuilder builder = Response.builder()
                     .name(user.getName())
-                    .email(user.getEmail())
-//                    .avatarUrl(Optional.ofNullable(user.getAvatar()).orElse(File.createExternalImage("")).getUrl())
-                    .build();
+                    .email(user.getEmail());
+            if (user.getAvatar() != null) {
+                builder.avatarUrl(user.getAvatar().getUrl());
+            }
+            return builder.build();
         }
     }
 }

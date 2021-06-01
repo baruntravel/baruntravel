@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Collections;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -29,13 +30,16 @@ public class PlaceReviewServiceTest {
     @InjectMocks
     private PlaceReviewService placeReviewService;
 
-    @Mock private PlaceRepository placeRepository;
-    @Mock private PlaceReviewRepository placeReviewRepository;
-    @Mock private FileService fileService;
+    @Mock
+    private PlaceRepository placeRepository;
+    @Mock
+    private PlaceReviewRepository placeReviewRepository;
+    @Mock
+    private FileService fileService;
 
     @Test
     @DisplayName("장소 리뷰 생성 테스트")
-    private void createReview() {
+    public void createReview() {
         given(placeRepository.findById(any())).willReturn(Optional.of(Place.builder().build()));
         PlaceReviewDto.Request request = PlaceReviewDto.Request.builder()
                 .content("Content")
@@ -44,7 +48,7 @@ public class PlaceReviewServiceTest {
                 .build();
 
         placeReviewService.createReview(1L, request);
-        verify(placeRepository, times(1)).save(any());
+        verify(placeReviewRepository, times(1)).save(any());
     }
 
     @Test
@@ -57,16 +61,18 @@ public class PlaceReviewServiceTest {
     @Test
     @DisplayName("장소 리뷰 수정 테스트")
     public void updateReview() {
-        given(placeReviewRepository.findById(any())).willReturn(Optional.of(PlaceReview.builder().build()));
+        PlaceReview placeReview = PlaceReview.builder().content("").score(3.0).build();
+        given(placeReviewRepository.findById(any())).willReturn(Optional.of(placeReview));
         PlaceReviewDto.Request request = PlaceReviewDto.Request.builder()
-                .content("Content")
+                .content("Update Content")
                 .score(4.5)
                 .images(Collections.emptyList())
                 .build();
 
         placeReviewService.updateReview(1L, request);
 
-        verify(placeReviewRepository, times(1)).save(any());
+        assertEquals(request.getContent(), placeReview.getContent());
+        assertEquals(request.getScore(), placeReview.getScore());
     }
 
     @Test
