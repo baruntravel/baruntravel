@@ -13,6 +13,7 @@ import OurPlacePage from "./pages/ourPlacePage/ourPlacePage";
 import ComunityPage from "./pages/comunityPage/comunityPage";
 import DetailProfilePage from "./pages/detailProfilePage/detailProfilePage";
 import "antd/dist/antd.css";
+import WishListPage from "./pages/wishListPage/wishListPage";
 // import { lazy } from "react";
 // const RouteDetailPage = lazy(() =>
 //   import("./pages/routeDetailPage/routeDetailPage")
@@ -58,12 +59,16 @@ function App() {
             <PlaceDetailPage />
           </Route>
 
-          <Route exact path="/detailProfile">
+          <Route exact path="/mypage">
             <DetailProfilePage />
           </Route>
 
           <Route exact path="/review/detail/:id">
             <ReviewDetailPage />
+          </Route>
+
+          <Route exact path="/wishlist">
+            <WishListPage />
           </Route>
 
           <Route exact path="/test2">

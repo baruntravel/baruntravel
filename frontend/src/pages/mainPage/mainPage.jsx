@@ -30,17 +30,13 @@ const MainPage = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <Header />
-      </div>
+      <Header />
       <div className={styles.body}>
         <Banner />
         <SelectArea />
         <SelectRoute routes={mainRoutes} />
       </div>
-      <div className={styles.navbar}>
-        <Navbar />
-      </div>
+      <Navbar />
     </div>
   );
 };

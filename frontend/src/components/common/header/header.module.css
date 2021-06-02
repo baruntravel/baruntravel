@@ -6,6 +6,8 @@
   border-bottom: 0.3px solid #c4c4c4;
   background-color: white;
   padding: 8px 12px;
+  position: sticky;
+  top: 0;
 }
 
 .backIcon {

@@ -6,17 +6,7 @@
   align-items: center;
 }
 
-.header {
-  width: 100%;
-}
-
 .body {
   margin: 0 auto;
   width: 85%;
-}
-
-.navbar {
-  width: 100%;
-  position: fixed;
-  bottom: 0;
 }
