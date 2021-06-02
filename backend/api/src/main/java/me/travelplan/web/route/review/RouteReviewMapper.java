@@ -24,12 +24,6 @@ public interface RouteReviewMapper {
     default List<RouteReviewResponse.GetList> entityToResponseReviewList(List<RouteReview> reviews, CustomUserDetails customUserDetails) {
         List<RouteReviewResponse.GetList> list = new ArrayList<>();
         reviews.forEach(review -> {
-            UserDto.Response.ResponseBuilder userDtoBuilder = UserDto.Response.builder()
-                    .email(review.getCreatedBy().getEmail())
-                    .name(review.getCreatedBy().getName());
-            if (review.getCreatedBy().getAvatar() != null) {
-                userDtoBuilder.avatarUrl(review.getCreatedBy().getAvatar().getUrl());
-            }
             RouteReviewResponse.GetList getList = RouteReviewResponse.GetList.builder()
                     .id(review.getId())
                     .content(review.getContent())
@@ -43,7 +37,7 @@ public interface RouteReviewMapper {
                             .map(File::getUrl)
                             .map(FileDto.Image::new)
                             .collect(Collectors.toList()))
-                    .creator(userDtoBuilder.build())
+                    .creator(UserDto.Response.from(review.getCreatedBy()))
                     .build();
             list.add(getList);
         });

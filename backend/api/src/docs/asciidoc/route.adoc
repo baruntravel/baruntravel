@@ -107,6 +107,7 @@ include::{snippets}/route-review-create/request-parameters.adoc[]
 성공 응답 HTTP
 include::{snippets}/route-review-create/http-response.adoc[]
 include::{snippets}/route-review-create/response-fields.adoc[]
+
 === 경로 리뷰 좋아요
 
 `POST /route/review/{id}/like`

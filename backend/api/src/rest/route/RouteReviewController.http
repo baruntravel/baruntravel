@@ -42,24 +42,23 @@ GET {{apiUrl}}/route/1/reviews?size=10&page=1&sortType=best
 Authorization: {{ authorizationToken }}
 
 ###
-POST {{apiUrl}}/route/review/9
+POST {{apiUrl}}/route/review/16
 Authorization: {{ authorizationToken }}
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
-Content-Disposition: form-data; name="files"; filename="enjoy2.png"
+Content-Disposition: form-data; name="fileChange"
 
-< ./../main/resources/mock/images/enjoy2.png
+false
 
 --WebAppBoundary
 Content-Disposition: form-data; name="content"
 
-Update Review!
+Update Review!zzz
 --WebAppBoundary
 Content-Disposition: form-data; name="score"
 
 3.5
---WebAppBoundary--
 
 ###
 POST {{apiUrl}}/route/review/8

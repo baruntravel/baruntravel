@@ -4,7 +4,7 @@ Authorization: {{ authorizationToken }}
 
 ###
 
-GET {{apiUrl}}/place/1440347564/review
+GET {{apiUrl}}/place/1440347564/review?size=10&page=1&sortType=best
 Content-Type: application/json
 Authorization: {{ authorizationToken }}
 
@@ -53,5 +53,11 @@ Authorization: {{ authorizationToken }}
 ###
 
 POST {{apiUrl}}/place/123/like
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+###
+
+POST {{apiUrl}}/place/1440347564/review/8/like
 Content-Type: application/json
 Authorization: {{ authorizationToken }}

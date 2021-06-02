@@ -2,6 +2,7 @@ package me.travelplan.service.place.domain;
 
 import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
+import me.travelplan.service.user.domain.User;
 import me.travelplan.web.place.review.PlaceReviewDto;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -34,6 +35,10 @@ public class PlaceReview extends BaseEntity {
     @Builder.Default
     private List<PlaceReviewImage> images = new ArrayList<>();
 
+    @OneToMany(mappedBy = "placeReview", cascade = CascadeType.REMOVE)
+    @Builder.Default
+    private List<PlaceReviewLike> placeReviewLikes = new ArrayList<>();
+
     public void setPlace(Place place) {
         this.place = place;
     }
@@ -47,6 +52,10 @@ public class PlaceReview extends BaseEntity {
     public void addImage(PlaceReviewImage image) {
         this.images.add(image);
         image.setPlaceReview(this);
+    }
+
+    public boolean isLike(User user) {
+        return this.placeReviewLikes.stream().anyMatch(placeReviewLike -> placeReviewLike.getCreatedBy().getId().equals(user.getId()));
     }
 
     public static PlaceReview from(PlaceReviewDto.Request reviewDto, Place place, List<PlaceReviewImage> images) {

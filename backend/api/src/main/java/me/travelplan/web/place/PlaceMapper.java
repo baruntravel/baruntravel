@@ -29,9 +29,9 @@ public interface PlaceMapper {
                 .url(place.getUrl())
                 .thumbnailUrl(Optional.ofNullable(place.getThumbnail()).orElse(File.createExternalImage("")).getUrl())
                 .images(place.getImages().stream().map(PlaceImage::getFile).map(File::getUrl).map(FileDto.Image::new).collect(Collectors.toList()))
-                .isLike(place.getPlaceLikes().stream().anyMatch(placeLike -> currentUser.getId().equals(placeLike.getCreatedBy().getId())))
+                .isLike(place.isLike(currentUser))
                 .likes(place.getPlaceLikes().size())
-                .score(place.getReviews().stream().mapToDouble(PlaceReview::getScore).average().orElse(0.0))
+                .score(place.getAverageReviewScore())
                 .openHour(place.getOpenHour())
                 .build();
     }
