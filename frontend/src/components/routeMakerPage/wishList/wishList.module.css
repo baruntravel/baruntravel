@@ -1,0 +1,12 @@
+.listContainer {
+  display: flex;
+  overflow-x: auto;
+  margin: 0 12px;
+}
+
+.cardContainer {
+  width: 30vw;
+  height: 15vh;
+  margin-right: 12px;
+  flex: 0 0 auto;
+}
