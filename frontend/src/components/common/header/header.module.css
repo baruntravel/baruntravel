@@ -3,4 +3,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 0.3px solid #c4c4c4;
+  padding: 16px;
 }

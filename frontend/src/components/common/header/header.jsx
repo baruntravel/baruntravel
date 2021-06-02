@@ -8,7 +8,7 @@ const Header = ({ onBackHandler }) => {
     <>
       <div className={styles.headerContainer}>
         <div className={styles.logo}>{isMain ? <div>hi</div> : <Logo />}</div>
-        <div className={styles.groupChat}>그룹 채팅 아이콘</div>
+        {/* <div className={styles.groupChat}>그룹 채팅 아이콘</div> */}
         <SideProfileToggle />
       </div>
     </>

@@ -1,0 +1,7 @@
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0;
+  border-top: 0.3px solid #c4c4c4;
+}

@@ -8,6 +8,7 @@ import SelectArea from "../../components/mainPage/selectArea/selectArea";
 import { getFeaturedRoutes as fetchRoutes } from "../../api/routeAPI";
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
+import Navbar from "../../components/common/navbar/navbar";
 const MainPage = () => {
   const userStates = useRecoilValue(userState);
   const [mainRoutes, setMainRoutes] = useState([]);
@@ -33,15 +34,12 @@ const MainPage = () => {
         <Header />
       </div>
       <div className={styles.body}>
-        <h1>
-          여행을 바르게,
-          <br />
-          ✈️ 바른여행길잡이
-        </h1>
-
         <Banner />
         <SelectArea />
         <SelectRoute routes={mainRoutes} />
+      </div>
+      <div className={styles.navbar}>
+        <Navbar />
       </div>
     </div>
   );
