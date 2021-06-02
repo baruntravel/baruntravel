@@ -44,7 +44,7 @@ const RouteMapPage = () => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.navbarContainer}>
+      <div className={styles.headerContainer}>
         <Header />
       </div>
       <RouteMap mapHandler={mapHandler} routesHandler={routesHandler} places={places} routes={routes} />

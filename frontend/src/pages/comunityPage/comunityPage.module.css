@@ -5,9 +5,8 @@
   flex-direction: column;
 }
 
-.navbar {
-  width: 95%;
-  margin: 12px;
+.header {
+  width: 100%;
 }
 
 .tabBox {

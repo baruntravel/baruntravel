@@ -4,5 +4,10 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 0.3px solid #c4c4c4;
-  padding: 16px;
+  background-color: white;
+  padding: 8px 12px;
+}
+
+.backIcon {
+  color: #ff57b3;
 }

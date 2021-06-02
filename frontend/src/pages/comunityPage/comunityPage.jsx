@@ -13,7 +13,7 @@ const ComunityPage = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.navbar}>
+      <div className={styles.header}>
         <Header />
       </div>
       <div className={styles.areaTitle}>{area}</div>
