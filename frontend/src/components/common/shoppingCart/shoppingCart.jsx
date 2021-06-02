@@ -6,8 +6,8 @@ import { makeRoute } from "../../../api/routeAPI";
 import InputRootName from "../inputRootName/inputRootName";
 import { HistoryOutlined } from "@ant-design/icons";
 import ResetConfirm from "../resetConfirm/resetConfirm";
-import { onEditOrder } from "../../../api/cartAPI";
 import DeleteConfirm from "../deleteConfirm/deleteConfirm";
+import { onEditOrder } from "../../../api/cartAPI";
 
 const ShoppingCart = memo(
   ({
