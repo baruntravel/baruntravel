@@ -45,6 +45,10 @@ include::{snippets}/place-getReviews/http-request.adoc[]
 Path Variable
 include::{snippets}/place-getReviews/path-parameters.adoc[]
 
+Request Param
+
+include::{snippets}/place-getReviews/request-parameters.adoc[]
+
 성공 응답 HTTP
 include::{snippets}/place-getReviews/http-response.adoc[]
 include::{snippets}/place-getReviews/response-fields.adoc[]

@@ -10,6 +10,7 @@ import me.travelplan.service.place.repository.PlaceRepository;
 import me.travelplan.service.place.repository.PlaceReviewLikeRepository;
 import me.travelplan.service.place.repository.PlaceReviewRepository;
 import me.travelplan.service.user.domain.User;
+import me.travelplan.web.common.PageDto;
 import me.travelplan.web.place.review.PlaceReviewDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,9 +18,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.util.Collections;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -54,6 +59,18 @@ public class PlaceReviewServiceTest {
 
         placeReviewService.createReview(1L, request);
         verify(placeReviewRepository, times(1)).save(any());
+    }
+
+    @Test
+    @DisplayName("장소 리뷰 리스트 조회 테스트")
+    public void getReviews() {
+        PageDto pageDto = new PageDto(1, 10);
+        Page<PlaceReview> page = new PageImpl<>(IntStream.range(0, 2).mapToObj(i -> PlaceReview.builder().build()).collect(Collectors.toList()), pageDto.of(), 2);
+        given(placeReviewRepository.findAllByPlaceId(any(), any(), any())).willReturn(page);
+
+        placeReviewService.getReviews(1L, pageDto);
+
+        verify(placeReviewRepository).findAllByPlaceId(any(), any(), any());
     }
 
     @Test

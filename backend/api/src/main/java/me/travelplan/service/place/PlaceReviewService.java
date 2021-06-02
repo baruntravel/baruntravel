@@ -14,7 +14,9 @@ import me.travelplan.service.place.repository.PlaceReviewImageRepository;
 import me.travelplan.service.place.repository.PlaceReviewLikeRepository;
 import me.travelplan.service.place.repository.PlaceReviewRepository;
 import me.travelplan.service.user.domain.User;
+import me.travelplan.web.common.PageDto;
 import me.travelplan.web.place.review.PlaceReviewDto;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,11 +34,6 @@ public class PlaceReviewService {
     private final PlaceReviewLikeRepository placeReviewLikeRepository;
     private final FileService fileService;
 
-    public List<PlaceReview> getReviews(Long placeId) {
-        Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
-        return place.getReviews();
-    }
-
     @Transactional
     public PlaceReview createReview(Long placeId, PlaceReviewDto.Request reviewDto) {
         Place place = placeRepository.findById(placeId).orElseThrow(PlaceNotFoundException::new);
@@ -50,6 +47,10 @@ public class PlaceReviewService {
 
         PlaceReview review = PlaceReview.from(reviewDto, place, images);
         return placeReviewRepository.save(review);
+    }
+
+    public Page<PlaceReview> getReviews(Long placeId, PageDto pageDto) {
+        return placeReviewRepository.findAllByPlaceId(placeId, pageDto.getSortType(), pageDto.of());
     }
 
     @Transactional

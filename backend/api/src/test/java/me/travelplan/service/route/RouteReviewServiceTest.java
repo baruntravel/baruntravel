@@ -94,7 +94,6 @@ class RouteReviewServiceTest {
     @Test
     @DisplayName("경로 리뷰 목록 조회 성공")
     public void getList() {
-
         PageDto pageDto = new PageDto(1, 10);
         Page<RouteReview> page = new PageImpl<>(IntStream.range(0, 2).mapToObj(i -> RouteReview.builder().build()).collect(Collectors.toList()), pageDto.of(), 2);
 

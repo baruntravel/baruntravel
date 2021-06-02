@@ -4,6 +4,10 @@ import lombok.RequiredArgsConstructor;
 import me.travelplan.security.userdetails.CurrentUser;
 import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.service.place.PlaceReviewService;
+import me.travelplan.service.place.domain.PlaceReview;
+import me.travelplan.web.common.PageDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,16 +20,19 @@ public class PlaceReviewController {
     private final PlaceReviewService placeReviewService;
     private final PlaceReviewMapper placeReviewMapper;
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping
-    public List<PlaceReviewDto.Response> getReviews(@PathVariable Long placeId, @CurrentUser CustomUserDetails userDetails) {
-        return placeReviewMapper.entityToResponseDto(placeReviewService.getReviews(placeId), userDetails.getUser());
-    }
-
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public PlaceReviewDto.GetOnlyId create(@PathVariable Long placeId, PlaceReviewDto.Request placeReviewDto) {
         return placeReviewMapper.toReviewId(placeReviewService.createReview(placeId, placeReviewDto));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    public Page<PlaceReviewDto.Response> getReviews(@PathVariable Long placeId, PageDto pageDto, @CurrentUser CustomUserDetails userDetails) {
+        List<PlaceReview> content = placeReviewService.getReviews(placeId, pageDto).getContent();
+        List<PlaceReviewDto.Response> getList = placeReviewMapper.entityToResponseDto(content, userDetails.getUser());
+
+        return new PageImpl<>(getList, pageDto.of(), content.size());
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -54,5 +61,4 @@ public class PlaceReviewController {
     public void like(@PathVariable Long reviewId, @CurrentUser CustomUserDetails userDetails) {
         placeReviewService.createOrDeleteLike(reviewId, userDetails.getUser());
     }
-
 }

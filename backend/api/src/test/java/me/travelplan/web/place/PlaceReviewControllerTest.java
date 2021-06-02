@@ -15,6 +15,8 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
@@ -30,8 +32,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -203,12 +204,15 @@ public class PlaceReviewControllerTest extends MvcTest {
         reviews.add(review1);
         reviews.add(review2);
 
-        given(placeReviewService.getReviews(any())).willReturn(reviews);
+        given(placeReviewService.getReviews(any(),any())).willReturn(new PageImpl<>(reviews, PageRequest.of(0, 10), reviews.size()));
 
         // when
         ResultActions results = mockMvc.perform(
                 get("/place/{id}/review", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .param("page", "1")
+                        .param("size", "10")
+                        .param("sortType", "best")
                         .characterEncoding("UTF-8")
         );
 
@@ -220,21 +224,29 @@ public class PlaceReviewControllerTest extends MvcTest {
                         pathParameters(
                                 parameterWithName("id").description("장소 식별자")
                         ),
-                        responseFields(
-                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("리뷰 식별자"),
-                                fieldWithPath("[].content").type(JsonFieldType.STRING).description("리뷰 내용"),
-                                fieldWithPath("[].score").type(JsonFieldType.NUMBER).description("리뷰 점수"),
-                                fieldWithPath("[].mine").type(JsonFieldType.BOOLEAN).description("내가 작성한 리뷰인지 boolean"),
-                                fieldWithPath("[].likes").type(JsonFieldType.NUMBER).description("장소 리뷰 좋아요 개수"),
-                                fieldWithPath("[].isLike").type(JsonFieldType.BOOLEAN).description("로그인 유저가 해당 장소 리뷰에 좋아요를 눌렀다면 true"),
-                                fieldWithPath("[].images").type(JsonFieldType.ARRAY).description("리뷰 이미지들"),
-                                fieldWithPath("[].images[].url").type(JsonFieldType.STRING).description("리뷰 이미지 경로들"),
-                                fieldWithPath("[].createdAt").type(JsonFieldType.STRING).description("리뷰 작성일시"),
-                                fieldWithPath("[].updatedAt").type(JsonFieldType.STRING).description("리뷰 수정일시"),
-                                fieldWithPath("[].createdBy").type(JsonFieldType.OBJECT).description("리뷰 생성자"),
-                                fieldWithPath("[].createdBy.name").type(JsonFieldType.STRING).description("리뷰 생성자 이름"),
-                                fieldWithPath("[].createdBy.email").type(JsonFieldType.STRING).description("리뷰 생성자 이메일"),
-                                fieldWithPath("[].createdBy.avatarUrl").description("리뷰 생성자 아바타 이미지 경로")
+                        requestParameters(
+                                parameterWithName("page").description("조회할 페이지"),
+                                parameterWithName("size").description("조회할 경로수"),
+                                parameterWithName("sortType").description("최신순: latest or null, 추천순: best")
+                        ),
+                        relaxedResponseFields(
+                                fieldWithPath("content[].id").type(JsonFieldType.NUMBER).description("리뷰 식별자"),
+                                fieldWithPath("content[].content").type(JsonFieldType.STRING).description("리뷰 내용"),
+                                fieldWithPath("content[].score").type(JsonFieldType.NUMBER).description("리뷰 점수"),
+                                fieldWithPath("content[].mine").type(JsonFieldType.BOOLEAN).description("내가 작성한 리뷰인지 boolean"),
+                                fieldWithPath("content[].likes").type(JsonFieldType.NUMBER).description("장소 리뷰 좋아요 개수"),
+                                fieldWithPath("content[].isLike").type(JsonFieldType.BOOLEAN).description("로그인 유저가 해당 장소 리뷰에 좋아요를 눌렀다면 true"),
+                                fieldWithPath("content[].images").type(JsonFieldType.ARRAY).description("리뷰 이미지들"),
+                                fieldWithPath("content[].images[].url").type(JsonFieldType.STRING).description("리뷰 이미지 경로들"),
+                                fieldWithPath("content[].createdAt").type(JsonFieldType.STRING).description("리뷰 작성일시"),
+                                fieldWithPath("content[].updatedAt").type(JsonFieldType.STRING).description("리뷰 수정일시"),
+                                fieldWithPath("content[].createdBy").type(JsonFieldType.OBJECT).description("리뷰 생성자"),
+                                fieldWithPath("content[].createdBy.name").type(JsonFieldType.STRING).description("리뷰 생성자 이름"),
+                                fieldWithPath("content[].createdBy.email").type(JsonFieldType.STRING).description("리뷰 생성자 이메일"),
+                                fieldWithPath("content[].createdBy.avatarUrl").description("리뷰 생성자 아바타 이미지 경로"),
+                                fieldWithPath("totalElements").description("전체 개수"),
+                                fieldWithPath("last").description("마지막 페이지인지 식별"),
+                                fieldWithPath("totalPages").description("전체 페이지")
                         )
                 ));
     }
