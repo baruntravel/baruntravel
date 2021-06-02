@@ -9,7 +9,7 @@ import RouteCarousel from "../../components/routeMapPage/routeCarousel/routeCaro
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import PlaceListModal from "../../components/routeMapPage/placeListModal/placeListModal";
-import Navbar from "../../components/common/navbar/navbar";
+import Header from "../../components/common/header/header";
 import RouteMap from "../../components/routeMapPage/routeMap/routeMap";
 //Todo
 //route 드래그할 때 마다 루트 10개씩 가져옴 -> setRoutes
@@ -44,8 +44,8 @@ const RouteMapPage = () => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.navbarContainer}>
-        <Navbar />
+      <div className={styles.headerContainer}>
+        <Header />
       </div>
       <RouteMap mapHandler={mapHandler} routesHandler={routesHandler} places={places} routes={routes} />
       <div className={styles.routeCarousel} onDragStart={(e) => e.preventDefault()}>

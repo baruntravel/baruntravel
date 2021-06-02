@@ -1,6 +1,10 @@
-.navbarContainer {
+.container {
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: space-around;
+  padding: 12px 0;
+  background-color: white;
+  border-top: 0.3px solid #c4c4c4;
+  position: fixed;
+  bottom: 0;
 }

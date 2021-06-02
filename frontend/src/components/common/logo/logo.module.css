@@ -1,16 +1,8 @@
 .logoWrap {
-  width: 30px;
-  height: 30px;
-  position: relative;
-  background-color: green;
-  border-radius: 10%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* width: 30px; */
+  /* height: 30px; */
 }
 
-.logoTitle {
-  font-size: 6px;
-  text-align: center;
-  color: white;
+.logoImg {
+  width: 110px;
 }

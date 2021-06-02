@@ -8,11 +8,11 @@
   overflow: hidden;
 }
 
-.navbarContainer {
+.headerContainer {
   position: fixed;
-  width: 95%;
+  width: 100%;
+  top: 0px;
   z-index: 5;
-  top: 1%;
 }
 
 .routeCarousel {

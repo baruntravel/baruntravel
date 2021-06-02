@@ -1,16 +1,24 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faRoute, faHome, faHeart, faUser } from "@fortawesome/free-solid-svg-icons";
 import styles from "./navbar.module.css";
-import Logo from "../logo/logo";
-import SideProfileToggle from "../sideProfileToggle/sideProfileToggle";
-const Navbar = ({ onBackHandler }) => {
-  const isMain = window.location.pathname.split("/").pop(); // url 마지막 부분이 ID이다.
+import { useHistory } from "react-router-dom";
+
+const Navbar = () => {
+  const history = useHistory();
+  const searchClicked = () => history.push("/"); // 둘러보기 페이지
+  const routeClicked = () => history.push("/"); // 루트 만들기 페이지
+  const homeClicked = () => history.push("/");
+  const heartClicked = () => history.push("/wishlist");
+  const userClicked = () => history.push("/mypage");
+
   return (
-    <>
-      <div className={styles.navbarContainer}>
-        <div className={styles.logo}>{isMain ? <div>hi</div> : <Logo />}</div>
-        <div className={styles.groupChat}>그룹 채팅 아이콘</div>
-        <SideProfileToggle />
-      </div>
-    </>
+    <div className={styles.container}>
+      <FontAwesomeIcon icon={faSearch} size="2x" onClick={searchClicked} />
+      <FontAwesomeIcon icon={faRoute} size="2x" onClick={routeClicked} />
+      <FontAwesomeIcon icon={faHome} size="2x" onClick={homeClicked} />
+      <FontAwesomeIcon icon={faHeart} size="2x" onClick={heartClicked} />
+      <FontAwesomeIcon icon={faUser} size="2x" onClick={userClicked} />
+    </div>
   );
 };
 
