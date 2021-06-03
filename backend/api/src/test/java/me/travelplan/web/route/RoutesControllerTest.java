@@ -9,6 +9,7 @@ import me.travelplan.service.route.RouteService;
 import me.travelplan.service.route.domain.Route;
 import me.travelplan.service.route.domain.RoutePlace;
 import me.travelplan.service.user.domain.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -40,66 +41,11 @@ public class RoutesControllerTest extends MvcTest {
     @MockBean
     private RouteService routeService;
 
-    @Test
-    @WithMockCustomUser
-    @DisplayName("내 경로들 가져오기 테스트")
-    public void getMyTest() throws Exception {
-        List<Route> routes = new ArrayList<>();
-        Route route1 = Route.builder().id(1L).name("첫번째 경로").build();
-        route1.addPlace(RoutePlace.builder().order(1).place(
-                Place.builder()
-                        .id(122L)
-                        .name("테스트 장소 이름")
-                        .x(97.123)
-                        .address("서울")
-                        .y(122.123)
-                        .url("https://www.naver.com")
-                        .category(PlaceCategory.builder().id("CE7").name("카페").build())
-                        .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
-                        .build()
-        ).build());
-        routes.add(route1);
-        Route route2 = Route.builder().id(2L).name("두번째 경로").build();
-        route2.addPlace(RoutePlace.builder().order(1).place(
-                Place.builder()
-                        .id(123L)
-                        .name("테스트 장소 이름")
-                        .x(97.123)
-                        .address("부산")
-                        .y(122.123)
-                        .url("https://www.naver.com")
-                        .category(PlaceCategory.builder().id("CE7").name("카페").build())
-                        .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
-                        .build()
-        ).build());
-        routes.add(route2);
+    private final List<Route> routes = new ArrayList<>();
 
-        given(routeService.getByUser(any())).willReturn(routes);
-
-        ResultActions results = mockMvc.perform(
-                get("/routes/my")
-        );
-
-        results.andExpect(status().isOk())
-                .andDo(print())
-                .andDo(document("routes-getMy",
-                        getDocumentRequest(),
-                        getDocumentResponse(),
-                        responseFields(
-                                fieldWithPath("routes").type(JsonFieldType.ARRAY).description("경로들"),
-                                fieldWithPath("routes[].id").type(JsonFieldType.NUMBER).description("경로 식별자"),
-                                fieldWithPath("routes[].name").type(JsonFieldType.STRING).description("경로 이름"),
-                                fieldWithPath("routes[].places[].id").type(JsonFieldType.NUMBER).description("장소 식별자"),
-                                fieldWithPath("routes[].places[].name").type(JsonFieldType.STRING).description("장소 이름")
-                        )
-                ));
-    }
-
-    @Test
-    @WithMockCustomUser
-    @DisplayName("현재 지도 안에 포함되어 있는 경로 가져오기")
-    public void getListTest() throws Exception {
-        List<Route> routes = new ArrayList<>();
+    @BeforeEach
+    public void setup() {
+        User user = User.builder().name("테스터").email("test@test.com").password("123456").avatar(File.builder().name("files").url("test.jpg").build()).build();
         Route route1 = Route.builder()
                 .id(1L)
                 .maxX(97.123)
@@ -107,6 +53,7 @@ public class RoutesControllerTest extends MvcTest {
                 .minX(97.124)
                 .minY(124.123)
                 .name("세번째 경로")
+                .region("서울")
                 .build();
         route1.addPlace(RoutePlace.builder().order(1).place(
                 Place.builder()
@@ -120,7 +67,7 @@ public class RoutesControllerTest extends MvcTest {
                         .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .build());
-        route1.setCreatedBy(User.builder().name("테스트유저1").build());
+        route1.setCreatedBy(user);
         routes.add(route1);
         Route route2 = Route.builder()
                 .id(2L)
@@ -129,6 +76,7 @@ public class RoutesControllerTest extends MvcTest {
                 .minX(97.124)
                 .minY(124.123)
                 .name("세번째 경로")
+                .region("서울")
                 .build();
         route2.addPlace(RoutePlace.builder().order(1).place(
                 Place.builder()
@@ -154,7 +102,7 @@ public class RoutesControllerTest extends MvcTest {
                         .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .build());
-        route2.setCreatedBy(User.builder().name("테스트유저2").build());
+        route2.setCreatedBy(user);
         routes.add(route2);
         Route route3 = Route.builder()
                 .id(3L)
@@ -163,6 +111,7 @@ public class RoutesControllerTest extends MvcTest {
                 .minX(97.124)
                 .minY(124.123)
                 .name("세번째 경로")
+                .region("서울")
                 .build();
         route3.addPlace(RoutePlace.builder().order(1).place(
                 Place.builder()
@@ -176,16 +125,90 @@ public class RoutesControllerTest extends MvcTest {
                         .thumbnail(File.builder().url("http://loremflickr.com/440/440").build())
                         .build())
                 .build());
-        route3.setCreatedBy(User.builder().name("테스트유저3").build());
+        route3.setCreatedBy(user);
         routes.add(route3);
+    }
 
-        given(routeService.getList(any(), any())).willReturn(new PageImpl<>(routes, PageRequest.of(0, 10), routes.size()));
+    @Test
+    @WithMockCustomUser
+    @DisplayName("내 경로들 가져오기 테스트")
+    public void getMine() throws Exception {
+        given(routeService.getByUser(any())).willReturn(routes);
+
+        ResultActions results = mockMvc.perform(
+                get("/routes/my")
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("routes-getMy",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        responseFields(
+                                fieldWithPath("routes").type(JsonFieldType.ARRAY).description("경로들"),
+                                fieldWithPath("routes[].id").type(JsonFieldType.NUMBER).description("경로 식별자"),
+                                fieldWithPath("routes[].name").type(JsonFieldType.STRING).description("경로 이름"),
+                                fieldWithPath("routes[].places[].id").type(JsonFieldType.NUMBER).description("장소 식별자"),
+                                fieldWithPath("routes[].places[].name").type(JsonFieldType.STRING).description("장소 이름")
+                        )
+                ));
+    }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("지역별 경로 가져오기")
+    public void getList() throws Exception {
+        given(routeService.getListByRegion(any(), any())).willReturn(new PageImpl<>(routes, PageRequest.of(0, 10), routes.size()));
 
         ResultActions results = mockMvc.perform(
                 get("/routes")
+                        .param("page", "1")
+                        .param("size", "10")
+                        .param("sortType", "best")
+                        .param("region", "서울")
+        );
+
+        results
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("routes-getList-region",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestParameters(
+                                parameterWithName("page").description("조회할 페이지"),
+                                parameterWithName("size").description("조회할 경로수"),
+                                parameterWithName("sortType").description("최신순: latest or null, 추천순: best"),
+                                parameterWithName("region").description("조회할 경로가 포함된 지역")
+                        ),
+                        relaxedResponseFields(
+                                fieldWithPath("content[].id").type(JsonFieldType.NUMBER).description("경로 식별자"),
+                                fieldWithPath("content[].name").type(JsonFieldType.STRING).description("경로 이름"),
+                                fieldWithPath("content[].region").type(JsonFieldType.STRING).description("경로 지역"),
+                                fieldWithPath("content[].creator.name").type(JsonFieldType.STRING).description("경로 작성자 이름"),
+                                fieldWithPath("content[].creator.email").type(JsonFieldType.STRING).description("경로 작성자 이메일"),
+                                fieldWithPath("content[].creator.avatarUrl").description("경로 작성자 프로필 이미지"),
+                                fieldWithPath("content[].places").type(JsonFieldType.ARRAY).description("장소들 정보"),
+                                fieldWithPath("content[].places[].id").type(JsonFieldType.NUMBER).description("카카오톡에서 제공한 장소 식별자"),
+                                fieldWithPath("content[].places[].name").type(JsonFieldType.STRING).description("장소 이름"),
+                                fieldWithPath("content[].places[].order").type(JsonFieldType.NUMBER).description("장소 순서"),
+                                fieldWithPath("totalElements").description("전체 개수"),
+                                fieldWithPath("last").description("마지막 페이지인지 식별"),
+                                fieldWithPath("totalPages").description("전체 페이지")
+                        )
+                ));
+    }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("현재 지도 안에 포함되어 있는 경로 가져오기")
+    public void getListByCoordinate() throws Exception {
+        given(routeService.getListByCoordinate(any(), any())).willReturn(new PageImpl<>(routes, PageRequest.of(0, 10), routes.size()));
+
+        ResultActions results = mockMvc.perform(
+                get("/routes/coordinate")
                         .param("page", "0")
                         .param("size", "10")
-                        .param("sortType","best")
+                        .param("sortType", "best")
                         .param("maxX", "37.5")
                         .param("minX", "36.5")
                         .param("maxY", "123.5")
@@ -195,7 +218,7 @@ public class RoutesControllerTest extends MvcTest {
         results
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("routes-getList",
+                .andDo(document("routes-getList-coordinate",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestParameters(

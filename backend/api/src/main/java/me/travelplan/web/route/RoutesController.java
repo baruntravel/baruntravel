@@ -24,14 +24,21 @@ public class RoutesController {
     private final RouteMapper routeMapper;
 
     @GetMapping
-    public Page<RouteResponse.GetList> getList(PageDto pageDto,
-                                               RouteRequest.GetList request,
-                                               @CurrentUser CustomUserDetails customUserDetails) {
-        List<Route> content = routeService.getList(request, pageDto).getContent();
-        List<RouteResponse.GetList> getList = routeMapper.toGetListResponse(content, customUserDetails);
+    public Page<RouteResponse.GetListByRegion> getListByRegion(PageDto pageDto, RouteRequest.GetListByRegion request) {
+        List<Route> content = routeService.getListByRegion(request,pageDto).getContent();
+        List<RouteResponse.GetListByRegion> getList = routeMapper.toListResponse(content);
 
         return new PageImpl<>(getList, pageDto.of(), content.size());
     }
+
+    @GetMapping("/coordinate")
+    public Page<RouteResponse.GetListByCoordinate> getListByCoordinate(PageDto pageDto, RouteRequest.GetListCoordinate request, @CurrentUser CustomUserDetails customUserDetails) {
+        List<Route> content = routeService.getListByCoordinate(request, pageDto).getContent();
+        List<RouteResponse.GetListByCoordinate> getList = routeMapper.toGetListResponse(content, customUserDetails);
+
+        return new PageImpl<>(getList, pageDto.of(), content.size());
+    }
+
 
     @GetMapping("/my")
     public RouteResponse.GetMine getMine(@CurrentUser CustomUserDetails user) {

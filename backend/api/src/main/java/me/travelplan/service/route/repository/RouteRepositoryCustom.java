@@ -9,5 +9,7 @@ import java.util.Optional;
 public interface RouteRepositoryCustom {
     Page<Route> findAllByCoordinate(Double maxX, Double minX, Double maxY, Double minY, String sortType, Pageable pageable);
 
+    Page<Route> findAllByRegion(String region, String sortType, Pageable pageable);
+
     Optional<Route> findByIdWithUser(Long id);
 }
