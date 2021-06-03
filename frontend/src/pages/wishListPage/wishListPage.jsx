@@ -31,12 +31,14 @@ const WishListPage = () => {
           <h1>로그인을 해주세요</h1>
         ) : (
           <div className={styles.body}>
-            <div className={styles.col1}>
-              <h1 className={styles.title}>찜 목록</h1>
-              <button onClick={handlePortalOpen} className={styles.addButton}>
-                새로운 찜 목록 만들기
-              </button>
-            </div>
+            {!folderOpened && (
+              <div className={styles.col1}>
+                <h1 className={styles.title}>찜 목록</h1>
+                <button onClick={handlePortalOpen} className={styles.addButton}>
+                  새로운 찜 목록 만들기
+                </button>
+              </div>
+            )}
 
             {
               // 카드 누르기 전, 찜목록 메인 화면
