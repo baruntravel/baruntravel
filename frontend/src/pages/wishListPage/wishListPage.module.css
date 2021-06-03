@@ -24,22 +24,3 @@ h1 {
   border: solid 1px black;
   border-radius: 8px;
 }
-
-.cardsContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.cardBox {
-  width: 90%;
-  height: 200px;
-  border: solid 1px black;
-  border-radius: 8px;
-  margin: 12px 0;
-}
-
-.imgBox {
-  width: 100%;
-  display: flex;
-}
