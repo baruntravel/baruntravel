@@ -37,7 +37,9 @@ public class RouteResponse {
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class GetMine {
-        List<RouteDto.RouteNameWithPlaceName> routes;
+        private Long id;
+        private String name;
+        private String image;
     }
 
     @Getter

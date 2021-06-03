@@ -145,11 +145,9 @@ public class RoutesControllerTest extends MvcTest {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         responseFields(
-                                fieldWithPath("routes").type(JsonFieldType.ARRAY).description("경로들"),
-                                fieldWithPath("routes[].id").type(JsonFieldType.NUMBER).description("경로 식별자"),
-                                fieldWithPath("routes[].name").type(JsonFieldType.STRING).description("경로 이름"),
-                                fieldWithPath("routes[].places[].id").type(JsonFieldType.NUMBER).description("장소 식별자"),
-                                fieldWithPath("routes[].places[].name").type(JsonFieldType.STRING).description("장소 이름")
+                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("경로 식별자"),
+                                fieldWithPath("[].name").type(JsonFieldType.STRING).description("경로 이름"),
+                                fieldWithPath("[].image").type(JsonFieldType.STRING).description("경로에 포함된 첫번째 장소 이미지")
                         )
                 ));
     }

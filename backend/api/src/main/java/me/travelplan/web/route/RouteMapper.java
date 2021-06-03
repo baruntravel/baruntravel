@@ -88,17 +88,12 @@ public interface RouteMapper {
                 .build();
     }
 
-    default RouteResponse.GetMine toGetMineResponse(List<Route> routes) {
-        return RouteResponse.GetMine.builder()
-                .routes(routes.stream().map(route -> RouteDto.RouteNameWithPlaceName.builder()
-                        .id(route.getId())
-                        .name(route.getName())
-                        .places(route.getRoutePlaces().stream().map(routePlace -> RouteDto.PlaceWithIdAndName.builder()
-                                .id(routePlace.getPlace().getId())
-                                .name(routePlace.getPlace().getName()).build()).collect(Collectors.toList()))
-                        .build()
-                ).collect(Collectors.toList()))
-                .build();
+    default List<RouteResponse.GetMine> toGetMineResponse(List<Route> routes) {
+        return routes.stream().map(route -> RouteResponse.GetMine.builder()
+                .id(route.getId())
+                .name(route.getName()).image(route.getRoutePlaces().get(0).getPlace().getThumbnail().getUrl()).build())
+                .collect(Collectors.toList());
+
     }
 
     default List<RouteResponse.GetListByRegion> toListResponse(List<Route> routes) {
@@ -127,7 +122,7 @@ public interface RouteMapper {
         return getList;
     }
 
-    default List<RouteResponse.GetListByCoordinate> toGetListResponse(List<Route> routes, CustomUserDetails customUserDetails) {
+    default List<RouteResponse.GetListByCoordinate> toListResponse(List<Route> routes, CustomUserDetails customUserDetails) {
         List<RouteResponse.GetListByCoordinate> getList = new ArrayList<>();
         routes.forEach(route -> {
             List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();

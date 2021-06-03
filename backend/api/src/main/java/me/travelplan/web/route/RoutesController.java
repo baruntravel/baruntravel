@@ -34,14 +34,13 @@ public class RoutesController {
     @GetMapping("/coordinate")
     public Page<RouteResponse.GetListByCoordinate> getListByCoordinate(PageDto pageDto, RouteRequest.GetListCoordinate request, @CurrentUser CustomUserDetails customUserDetails) {
         List<Route> content = routeService.getListByCoordinate(request, pageDto).getContent();
-        List<RouteResponse.GetListByCoordinate> getList = routeMapper.toGetListResponse(content, customUserDetails);
+        List<RouteResponse.GetListByCoordinate> getList = routeMapper.toListResponse(content, customUserDetails);
 
         return new PageImpl<>(getList, pageDto.of(), content.size());
     }
 
-
     @GetMapping("/my")
-    public RouteResponse.GetMine getMine(@CurrentUser CustomUserDetails user) {
+    public List<RouteResponse.GetMine> getMine(@CurrentUser CustomUserDetails user) {
         return routeMapper.toGetMineResponse(routeService.getByUser(user.getUser()));
     }
 }
