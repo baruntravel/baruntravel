@@ -1,0 +1,13 @@
+.WishListHeader {
+  margin-bottom: 4px;
+}
+
+.name {
+  margin-left: 12px;
+  font-weight: 900;
+  color: #80e3e3;
+}
+.name,
+.title {
+  font-size: 16px;
+}

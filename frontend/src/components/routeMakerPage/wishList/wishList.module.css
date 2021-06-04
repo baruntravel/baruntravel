@@ -1,12 +1,19 @@
+.WishList {
+  margin: 12px 12px;
+  bottom: 7vh;
+  height: 100%;
+}
+
 .listContainer {
   display: flex;
   overflow-x: auto;
-  margin: 0 12px;
+  margin: 0;
+  height: 80%;
 }
 
 .cardContainer {
   width: 30vw;
-  height: 15vh;
+  height: 100%;
   margin-right: 12px;
   flex: 0 0 auto;
 }
