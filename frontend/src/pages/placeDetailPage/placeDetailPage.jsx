@@ -78,11 +78,13 @@ const PlaceDetailPage = (props) => {
   const handleSetReviewDatas = useCallback((updated) => {
     setReviewDatas(updated);
   }, []);
+
   const onGetReviewList = useCallback(async () => {
     // 해당 place의 리뷰를 받아오는 함수
     const reviews = await onReceivePlaceReview(placeId, params);
     setReviewDatas(reviews.content);
   }, [placeId]);
+
   const onUploadReview = useCallback(
     (formData) => {
       onUploadPlaceReview(placeId, formData);
@@ -98,9 +100,9 @@ const PlaceDetailPage = (props) => {
         const images = placeDetailInfo.images.map((image) => image.url);
         setPlaceDetail(placeDetailInfo);
         setImages(images);
+        setLoading(false); // loading false를 지도를 그려주기 전에 해줘야한다 -> 렌더링 되지 않은 맵 컨테이너를 참조하기 때문에
         makeMapImage(placeDetailInfo.x, placeDetailInfo.y);
       }
-      setLoading(false);
     }
     // map image 만드는 함수
     function makeMapImage(x, y) {
@@ -120,6 +122,7 @@ const PlaceDetailPage = (props) => {
     getPlaceDetail();
     onGetReviewList();
     window.scrollTo(0, 0);
+    // setLoading(false);
   }, [placeId]);
 
   const afterSliderChange = useCallback((index) => {
@@ -193,12 +196,12 @@ const PlaceDetailPage = (props) => {
             <span className={styles.body__placeAddress}>{placeDetail.address}</span>
           </div>
           <div className={styles.body__mapContainer}>
-            <div className={styles.body__map} />
+            <div ref={mapRef} className={styles.body__map} />
           </div>
         </div>
         <div className={styles.buttonBox}>
           <button className={styles.button}>장바구니 카트에 담기</button>
-          <span className={styles.wishCount}>{`${placeDetail.likeCount}명이 좋아해요`}</span>
+          <span className={styles.wishCount}>{`${placeDetail.likes}명이 좋아해요`}</span>
         </div>
         <div className={styles.reviewList}>
           <ReviewList
