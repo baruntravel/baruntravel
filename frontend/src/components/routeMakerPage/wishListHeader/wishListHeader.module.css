@@ -1,7 +1,10 @@
 .WishListHeader {
-  margin-bottom: 4px;
+  margin: 4px 0;
 }
-
+.header {
+  display: flex;
+  align-items: center;
+}
 .name {
   margin-left: 12px;
   font-weight: 900;

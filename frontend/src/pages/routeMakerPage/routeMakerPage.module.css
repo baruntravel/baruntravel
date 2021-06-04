@@ -1,6 +1,7 @@
 .mapContainer {
-  height: 55vh;
+  height: 60vh;
 }
 .wishListContainer {
-  height: 28vh;
+  display: flex;
+  height: 25vh;
 }

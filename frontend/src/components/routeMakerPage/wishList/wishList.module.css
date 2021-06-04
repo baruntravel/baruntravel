@@ -1,5 +1,5 @@
 .WishList {
-  margin: 12px 12px;
+  margin: 0 12px;
   bottom: 7vh;
   height: 100%;
 }
@@ -8,11 +8,12 @@
   display: flex;
   overflow-x: auto;
   margin: 0;
-  height: 80%;
+  height: 75%;
+  padding-bottom: 2px;
 }
 
 .cardContainer {
-  width: 30vw;
+  width: 33%;
   height: 100%;
   margin-right: 12px;
   flex: 0 0 auto;

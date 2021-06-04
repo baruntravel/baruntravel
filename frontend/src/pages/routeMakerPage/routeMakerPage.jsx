@@ -8,6 +8,7 @@ import styles from "./routeMakerPage.module.css";
 
 const RouteMakerPage = (props) => {
   const [routeDetail, setRouteDetail] = useState({});
+
   useEffect(() => {
     async function getRouteDetailInfo() {
       // 루트 상세페이지의 정보를 받아옴
@@ -20,11 +21,7 @@ const RouteMakerPage = (props) => {
     <div className={styles.RouteMakerPage}>
       <Header />
       <div className={styles.mapContainer}>
-        <ImageMap
-          places={routeDetail.places}
-          centerX={routeDetail.centerX}
-          centerY={routeDetail.centerY}
-        />
+        <ImageMap places={routeDetail.places} centerX={routeDetail.centerX} centerY={routeDetail.centerY} />
       </div>
       <div className={styles.wishListContainer}>
         <WishList />
