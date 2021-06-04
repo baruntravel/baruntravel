@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 const Navbar = () => {
   const history = useHistory();
   const searchClicked = () => history.push("/"); // 둘러보기 페이지
-  const routeClicked = () => history.push("/"); // 루트 만들기 페이지
+  const routeClicked = () => history.push("/routemaker"); // 루트 만들기 페이지
   const homeClicked = () => history.push("/");
   const heartClicked = () => history.push("/wishlist");
   const userClicked = () => history.push("/mypage");

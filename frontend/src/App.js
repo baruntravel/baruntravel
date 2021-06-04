@@ -72,6 +72,10 @@ function App() {
             <WishListPage />
           </Route>
 
+          <Route exact path="/routemaker">
+            <RouteMakerPage />
+          </Route>
+
           <Route exact path="/test2">
             <ComunityPage />
           </Route>
