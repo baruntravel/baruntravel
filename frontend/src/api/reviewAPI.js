@@ -2,7 +2,7 @@ import axios from "axios";
 
 // 경로 리뷰 API
 
-// 경로 생성
+// 경로 리뷰 생성
 export const onUploadRouteReview = (routeId, formData) => {
   return axios
     .post(`/route/${routeId}/review`, formData, {
@@ -15,7 +15,7 @@ export const onUploadRouteReview = (routeId, formData) => {
     });
 };
 
-// 경로 상세 정보 받아오기
+// 경로 리뷰 받아오기
 export const onReceiveRouteReview = (routeId, page, size, sortType) => {
   return axios
     .get(`/route/${routeId}/reviews`, {
@@ -67,19 +67,23 @@ export const onHandleRouteReviewLike = (reviewId) => {
 };
 
 // 장소 리뷰 API
-export const onReceivePlaceReview = (placeId) => {
-  // 장소 리뷰 받아오기
+
+// 장소 리뷰 받아오기
+export const onReceivePlaceReview = (placeId, params) => {
   return axios
-    .get(`/place/${placeId}/review`)
+    .get(`/place/${placeId}/review`, {
+      params,
+    })
     .then((res) => {
-      return res.data.reviews;
+      return res.data;
     })
     .catch((error) => {
       console.error(error);
-      return false;
+      throw new Error(`unExpected Error ${error}`);
     });
 };
 
+// 장소 리뷰 작성
 export const onUploadPlaceReview = (placeId, formData) => {
   return axios
     .post(`/place/${placeId}/review`, formData, {
