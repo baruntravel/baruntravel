@@ -13,9 +13,9 @@ const MyRouteList = (props) => {
       if (result) {
         setMyRoute(result);
       }
+      setLoading(false);
     }
     getRoute();
-    setLoading(false);
   }, []);
   if (loading) {
     return (
