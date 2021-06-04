@@ -83,13 +83,14 @@ const PlaceDetailPage = (props) => {
     // 해당 place의 리뷰를 받아오는 함수
     const reviews = await onReceivePlaceReview(placeId, params);
     setReviewDatas(reviews.content);
-  }, [placeId]);
+  }, [params, placeId]);
 
   const onUploadReview = useCallback(
-    (formData) => {
-      onUploadPlaceReview(placeId, formData);
+    async (formData) => {
+      await onUploadPlaceReview(placeId, formData);
+      onGetReviewList();
     },
-    [placeId]
+    [onGetReviewList, placeId]
   );
 
   useEffect(() => {

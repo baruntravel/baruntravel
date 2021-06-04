@@ -33,8 +33,8 @@ export const onReceiveRouteReview = (routeId, page, size, sortType) => {
 };
 
 // 경로 리뷰 수정하기
-export const onEditRouteReview = async (routeId, formData) => {
-  return await axios
+export const onEditRouteReview = (routeId, formData) => {
+  return axios
     .post(`/route/review/${routeId}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
@@ -46,8 +46,8 @@ export const onEditRouteReview = async (routeId, formData) => {
 };
 
 // 경로 리뷰 삭제하기
-export const onDeleteRouteReview = async (routeId) => {
-  await axios
+export const onDeleteRouteReview = (routeId) => {
+  axios
     .delete(`/route/review/${routeId}`)
     .then((res) => true)
     .catch((error) => {
@@ -89,13 +89,36 @@ export const onUploadPlaceReview = (placeId, formData) => {
     .post(`/place/${placeId}/review`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
-    .then((res) => true)
+    .then((res) => res.id)
     .catch((error) => {
       console.error(error);
       throw new Error(`unExpected Error ${error}`);
     });
 };
 
+// 장소 리뷰 수정
 // export const onEditPlaceReview = (placeId, routeId, formData) => {
 //   return axios
 // }
+
+// 장소 리뷰 삭제하기
+export const onDeletePlaceReview = (placeId, reviewId) => {
+  axios
+    .delete(`/place/${placeId}/review/${reviewId}`)
+    .then((res) => true)
+    .catch((error) => {
+      console.error(error);
+      throw new Error(`unHandled error ${error}`);
+    });
+};
+
+// 장소 리뷰 좋아요
+export const onHandlePlaceReviewLike = (placeId, reviewId) => {
+  axios
+    .post(`/place/${placeId}/review/${reviewId}/like`)
+    .then((res) => true)
+    .catch((error) => {
+      console.error(error);
+      throw new Error(`unExpected Error ${error}`);
+    });
+};

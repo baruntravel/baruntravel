@@ -91,7 +91,8 @@ const ReviewList = ({
           <div key={index} className={styles.reviewContainer}>
             <ReviewCard
               review={item}
-              isUserReview={item.creator.name === userStates.name}
+              creator={item.createdBy || item.creator}
+              isUserReview={item.mine || item.creator.name === userStates.name}
               onOpenDeleteConfirm={onOpenConfirm}
               onHandleSelected={onHandleSelected}
               onOpenEditForm={onOpenEditForm}
@@ -102,11 +103,7 @@ const ReviewList = ({
         ))}
       </div>
       {openDeleteConfrim && (
-        <DeleteConfirm
-          onClose={onCloseConfirm}
-          onDeleteItem={onHandleDeleteReview}
-          deleteItemId={selectedCard.id}
-        />
+        <DeleteConfirm onClose={onCloseConfirm} onDeleteItem={onHandleDeleteReview} deleteItemId={selectedCard.id} />
       )}
       <Drawer // 리뷰 작성
         className={styles.reviewFormDrawer}
@@ -116,10 +113,7 @@ const ReviewList = ({
         bodyStyle={{ padding: 0 }}
         onClose={onCloseReviewWrite}
       >
-        <ReviewForm
-          onUploadReview={onUploadReview}
-          onClose={onCloseReviewWrite}
-        />
+        <ReviewForm onUploadReview={onUploadReview} onClose={onCloseReviewWrite} />
       </Drawer>
       <Drawer // 리뷰 수정
         className={styles.reviewFormDrawer}
@@ -129,11 +123,7 @@ const ReviewList = ({
         bodyStyle={{ padding: 0 }}
         onClose={onCloseEditForm}
       >
-        <ReviewForm
-          prevReview={selectedCard}
-          onUploadReview={onHandleEditReview}
-          onClose={onCloseEditForm}
-        />
+        <ReviewForm prevReview={selectedCard} onUploadReview={onHandleEditReview} onClose={onCloseEditForm} />
       </Drawer>
     </div>
   );

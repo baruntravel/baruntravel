@@ -90,6 +90,7 @@ const RouteDetailPage = (props) => {
   const handleSetReviewDatas = useCallback((updated) => {
     setReviewDatas(updated);
   }, []);
+
   const onUploadReview = useCallback(
     async (formData) => {
       await onUploadRouteReview(routeId, formData); // 추후에 root ID 동적으로 받아오는 걸 구현 후 수정
@@ -97,12 +98,22 @@ const RouteDetailPage = (props) => {
     },
     [onGetReviewList, routeId]
   );
-  const onEditReview = useCallback((reviewId, formData) => {
-    onEditRouteReview(reviewId, formData);
-  }, []);
-  const onDeleteReview = useCallback((id) => {
-    onDeleteRouteReview(id);
-  }, []);
+
+  const onEditReview = useCallback(
+    async (reviewId, formData) => {
+      await onEditRouteReview(reviewId, formData);
+      onGetReviewList();
+    },
+    [onGetReviewList]
+  );
+
+  const onDeleteReview = useCallback(
+    async (id) => {
+      await onDeleteRouteReview(id);
+      onGetReviewList();
+    },
+    [onGetReviewList]
+  );
   const onLikeReview = useCallback((reviewId) => {
     onHandleRouteReviewLike(reviewId);
   }, []);
