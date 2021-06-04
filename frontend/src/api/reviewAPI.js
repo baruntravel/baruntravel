@@ -103,7 +103,7 @@ export const onUploadPlaceReview = (placeId, formData) => {
 
 // 장소 리뷰 삭제하기
 export const onDeletePlaceReview = (placeId, reviewId) => {
-  axios
+  return axios
     .delete(`/place/${placeId}/review/${reviewId}`)
     .then((res) => true)
     .catch((error) => {
@@ -114,7 +114,7 @@ export const onDeletePlaceReview = (placeId, reviewId) => {
 
 // 장소 리뷰 좋아요
 export const onHandlePlaceReviewLike = (placeId, reviewId) => {
-  axios
+  return axios
     .post(`/place/${placeId}/review/${reviewId}/like`)
     .then((res) => true)
     .catch((error) => {

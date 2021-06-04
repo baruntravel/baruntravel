@@ -9,7 +9,7 @@ import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
 import { onReceivePlace } from "../../api/placeAPI";
-import { onReceivePlaceReview, onUploadPlaceReview } from "../../api/reviewAPI";
+import { onDeletePlaceReview, onReceivePlaceReview, onUploadPlaceReview } from "../../api/reviewAPI";
 import { useHistory } from "react-router-dom";
 import Loading from "../../components/common/loading/loading";
 import DetailHeader from "../../components/common/detailHeader/detailHeader";
@@ -88,6 +88,14 @@ const PlaceDetailPage = (props) => {
   const onUploadReview = useCallback(
     async (formData) => {
       await onUploadPlaceReview(placeId, formData);
+      onGetReviewList();
+    },
+    [onGetReviewList, placeId]
+  );
+
+  const onDeleteReview = useCallback(
+    async (reviewId) => {
+      await onDeletePlaceReview(placeId, reviewId);
       onGetReviewList();
     },
     [onGetReviewList, placeId]
@@ -210,6 +218,7 @@ const PlaceDetailPage = (props) => {
             reviewDatas={reviewDatas}
             onOpenPortalAuth={onOpenPortalAuth}
             onUploadReview={onUploadReview}
+            onDeleteReview={onDeleteReview}
             setReviewDatas={handleSetReviewDatas}
           />
         </div>
