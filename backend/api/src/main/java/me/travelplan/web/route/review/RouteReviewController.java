@@ -24,7 +24,7 @@ public class RouteReviewController {
 
     @PostMapping("/{id}/review")
     @ResponseStatus(HttpStatus.CREATED)
-    public RouteReviewResponse.GetOnlyId create(@PathVariable Long id, RouteReviewRequest.CreateOrUpdateReview request) {
+    public RouteReviewResponse.GetOnlyId create(@PathVariable Long id, RouteReviewRequest.Create request) {
         return routeReviewMapper.toReviewIdResponse(routeReviewService.create(request, id));
     }
 
@@ -37,7 +37,7 @@ public class RouteReviewController {
     }
 
     @PostMapping("/review/{id}")
-    public void update(@PathVariable Long id, RouteReviewRequest.CreateOrUpdateReview request, @CurrentUser CustomUserDetails userDetails) {
+    public void update(@PathVariable Long id, RouteReviewRequest.Update request, @CurrentUser CustomUserDetails userDetails) {
         routeReviewService.update(id, request, userDetails.getUser());
     }
 

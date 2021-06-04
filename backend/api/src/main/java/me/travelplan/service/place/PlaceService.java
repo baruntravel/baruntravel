@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class PlaceService {
     private final PlaceRepository placeRepository;
     private final PlaceCategoryRepository placeCategoryRepository;

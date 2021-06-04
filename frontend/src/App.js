@@ -14,6 +14,7 @@ import ComunityPage from "./pages/comunityPage/comunityPage";
 import DetailProfilePage from "./pages/detailProfilePage/detailProfilePage";
 import "antd/dist/antd.css";
 import WishListPage from "./pages/wishListPage/wishListPage";
+import RouteMakerPage from "./pages/routeMakerPage/routeMakerPage";
 // import { lazy } from "react";
 // const RouteDetailPage = lazy(() =>
 //   import("./pages/routeDetailPage/routeDetailPage")
@@ -71,13 +72,17 @@ function App() {
             <WishListPage />
           </Route>
 
+          <Route exact path="/routemaker">
+            <RouteMakerPage />
+          </Route>
+
           <Route exact path="/test2">
             <ComunityPage />
           </Route>
 
           {/* 테스트 */}
           <Route exact path="/test">
-            <ReviewDetailPage />
+            <RouteMakerPage />
           </Route>
         </Router>
       </RecoilRoot>

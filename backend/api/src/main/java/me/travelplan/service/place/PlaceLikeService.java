@@ -8,11 +8,13 @@ import me.travelplan.service.place.repository.PlaceLikeRepository;
 import me.travelplan.service.place.repository.PlaceRepository;
 import me.travelplan.service.user.domain.User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class PlaceLikeService {
     private final PlaceRepository placeRepository;
     private final PlaceLikeRepository placeLikeRepository;

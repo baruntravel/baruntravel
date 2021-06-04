@@ -19,7 +19,9 @@ const DetailProfilePage = (props) => {
   const [selected, setSelected] = useState(location.state?.link || "내경로");
 
   const onHandleSelector = useCallback((e) => {
-    Array.from(selectorListRef.current.children).map((item) => item.classList.remove(styles["selected__color"])); // 선택 색상 모두 삭제
+    Array.from(selectorListRef.current.children).map((item) =>
+      item.classList.remove(styles["selected__color"])
+    ); // 선택 색상 모두 삭제
     const target = e.target.closest("li");
     if (target) {
       const link = target.dataset.link;
@@ -36,13 +38,15 @@ const DetailProfilePage = (props) => {
     const selectorList = Array.from(selectorListRef.current.children);
     const link = location.state?.link;
     if (link) {
-      const selectedElement = selectorList.filter((el) => el.dataset.link === link).pop();
+      const selectedElement = selectorList
+        .filter((el) => el.dataset.link === link)
+        .pop();
       selectedElement.classList.add(styles["selected__color"]); // 해당 영역에 색칠
     } else {
       selectorList[0].classList.add(styles["selected__color"]); // 기본 첫번째로 색칠
     }
     history.replace("/mypage", {});
-  }, []);
+  }, [history, location.state?.link]);
 
   return (
     <div className={styles.DetailProfile}>
@@ -61,7 +65,11 @@ const DetailProfilePage = (props) => {
           />
           <span className={styles.nickname}>{userStates.name}</span>
         </div>
-        <ul ref={selectorListRef} className={styles.selectorBox} onClick={onHandleSelector}>
+        <ul
+          ref={selectorListRef}
+          className={styles.selectorBox}
+          onClick={onHandleSelector}
+        >
           <li className={styles.selector} data-link="내경로">
             <span className={styles.selector__title}>내 경로</span>
           </li>

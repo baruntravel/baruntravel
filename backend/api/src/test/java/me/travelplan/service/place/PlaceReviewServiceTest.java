@@ -3,10 +3,14 @@ package me.travelplan.service.place;
 import me.travelplan.service.file.FileService;
 import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.domain.PlaceReview;
+import me.travelplan.service.place.domain.PlaceReviewLike;
+import me.travelplan.service.place.exception.PlaceReviewNotFoundException;
 import me.travelplan.service.place.exception.PlaceReviewNotUpdatableException;
 import me.travelplan.service.place.repository.PlaceRepository;
+import me.travelplan.service.place.repository.PlaceReviewLikeRepository;
 import me.travelplan.service.place.repository.PlaceReviewRepository;
 import me.travelplan.service.user.domain.User;
+import me.travelplan.web.common.PageDto;
 import me.travelplan.web.place.review.PlaceReviewDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,9 +18,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.util.Collections;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -35,6 +43,8 @@ public class PlaceReviewServiceTest {
     @Mock
     private PlaceReviewRepository placeReviewRepository;
     @Mock
+    private PlaceReviewLikeRepository placeReviewLikeRepository;
+    @Mock
     private FileService fileService;
 
     @Test
@@ -49,6 +59,18 @@ public class PlaceReviewServiceTest {
 
         placeReviewService.createReview(1L, request);
         verify(placeReviewRepository, times(1)).save(any());
+    }
+
+    @Test
+    @DisplayName("장소 리뷰 리스트 조회 테스트")
+    public void getReviews() {
+        PageDto pageDto = new PageDto(1, 10);
+        Page<PlaceReview> page = new PageImpl<>(IntStream.range(0, 2).mapToObj(i -> PlaceReview.builder().build()).collect(Collectors.toList()), pageDto.of(), 2);
+        given(placeReviewRepository.findAllByPlaceId(any(), any(), any())).willReturn(page);
+
+        placeReviewService.getReviews(1L, pageDto);
+
+        verify(placeReviewRepository).findAllByPlaceId(any(), any(), any());
     }
 
     @Test
@@ -94,5 +116,38 @@ public class PlaceReviewServiceTest {
         review.setCreatedBy(createdBy);
         given(placeReviewRepository.findById(any())).willReturn(Optional.of(review));
         assertThrows(PlaceReviewNotUpdatableException.class, () -> placeReviewService.checkReviewUpdatable(1L, user));
+    }
+
+    @Test
+    @DisplayName("장소 리뷰 좋아요 생성 성공")
+    public void createLike() {
+        User user = User.builder().id(1L).build();
+        given(placeReviewRepository.findById(1L)).willReturn(Optional.of(PlaceReview.builder().build()));
+        given(placeReviewLikeRepository.findByPlaceReviewIdAndCreatedBy(any(), any())).willReturn(Optional.empty());
+
+        placeReviewService.createOrDeleteLike(1L, user);
+
+        verify(placeReviewLikeRepository).save(any());
+    }
+
+    @Test
+    @DisplayName("장소 리뷰 좋아요 삭제 성공")
+    public void deleteLike() {
+        User user = User.builder().id(1L).build();
+        given(placeReviewRepository.findById(1L)).willReturn(Optional.of(PlaceReview.builder().build()));
+        given(placeReviewLikeRepository.findByPlaceReviewIdAndCreatedBy(any(), any())).willReturn(Optional.of(PlaceReviewLike.builder().build()));
+
+        placeReviewService.createOrDeleteLike(1L, user);
+
+        verify(placeReviewLikeRepository).delete(any());
+    }
+
+    @Test
+    @DisplayName("예외테스트: 없는 경로를 좋아요하면 예외 발생")
+    public void createOrDeleteLikeNotFoundPlaceReview() {
+        User user = User.builder().id(1L).build();
+        given(placeReviewRepository.findById(1L)).willReturn(Optional.empty());
+
+        assertThrows(PlaceReviewNotFoundException.class, () -> placeReviewService.createOrDeleteLike(1L, user));
     }
 }

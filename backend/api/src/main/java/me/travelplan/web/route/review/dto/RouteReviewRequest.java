@@ -11,9 +11,21 @@ public class RouteReviewRequest {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class CreateOrUpdateReview {
+    public static class Create {
         private String content;
         private Double score;
-        List<MultipartFile> files;
+        private List<MultipartFile> files;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Update {
+        private String content;
+        private Double score;
+        private List<MultipartFile> files;
+        private Boolean fileChange;
     }
 }

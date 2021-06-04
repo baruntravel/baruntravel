@@ -110,7 +110,7 @@ class RouteReviewControllerTest extends MvcTest {
             return routeReview;
         }).collect(Collectors.toList());
 
-        given(routeReviewService.getList(any(),any())).willReturn(new PageImpl<>(routeReviews, PageRequest.of(0, 10), routeReviews.size()));
+        given(routeReviewService.getList(any(), any())).willReturn(new PageImpl<>(routeReviews, PageRequest.of(0, 10), routeReviews.size()));
 
 
         ResultActions results = mockMvc.perform(
@@ -167,6 +167,7 @@ class RouteReviewControllerTest extends MvcTest {
                         .file(mockFile2)
                         .param("content", "테스트 리뷰 내용 수정")
                         .param("score", "5")
+                        .param("fileChange", "true")
                         .contentType(MediaType.MULTIPART_FORM_DATA)
                         .characterEncoding("UTF-8")
         );
@@ -180,11 +181,12 @@ class RouteReviewControllerTest extends MvcTest {
                                 parameterWithName("id").description("경로 리뷰 식별자")
                         ),
                         requestParts(
-                                partWithName("files").description("리뷰수정에 추가할 파일")
+                                partWithName("files").description("리뷰수정에 추가할 파일(기존 파일을 유지하는 것이면 null, 기존 파일에 추가하고 싶은 파일 전달)")
                         ),
                         requestParameters(
                                 parameterWithName("content").description("경로 리뷰 수정 내용"),
-                                parameterWithName("score").description("경로 수정 점수")
+                                parameterWithName("score").description("경로 리뷰 수정 점수"),
+                                parameterWithName("fileChange").description("경로 리뷰 이미지가 수정되었다면 true")
                         )
                 ));
     }
