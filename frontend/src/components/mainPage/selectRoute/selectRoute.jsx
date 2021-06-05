@@ -5,6 +5,10 @@ import { useRecoilState } from "recoil";
 
 const SelectRoute = ({ routes }) => {
   let history = useHistory();
+  if (routes === []) {
+    return [];
+  }
+
   const showAllRoute = () => history.push("/route-all");
   const RouteListElem = () => {
     let routeArray = [];

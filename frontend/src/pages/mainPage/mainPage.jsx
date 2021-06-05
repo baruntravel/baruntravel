@@ -18,9 +18,9 @@ const MainPage = () => {
   //TODO : route 추천순으로 가져오기
 
   useEffect(() => {
-    getRoute(1);
-    getRoute(2);
-    getRoute(3);
+    // getRoute(1);
+    // getRoute(2);
+    // getRoute(3);
   }, []);
 
   async function getRoute(id) {
