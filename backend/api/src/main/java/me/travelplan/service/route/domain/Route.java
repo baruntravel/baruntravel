@@ -22,6 +22,7 @@ public class Route extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String region;
     @Column(name = "min_x")
     private Double minX;
     @Column(name = "min_y")
@@ -72,6 +73,7 @@ public class Route extends BaseEntity {
     public static Route create(String name, List<RoutePlace> routePlaces) {
         Route route = Route.builder()
                 .name(name)
+                .region("부산")//TODO 나중에 업로드 구현되면 바꿔야함
                 .build();
         routePlaces.forEach(route::addPlace);
         return route;

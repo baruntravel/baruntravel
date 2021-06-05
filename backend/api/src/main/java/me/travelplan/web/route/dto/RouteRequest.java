@@ -34,10 +34,20 @@ public class RouteRequest {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class GetList {
+    public static class GetListCoordinate {
         private Double maxX;
         private Double minX;
         private Double maxY;
         private Double minY;
+    }
+
+
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetListByRegion {
+        private String region;
     }
 }

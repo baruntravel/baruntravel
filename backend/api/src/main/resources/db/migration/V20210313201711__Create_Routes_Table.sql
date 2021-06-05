@@ -3,6 +3,7 @@ CREATE TABLE `routes`
 (
     `id`         BIGINT       NOT NULL AUTO_INCREMENT,
     `name`       VARCHAR(255) NOT NULL,
+    `region`     VARCHAR(50)  NOT NULL,
     `min_x`      DOUBLE       NOT NULL,
     `min_y`      DOUBLE       NOT NULL,
     `max_x`      DOUBLE       NOT NULL,
