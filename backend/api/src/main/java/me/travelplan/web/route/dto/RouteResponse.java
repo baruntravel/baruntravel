@@ -37,14 +37,28 @@ public class RouteResponse {
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class GetMine {
-        List<RouteDto.RouteNameWithPlaceName> routes;
+        private Long id;
+        private String name;
+        private String image;
     }
 
     @Getter
     @Setter
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class GetList {
+    public static class GetListByRegion {
+        private Long id;
+        private String name;
+        private String region;
+        private UserDto.Response creator;
+        private List<RouteDto.PlaceWithIdAndNameAndOrder> places;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class GetListByCoordinate {
         private Long id;
         private String name;
         private Double centerX;

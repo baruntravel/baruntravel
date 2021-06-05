@@ -70,17 +70,29 @@ include::{snippets}/route-getOne/path-parameters.adoc[]
 include::{snippets}/route-getOne/http-response.adoc[]
 include::{snippets}/route-getOne/response-fields.adoc[]
 
-=== 현재 지도에 포함되어 있는 경로 리스트 가져오기
+=== 지역별 경로 리스트 가져오기
 
 `GET /routes`
 
 요청 HTTP
-include::{snippets}/routes-getList/http-request.adoc[]
-include::{snippets}/routes-getList/request-parameters.adoc[]
+include::{snippets}/routes-getList-region/http-request.adoc[]
+include::{snippets}/routes-getList-region/request-parameters.adoc[]
 
 성공 응답 HTTP
-include::{snippets}/routes-getList/http-response.adoc[]
-include::{snippets}/routes-getList/response-fields.adoc[]
+include::{snippets}/routes-getList-region/http-response.adoc[]
+include::{snippets}/routes-getList-region/response-fields.adoc[]
+
+=== 현재 지도에 포함되어 있는 경로 리스트 가져오기
+
+`GET /routes/coordinate`
+
+요청 HTTP
+include::{snippets}/routes-getList-coordinate/http-request.adoc[]
+include::{snippets}/routes-getList-coordinate/request-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/routes-getList-coordinate/http-response.adoc[]
+include::{snippets}/routes-getList-coordinate/response-fields.adoc[]
 
 === 경로 좋아요 생성 or 삭제
 

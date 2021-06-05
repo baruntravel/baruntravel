@@ -1,5 +1,10 @@
-GET {{apiUrl}}/routes?size=10&page=1&sortType=&minX=30&maxX=200&minY=10&maxY=200
+GET {{apiUrl}}/routes/coordinate?size=10&page=1&sortType=&minX=30&maxX=200&minY=10&maxY=200
 Authorization: {{ authorizationToken }}
+
+###
+GET {{apiUrl}}/routes/?size=10&page=1&sortType=&region=부산
+Authorization: {{ authorizationToken }}
+
 
 ###
 GET {{apiUrl}}/routes/my

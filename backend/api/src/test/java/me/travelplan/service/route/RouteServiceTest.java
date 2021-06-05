@@ -115,9 +115,25 @@ class RouteServiceTest {
     }
 
     @Test
-    @DisplayName("경로 리스트조회 성공")
-    public void getList() {
-        RouteRequest.GetList request = RouteRequest.GetList.builder()
+    @DisplayName("지역별 리스트조회 성공")
+    public void getListByRegion() {
+        RouteRequest.GetListByRegion request = RouteRequest.GetListByRegion.builder()
+                .region("서울")
+                .build();
+        PageDto pageDto = new PageDto(1, 10);
+        Page<Route> page = new PageImpl<>(Collections.singletonList(route), pageDto.of(), 2);
+
+        given(routeRepository.findAllByRegion(any(), any(), any())).willReturn(page);
+
+        routeService.getListByRegion(request, pageDto);
+
+        verify(routeRepository).findAllByRegion(any(), any(), any());
+    }
+
+    @Test
+    @DisplayName("현 지도 안에 있는 경로 리스트조회 성공")
+    public void getListByCoordinate() {
+        RouteRequest.GetListCoordinate request = RouteRequest.GetListCoordinate.builder()
                 .maxX(32.123)
                 .maxY(123.123)
                 .minX(32.789)
@@ -128,9 +144,9 @@ class RouteServiceTest {
 
         given(routeRepository.findAllByCoordinate(any(), any(), any(), any(), any(), any())).willReturn(page);
 
-        routeService.getList(request, pageDto);
+        routeService.getListByCoordinate(request, pageDto);
 
-        verify(routeRepository).findAllByCoordinate(any(), any(), any(), any(), any(),any());
+        verify(routeRepository).findAllByCoordinate(any(), any(), any(), any(), any(), any());
     }
 
     @Test

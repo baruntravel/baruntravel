@@ -2,8 +2,6 @@ package me.travelplan.web.route.dto;
 
 import lombok.*;
 
-import java.util.List;
-
 public class RouteDto {
     @Getter
     @Builder
@@ -25,19 +23,10 @@ public class RouteDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class RoutePlaceWithIdAndName {
+    public static class PlaceWithIdAndNameAndOrder {
         private Long id;
         private String name;
-    }
-
-    @Getter
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class RouteNameWithPlaceName {
-        private Long id;
-        private String name;
-        private List<RouteDto.RoutePlaceWithIdAndName> places;
+        private Integer order;
     }
 
     @Getter

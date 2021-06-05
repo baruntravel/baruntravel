@@ -58,7 +58,12 @@ public class RouteService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Route> getList(RouteRequest.GetList request, PageDto pageDto) {
+    public Page<Route> getListByRegion(RouteRequest.GetListByRegion request, PageDto pageDto) {
+        return routeRepository.findAllByRegion(request.getRegion(), pageDto.getSortType(), pageDto.of());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Route> getListByCoordinate(RouteRequest.GetListCoordinate request, PageDto pageDto) {
         return routeRepository.findAllByCoordinate(request.getMaxX(), request.getMinX(), request.getMaxY(), request.getMinY(), pageDto.getSortType(), pageDto.of());
     }
 
