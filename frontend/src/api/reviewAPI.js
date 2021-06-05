@@ -97,9 +97,17 @@ export const onUploadPlaceReview = (placeId, formData) => {
 };
 
 // 장소 리뷰 수정
-// export const onEditPlaceReview = (placeId, routeId, formData) => {
-//   return axios
-// }
+export const onEditPlaceReview = (placeId, reviewId, formData) => {
+  return axios
+    .post(`/place/${placeId}/review/${reviewId}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    .then((res) => true)
+    .catch((error) => {
+      console.error(error);
+      throw new Error(`unExpected Error ${error}`);
+    });
+};
 
 // 장소 리뷰 삭제하기
 export const onDeletePlaceReview = (placeId, reviewId) => {
@@ -116,6 +124,21 @@ export const onDeletePlaceReview = (placeId, reviewId) => {
 export const onHandlePlaceReviewLike = (placeId, reviewId) => {
   return axios
     .post(`/place/${placeId}/review/${reviewId}/like`)
+    .then((res) => true)
+    .catch((error) => {
+      console.error(error);
+      throw new Error(`unExpected Error ${error}`);
+    });
+};
+
+// 장소 리뷰 수정 시 이미지 삭제
+export const onDeleteImageInPlaceReview = (
+  placeId,
+  reviewId,
+  reviewImageId
+) => {
+  return axios
+    .delete(`/place/${placeId}/review/${reviewId}/image/${reviewImageId}`)
     .then((res) => true)
     .catch((error) => {
       console.error(error);
