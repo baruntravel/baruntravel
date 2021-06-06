@@ -9,7 +9,12 @@ import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
 import { onReceivePlace } from "../../api/placeAPI";
-import { onDeletePlaceReview, onReceivePlaceReview, onUploadPlaceReview } from "../../api/reviewAPI";
+import {
+  onDeleteImageInPlaceReview,
+  onDeletePlaceReview,
+  onReceivePlaceReview,
+  onUploadPlaceReview,
+} from "../../api/reviewAPI";
 import { useHistory } from "react-router-dom";
 import Loading from "../../components/common/loading/loading";
 import DetailHeader from "../../components/common/detailHeader/detailHeader";
@@ -101,6 +106,12 @@ const PlaceDetailPage = (props) => {
     [onGetReviewList, placeId]
   );
 
+  const onDeleteReviewImage = useCallback(
+    async (reviewId, reviewImageId) => {
+      await onDeleteImageInPlaceReview(placeId, reviewId, reviewImageId);
+    },
+    [placeId]
+  );
   useEffect(() => {
     async function getPlaceDetail() {
       // place 디테일 정보를 불러오는 함수
@@ -170,7 +181,10 @@ const PlaceDetailPage = (props) => {
       />
       {images && (
         <div className={styles.slideContainer} onClick={onZoom}>
-          <Slider {...settings} afterChange={(index) => afterSliderChange(index)}>
+          <Slider
+            {...settings}
+            afterChange={(index) => afterSliderChange(index)}
+          >
             {images.map((imgSrc, index) => (
               <div key={index} className={styles.imageContainer}>
                 <img className={styles.image} src={imgSrc} alt="placeImage" />
@@ -191,18 +205,24 @@ const PlaceDetailPage = (props) => {
             <div className={styles.body__rate}>
               <StarFilled style={{ color: "#eb2f96" }} />
               <span className={styles.body__score}>{placeDetail.score}</span>
-              <span className={styles.body__reviewCount}>({reviewDatas.length})</span>
+              <span className={styles.body__reviewCount}>
+                ({reviewDatas.length})
+              </span>
             </div>
             <span className={styles.body__address}>{placeDetail.address}</span>
           </div>
-          <span className={styles.body__openHour}>영업시간 : {placeDetail.openHour}</span>
+          <span className={styles.body__openHour}>
+            영업시간 : {placeDetail.openHour}
+          </span>
         </div>
         <div className={styles.body__placeLocation}>
           <div className={styles.body__titleContainer}>
             <h2 className={styles.body__locationTitle}>위치</h2>
           </div>
           <div className={styles.body__addressContainer}>
-            <span className={styles.body__placeAddress}>{placeDetail.address}</span>
+            <span className={styles.body__placeAddress}>
+              {placeDetail.address}
+            </span>
           </div>
           <div className={styles.body__mapContainer}>
             <div ref={mapRef} className={styles.body__map} />
@@ -210,7 +230,9 @@ const PlaceDetailPage = (props) => {
         </div>
         <div className={styles.buttonBox}>
           <button className={styles.button}>장바구니 카트에 담기</button>
-          <span className={styles.wishCount}>{`${placeDetail.likes}명이 좋아해요`}</span>
+          <span
+            className={styles.wishCount}
+          >{`${placeDetail.likes}명이 좋아해요`}</span>
         </div>
         <div className={styles.reviewList}>
           <ReviewList
@@ -223,7 +245,10 @@ const PlaceDetailPage = (props) => {
           />
         </div>
         <div className={styles.buttonBox}>
-          <button className={styles.button} onClick={onOpenMoreReview}>{`${4}개의 리뷰 더보기`}</button>
+          <button
+            className={styles.button}
+            onClick={onOpenMoreReview}
+          >{`${4}개의 리뷰 더보기`}</button>
         </div>
       </div>
       <Drawer // 리뷰 더보기
@@ -243,7 +268,9 @@ const PlaceDetailPage = (props) => {
           reviewDatas={reviewDatas}
         />
       </Drawer>
-      {showImagesZoom && <ImagesZoom images={images} onClose={onCloseZoom} index={imageIndex} />}
+      {showImagesZoom && (
+        <ImagesZoom images={images} onClose={onCloseZoom} index={imageIndex} />
+      )}
       {needLogin && <PortalAuth onClose={onClosePortalAuth} />}
     </div>
   );
