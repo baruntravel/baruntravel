@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getRouteDetail } from "../../api/routeAPI";
 import Header from "../../components/common/header/header";
 import Navbar from "../../components/common/navbar/navbar";
-import ImageMap from "../../components/routeDetailPage/imageMap/imageMap";
+import RoutePlacesMap from "../../components/routeMakerPage/routePlacesMap/routePlacesMap";
 import WishList from "../../components/routeMakerPage/wishList/wishList";
 import styles from "./routeMakerPage.module.css";
 
@@ -21,7 +21,7 @@ const RouteMakerPage = (props) => {
     <div className={styles.RouteMakerPage}>
       <Header />
       <div className={styles.mapContainer}>
-        <ImageMap places={routeDetail.places} centerX={routeDetail.centerX} centerY={routeDetail.centerY} />
+        <RoutePlacesMap places={routeDetail.places} centerX={routeDetail.centerX} centerY={routeDetail.centerY} />
       </div>
       <div className={styles.wishListContainer}>
         <WishList />
