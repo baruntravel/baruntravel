@@ -54,7 +54,7 @@ export const getFeaturedRoutes = (id) => {
 export const getRoutesByRange = (ne, sw) => {
   return axios
     .get(
-      `/routes?page=0&size=5&sortType=best&maxX=${ne.La}&minX=${sw.La}&maxY=${ne.Ma}&minY=${sw.Ma}`
+      `/routes/coordinate?page=0&size=5&sortType=best&maxX=${ne.La}&minX=${sw.La}&maxY=${ne.Ma}&minY=${sw.Ma}`
     )
     .then((res) => res.data)
     .catch((error) => {

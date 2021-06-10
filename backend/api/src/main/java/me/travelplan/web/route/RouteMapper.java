@@ -88,21 +88,42 @@ public interface RouteMapper {
                 .build();
     }
 
-    default RouteResponse.GetMine toGetMineResponse(List<Route> routes) {
-        return RouteResponse.GetMine.builder()
-                .routes(routes.stream().map(route -> RouteDto.RouteNameWithPlaceName.builder()
-                        .id(route.getId())
-                        .name(route.getName())
-                        .places(route.getRoutePlaces().stream().map(routePlace -> RouteDto.RoutePlaceWithIdAndName.builder()
-                                .id(routePlace.getPlace().getId())
-                                .name(routePlace.getPlace().getName()).build()).collect(Collectors.toList()))
-                        .build()
-                ).collect(Collectors.toList()))
-                .build();
+    default List<RouteResponse.GetMine> toGetMineResponse(List<Route> routes) {
+        return routes.stream().map(route -> RouteResponse.GetMine.builder()
+                .id(route.getId())
+                .name(route.getName()).image(route.getRoutePlaces().get(0).getPlace().getThumbnail().getUrl()).build())
+                .collect(Collectors.toList());
+
     }
 
-    default List<RouteResponse.GetList> toGetListResponse(List<Route> routes, CustomUserDetails customUserDetails) {
-        List<RouteResponse.GetList> getList = new ArrayList<>();
+    default List<RouteResponse.GetListByRegion> toListResponse(List<Route> routes) {
+        //TODO 업로드된 사진 추가
+        List<RouteResponse.GetListByRegion> getList = new ArrayList<>();
+        routes.forEach(route -> {
+            List<RouteDto.PlaceWithIdAndNameAndOrder> place = new ArrayList<>();
+            route.getRoutePlaces().forEach(routePlace -> {
+                RouteDto.PlaceWithIdAndNameAndOrder placeWithIdAndNameAndOrder = RouteDto.PlaceWithIdAndNameAndOrder.builder()
+                        .id(routePlace.getPlace().getId())
+                        .name(routePlace.getPlace().getName())
+                        .order(routePlace.getOrder())
+                        .build();
+                place.add(placeWithIdAndNameAndOrder);
+            });
+
+            RouteResponse.GetListByRegion list = RouteResponse.GetListByRegion.builder()
+                    .id(route.getId())
+                    .name(route.getName())
+                    .region(route.getRegion())
+                    .creator(UserDto.Response.from(route.getCreatedBy()))
+                    .places(place)
+                    .build();
+            getList.add(list);
+        });
+        return getList;
+    }
+
+    default List<RouteResponse.GetListByCoordinate> toListResponse(List<Route> routes, CustomUserDetails customUserDetails) {
+        List<RouteResponse.GetListByCoordinate> getList = new ArrayList<>();
         routes.forEach(route -> {
             List<RouteDto.RoutePlace> routePlaces = new ArrayList<>();
             route.getRoutePlaces().forEach(routePlace -> {
@@ -127,7 +148,7 @@ public interface RouteMapper {
             Double centerX = map.get("centerX");
             Double centerY = map.get("centerY");
 
-            RouteResponse.GetList list = RouteResponse.GetList.builder()
+            RouteResponse.GetListByCoordinate list = RouteResponse.GetListByCoordinate.builder()
                     .id(route.getId())
                     .name(route.getName())
                     .centerX(centerX)

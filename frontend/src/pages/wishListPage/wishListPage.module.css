@@ -9,12 +9,20 @@ h1 {
   margin: 0;
 }
 
-.col1 {
+.row1 {
+}
+
+.row1_row1 {
   width: 90%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin: 14px auto;
+}
+
+.row2 {
+  width: 90%;
+  margin: 0 auto;
 }
 
 .addButton {
@@ -23,23 +31,4 @@ h1 {
   outline: none;
   border: solid 1px black;
   border-radius: 8px;
-}
-
-.cardsContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.cardBox {
-  width: 90%;
-  height: 200px;
-  border: solid 1px black;
-  border-radius: 8px;
-  margin: 12px 0;
-}
-
-.imgBox {
-  width: 100%;
-  display: flex;
 }

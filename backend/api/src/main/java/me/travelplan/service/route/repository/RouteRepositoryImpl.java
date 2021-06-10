@@ -34,10 +34,24 @@ public class RouteRepositoryImpl implements RouteRepositoryCustom {
 
         QueryResults<Route> results = query.fetchResults();
 
-        List<Route> content = results.getResults();
-        long total = results.getTotal();
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
+    }
 
-        return new PageImpl<>(content, pageable, total);
+    @Override
+    public Page<Route> findAllByRegion(String region, String sortType, Pageable pageable) {
+        JPAQuery<Route> query = queryFactory.selectFrom(route)
+                .where(route.region.eq(region))
+                .join(route.createdBy).fetchJoin()
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+        if (sortType.equals("best")) {
+            query.orderBy(route.routeLikes.size().desc());
+        } else query.orderBy(route.id.desc());
+
+        QueryResults<Route> results = query.fetchResults();
+
+        return new PageImpl<>(results.getResults(), pageable, results.getTotal());
     }
 
     @Override
