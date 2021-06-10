@@ -12,6 +12,7 @@ import { onReceivePlace } from "../../api/placeAPI";
 import {
   onDeleteImageInPlaceReview,
   onDeletePlaceReview,
+  onHandlePlaceReviewLike,
   onReceivePlaceReview,
   onUploadPlaceReview,
 } from "../../api/reviewAPI";
@@ -46,6 +47,12 @@ const PlaceDetailPage = (props) => {
   const [sortType, setSortType] = useState("latest");
   const params = { page, size, sortType };
 
+  const onGetReviewList = useCallback(async () => {
+    // 해당 place의 리뷰를 받아오는 함수
+    const reviews = await onReceivePlaceReview(placeId, params);
+    setReviewDatas(reviews.content);
+  }, [params, placeId]);
+
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);
   }, []);
@@ -75,6 +82,7 @@ const PlaceDetailPage = (props) => {
       setNeedLogin(true);
     }
   }, [userStates]);
+
   const onClickUnlike = useCallback(() => {
     console.log("좋아요 취소 API 호출");
     setLiked(false);
@@ -83,12 +91,6 @@ const PlaceDetailPage = (props) => {
   const handleSetReviewDatas = useCallback((updated) => {
     setReviewDatas(updated);
   }, []);
-
-  const onGetReviewList = useCallback(async () => {
-    // 해당 place의 리뷰를 받아오는 함수
-    const reviews = await onReceivePlaceReview(placeId, params);
-    setReviewDatas(reviews.content);
-  }, [params, placeId]);
 
   const onUploadReview = useCallback(
     async (formData) => {
@@ -106,12 +108,26 @@ const PlaceDetailPage = (props) => {
     [onGetReviewList, placeId]
   );
 
+  const onLikeReview = useCallback(
+    (reviewId) => {
+      onHandlePlaceReviewLike(placeId, reviewId);
+    },
+    [placeId]
+  );
+  const onUnlikeReview = useCallback(
+    (reviewId) => {
+      onHandlePlaceReviewLike(placeId, reviewId);
+    },
+    [placeId]
+  );
+
   const onDeleteReviewImage = useCallback(
     async (reviewId, reviewImageId) => {
       await onDeleteImageInPlaceReview(placeId, reviewId, reviewImageId);
     },
     [placeId]
   );
+
   useEffect(() => {
     async function getPlaceDetail() {
       // place 디테일 정보를 불러오는 함수
@@ -240,6 +256,8 @@ const PlaceDetailPage = (props) => {
             reviewDatas={reviewDatas}
             onOpenPortalAuth={onOpenPortalAuth}
             onUploadReview={onUploadReview}
+            onLikeReview={onLikeReview}
+            onUnlikeReview={onUnlikeReview}
             onDeleteReview={onDeleteReview}
             setReviewDatas={handleSetReviewDatas}
           />
