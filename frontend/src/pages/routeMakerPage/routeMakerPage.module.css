@@ -1,3 +1,10 @@
+.cartContainer {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  z-index: 1005;
+  color: blue;
+}
 .mapContainer {
   height: 60vh;
 }
