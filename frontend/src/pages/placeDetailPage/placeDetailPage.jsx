@@ -12,6 +12,7 @@ import { onReceivePlace } from "../../api/placeAPI";
 import {
   onDeleteImageInPlaceReview,
   onDeletePlaceReview,
+  onEditPlaceReview,
   onHandlePlaceReviewLike,
   onReceivePlaceReview,
   onUploadPlaceReview,
@@ -121,6 +122,13 @@ const PlaceDetailPage = (props) => {
     [placeId]
   );
 
+  const onEditReview = useCallback(
+    async (reviewId, formData) => {
+      await onEditPlaceReview(placeId, reviewId, formData);
+      onGetReviewList();
+    },
+    [onGetReviewList, placeId]
+  );
   const onDeleteReviewImage = useCallback(
     async (reviewId, reviewImageId) => {
       await onDeleteImageInPlaceReview(placeId, reviewId, reviewImageId);
@@ -258,6 +266,7 @@ const PlaceDetailPage = (props) => {
             onUploadReview={onUploadReview}
             onLikeReview={onLikeReview}
             onUnlikeReview={onUnlikeReview}
+            onEditReview={onEditReview}
             onDeleteReview={onDeleteReview}
             setReviewDatas={handleSetReviewDatas}
           />
