@@ -1,9 +1,30 @@
 import React, { useEffect, useState } from "react";
-import styles from "./imageMap.module.css";
+import styles from "./routePlacesMap.module.css";
 const { kakao } = window;
 
-const ImageMap = ({ places, centerX, centerY }) => {
+const RoutePlacesMap = ({ places, centerX, centerY }) => {
+  const [staticMap, setStaticMap] = useState();
+  const [markers, setMarkers] = useState([]);
+
   useEffect(() => {
+    function initMap() {
+      // 초기 지생느 지역의 지도를 보여줄 것인가?
+      let staticMapContainer = document.getElementById("staticMap"),
+        staticMapOption = {
+          center: new kakao.maps.LatLng(centerY || 37.566826, centerX || 126.9786567),
+          level: 4,
+        };
+      let map = new kakao.maps.Map(staticMapContainer, staticMapOption);
+      setStaticMap(map);
+    }
+    initMap();
+  }, []);
+
+  useEffect(() => {
+    function moveLocationMap() {
+      staticMap.setCenter(new kakao.maps.LatLng(centerY, centerX));
+      // panTo로 할 것인가? (지역별이면 panTo도 괜찮을 듯 하므로 고민)
+    }
     function addMarker(position, index, map) {
       var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
         imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
@@ -19,19 +40,20 @@ const ImageMap = ({ places, centerX, centerY }) => {
         });
 
       marker.setMap(map); // 지도 위에 마커를 표출합니다
-      return marker;
+      setMarkers((markers) => [...markers, marker]);
     }
-    function displayMarker(map) {
+    function displayMarker() {
+      removeMarker();
       let bounds = new kakao.maps.LatLngBounds();
       for (let i = 0; i < places.length; i++) {
-        let placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
-        let marker = addMarker(placePosition, i, map);
+        const placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
+        addMarker(placePosition, i, staticMap);
         bounds.extend(placePosition);
       }
-      map.setBounds(bounds);
+      staticMap.setBounds(bounds);
     }
 
-    function addPath(map) {
+    function addPath() {
       let linepath = [];
       for (let i = 0; i < places.length; i++) {
         linepath.push(new kakao.maps.LatLng(places[i].y, places[i].x));
@@ -44,27 +66,35 @@ const ImageMap = ({ places, centerX, centerY }) => {
         strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
         strokeStyle: "solid", // 선의 스타일입니다
       });
-      polyline.setMap(map);
+      polyline.setMap(staticMap);
       return polyline;
     }
 
-    if (centerX && centerY && places) {
-      let staticMapContainer = document.getElementById("staticMap"),
-        staticMapOption = {
-          center: new kakao.maps.LatLng(centerY, centerX),
-          level: 4,
-        };
-      let staticMap = new kakao.maps.Map(staticMapContainer, staticMapOption);
-      displayMarker(staticMap);
-      addPath(staticMap);
+    function removeMarker() {
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+      }
+      setMarkers([]);
     }
-  }, [centerX, centerY, places]);
+
+    function removePath(path) {
+      path && path.setMap(null);
+    }
+
+    let path;
+    if (centerX && centerY && places) {
+      moveLocationMap();
+      displayMarker();
+      path = addPath();
+    }
+    return () => removePath(path);
+  }, [places, centerX, centerY]);
 
   return (
-    <div className={styles.ImageMap}>
+    <div className={styles.RoutePlacesMap}>
       <div id="staticMap" className={styles.map} />
     </div>
   );
 };
 
-export default ImageMap;
+export default RoutePlacesMap;

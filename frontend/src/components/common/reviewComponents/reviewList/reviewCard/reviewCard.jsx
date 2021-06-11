@@ -8,17 +8,8 @@ import ReviewUserProfile from "../../../reviewUserProfile/reviewUserProfile";
 
 const ReviewCard = ({
   review,
-  review: {
-    id,
-    content,
-    score,
-    creator: { name, avatarUrl, email },
-    likes,
-    isLike,
-    images,
-    createdAt,
-    updatedAt,
-  },
+  review: { id, content, score, likes, isLike, images, createdAt, updatedAt },
+  creator: { name, avatarUrl, email },
   isUserReview,
   onOpenDeleteConfirm,
   onHandleSelected,
