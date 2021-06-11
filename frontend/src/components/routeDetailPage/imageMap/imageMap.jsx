@@ -5,7 +5,6 @@ const { kakao } = window;
 const ImageMap = ({ places, centerX, centerY }) => {
   const [staticMap, setStaticMap] = useState();
   const [markers, setMarkers] = useState([]);
-  console.log(places, centerX, centerY);
   useEffect(() => {
     function initMap() {
       // 초기 지도 생성 시 어느 지역의 지도를 보여줄 것인가?
@@ -85,8 +84,8 @@ const ImageMap = ({ places, centerX, centerY }) => {
     let path;
     if (centerX && centerY) {
       moveLocationMap();
-      displayMarker(staticMap);
-      path = addPath(staticMap);
+      // displayMarker(staticMap);
+      // path = addPath(staticMap);
     }
     return () => removePath(path);
   }, [places, centerX, centerY]);

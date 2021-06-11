@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import WishListCard from "../wishListCard/wishListCard";
 import WishListHeader from "../wishListHeader/wishListHeader";
 import WishPlaceCard from "../wishPlaceCard/wishPlaceCard";
@@ -14,6 +14,17 @@ const WishList = ({ wishList, onAddCart, onDeleteCart, cartItems }) => {
   const onClosePlaceList = useCallback(() => {
     setIsClicked(false);
   }, []);
+
+  useEffect(() => {
+    console.log(cartItems, itemsInWish);
+    const updated = itemsInWish.filter((item) => cartItems.find((cartItem) => item.id === cartItem.id));
+    itemsInWish.forEach((item) => {
+      if (!updated.find((cartItem) => cartItem.id === item.id)) {
+        updated.push(item);
+      }
+    });
+    setItemsInWish(updated);
+  }, [cartItems]);
 
   return (
     <div className={styles.WishList}>
