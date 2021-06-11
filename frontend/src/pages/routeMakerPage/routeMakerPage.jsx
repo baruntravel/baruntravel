@@ -25,7 +25,13 @@ const RouteMakerPage = (props) => {
     },
     [getCartList]
   );
-
+  const onDeleteCartItem = useCallback(
+    async (placeId) => {
+      await onDeleteCartItem(placeId);
+      getCartList();
+    },
+    [getCartList]
+  );
   useEffect(() => {
     async function getRouteDetailInfo() {
       // 루트 상세페이지의 정보를 받아옴
@@ -56,7 +62,7 @@ const RouteMakerPage = (props) => {
         />
       </div>
       <div className={styles.wishListContainer}>
-        <WishList wishList={wishList} onAddCart={onAddCartItem} cartItems={cartItems} />
+        <WishList wishList={wishList} onAddCart={onAddCartItem} onDeleteCart={onDeleteCartItem} cartItems={cartItems} />
       </div>
       <Navbar />
     </div>

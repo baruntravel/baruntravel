@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const onAddCart = async (place) => {
+export const onAddCart = (place) => {
   const data = {
     id: Number(place.id),
     name: place.place_name,
@@ -11,7 +11,7 @@ export const onAddCart = async (place) => {
     categoryId: place.category_group_code,
     categoryName: place.category_group_name,
   };
-  await axios
+  return axios
     .post("/cart/place", data)
     .then((res) => {
       return true;
@@ -34,8 +34,8 @@ export const onReceiveCart = async () => {
     });
 };
 
-export const onDeleteCartItem = async (placeId) => {
-  await axios
+export const onDeleteCartItem = (placeId) => {
+  return axios
     .delete(`/cart/place/${placeId}`)
     .then((res) => {
       return true;
