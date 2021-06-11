@@ -12,4 +12,11 @@ public class WishlistResponse {
     public static class GetOnlyId {
         private Long id;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    public static class GetOnlyWishlistPlaceId {
+        private Long id;
+    }
 }

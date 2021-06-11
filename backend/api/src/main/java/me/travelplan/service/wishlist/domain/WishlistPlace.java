@@ -24,4 +24,8 @@ public class WishlistPlace extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     private Place place;
+
+    public static WishlistPlace create(Wishlist wishlist, Place place) {
+        return WishlistPlace.builder().wishlist(wishlist).place(place).build();
+    }
 }

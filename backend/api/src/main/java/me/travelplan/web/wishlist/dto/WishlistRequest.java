@@ -13,4 +13,12 @@ public class WishlistRequest {
     public static class Create {
         private String name;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AddPlace {
+        private Long placeId;
+    }
 }

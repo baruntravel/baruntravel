@@ -5,3 +5,13 @@ Authorization: {{ authorizationToken }}
 {
   "name": "첫번째 찜목록!"
 }
+
+###
+
+POST {{apiUrl}}/wishlist/1/place
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+{
+  "placeId": 1440347564
+}
