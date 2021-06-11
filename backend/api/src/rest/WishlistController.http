@@ -1,0 +1,7 @@
+POST {{apiUrl}}/wishlist
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+{
+  "name": "첫번째 찜목록!"
+}
