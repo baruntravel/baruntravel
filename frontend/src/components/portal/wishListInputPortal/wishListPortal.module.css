@@ -1,0 +1,40 @@
+.portalContainer {
+  position: fixed;
+  z-index: 1004;
+  text-align: center;
+  background-color: #00000080;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.portalBody {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 24px;
+  width: 80%;
+  margin: auto;
+  background-color: white;
+  border-radius: 12px;
+}
+.header {
+  display: flex;
+  width: 100%;
+  height: 20%;
+  justify-content: center;
+  align-items: center;
+}
+.title {
+  width: 100%;
+  font-size: 1.2em;
+  font-weight: 600;
+  color: indianred;
+  padding: 12px;
+}
+
+.inputBar {
+  border: 0.3px black solid;
+}
