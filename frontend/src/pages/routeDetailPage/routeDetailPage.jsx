@@ -90,6 +90,7 @@ const RouteDetailPage = (props) => {
   const handleSetReviewDatas = useCallback((updated) => {
     setReviewDatas(updated);
   }, []);
+
   const onUploadReview = useCallback(
     async (formData) => {
       await onUploadRouteReview(routeId, formData); // 추후에 root ID 동적으로 받아오는 걸 구현 후 수정
@@ -97,12 +98,22 @@ const RouteDetailPage = (props) => {
     },
     [onGetReviewList, routeId]
   );
-  const onEditReview = useCallback((reviewId, formData) => {
-    onEditRouteReview(reviewId, formData);
-  }, []);
-  const onDeleteReview = useCallback((id) => {
-    onDeleteRouteReview(id);
-  }, []);
+
+  const onEditReview = useCallback(
+    async (reviewId, formData) => {
+      await onEditRouteReview(reviewId, formData);
+      onGetReviewList();
+    },
+    [onGetReviewList]
+  );
+
+  const onDeleteReview = useCallback(
+    async (id) => {
+      await onDeleteRouteReview(id);
+      onGetReviewList();
+    },
+    [onGetReviewList]
+  );
   const onLikeReview = useCallback((reviewId) => {
     onHandleRouteReviewLike(reviewId);
   }, []);
@@ -126,17 +137,17 @@ const RouteDetailPage = (props) => {
     async function getRouteDetailInfo() {
       // 루트 상세페이지의 정보를 받아옴
       const route = await getRouteDetail(routeId);
-      setRouteDetail(route);
-      const route_images =
-        route && route.places.map((place) => [place.image, place.name]);
+      await setRouteDetail(route);
+      const route_images = route && route.places.map((place) => [place.image, place.name]);
       const images = route_images.filter((item) => item[0]); // 이미지가 존재하는것만 뽑아낸다.
       setPostImages(images.map((img) => img[0])); // 이미지만 뽑아서 저장
       setImages(images); // 이미지와 이름을 세트로 저장
       setImagePlaceName(images[0][1]); // 첫 이미지의 장소 이름 저장
+      setLoading(false);
     }
     getRouteDetailInfo();
     onGetReviewList();
-    setLoading(false);
+    // setLoading(false);
   }, [history, routeId, userStates]);
 
   const settings = {
@@ -161,17 +172,10 @@ const RouteDetailPage = (props) => {
   }
   return (
     <div className={styles.RouteDetailPage}>
-      <DetailHeader
-        liked={liked}
-        onHandleLike={onHandleLike}
-        onHandleUnlike={onHandleUnlike}
-      />
+      <DetailHeader liked={liked} onHandleLike={onHandleLike} onHandleUnlike={onHandleUnlike} />
       {images && (
         <div className={styles.sliderContainer} onClick={onZoom}>
-          <Slider
-            {...settings}
-            afterChange={(index) => afterSliderChange(index)}
-          >
+          <Slider {...settings} afterChange={(index) => afterSliderChange(index)}>
             {images.map((v, index) => (
               <div key={index} className={styles.imageContainer}>
                 <img className={styles.img} src={v[0]} alt="upload" />
@@ -196,20 +200,14 @@ const RouteDetailPage = (props) => {
             icon={<UserOutlined />}
           />
           <div className={styles.nicknameBox}>
-            <span className={styles.nickname}>
-              {routeDetail.creator && routeDetail.creator.name}
-            </span>
-            <span
-              className={styles.dateReview}
-            >{`${routeDetail.createdAt}`}</span>
+            <span className={styles.nickname}>{routeDetail.creator && routeDetail.creator.name}</span>
+            <span className={styles.dateReview}>{`${routeDetail.createdAt}`}</span>
           </div>
         </div>
         <div className={styles.reviewInfo}>
           <StarFilled style={{ color: "#eb2f96" }} />
           <span className={styles.reviewInfo__score}>{routeDetail.score}</span>
-          <span
-            className={styles.reviewInfo__reviewCount}
-          >{`(${routeDetail.reviewCount})`}</span>
+          <span className={styles.reviewInfo__reviewCount}>{`(${routeDetail.reviewCount})`}</span>
         </div>
         <div className={styles.titleBox}>
           <h2 className={styles.title}>{routeDetail.name}</h2>
@@ -220,11 +218,7 @@ const RouteDetailPage = (props) => {
           </div>
           {routeDetail && (
             <div className={styles.imageMap}>
-              <ImageMap
-                places={routeDetail.places}
-                centerX={routeDetail.centerX}
-                centerY={routeDetail.centerY}
-              />
+              <ImageMap places={routeDetail.places} centerX={routeDetail.centerX} centerY={routeDetail.centerY} />
             </div>
           )}
           <div className={styles.placesBox}>
@@ -240,9 +234,7 @@ const RouteDetailPage = (props) => {
           <button className={styles.button} onClick={onOpenInputName}>
             일정으로 담기
           </button>
-          <span
-            className={styles.wishCount}
-          >{`${routeDetail.reviewCount}명이 좋아해요`}</span>
+          <span className={styles.wishCount}>{`${routeDetail.reviewCount}명이 좋아해요`}</span>
         </div>
         <div className={styles.reviewList}>
           <ReviewList
@@ -266,9 +258,7 @@ const RouteDetailPage = (props) => {
         )}
       </section>
 
-      {showImagesZoom && (
-        <ImagesZoom images={postImages} onClose={onClose} index={imageIndex} />
-      )}
+      {showImagesZoom && <ImagesZoom images={postImages} onClose={onClose} index={imageIndex} />}
       {openInputName && <InputRootName onClose={onCloseInputName} />}
       {needLogin && <PortalAuth onClose={onClosePortalAuth} />}
     </div>

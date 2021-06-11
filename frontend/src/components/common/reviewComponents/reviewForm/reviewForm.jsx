@@ -9,14 +9,9 @@ import ReviewImageEdit from "./reviewImageEdit/reviewImageEdit";
 import useInput from "../../../../hooks/useInput";
 
 const ReviewForm = ({ onClose, onUploadReview, prevReview }) => {
-  const [images, setImages] = useState(
-    prevReview ? prevReview.images.map((image) => image.url) : {}
-  ); // 미리보기용 URL 저장소
+  const [images, setImages] = useState(prevReview ? prevReview.images.map((image) => image.url) : {}); // 미리보기용 URL 저장소
   const [files, setFiles] = useState({}); // 이미지 file 저장
-  const [inputContext, handleInputContext] = useInput(
-    prevReview ? prevReview.content : ""
-  );
-  console.log(prevReview.images);
+  const [inputContext, handleInputContext] = useInput(prevReview ? prevReview.content : "");
   const [rate, setRate] = useState(prevReview ? prevReview.score : 5);
   const imageInput = useRef();
   const onSubmit = useCallback(
@@ -111,24 +106,12 @@ const ReviewForm = ({ onClose, onUploadReview, prevReview }) => {
             {images &&
               Object.keys(images).map((v, index) => (
                 <div className={styles.imageUploaded} key={index}>
-                  <ReviewImageEdit
-                    key={index}
-                    item={images[v]}
-                    name={v}
-                    onDeleteImages={onDeleteImages}
-                  />
+                  <ReviewImageEdit key={index} item={images[v]} name={v} onDeleteImages={onDeleteImages} />
                 </div>
               ))}
           </div>
         </div>
-        <input
-          type="file"
-          name="image"
-          multiple
-          hidden
-          ref={imageInput}
-          onChange={onChangeImages}
-        />
+        <input type="file" name="image" multiple hidden ref={imageInput} onChange={onChangeImages} />
         <div className={styles.bottom}>
           <button className={styles.submitBtn} onClick={onSubmit}>
             리뷰 등록

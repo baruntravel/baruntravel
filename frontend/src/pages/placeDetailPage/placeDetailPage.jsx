@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./placeDetailPage.module.css";
 import Slider from "react-slick";
 // import "../kakaoMapPage/node_modules/slick-carousel/slick/slick.css";
@@ -9,7 +9,14 @@ import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
 import { onReceivePlace } from "../../api/placeAPI";
-import { onReceivePlaceReview, onUploadPlaceReview } from "../../api/reviewAPI";
+import {
+  onDeleteImageInPlaceReview,
+  onDeletePlaceReview,
+  onEditPlaceReview,
+  onHandlePlaceReviewLike,
+  onReceivePlaceReview,
+  onUploadPlaceReview,
+} from "../../api/reviewAPI";
 import { useHistory } from "react-router-dom";
 import Loading from "../../components/common/loading/loading";
 import DetailHeader from "../../components/common/detailHeader/detailHeader";
@@ -22,6 +29,7 @@ const { kakao } = window;
 const PlaceDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
   const history = useHistory();
+  const mapRef = useRef();
 
   const placeId = window.location.pathname.split("/").pop(); // url 마지막 부분이 ID이다.
 
@@ -34,6 +42,17 @@ const PlaceDetailPage = (props) => {
   const [placeDetail, setPlaceDetail] = useState({});
   const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
   const [moreReview, setMoreReview] = useState(false);
+
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(5);
+  const [sortType, setSortType] = useState("latest");
+  const params = { page, size, sortType };
+
+  const onGetReviewList = useCallback(async () => {
+    // 해당 place의 리뷰를 받아오는 함수
+    const reviews = await onReceivePlaceReview(placeId, params);
+    setReviewDatas(reviews.content);
+  }, [params, placeId]);
 
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);
@@ -64,6 +83,7 @@ const PlaceDetailPage = (props) => {
       setNeedLogin(true);
     }
   }, [userStates]);
+
   const onClickUnlike = useCallback(() => {
     console.log("좋아요 취소 API 호출");
     setLiked(false);
@@ -72,9 +92,46 @@ const PlaceDetailPage = (props) => {
   const handleSetReviewDatas = useCallback((updated) => {
     setReviewDatas(updated);
   }, []);
+
   const onUploadReview = useCallback(
-    (formData) => {
-      onUploadPlaceReview(placeId, formData);
+    async (formData) => {
+      await onUploadPlaceReview(placeId, formData);
+      onGetReviewList();
+    },
+    [onGetReviewList, placeId]
+  );
+
+  const onDeleteReview = useCallback(
+    async (reviewId) => {
+      await onDeletePlaceReview(placeId, reviewId);
+      onGetReviewList();
+    },
+    [onGetReviewList, placeId]
+  );
+
+  const onLikeReview = useCallback(
+    (reviewId) => {
+      onHandlePlaceReviewLike(placeId, reviewId);
+    },
+    [placeId]
+  );
+  const onUnlikeReview = useCallback(
+    (reviewId) => {
+      onHandlePlaceReviewLike(placeId, reviewId);
+    },
+    [placeId]
+  );
+
+  const onEditReview = useCallback(
+    async (reviewId, formData) => {
+      await onEditPlaceReview(placeId, reviewId, formData);
+      onGetReviewList();
+    },
+    [onGetReviewList, placeId]
+  );
+  const onDeleteReviewImage = useCallback(
+    async (reviewId, reviewImageId) => {
+      await onDeleteImageInPlaceReview(placeId, reviewId, reviewImageId);
     },
     [placeId]
   );
@@ -85,15 +142,11 @@ const PlaceDetailPage = (props) => {
       const placeDetailInfo = await onReceivePlace(placeId);
       if (placeDetailInfo) {
         const images = placeDetailInfo.images.map((image) => image.url);
-        makeMapImage(placeDetailInfo.x, placeDetailInfo.y);
         setPlaceDetail(placeDetailInfo);
         setImages(images);
+        setLoading(false); // loading false를 지도를 그려주기 전에 해줘야한다 -> 렌더링 되지 않은 맵 컨테이너를 참조하기 때문에
+        makeMapImage(placeDetailInfo.x, placeDetailInfo.y);
       }
-    }
-    async function getReviewList() {
-      // 해당 place의 리뷰를 받아오는 함수
-      const reviews = await onReceivePlaceReview(placeId);
-      setReviewDatas(reviews);
     }
     // map image 만드는 함수
     function makeMapImage(x, y) {
@@ -101,7 +154,7 @@ const PlaceDetailPage = (props) => {
       let marker = {
         position: markerPosition,
       };
-      let staticMapContainer = document.getElementById("staticMap"),
+      let staticMapContainer = mapRef.current,
         staticMapOption = {
           center: new kakao.maps.LatLng(y, x),
           level: 4,
@@ -111,9 +164,9 @@ const PlaceDetailPage = (props) => {
     }
     // placeDetail 받아오는 곳
     getPlaceDetail();
-    getReviewList();
+    onGetReviewList();
     window.scrollTo(0, 0);
-    setLoading(false); // loading을 조금 더 자연스럽게하는 방법을 추후에 생각해보자
+    // setLoading(false);
   }, [placeId]);
 
   const afterSliderChange = useCallback((index) => {
@@ -150,20 +203,25 @@ const PlaceDetailPage = (props) => {
         onClickLike={onClickLike}
         onClickUnlike={onClickUnlike}
       />
-      <div className={styles.slideContainer} onClick={onZoom}>
-        <Slider {...settings} afterChange={(index) => afterSliderChange(index)}>
-          {images.map((imgSrc, index) => (
-            <div key={index} className={styles.imageContainer}>
-              <img className={styles.image} src={imgSrc} alt="placeImage" />
-            </div>
-          ))}
-        </Slider>
-        <div className={styles.imageCounter}>
-          <span>
-            {imageIndex + 1} / {images.length}
-          </span>
+      {images && (
+        <div className={styles.slideContainer} onClick={onZoom}>
+          <Slider
+            {...settings}
+            afterChange={(index) => afterSliderChange(index)}
+          >
+            {images.map((imgSrc, index) => (
+              <div key={index} className={styles.imageContainer}>
+                <img className={styles.image} src={imgSrc} alt="placeImage" />
+              </div>
+            ))}
+          </Slider>
+          <div className={styles.imageCounter}>
+            <span>
+              {imageIndex + 1} / {images.length}
+            </span>
+          </div>
         </div>
-      </div>
+      )}
       <div className={styles.body}>
         <div className={styles.body__header}>
           <h1 className={styles.body__placeName}>{placeDetail.name}</h1>
@@ -191,14 +249,14 @@ const PlaceDetailPage = (props) => {
             </span>
           </div>
           <div className={styles.body__mapContainer}>
-            <div id="staticMap" className={styles.body__map} />
+            <div ref={mapRef} className={styles.body__map} />
           </div>
         </div>
         <div className={styles.buttonBox}>
           <button className={styles.button}>장바구니 카트에 담기</button>
           <span
             className={styles.wishCount}
-          >{`${placeDetail.likeCount}명이 좋아해요`}</span>
+          >{`${placeDetail.likes}명이 좋아해요`}</span>
         </div>
         <div className={styles.reviewList}>
           <ReviewList
@@ -206,6 +264,10 @@ const PlaceDetailPage = (props) => {
             reviewDatas={reviewDatas}
             onOpenPortalAuth={onOpenPortalAuth}
             onUploadReview={onUploadReview}
+            onLikeReview={onLikeReview}
+            onUnlikeReview={onUnlikeReview}
+            onEditReview={onEditReview}
+            onDeleteReview={onDeleteReview}
             setReviewDatas={handleSetReviewDatas}
           />
         </div>

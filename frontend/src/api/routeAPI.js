@@ -53,7 +53,9 @@ export const getFeaturedRoutes = (id) => {
 // 왼밑, 오위 좌표로 루트들 불러옴
 export const getRoutesByRange = (ne, sw) => {
   return axios
-    .get(`/routes/coordinate?page=0&size=5&sortType=best&maxX=${ne.La}&minX=${sw.La}&maxY=${ne.Ma}&minY=${sw.Ma}`)
+    .get(
+      `/routes/coordinate?page=0&size=5&sortType=best&maxX=${ne.La}&minX=${sw.La}&maxY=${ne.Ma}&minY=${sw.Ma}`
+    )
     .then((res) => res.data)
     .catch((error) => {
       console.error(error);
