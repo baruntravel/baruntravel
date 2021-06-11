@@ -70,10 +70,10 @@ public class Route extends BaseEntity {
         return this.routeReviews.stream().mapToDouble(RouteReview::getScore).average().orElse(0);
     }
 
-    public static Route create(String name, List<RoutePlace> routePlaces) {
+    public static Route create(String name, String region, List<RoutePlace> routePlaces) {
         Route route = Route.builder()
                 .name(name)
-                .region("부산")//TODO 나중에 업로드 구현되면 바꿔야함
+                .region(region)
                 .build();
         routePlaces.forEach(route::addPlace);
         return route;

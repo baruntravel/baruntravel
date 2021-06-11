@@ -11,6 +11,7 @@ public class RouteRequest {
     @AllArgsConstructor
     public static class Create {
         private String name;
+        private String region;
         private List<RouteDto.RoutePlaceWithIdAndOrder> places;
     }
 

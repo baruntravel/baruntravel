@@ -54,6 +54,7 @@ public class RouteControllerTest extends MvcTest {
                 .collect(Collectors.toList());
         RouteRequest.Create request = RouteRequest.Create.builder()
                 .name("테스트경로")
+                .region("서울")
                 .places(routeDtos)
                 .build();
 
@@ -73,6 +74,7 @@ public class RouteControllerTest extends MvcTest {
                         getDocumentResponse(),
                         requestFields(
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("경로 이름"),
+                                fieldWithPath("region").type(JsonFieldType.STRING).description("경로가 속한 지역"),
                                 fieldWithPath("places[].id").type(JsonFieldType.NUMBER).description("장소 식별자"),
                                 fieldWithPath("places[].order").type(JsonFieldType.NUMBER).description("장소들 정렬 순서 (사용할 필요가 있는지 검토 필요)")
                         ),

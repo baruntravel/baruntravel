@@ -149,6 +149,8 @@ public class CartControllerTest extends MvcTest {
                                 fieldWithPath("places[].memo").description("장소에 대한 메모 (메모가 없다면 null)"),
                                 fieldWithPath("places[].likeCheck").description("장소 좋아요"),
                                 fieldWithPath("places[].url").description("장소 URL"),
+                                fieldWithPath("places[].x").description("장소 x좌표"),
+                                fieldWithPath("places[].y").description("장소 y좌표"),
                                 fieldWithPath("places[].order").description("카트에 담긴 장소 순서"),
                                 fieldWithPath("places[].categoryId").description("장소 카테고리 식별자"),
                                 fieldWithPath("places[].categoryName").description("장소 카테고리 이름")

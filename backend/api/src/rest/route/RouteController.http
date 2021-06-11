@@ -5,6 +5,7 @@ Authorization: {{ authorizationToken }}
 
 {
   "name": "나의 테스트 경로",
+  "region": "서울",
   "places": [
     {
       "id": 1797997961,
