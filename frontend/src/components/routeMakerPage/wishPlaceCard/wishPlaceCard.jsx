@@ -9,7 +9,7 @@ const WishPlaceCard = ({ item, onAddCart, onDeleteCart, index }) => {
     onDeleteCart(item.id);
   }, [item, onDeleteCart]);
   return (
-    <div className={styles.WishPlaceCard} onClick={onAddCartFromCard}>
+    <div className={styles.WishPlaceCard} onClick={index ? onDeleteCartFromCard : onAddCartFromCard}>
       {item.image ? (
         <img className={styles.image} src={item.image} alt="place img" />
       ) : (

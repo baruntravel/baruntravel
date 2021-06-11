@@ -34,7 +34,7 @@ export const onReceiveCart = async () => {
     });
 };
 
-export const onDeleteCartItem = (placeId) => {
+export const onDeleteCart = (placeId) => {
   return axios
     .delete(`/cart/place/${placeId}`)
     .then((res) => {

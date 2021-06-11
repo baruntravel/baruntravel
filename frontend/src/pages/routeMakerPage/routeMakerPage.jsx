@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { getRouteDetail } from "../../api/routeAPI";
-import { onAddCart, onReceiveCart } from "../../api/cartAPI";
+import { onAddCart, onDeleteCart, onReceiveCart } from "../../api/cartAPI";
 import CartIcon from "../../components/common/cartIcon/cartIcon";
 import Header from "../../components/common/header/header";
 import Navbar from "../../components/common/navbar/navbar";
@@ -27,7 +27,7 @@ const RouteMakerPage = (props) => {
   );
   const onDeleteCartItem = useCallback(
     async (placeId) => {
-      await onDeleteCartItem(placeId);
+      await onDeleteCart(placeId);
       getCartList();
     },
     [getCartList]
@@ -40,10 +40,6 @@ const RouteMakerPage = (props) => {
       setWishList([route]);
     }
 
-    // async function getCartList() {
-    //   const items = await onReceiveCart();
-    //   setCartItems(items);
-    // }
     getCartList();
     getRouteDetailInfo();
   }, [getCartList]);
@@ -55,11 +51,7 @@ const RouteMakerPage = (props) => {
         <CartIcon items={cartItems} onUpdateItems={getCartList} />
       </div>
       <div className={styles.mapContainer}>
-        <ImageMap
-          // places={cartItems}
-          centerX={routeDetail.centerX}
-          centerY={routeDetail.centerY}
-        />
+        <ImageMap places={cartItems} centerX={routeDetail.centerX} centerY={routeDetail.centerY} />
       </div>
       <div className={styles.wishListContainer}>
         <WishList wishList={wishList} onAddCart={onAddCartItem} onDeleteCart={onDeleteCartItem} cartItems={cartItems} />

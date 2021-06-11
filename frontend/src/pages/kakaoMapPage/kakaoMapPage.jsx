@@ -14,12 +14,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { userState, userCart } from "../../recoil/userState";
 import PortalAuth from "../../containers/portalAuth/portalAuth";
-import {
-  onAddCart,
-  onDeleteCartItem,
-  onDeleteCartAll,
-  onReceiveCart,
-} from "../../api/cartAPI";
+import { onAddCart, onDeleteCart, onDeleteCartAll, onReceiveCart } from "../../api/cartAPI";
 import SideProfileToggle from "../../components/common/sideProfileToggle/sideProfileToggle";
 import PortalPlaceList from "../../components/portal/portalPlaceList/portalPlaceList";
 import PlaceSlider from "../../components/common/placeSlider/placeSlider";
@@ -61,7 +56,7 @@ const KakaoMapPage = () => {
         const updated = prev.filter((item) => item.id !== id);
         return updated;
       });
-      onDeleteCartItem(id);
+      onDeleteCart(id);
     },
     [setShoppingItems]
   );
@@ -184,10 +179,7 @@ const KakaoMapPage = () => {
             value={inputKeyword || ""}
           />
           <div className={styles.toggle}>
-            <ShoppingCartOutlined
-              className={styles.cartIcon}
-              onClick={setCartVisibleTrue}
-            />
+            <ShoppingCartOutlined className={styles.cartIcon} onClick={setCartVisibleTrue} />
           </div>
         </form>
         <div className={styles.profileToggle}>
@@ -208,10 +200,7 @@ const KakaoMapPage = () => {
       </div>
       <div ref={placeListRef} className={styles.carouselContainer}>
         <div className={styles.mapButtonBox}>
-          <button
-            className={styles.listPortalButton}
-            onClick={onOpenListPortal}
-          >
+          <button className={styles.listPortalButton} onClick={onOpenListPortal}>
             <FontAwesomeIcon icon={faList} color="white" size="lg" />
           </button>
         </div>
@@ -256,9 +245,7 @@ const KakaoMapPage = () => {
         </Drawer>
       )}
       {needLogin && <PortalAuth onClose={portalAuthClose} />}
-      {openListPortal && (
-        <PortalPlaceList onClose={onCloseListPortal} places={searchPlaces} />
-      )}
+      {openListPortal && <PortalPlaceList onClose={onCloseListPortal} places={searchPlaces} />}
     </div>
   );
 };

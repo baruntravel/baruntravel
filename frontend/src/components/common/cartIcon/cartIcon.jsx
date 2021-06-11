@@ -3,7 +3,7 @@ import styles from "./cartIcon.module.css";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import { Drawer } from "antd";
 import ShoppingCart from "../shoppingCart/shoppingCart";
-import { onDeleteCartAll, onDeleteCartItem } from "../../../api/cartAPI";
+import { onDeleteCart, onDeleteCartAll } from "../../../api/cartAPI";
 
 const CartIcon = ({ userStates, items, onUpdateItems }) => {
   const [cartVisible, setCartVisible] = useState(false);
@@ -22,7 +22,7 @@ const CartIcon = ({ userStates, items, onUpdateItems }) => {
 
   const onDeleteItem = useCallback(
     async (id) => {
-      await onDeleteCartItem(id);
+      await onDeleteCart(id);
       onUpdateItems();
     },
     [onUpdateItems]
