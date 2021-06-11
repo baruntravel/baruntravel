@@ -7,23 +7,31 @@ import styles from "./wishList.module.css";
 const WishList = ({ wishList, onAddCart, onDeleteCart, cartItems }) => {
   const [itemsInWish, setItemsInWish] = useState([]);
   const [isClicked, setIsClicked] = useState(false);
+
+  const sortWishPlaces = useCallback(
+    (places) => {
+      const updated = cartItems.map((cartItem) => places.find((item) => item.id === cartItem.id));
+      places.forEach((item) => {
+        if (!updated.find((cartItem) => cartItem.id === item.id)) {
+          updated.push(item);
+        }
+      });
+      setItemsInWish(updated);
+    },
+    [cartItems]
+  );
+
   const onOpenPlaceList = useCallback(() => {
     setIsClicked(true);
-    setItemsInWish(wishList[0].places);
-  }, [wishList]);
+    sortWishPlaces(wishList[0].places);
+  }, [sortWishPlaces, wishList]);
+
   const onClosePlaceList = useCallback(() => {
     setIsClicked(false);
   }, []);
 
   useEffect(() => {
-    console.log(cartItems, itemsInWish);
-    const updated = itemsInWish.filter((item) => cartItems.find((cartItem) => item.id === cartItem.id));
-    itemsInWish.forEach((item) => {
-      if (!updated.find((cartItem) => cartItem.id === item.id)) {
-        updated.push(item);
-      }
-    });
-    setItemsInWish(updated);
+    sortWishPlaces(itemsInWish);
   }, [cartItems]);
 
   return (
