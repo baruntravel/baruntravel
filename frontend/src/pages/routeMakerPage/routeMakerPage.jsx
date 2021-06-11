@@ -56,7 +56,7 @@ const RouteMakerPage = (props) => {
         />
       </div>
       <div className={styles.wishListContainer}>
-        <WishList wishList={wishList} onAddCart={onAddCartItem} />
+        <WishList wishList={wishList} onAddCart={onAddCartItem} cartItems={cartItems} />
       </div>
       <Navbar />
     </div>

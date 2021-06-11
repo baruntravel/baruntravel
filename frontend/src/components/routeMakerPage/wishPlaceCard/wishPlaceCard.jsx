@@ -2,8 +2,6 @@ import React, { useCallback } from "react";
 import styles from "./wishPlaceCard.module.css";
 
 const WishPlaceCard = ({ item, onAddCart, index }) => {
-  // const index = 1;
-
   const onAddCartFromCard = useCallback(() => {
     onAddCart(item);
   }, [item, onAddCart]);

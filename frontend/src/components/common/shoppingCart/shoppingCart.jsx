@@ -52,10 +52,7 @@ const ShoppingCart = memo(
         if (!destination || reason === "CANCEL") {
           return;
         }
-        if (
-          destination.droppableId === source.droppableId &&
-          destination.index === source.index
-        ) {
+        if (destination.droppableId === source.droppableId && destination.index === source.index) {
           return;
         }
         const updateItems = [...items];
@@ -85,10 +82,7 @@ const ShoppingCart = memo(
             <header className={styles.shoppingCartHeader}>
               <span className={styles.title}>나의 담은 목록</span>
               <div className={styles.header__btnBox}>
-                <button
-                  className={styles.resetBtn}
-                  onClick={onOpenResetConfirm}
-                >
+                <button className={styles.resetBtn} onClick={onOpenResetConfirm}>
                   <HistoryOutlined />
                 </button>
                 <button className={styles.closeBtn} onClick={onClose}>
@@ -98,18 +92,10 @@ const ShoppingCart = memo(
             </header>
             <Droppable droppableId="list">
               {(provided) => (
-                <ul
-                  className={styles.list}
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                >
+                <ul className={styles.list} ref={provided.innerRef} {...provided.droppableProps}>
                   {items &&
                     items.map((item, index) => (
-                      <Draggable
-                        key={item.id}
-                        draggableId={`${item.id}`}
-                        index={index}
-                      >
+                      <Draggable key={item.id} draggableId={`${item.id}`} index={index}>
                         {(provided) => (
                           <div
                             key={index}
@@ -142,18 +128,10 @@ const ShoppingCart = memo(
             </div>
           </div>
         </DragDropContext>
-        {openInputName && (
-          <InputRootName onClose={onCloseInputName} onSaveRoute={onSaveRoute} />
-        )}
-        {openResetConfirm && (
-          <ResetConfirm onReset={resetCartAll} onClose={onCloseResetConfirm} />
-        )}
+        {openInputName && <InputRootName onClose={onCloseInputName} onSaveRoute={onSaveRoute} />}
+        {openResetConfirm && <ResetConfirm onReset={resetCartAll} onClose={onCloseResetConfirm} />}
         {deleteConfirm && (
-          <DeleteConfirm
-            deleteItemId={deleteItemId}
-            onDeleteItem={onDeleteItem}
-            onClose={onCloseDeleteConfirm}
-          />
+          <DeleteConfirm deleteItemId={deleteItemId} onDeleteItem={onDeleteItem} onClose={onCloseDeleteConfirm} />
         )}
       </>
     );

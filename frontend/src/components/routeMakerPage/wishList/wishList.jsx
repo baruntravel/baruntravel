@@ -4,7 +4,7 @@ import WishListHeader from "../wishListHeader/wishListHeader";
 import WishPlaceCard from "../wishPlaceCard/wishPlaceCard";
 import styles from "./wishList.module.css";
 
-const WishList = ({ wishList, onAddCart }) => {
+const WishList = ({ wishList, onAddCart, cartItems }) => {
   const [itemsInWish, setItemsInWish] = useState([]);
   const [isClicked, setIsClicked] = useState(false);
   const onOpenPlaceList = useCallback(() => {
@@ -22,7 +22,11 @@ const WishList = ({ wishList, onAddCart }) => {
         <ul className={styles.listContainer}>
           {itemsInWish.map((item, index) => (
             <li key={index} className={styles.cardContainer} data-link={item}>
-              <WishPlaceCard item={item} onAddCart={onAddCart} />
+              <WishPlaceCard
+                item={item}
+                onAddCart={onAddCart}
+                index={cartItems.findIndex((cartItem) => cartItem.id === item.id) + 1}
+              />
             </li>
           ))}
         </ul>

@@ -21,9 +21,9 @@ const CartIcon = ({ userStates, items, onUpdateItems }) => {
   }, []);
 
   const onDeleteItem = useCallback(
-    (id) => {
+    async (id) => {
+      await onDeleteCartItem(id);
       onUpdateItems();
-      onDeleteCartItem(id);
     },
     [onUpdateItems]
   );
@@ -32,17 +32,14 @@ const CartIcon = ({ userStates, items, onUpdateItems }) => {
     setDeleteItemId(id);
   }, []);
 
-  const resetCartAll = useCallback(() => {
+  const resetCartAll = useCallback(async () => {
+    await onDeleteCartAll();
     onUpdateItems();
-    onDeleteCartAll();
   }, [onUpdateItems]);
 
   return (
     <div className={styles.CartIcon}>
-      <ShoppingCartOutlined
-        className={styles.icon}
-        onClick={setCartVisibleTrue}
-      />
+      <ShoppingCartOutlined className={styles.icon} onClick={setCartVisibleTrue} />
       <Drawer
         placement="right"
         closable={false}
