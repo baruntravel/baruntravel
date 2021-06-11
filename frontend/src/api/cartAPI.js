@@ -79,7 +79,7 @@ export const onEditOrder = (firstPlaceId, secondPlaceId) => {
     firstPlaceId,
     secondPlaceId,
   };
-  axios
+  return axios
     .put(`/cart/place`, data)
     .then((res) => true)
     .catch((error) => {

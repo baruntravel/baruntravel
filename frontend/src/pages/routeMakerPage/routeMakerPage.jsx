@@ -25,6 +25,7 @@ const RouteMakerPage = (props) => {
     },
     [getCartList]
   );
+
   const onDeleteCartItem = useCallback(
     async (placeId) => {
       await onDeleteCart(placeId);
@@ -32,6 +33,7 @@ const RouteMakerPage = (props) => {
     },
     [getCartList]
   );
+
   useEffect(() => {
     async function getRouteDetailInfo() {
       // 루트 상세페이지의 정보를 받아옴

@@ -47,7 +47,7 @@ const ShoppingCart = memo(
       setDeleteConfirm(false);
     }, []);
     const onDragEnd = useCallback(
-      (result) => {
+      async (result) => {
         const { destination, source, reason } = result;
         if (!destination || reason === "CANCEL") {
           return;
@@ -57,8 +57,7 @@ const ShoppingCart = memo(
         }
         const updateItems = [...items];
         const droppedItem = items[source.index];
-        onEditOrder(droppedItem.id, updateItems[destination.index].id);
-        // onEditOrder(updateItems[destination.index].id, droppedItem.id);
+        await onEditOrder(droppedItem.id, updateItems[destination.index].id);
 
         updateItems.splice(source.index, 1);
         updateItems.splice(destination.index, 0, droppedItem);

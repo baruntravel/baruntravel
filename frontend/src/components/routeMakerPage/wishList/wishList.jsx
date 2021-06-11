@@ -32,6 +32,7 @@ const WishList = ({ wishList, onAddCart, onDeleteCart, cartItems }) => {
 
   useEffect(() => {
     sortWishPlaces(itemsInWish);
+    console.log(itemsInWish);
   }, [cartItems]);
 
   return (
