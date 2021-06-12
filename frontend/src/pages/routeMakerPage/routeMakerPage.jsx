@@ -53,14 +53,19 @@ const RouteMakerPage = (props) => {
         <CartIcon items={cartItems} onUpdateItems={getCartList} />
       </div>
       <div className={styles.mapContainer}>
-<<<<<<< HEAD
-        <ImageMap places={cartItems} centerX={routeDetail.centerX} centerY={routeDetail.centerY} />
-=======
-        <RoutePlacesMap places={routeDetail.places} centerX={routeDetail.centerX} centerY={routeDetail.centerY} />
->>>>>>> develop
+        <RoutePlacesMap
+          places={routeDetail.places}
+          centerX={routeDetail.centerX}
+          centerY={routeDetail.centerY}
+        />
       </div>
       <div className={styles.wishListContainer}>
-        <WishList wishList={wishList} onAddCart={onAddCartItem} onDeleteCart={onDeleteCartItem} cartItems={cartItems} />
+        <WishList
+          wishList={wishList}
+          onAddCart={onAddCartItem}
+          onDeleteCart={onDeleteCartItem}
+          cartItems={cartItems}
+        />
       </div>
       <Navbar />
     </div>

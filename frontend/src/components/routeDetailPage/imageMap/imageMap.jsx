@@ -3,31 +3,27 @@ import styles from "./imageMap.module.css";
 const { kakao } = window;
 
 const ImageMap = ({ places, centerX, centerY }) => {
-<<<<<<< HEAD
-  const [staticMap, setStaticMap] = useState();
-  const [markers, setMarkers] = useState([]);
-=======
->>>>>>> develop
   useEffect(() => {
     function addMarker(position, index, map) {
-      var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
+      var imageSrc =
+          "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
         imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
         imgOptions = {
           spriteSize: new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
           spriteOrigin: new kakao.maps.Point(0, index * 46 + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
           offset: new kakao.maps.Point(13, 37), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
         },
-        markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+        markerImage = new kakao.maps.MarkerImage(
+          imageSrc,
+          imageSize,
+          imgOptions
+        ),
         marker = new kakao.maps.Marker({
           position: position, // 마커의 위치
           image: markerImage,
         });
 
       marker.setMap(map); // 지도 위에 마커를 표출합니다
-<<<<<<< HEAD
-      setMarkers((markers) => [...markers, marker]);
-=======
->>>>>>> develop
       return marker;
     }
     function displayMarker(map) {
@@ -57,27 +53,6 @@ const ImageMap = ({ places, centerX, centerY }) => {
       return polyline;
     }
 
-<<<<<<< HEAD
-    function removeMarker() {
-      for (var i = 0; i < markers.length; i++) {
-        markers[i].setMap(null);
-      }
-      setMarkers([]);
-    }
-
-    function removePath(path) {
-      path && path.setMap(null);
-    }
-
-    let path;
-    if (centerX && centerY) {
-      moveLocationMap();
-      // displayMarker(staticMap);
-      // path = addPath(staticMap);
-    }
-    return () => removePath(path);
-  }, [places, centerX, centerY]);
-=======
     if (centerX && centerY && places) {
       let staticMapContainer = document.getElementById("staticMap"),
         staticMapOption = {
@@ -89,7 +64,6 @@ const ImageMap = ({ places, centerX, centerY }) => {
       addPath(staticMap);
     }
   }, [centerX, centerY, places]);
->>>>>>> develop
 
   return (
     <div className={styles.ImageMap}>
