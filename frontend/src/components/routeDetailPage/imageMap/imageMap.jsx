@@ -3,6 +3,11 @@ import styles from "./imageMap.module.css";
 const { kakao } = window;
 
 const ImageMap = ({ places, centerX, centerY }) => {
+<<<<<<< HEAD
+  const [staticMap, setStaticMap] = useState();
+  const [markers, setMarkers] = useState([]);
+=======
+>>>>>>> develop
   useEffect(() => {
     function addMarker(position, index, map) {
       var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
@@ -19,13 +24,17 @@ const ImageMap = ({ places, centerX, centerY }) => {
         });
 
       marker.setMap(map); // 지도 위에 마커를 표출합니다
+<<<<<<< HEAD
+      setMarkers((markers) => [...markers, marker]);
+=======
+>>>>>>> develop
       return marker;
     }
     function displayMarker(map) {
       let bounds = new kakao.maps.LatLngBounds();
       for (let i = 0; i < places.length; i++) {
         let placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
-        let marker = addMarker(placePosition, i, map);
+        addMarker(placePosition, i, map);
         bounds.extend(placePosition);
       }
       map.setBounds(bounds);
@@ -48,6 +57,27 @@ const ImageMap = ({ places, centerX, centerY }) => {
       return polyline;
     }
 
+<<<<<<< HEAD
+    function removeMarker() {
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+      }
+      setMarkers([]);
+    }
+
+    function removePath(path) {
+      path && path.setMap(null);
+    }
+
+    let path;
+    if (centerX && centerY) {
+      moveLocationMap();
+      // displayMarker(staticMap);
+      // path = addPath(staticMap);
+    }
+    return () => removePath(path);
+  }, [places, centerX, centerY]);
+=======
     if (centerX && centerY && places) {
       let staticMapContainer = document.getElementById("staticMap"),
         staticMapOption = {
@@ -59,6 +89,7 @@ const ImageMap = ({ places, centerX, centerY }) => {
       addPath(staticMap);
     }
   }, [centerX, centerY, places]);
+>>>>>>> develop
 
   return (
     <div className={styles.ImageMap}>
