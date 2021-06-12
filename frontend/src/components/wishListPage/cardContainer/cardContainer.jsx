@@ -9,7 +9,7 @@ const CardContainer = ({ folderIn }) => {
   const handlePortalOpen = () => setPortalOpened(!portalOpened);
   const handleWishlistName = (name) => setWishlistName(name);
   const handleFolderIn = (e) => {
-    console.log(e.target);
+    // console.log(e.target);
     folderIn();
   };
 
