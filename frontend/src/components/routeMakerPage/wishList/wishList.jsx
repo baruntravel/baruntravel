@@ -10,7 +10,9 @@ const WishList = ({ wishList, onAddCart, onDeleteCart, cartItems }) => {
 
   const sortWishPlaces = useCallback(
     (places) => {
-      const updated = cartItems.map((cartItem) => places.find((item) => item.id === cartItem.id));
+      const updated = cartItems.map((cartItem) =>
+        places.find((item) => item.id === cartItem.id)
+      );
       places.forEach((item) => {
         if (!updated.find((cartItem) => cartItem.id === item.id)) {
           updated.push(item);
@@ -32,7 +34,6 @@ const WishList = ({ wishList, onAddCart, onDeleteCart, cartItems }) => {
 
   useEffect(() => {
     sortWishPlaces(itemsInWish);
-    console.log(itemsInWish);
   }, [cartItems]);
 
   return (
@@ -46,7 +47,9 @@ const WishList = ({ wishList, onAddCart, onDeleteCart, cartItems }) => {
                 item={item}
                 onAddCart={onAddCart}
                 onDeleteCart={onDeleteCart}
-                index={cartItems.findIndex((cartItem) => cartItem.id === item.id) + 1}
+                index={
+                  cartItems.findIndex((cartItem) => cartItem.id === item.id) + 1
+                }
               />
             </li>
           ))}
