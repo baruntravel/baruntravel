@@ -1,31 +1,31 @@
-import { useRef } from "react";
+import { useState } from "react";
 import styles from "./cardContainer.module.css";
+import WishListPortal from "../../portal/wishListPortal/wishListPortal";
 
 const CardContainer = ({ folderIn }) => {
-  const titleRef = useRef();
+  const [wishListName, setWishlistName] = useState();
+  const [portalOpened, setPortalOpened] = useState(false);
 
-  const passTitle = (e) => {
+  const handlePortalOpen = () => setPortalOpened(!portalOpened);
+  const handleWishlistName = (name) => setWishlistName(name);
+  const handleFolderIn = (e) => {
     console.log(e.target);
     folderIn();
   };
 
   return (
-    <div>
-      <div className={styles.cardsContainer} onClick={passTitle}>
-        <div className={styles.cardBox}>
-          <div className={styles.imgBox}>
-            {/* <div className={styles.img1}>img1</div> */}
-            <div className={styles.img2}>img2</div>
-            <div className={styles.img3}>img3</div>
-          </div>
-          <span className={styles.wishListTitle}>제주도 갈만한 곳들</span>
-        </div>
-
+    <div className={styles.container}>
+      <div className={styles.cardsContainer} onClick={handleFolderIn}>
         <div className={styles.cardBox}>
           <div className={styles.imgBox}></div>
-          <span className={styles.wishListTitle}>서울 핫플레이스</span>
+          <span className={styles.wishListTitle}>제주도 갈만한 곳들</span>
         </div>
+        <h1>{wishListName}</h1>
       </div>
+      <button onClick={handlePortalOpen} className={styles.addButton}>
+        새 찜목록 만들기
+      </button>
+      {portalOpened && <WishListPortal onClose={handlePortalOpen} handleWishlistName={handleWishlistName} />}
     </div>
   );
 };

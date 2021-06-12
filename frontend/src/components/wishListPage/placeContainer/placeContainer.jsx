@@ -1,8 +1,7 @@
 import styles from "./placeContainer.module.css";
 
-const PlaceContainer = (folderOut) => {
+const PlaceContainer = () => {
   return (
-    // <div onClick={folderOut}>
     <div>
       플레이스 컨테이너
       {/* <h1>{folderOut}</h1> */}

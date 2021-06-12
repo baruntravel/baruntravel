@@ -5,6 +5,7 @@ import Navbar from "../../components/common/navbar/navbar";
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useHistory } from "react-router-dom";
 import CardContainer from "../../components/wishListPage/cardContainer/cardContainer";
 import PlaceContainer from "../../components/wishListPage/placeContainer/placeContainer";
 import WishListPortal from "../../components/portal/wishListPortal/wishListPortal";
@@ -15,6 +16,7 @@ const WishListPage = () => {
   const [folderToggle, setFolderToggle] = useState(false); // false : out(main), true : in
   const [portalOpened, setPortalOpened] = useState(false);
   const [wishlistName, setWishlistName] = useState();
+  const [title, setTitle] = useState();
 
   const folderIn = () => setFolderToggle(true);
   const folderOut = () => setFolderToggle(false);
@@ -27,32 +29,13 @@ const WishListPage = () => {
   return (
     <>
       <div className={styles.container}>
-        <Header />
+        {!folderToggle ? <Header title={"찜목록"} /> : <Header title={"찜목록detail"} onBackHandler={folderOut} />}
+
         {isLogin === undefined ? (
           <h1>로그인을 해주세요</h1>
         ) : (
-          <div className={styles.row1}>
-            <div className={styles.row1_row1}>
-              <h1 className={styles.title} onClick={folderOut}>
-                찜 목록
-              </h1>
-              {!folderToggle && (
-                <button onClick={handlePortalOpen} className={styles.addButton}>
-                  새로운 찜 목록 만들기
-                </button>
-              )}
-            </div>
-            <div className={styles.row2}>
-              {
-                // 카드 누르기 전, 찜목록 메인 화면
-                !folderToggle ? (
-                  <CardContainer folderIn={folderIn} />
-                ) : (
-                  // 카드 누르면, 장소들 펼쳐짐
-                  <PlaceContainer folderOut={folderOut} places={places} />
-                )
-              }
-            </div>
+          <div className={styles.body}>
+            {!folderToggle ? <CardContainer folderIn={folderIn} /> : <PlaceContainer />}
             <h1>{wishlistName}</h1>
           </div>
         )}
