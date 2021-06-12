@@ -3,15 +3,28 @@ Content-Type: application/json
 Authorization: {{ authorizationToken }}
 
 {
-  "name": "첫번째 찜목록!"
+  "name": "두번째 찜목록!"
 }
 
 ###
 
-POST {{apiUrl}}/wishlist/1/place
+POST {{apiUrl}}/wishlist/2/place
 Content-Type: application/json
 Authorization: {{ authorizationToken }}
 
 {
   "placeId": 1440347564
 }
+
+###
+
+GET {{apiUrl}}/wishlist/my
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+###
+
+GET {{apiUrl}}/wishlist/1/places
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+

@@ -16,6 +16,8 @@ import me.travelplan.web.wishlist.dto.WishlistRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -39,6 +41,16 @@ public class WishlistService {
         WishlistPlace wishlistPlace = WishlistPlace.create(wishlist, place);
 
         return wishlistPlaceRepository.save(wishlistPlace);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Wishlist> getMine(User user) {
+        return wishlistRepository.findAllByCreatedBy(user);
+    }
+
+    @Transactional(readOnly = true)
+    public List<WishlistPlace> getPlaces(Long wishlistId) {
+        return wishlistPlaceRepository.findByWishlistId(wishlistId);
     }
 
     private void permissionCheck(User user, Wishlist wishlist) {

@@ -25,7 +25,14 @@ public class WishlistPlace extends BaseEntity {
     @JoinColumn(name = "place_id")
     private Place place;
 
+    private void setWishlist(Wishlist wishlist) {
+        this.wishlist = wishlist;
+        wishlist.getWishlistPlaces().add(this);
+    }
+
     public static WishlistPlace create(Wishlist wishlist, Place place) {
-        return WishlistPlace.builder().wishlist(wishlist).place(place).build();
+        WishlistPlace wishlistPlace = WishlistPlace.builder().place(place).build();
+        wishlistPlace.setWishlist(wishlist);
+        return wishlistPlace;
     }
 }

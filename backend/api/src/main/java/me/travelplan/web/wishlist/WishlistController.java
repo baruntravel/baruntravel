@@ -8,6 +8,8 @@ import me.travelplan.web.wishlist.dto.WishlistRequest;
 import me.travelplan.web.wishlist.dto.WishlistResponse;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/wishlist")
@@ -23,5 +25,15 @@ public class WishlistController {
     @PostMapping("/{wishlistId}/place")
     public WishlistResponse.GetOnlyWishlistPlaceId addPlace(@PathVariable Long wishlistId, @RequestBody WishlistRequest.AddPlace request, @CurrentUser CustomUserDetails customUserDetails) {
         return wishlistMapper.toWishlistPlaceId(wishlistService.addPlace(wishlistId, request, customUserDetails.getUser()));
+    }
+
+    @GetMapping("/my")
+    public List<WishlistResponse.GetMine> getMine(@CurrentUser CustomUserDetails customUserDetails) {
+        return wishlistMapper.toGetMine(wishlistService.getMine(customUserDetails.getUser()));
+    }
+
+    @GetMapping("/{wishlistId}/places")
+    public WishlistResponse.GetPlaces getPlaces(@PathVariable Long wishlistId) {
+        return wishlistMapper.toGetPlaces(wishlistService.getPlaces(wishlistId));
     }
 }

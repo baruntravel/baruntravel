@@ -4,6 +4,8 @@ import lombok.*;
 import me.travelplan.config.jpa.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder
@@ -17,6 +19,10 @@ public class Wishlist extends BaseEntity {
     private Long id;
 
     private String name;
+
+    @OneToMany(mappedBy = "wishlist")
+    @Builder.Default
+    private final List<WishlistPlace> wishlistPlaces = new ArrayList<>();
 
     public static Wishlist create(String name) {
         return Wishlist.builder().name(name).build();
