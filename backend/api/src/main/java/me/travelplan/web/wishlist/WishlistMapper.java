@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
 public interface WishlistMapper {
     WishlistResponse.GetOnlyId toWishlistId(Wishlist wishlist);
 
-    WishlistResponse.GetOnlyWishlistPlaceId toWishlistPlaceId(WishlistPlace wishlistPlace);
-
     default List<WishlistResponse.GetMine> toGetMine(List<Wishlist> wishlists) {
         return wishlists.stream().map(wishlist -> WishlistResponse.GetMine.builder()
                 .id(wishlist.getId())

@@ -6,6 +6,7 @@ import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.service.wishlist.WishlistService;
 import me.travelplan.web.wishlist.dto.WishlistRequest;
 import me.travelplan.web.wishlist.dto.WishlistResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,13 +19,14 @@ public class WishlistController {
     private final WishlistMapper wishlistMapper;
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public WishlistResponse.GetOnlyId create(@RequestBody WishlistRequest.Create request) {
         return wishlistMapper.toWishlistId(wishlistService.create(request));
     }
 
     @PostMapping("/{wishlistId}/place")
-    public WishlistResponse.GetOnlyWishlistPlaceId addPlace(@PathVariable Long wishlistId, @RequestBody WishlistRequest.AddPlace request, @CurrentUser CustomUserDetails customUserDetails) {
-        return wishlistMapper.toWishlistPlaceId(wishlistService.addPlace(wishlistId, request, customUserDetails.getUser()));
+    public void addPlace(@PathVariable Long wishlistId, @RequestBody WishlistRequest.AddPlace request, @CurrentUser CustomUserDetails customUserDetails) {
+        wishlistService.addPlace(wishlistId, request, customUserDetails.getUser());
     }
 
     @GetMapping("/my")

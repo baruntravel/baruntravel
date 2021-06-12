@@ -19,13 +19,6 @@ public class WishlistResponse {
     @Getter
     @Builder
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class GetOnlyWishlistPlaceId {
-        private final Long id;
-    }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class GetMine {
         private final Long id;
         private final String name;

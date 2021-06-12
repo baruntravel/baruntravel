@@ -31,7 +31,7 @@ public class WishlistService {
         return wishlistRepository.save(wishlist);
     }
 
-    public WishlistPlace addPlace(Long wishlistId, WishlistRequest.AddPlace request, User user) {
+    public void addPlace(Long wishlistId, WishlistRequest.AddPlace request, User user) {
         Wishlist wishlist = wishlistRepository.findById(wishlistId).orElseThrow(WishlistNotFoundException::new);
         permissionCheck(user, wishlist);
         Place place = placeRepository.findById(request.getPlaceId()).orElseThrow(PlaceNotFoundException::new);
@@ -40,7 +40,7 @@ public class WishlistService {
         }
         WishlistPlace wishlistPlace = WishlistPlace.create(wishlist, place);
 
-        return wishlistPlaceRepository.save(wishlistPlace);
+        wishlistPlaceRepository.save(wishlistPlace);
     }
 
     @Transactional(readOnly = true)
