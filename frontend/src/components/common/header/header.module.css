@@ -14,3 +14,8 @@
 .backIcon {
   color: #ff57b3;
 }
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+}

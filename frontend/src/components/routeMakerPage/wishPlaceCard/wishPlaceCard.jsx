@@ -1,19 +1,28 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styles from "./wishPlaceCard.module.css";
 
-const WishPlaceCard = () => {
-  const index = 1;
-  const src =
-    "https://i.pinimg.com/474x/30/5a/21/305a216481dfaaec10fd59cf1f667652.jpg";
+const WishPlaceCard = ({ item, onAddCart, onDeleteCart, index }) => {
+  const onAddCartFromCard = useCallback(() => {
+    onAddCart(item);
+  }, [item, onAddCart]);
+  const onDeleteCartFromCard = useCallback(() => {
+    onDeleteCart(item.id);
+  }, [item, onDeleteCart]);
   return (
-    <div className={styles.WishPlaceCard}>
-      <img className={styles.image} src={src} />
+    <div className={styles.WishPlaceCard} onClick={index ? onDeleteCartFromCard : onAddCartFromCard}>
+      {item.image ? (
+        <img className={styles.image} src={item.image} alt="place img" />
+      ) : (
+        <div className={styles.imageAlt} />
+      )}
       <div className={styles.nameBox}>
-        <span className={styles.name}>place Card~</span>
+        <span className={styles.name}>{item.name}</span>
       </div>
-      <div className={styles.indexBox}>
-        <span className={styles.index}>{index}</span>
-      </div>
+      {index !== 0 && (
+        <div className={styles.indexBox}>
+          <span className={styles.index}>{index}</span>
+        </div>
+      )}
     </div>
   );
 };
