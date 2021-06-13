@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Portal from "../portal";
-import styles from "./wishListPortal.module.css";
+import styles from "./wishListPortalInput.module.css";
 
-const WishListPortal = ({ onClose, handleWishlistName }) => {
+const WishListPortalInput = ({ onClose, addWishList }) => {
   const portalRef = useRef();
-  let wishlistName;
+  let wishListName;
 
   const handleClose = (event) => {
     if (
@@ -26,14 +26,24 @@ const WishListPortal = ({ onClose, handleWishlistName }) => {
       <div className={styles.portalContainer}>
         <div ref={portalRef} className={styles.portalBody}>
           <div className={styles.header}>
-            <span className={styles.title}>찜 목록 이름을 입력해 주세요.</span>
+            <span className={styles.title}>찜 목록 이름 정하기</span>
           </div>
           <form className={styles.form}>
-            <input className={styles.inputBar} autoFocus onInput={(e) => (wishlistName = e.target.value)} />
+            <input
+              className={styles.nameInput}
+              placeholder="이름"
+              autoFocus
+              onInput={(e) => (wishListName = e.target.value)}
+            />
+            <select className={styles.areaSelectBox}>
+              <option value="서울">서울</option>
+              <option value="강릉">강릉</option>
+              <option value="제주">제주</option>
+            </select>
             <button
               onClick={(e) => {
                 e.preventDefault();
-                handleWishlistName(wishlistName);
+                addWishList(wishListName);
                 onClose();
               }}
               className={styles.inputButton}
@@ -47,4 +57,4 @@ const WishListPortal = ({ onClose, handleWishlistName }) => {
   );
 };
 
-export default WishListPortal;
+export default WishListPortalInput;

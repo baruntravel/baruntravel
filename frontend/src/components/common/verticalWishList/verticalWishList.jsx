@@ -12,23 +12,23 @@ const VerticalWishList = (props) => {
   return (
     <div className={styles.VerticalWishList}>
       <header className={styles.header}>
-        <div className={styles.closeButtonBox}>
-          <button>X</button>
-        </div>
         <span>찜 목록에 플레이스 추가하기</span>
+        <button className={styles.closeButton}>X</button>
       </header>
       <section className={styles.body}>
         <ul className={styles.list}>
-          {/* <li className={styles.wishItem}>
-            <div className={styles.imageContainer}>+</div>
-            <span>이름</span>
-          </li> */}
+          <li className={styles.wishItem}>
+            <div
+              className={`${styles.imageContainer} ${styles.plusContainer}`}
+            ></div>
+            <span className={styles.name}>이름</span>
+          </li>
           {wishListItems.map((item, index) => (
             <li key={index} className={styles.wishItem}>
               <div className={styles.imageContainer}>
-                <img className={styles.image} src={item} />
+                <img className={styles.image} src={item} alt="thumbnail" />
               </div>
-              <span>이름</span>
+              <span className={styles.name}>이름</span>
             </li>
           ))}
         </ul>

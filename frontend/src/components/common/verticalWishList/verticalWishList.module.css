@@ -3,31 +3,40 @@
 }
 .header {
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
+  font-size: 18px;
+  padding: 6px;
   border-bottom: 0.3px solid rgba(0, 0, 0, 0.3);
 }
 
-.closeButtonBox {
-  left: 5%;
+.closeButton {
+  border: none;
+  background-color: transparent;
+  font-weight: 600;
+  font-size: 20px;
+  margin-left: auto;
 }
 .body {
   height: 90%;
   overflow: auto;
 }
 .list {
-  padding: 16px;
+  padding: 18px;
   height: 100%;
 }
 
 .wishItem {
   display: flex;
   align-items: center;
+  margin-bottom: 32px;
 }
 
 .imageContainer {
   position: relative;
-  width: 30vw;
+  width: 25vw;
+  margin-right: 32px;
 }
 .imageContainer::before {
   content: "";
@@ -44,4 +53,17 @@
   height: 100%;
   object-fit: cover;
   border-radius: 12px;
+}
+.plusContainer {
+  background-color: black;
+  border-radius: 12px;
+  display: inline-block;
+  background: linear-gradient(#fff, #fff), linear-gradient(#fff, #fff), #000;
+  background-position: center;
+  background-size: 50% 2px, 2px 50%; /*thickness = 2px, length = 50% (25px)*/
+  background-repeat: no-repeat;
+}
+.name {
+  font-size: 22px;
+  font-weight: 600;
 }

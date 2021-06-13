@@ -7,16 +7,21 @@ import Navbar from "../../components/common/navbar/navbar";
 import RoutePlacesMap from "../../components/routeMakerPage/routePlacesMap/routePlacesMap";
 import WishList from "../../components/routeMakerPage/wishList/wishList";
 import styles from "./routeMakerPage.module.css";
+import { userState } from "../../recoil/userState";
+import { useRecoilValue } from "recoil";
 
 const RouteMakerPage = (props) => {
+  const userStates = useRecoilValue(userState);
   const [wishList, setWishList] = useState([]);
   const [routeDetail, setRouteDetail] = useState({});
   const [cartItems, setCartItems] = useState([]);
 
   const getCartList = useCallback(async () => {
-    const items = await onReceiveCart();
-    setCartItems(items);
-  }, []);
+    if (userStates.isLogin) {
+      const items = await onReceiveCart();
+      setCartItems(items);
+    }
+  }, [userStates.isLogin]);
 
   const onAddCartItem = useCallback(
     async (place) => {
