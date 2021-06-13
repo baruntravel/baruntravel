@@ -105,6 +105,25 @@ const KakaoMapPage = () => {
     setOpenDelSuccessConfirm(false);
   }, []);
 
+  const onClickEmptyHeart = useCallback(
+    (place) => {
+      onOpenWishListPortal();
+      setTimeout(() => {
+        console.log("추가 api 호출 및 업데이트");
+        onOpenAddSuccess();
+      }, 1000);
+    },
+    [onOpenAddSuccess]
+  );
+
+  const onClickFullHeart = useCallback(
+    (place) => {
+      console.log(place);
+      console.log("삭제 api 호출 및 업데이트");
+      onOpenDeleteSuccess();
+    },
+    [onOpenDeleteSuccess]
+  );
   return (
     <div className={styles.KakaoMapPage}>
       <div className={styles.searchContainer}>
@@ -148,6 +167,8 @@ const KakaoMapPage = () => {
             updateClickedPlace={updateClickedPlace}
             onUpdateMarkerIndex={onUpdateMarkerIndex}
             searchPlaces={searchPlaces}
+            onClickEmptyHeart={onClickEmptyHeart}
+            onClickFullHeart={onClickFullHeart}
           />
         </div>
       </div>

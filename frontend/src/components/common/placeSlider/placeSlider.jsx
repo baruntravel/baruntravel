@@ -8,8 +8,8 @@ const PlaceSlider = ({
   updateClickedPlace,
   searchPlaces,
   onUpdateMarkerIndex,
-  onHandleDelete,
-  addShoppingCart,
+  onClickEmptyHeart,
+  onClickFullHeart,
 }) => {
   const settings = {
     dots: false,
@@ -31,8 +31,8 @@ const PlaceSlider = ({
         <div key={index} className={styles.placeCardContainer}>
           <PlaceCard
             place={place}
-            onHandleDelete={onHandleDelete}
-            addShoppingCart={addShoppingCart}
+            onHandleDelete={onClickFullHeart}
+            onClickAdd={onClickEmptyHeart}
             isLiked={
               false
               // shoppingItems.filter((item) => item.id == place.id).length // 우리 API 호출 시 id가 number, 카카오 API 호출 시 id가 String 얕은 비교
