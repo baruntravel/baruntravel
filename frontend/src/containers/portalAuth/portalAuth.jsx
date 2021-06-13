@@ -10,7 +10,7 @@ const PortalAuth = ({ onClose, handleLoading }) => {
   const onClickChange = () => {
     setLoginClicked(!loginClicked);
   };
-  const handleClose = (event) => {
+  const onHandleClose = (event) => {
     if (
       portalRef.current &&
       !portalRef.current.contains(event.target) &&
@@ -20,11 +20,11 @@ const PortalAuth = ({ onClose, handleLoading }) => {
     }
   };
   useEffect(() => {
-    window.addEventListener("click", handleClose);
+    window.addEventListener("click", onHandleClose);
     return () => {
-      window.removeEventListener("click", handleClose);
+      window.removeEventListener("click", onHandleClose);
     };
-  }, [handleClose]);
+  }, [onHandleClose]);
   return (
     <Portal>
       <div className={styles.PortalAuth}>

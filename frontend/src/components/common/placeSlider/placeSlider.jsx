@@ -10,7 +10,6 @@ const PlaceSlider = ({
   onUpdateMarkerIndex,
   onHandleDelete,
   addShoppingCart,
-  shoppingItems,
 }) => {
   const settings = {
     dots: false,
@@ -35,7 +34,8 @@ const PlaceSlider = ({
             onHandleDelete={onHandleDelete}
             addShoppingCart={addShoppingCart}
             isLiked={
-              shoppingItems.filter((item) => item.id == place.id).length // 우리 API 호출 시 id가 number, 카카오 API 호출 시 id가 String 얕은 비교
+              false
+              // shoppingItems.filter((item) => item.id == place.id).length // 우리 API 호출 시 id가 number, 카카오 API 호출 시 id가 String 얕은 비교
             }
           />
         </div>

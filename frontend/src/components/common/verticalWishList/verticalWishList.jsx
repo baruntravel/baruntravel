@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./verticalWishList.module.css";
 
-const VerticalWishList = (props) => {
+const VerticalWishList = ({ onClose }) => {
   const wishListItems = [
     "https://i.pinimg.com/564x/d7/ec/75/d7ec75c9e68873ee75b734ac4ab09ced.jpg",
     "https://i.pinimg.com/474x/30/5a/21/305a216481dfaaec10fd59cf1f667652.jpg",
@@ -13,7 +13,9 @@ const VerticalWishList = (props) => {
     <div className={styles.VerticalWishList}>
       <header className={styles.header}>
         <span>찜 목록에 플레이스 추가하기</span>
-        <button className={styles.closeButton}>X</button>
+        <button className={styles.closeButton} onClick={onClose}>
+          X
+        </button>
       </header>
       <section className={styles.body}>
         <ul className={styles.list}>
