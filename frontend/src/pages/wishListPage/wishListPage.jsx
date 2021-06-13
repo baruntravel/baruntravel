@@ -4,9 +4,9 @@ import Header from "../../components/common/header/header";
 import Navbar from "../../components/common/navbar/navbar";
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import CardContainer from "../../components/wishListPage/cardContainer/cardContainer";
+import WishListContainer from "../../components/wishListPage/wishListContainer/wishListContainer";
 import PlaceContainer from "../../components/wishListPage/placeContainer/placeContainer";
 import WishListPortal from "../../components/portal/wishListPortal/wishListPortal";
 
@@ -18,7 +18,10 @@ const WishListPage = () => {
   const [wishlistName, setWishlistName] = useState();
   const [title, setTitle] = useState();
 
-  const folderIn = () => setFolderToggle(true);
+  const folderIn = (title) => {
+    setTitle(title);
+    setFolderToggle(true);
+  };
   const folderOut = () => setFolderToggle(false);
   const handlePortalOpen = () => setPortalOpened(!portalOpened);
   const handleWishlistName = (name) => setWishlistName(name);
@@ -29,13 +32,13 @@ const WishListPage = () => {
   return (
     <>
       <div className={styles.container}>
-        {!folderToggle ? <Header title={"찜목록"} /> : <Header title={"찜목록detail"} onBackHandler={folderOut} />}
+        {!folderToggle ? <Header title={"찜 목록"} /> : <Header title={title} onBackHandler={folderOut} />}
 
         {isLogin === undefined ? (
           <h1>로그인을 해주세요</h1>
         ) : (
           <div className={styles.body}>
-            {!folderToggle ? <CardContainer folderIn={folderIn} /> : <PlaceContainer />}
+            {!folderToggle ? <WishListContainer folderIn={folderIn} /> : <PlaceContainer />}
             <h1>{wishlistName}</h1>
           </div>
         )}
