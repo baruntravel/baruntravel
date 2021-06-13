@@ -53,6 +53,12 @@ public class WishlistService {
         return wishlistPlaceRepository.findByWishlistId(wishlistId);
     }
 
+    public void delete(Long wishlistId, User user) {
+        Wishlist wishlist = wishlistRepository.findById(wishlistId).orElseThrow(WishlistNotFoundException::new);
+        permissionCheck(user, wishlist);
+        wishlistRepository.deleteById(wishlistId);
+    }
+
     private void permissionCheck(User user, Wishlist wishlist) {
         if (!wishlist.getCreatedBy().getId().equals(user.getId())) {
             throw new PermissionDeniedException();

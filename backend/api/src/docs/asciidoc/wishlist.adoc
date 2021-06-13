@@ -57,3 +57,14 @@ include::{snippets}/wishlist-getPlaces/http-request.adoc[]
 성공 응답 HTTP
 include::{snippets}/wishlist-getPlaces/http-response.adoc[]
 include::{snippets}/wishlist-getPlaces/response-fields.adoc[]
+
+=== 찜목록 삭제
+
+`DELETE /wishlist/{wishlist}`
+
+요청 HTTP
+include::{snippets}/wishlist-delete/path-parameters.adoc[]
+include::{snippets}/wishlist-delete/http-request.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/wishlist-delete/http-response.adoc[]

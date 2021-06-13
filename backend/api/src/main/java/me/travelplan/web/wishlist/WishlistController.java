@@ -38,4 +38,9 @@ public class WishlistController {
     public WishlistResponse.GetPlaces getPlaces(@PathVariable Long wishlistId) {
         return wishlistMapper.toGetPlaces(wishlistService.getPlaces(wishlistId));
     }
+
+    @DeleteMapping("/{wishlistId}")
+    public void deleteWishlist(@PathVariable Long wishlistId, @CurrentUser CustomUserDetails customUserDetails) {
+        wishlistService.delete(wishlistId, customUserDetails.getUser());
+    }
 }

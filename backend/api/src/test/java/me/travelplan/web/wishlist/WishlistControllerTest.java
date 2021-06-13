@@ -27,8 +27,7 @@ import static me.travelplan.ApiDocumentUtils.getDocumentResponse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -158,6 +157,25 @@ class WishlistControllerTest extends MvcTest {
                                 fieldWithPath("places[].id").type(JsonFieldType.NUMBER).description("장소 식별자"),
                                 fieldWithPath("places[].name").type(JsonFieldType.STRING).description("장소 이름"),
                                 fieldWithPath("places[].image").type(JsonFieldType.STRING).description("장소 이미지 url")
+                        )
+                ));
+    }
+
+    @Test
+    @WithMockCustomUser
+    @DisplayName("찜목록 삭제")
+    public void deleteWishlist() throws Exception {
+        ResultActions results = mockMvc.perform(
+                delete("/wishlist/{wishlistId}", 1)
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("wishlist-delete",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("wishlistId").description("찜목록 식별자")
                         )
                 ));
     }

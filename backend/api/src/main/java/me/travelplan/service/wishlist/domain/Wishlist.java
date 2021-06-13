@@ -20,7 +20,7 @@ public class Wishlist extends BaseEntity {
 
     private String name;
 
-    @OneToMany(mappedBy = "wishlist")
+    @OneToMany(mappedBy = "wishlist", cascade = CascadeType.REMOVE)
     @Builder.Default
     private final List<WishlistPlace> wishlistPlaces = new ArrayList<>();
 

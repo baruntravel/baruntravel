@@ -28,3 +28,10 @@ GET {{apiUrl}}/wishlist/1/places
 Content-Type: application/json
 Authorization: {{ authorizationToken }}
 
+###
+
+DELETE {{apiUrl}}/wishlist/1
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+
