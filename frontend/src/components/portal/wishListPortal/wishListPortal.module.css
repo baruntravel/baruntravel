@@ -1,0 +1,22 @@
+.WishListPortal {
+  position: fixed;
+  z-index: 1004;
+  text-align: center;
+  background-color: #00000080;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.body {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 60%;
+  margin: auto;
+  background-color: white;
+  border-radius: 12px;
+}

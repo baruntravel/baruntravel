@@ -1,11 +1,12 @@
 .VerticalWishList {
-  height: 100vh;
+  height: 100%;
 }
 .header {
   display: flex;
   position: relative;
   align-items: center;
   justify-content: center;
+  height: 10%;
   font-size: 18px;
   padding: 6px;
   border-bottom: 0.3px solid rgba(0, 0, 0, 0.3);
@@ -35,7 +36,7 @@
 
 .imageContainer {
   position: relative;
-  width: 25vw;
+  width: 20vw;
   margin-right: 32px;
 }
 .imageContainer::before {
@@ -64,6 +65,6 @@
   background-repeat: no-repeat;
 }
 .name {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
 }
