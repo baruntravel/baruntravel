@@ -4,14 +4,16 @@ import Portal from "../portal";
 import styles from "./wishListPortal.module.css";
 const WishListPortal = ({ onClose }) => {
   const portalRef = useRef();
-
   const onHandleClose = (event) => {
     if (
       portalRef.current &&
       !portalRef.current.contains(event.target) &&
       event.target.nodeName !== "SPAN" // span을 클릭할 때 리렌더링되는 이유로 예외케이스 추가
     ) {
-      onClose();
+      portalRef.current.classList.add("slide-bottom-portal");
+      setTimeout(() => {
+        onClose();
+      }, 500);
     }
   };
   useEffect(() => {

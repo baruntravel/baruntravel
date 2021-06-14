@@ -113,7 +113,7 @@ const KakaoMapPage = () => {
         onOpenAddSuccess();
       }, 1000);
     },
-    [onOpenAddSuccess]
+    [onOpenAddSuccess, onOpenWishListPortal]
   );
 
   const onClickFullHeart = useCallback(
@@ -140,7 +140,6 @@ const KakaoMapPage = () => {
           <SideProfileToggle />
         </div>
       </div>
-      <button onClick={onOpenAddSuccess}>test</button>
       <div className={styles.mapContainer}>
         <HotplaceMap
           searchRef={searchRef}
