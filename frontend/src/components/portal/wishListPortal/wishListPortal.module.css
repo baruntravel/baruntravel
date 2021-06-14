@@ -1,4 +1,4 @@
-.portalContainer {
+.WishListPortal {
   position: fixed;
   z-index: 1004;
   text-align: center;
@@ -9,42 +9,14 @@
   bottom: 0;
 }
 
-.portalBody {
+.body {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 24px;
   width: 80%;
+  height: 60%;
   margin: auto;
   background-color: white;
   border-radius: 12px;
-}
-.header {
-  display: flex;
-  width: 100%;
-  height: 10%;
-  justify-content: center;
-  align-items: center;
-}
-.title {
-  width: 100%;
-  font-size: 1.2em;
-  font-weight: 600;
-  color: indianred;
-  padding: 12px;
-}
-
-form {
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-}
-
-.nameInput {
-  border: 0.3px black solid;
-}
-
-.areaSelectBox {
 }

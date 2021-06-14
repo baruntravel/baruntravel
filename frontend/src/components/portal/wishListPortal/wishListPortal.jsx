@@ -1,56 +1,32 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
+import VerticalWishList from "../../common/verticalWishList/verticalWishList";
 import Portal from "../portal";
 import styles from "./wishListPortal.module.css";
-
-const WishListPortal = ({ onClose, addWishList }) => {
+const WishListPortal = ({ onClose }) => {
   const portalRef = useRef();
-  let wishListName;
-
-  const handleClose = (event) => {
+  const onHandleClose = (event) => {
     if (
       portalRef.current &&
       !portalRef.current.contains(event.target) &&
       event.target.nodeName !== "SPAN" // span을 클릭할 때 리렌더링되는 이유로 예외케이스 추가
     ) {
-      onClose();
+      portalRef.current.classList.add("slide-bottom-portal");
+      setTimeout(() => {
+        onClose();
+      }, 500);
     }
   };
   useEffect(() => {
-    window.addEventListener("click", handleClose);
+    window.addEventListener("click", onHandleClose);
     return () => {
-      window.removeEventListener("click", handleClose);
+      window.removeEventListener("click", onHandleClose);
     };
-  }, [handleClose]);
+  }, [onHandleClose]);
   return (
     <Portal>
-      <div className={styles.portalContainer}>
-        <div ref={portalRef} className={styles.portalBody}>
-          <div className={styles.header}>
-            <span className={styles.title}>찜 목록 이름 정하기</span>
-          </div>
-          <form className={styles.form}>
-            <input
-              className={styles.nameInput}
-              placeholder="이름"
-              autoFocus
-              onInput={(e) => (wishListName = e.target.value)}
-            />
-            <select className={styles.areaSelectBox}>
-              <option value="서울">서울</option>
-              <option value="강릉">강릉</option>
-              <option value="제주">제주</option>
-            </select>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                addWishList(wishListName);
-                onClose();
-              }}
-              className={styles.inputButton}
-            >
-              확인
-            </button>
-          </form>
+      <div className={styles.WishListPortal}>
+        <div ref={portalRef} className={styles.body}>
+          <VerticalWishList onClose={onClose} />
         </div>
       </div>
     </Portal>

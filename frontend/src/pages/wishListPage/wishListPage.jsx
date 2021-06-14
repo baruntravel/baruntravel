@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import WishListContainer from "../../components/wishListPage/wishListContainer/wishListContainer";
 import PlaceContainer from "../../components/wishListPage/placeContainer/placeContainer";
-import WishListPortal from "../../components/portal/wishListPortal/wishListPortal";
+import WishListPortalInput from "../../components/portal/wishListInputPortal/wishListPortalInput";
 
 //TODO : 나의 찜목록 가져오는 API 연결
 const WishListPage = () => {
@@ -32,18 +32,31 @@ const WishListPage = () => {
   return (
     <>
       <div className={styles.container}>
-        {!folderToggle ? <Header title={"찜 목록"} /> : <Header title={title} onBackHandler={folderOut} />}
+        {!folderToggle ? (
+          <Header title={"찜 목록"} />
+        ) : (
+          <Header title={title} onBackHandler={folderOut} />
+        )}
 
         {isLogin === undefined ? (
           <h1>로그인을 해주세요</h1>
         ) : (
           <div className={styles.body}>
-            {!folderToggle ? <WishListContainer folderIn={folderIn} /> : <PlaceContainer />}
+            {!folderToggle ? (
+              <WishListContainer folderIn={folderIn} />
+            ) : (
+              <PlaceContainer />
+            )}
             <h1>{wishlistName}</h1>
           </div>
         )}
 
-        {portalOpened && <WishListPortal onClose={handlePortalOpen} handleWishlistName={handleWishlistName} />}
+        {portalOpened && (
+          <WishListPortalInput
+            onClose={handlePortalOpen}
+            handleWishlistName={handleWishlistName}
+          />
+        )}
         <Navbar />
       </div>
     </>

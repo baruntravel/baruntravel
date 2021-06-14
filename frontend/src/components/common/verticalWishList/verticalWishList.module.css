@@ -1,0 +1,70 @@
+.VerticalWishList {
+  height: 100%;
+}
+.header {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  height: 10%;
+  font-size: 18px;
+  padding: 6px;
+  border-bottom: 0.3px solid rgba(0, 0, 0, 0.3);
+}
+
+.closeButton {
+  border: none;
+  background-color: transparent;
+  font-weight: 600;
+  font-size: 20px;
+  margin-left: auto;
+}
+.body {
+  height: 90%;
+  overflow: auto;
+}
+.list {
+  padding: 18px;
+  height: 100%;
+}
+
+.wishItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.imageContainer {
+  position: relative;
+  width: 20vw;
+  margin-right: 32px;
+}
+.imageContainer::before {
+  content: "";
+  display: block;
+  padding-top: 100%; /* 정사각형일 경우 */
+}
+.image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+.plusContainer {
+  background-color: black;
+  border-radius: 12px;
+  display: inline-block;
+  background: linear-gradient(#fff, #fff), linear-gradient(#fff, #fff), #000;
+  background-position: center;
+  background-size: 50% 2px, 2px 50%; /*thickness = 2px, length = 50% (25px)*/
+  background-repeat: no-repeat;
+}
+.name {
+  font-size: 20px;
+  font-weight: 600;
+}

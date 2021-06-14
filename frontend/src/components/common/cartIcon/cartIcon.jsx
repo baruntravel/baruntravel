@@ -37,9 +37,26 @@ const CartIcon = ({ userStates, items, onUpdateItems }) => {
     onUpdateItems();
   }, [onUpdateItems]);
 
+  // const updateMemoShoppingItem = useCallback( 추후에 cartIcon에 추가
+  //   (id, memo) => {
+  //     setShoppingItems((prev) => {
+  //       const updated = [...prev];
+  //       const forUpdateIndex = updated.findIndex((item) => {
+  //         if (item.id === id) return true;
+  //       });
+  //       updated[forUpdateIndex] = { ...updated[forUpdateIndex], memo: memo };
+  //       return updated;
+  //     });
+  //   },
+  //   [setShoppingItems]
+  // );
+
   return (
     <div className={styles.CartIcon}>
-      <ShoppingCartOutlined className={styles.icon} onClick={setCartVisibleTrue} />
+      <ShoppingCartOutlined
+        className={styles.icon}
+        onClick={setCartVisibleTrue}
+      />
       <Drawer
         placement="right"
         closable={false}
