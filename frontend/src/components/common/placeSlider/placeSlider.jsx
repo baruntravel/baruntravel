@@ -18,6 +18,7 @@ const PlaceSlider = ({
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+
   return (
     <Slider
       ref={sliderRef}

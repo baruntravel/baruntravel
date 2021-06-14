@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import VerticalWishList from "../../common/verticalWishList/verticalWishList";
 import Portal from "../portal";
 import styles from "./wishListPortal.module.css";
-const WishListPortal = ({ onClose }) => {
+const WishListPortal = ({ onClose, onAddItem }) => {
   const componentRef = useRef();
   const portalRef = useRef();
   const onHandleClose = (event) => {
@@ -25,7 +25,7 @@ const WishListPortal = ({ onClose }) => {
     <Portal>
       <div ref={componentRef} className={styles.WishListPortal}>
         <div ref={portalRef} className={styles.body}>
-          <VerticalWishList onClose={onClose} />
+          <VerticalWishList onClose={onClose} onAddItem={onAddItem} />
         </div>
       </div>
     </Portal>

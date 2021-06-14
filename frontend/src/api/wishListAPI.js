@@ -15,8 +15,9 @@ export const onAddNewMyWish = (name) => {
 
 export const onAddWishItem = (wishListId, placeId) => {
   const data = {
-    placeId,
+    placeId: Number(placeId),
   };
+
   return axios
     .post(`/wishlist/${wishListId}/place`, data)
     .then((res) => true)

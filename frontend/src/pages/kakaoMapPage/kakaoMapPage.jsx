@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./kakaoMapPage.module.css";
-import HotplaceMap from "../../components/kakaoMapPage/kakaoMap/kakaoMap";
+import KakaoMap from "../../components/kakaoMapPage/kakaoMap/kakaoMap";
 import useInput from "../../hooks/useInput";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList } from "@fortawesome/free-solid-svg-icons";
@@ -17,6 +17,7 @@ import PlaceSlider from "../../components/common/placeSlider/placeSlider";
 import WishListPortal from "../../components/portal/wishListPortal/wishListPortal";
 import AddSuccessConfirm from "../../components/common/addSuccessConfirm/addSuccessConfirm";
 import RemoveSuccessConfirm from "../../components/common/removeSuccessConfirm/removeSuccessConfirm";
+import { onAddWishItem } from "../../api/wishListAPI";
 
 const KakaoMapPage = () => {
   const placeListRef = useRef();
@@ -46,6 +47,7 @@ const KakaoMapPage = () => {
     if (places.length > 0) {
       placeListRef.current.style.display = "initial";
     }
+    setPlace(places[0]);
     setSearchPlaces(places);
   }, []);
 
@@ -108,22 +110,27 @@ const KakaoMapPage = () => {
   const onClickEmptyHeart = useCallback(
     async (place) => {
       onOpenWishListPortal();
-      setTimeout(() => {
-        console.log("추가 api 호출 및 업데이트");
-        onOpenAddSuccess();
-      }, 1000);
     },
-    [onOpenAddSuccess, onOpenWishListPortal]
+    [onOpenWishListPortal]
   );
 
-  const onClickFullHeart = useCallback(
-    (place) => {
-      console.log(place);
-      console.log("삭제 api 호출 및 업데이트");
-      onOpenDeleteSuccess();
+  const onClickFullHeart = useCallback(() => {
+    console.log("삭제 api 호출 및 업데이트");
+    onOpenDeleteSuccess();
+  }, [onOpenDeleteSuccess]);
+
+  const onAddToWishList = useCallback(
+    async (wishListId) => {
+      const result = await onAddWishItem(wishListId, place.id);
+      console.log(wishListId, place.id);
+      if (result) {
+        onCloseWishListPortal();
+        onOpenAddSuccess();
+      }
     },
-    [onOpenDeleteSuccess]
+    [onCloseWishListPortal, onOpenAddSuccess, place]
   );
+
   return (
     <div className={styles.KakaoMapPage}>
       <div className={styles.searchContainer}>
@@ -141,7 +148,7 @@ const KakaoMapPage = () => {
         </div>
       </div>
       <div className={styles.mapContainer}>
-        <HotplaceMap
+        <KakaoMap
           searchRef={searchRef}
           inputRef={inputRef}
           updateClickedPlace={updateClickedPlace}
@@ -179,7 +186,10 @@ const KakaoMapPage = () => {
         <PortalPlaceList onClose={onCloseListPortal} places={searchPlaces} />
       )}
       {!needLogin && openWishPortal && (
-        <WishListPortal onClose={onCloseWishListPortal} />
+        <WishListPortal
+          onClose={onCloseWishListPortal}
+          onAddItem={onAddToWishList}
+        />
       )}
       {openAddSuccessConfirm && (
         <AddSuccessConfirm onClose={onCloseAddSuccess} />
