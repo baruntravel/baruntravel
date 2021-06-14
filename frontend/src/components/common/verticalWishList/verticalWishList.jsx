@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
+import WishListPortalInput from "../../portal/wishListInputPortal/wishListPortalInput";
 import styles from "./verticalWishList.module.css";
 
 const VerticalWishList = ({ onClose }) => {
@@ -8,6 +9,15 @@ const VerticalWishList = ({ onClose }) => {
     "https://i.pinimg.com/474x/5f/a2/8e/5fa28eae2bdebd6ab2d30690304927b9.jpg",
     "https://i.pinimg.com/474x/a6/56/70/a65670944d4bf492a3a71c4a95bb3910.jpg",
   ];
+
+  const [openInput, setOpenInput] = useState(false);
+
+  const onOpenInput = useCallback(() => {
+    setOpenInput(true);
+  }, []);
+  const onCloseInput = useCallback(() => {
+    setOpenInput(false);
+  }, []);
 
   return (
     <div className={styles.VerticalWishList}>
@@ -19,7 +29,7 @@ const VerticalWishList = ({ onClose }) => {
       </header>
       <section className={styles.body}>
         <ul className={styles.list}>
-          <li className={styles.wishItem}>
+          <li className={styles.wishItem} onClick={onOpenInput}>
             <div
               className={`${styles.imageContainer} ${styles.plusContainer}`}
             ></div>
@@ -35,6 +45,7 @@ const VerticalWishList = ({ onClose }) => {
           ))}
         </ul>
       </section>
+      {openInput && <WishListPortalInput onClose={onCloseInput} />}
     </div>
   );
 };

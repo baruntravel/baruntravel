@@ -3,6 +3,7 @@ import VerticalWishList from "../../common/verticalWishList/verticalWishList";
 import Portal from "../portal";
 import styles from "./wishListPortal.module.css";
 const WishListPortal = ({ onClose }) => {
+  const componentRef = useRef();
   const portalRef = useRef();
   const onHandleClose = (event) => {
     if (
@@ -17,14 +18,12 @@ const WishListPortal = ({ onClose }) => {
     }
   };
   useEffect(() => {
-    window.addEventListener("click", onHandleClose);
-    return () => {
-      window.removeEventListener("click", onHandleClose);
-    };
+    componentRef.current.addEventListener("click", onHandleClose);
   }, [onHandleClose]);
+
   return (
     <Portal>
-      <div className={styles.WishListPortal}>
+      <div ref={componentRef} className={styles.WishListPortal}>
         <div ref={portalRef} className={styles.body}>
           <VerticalWishList onClose={onClose} />
         </div>

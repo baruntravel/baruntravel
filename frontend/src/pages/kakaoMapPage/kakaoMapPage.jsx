@@ -106,7 +106,7 @@ const KakaoMapPage = () => {
   }, []);
 
   const onClickEmptyHeart = useCallback(
-    (place) => {
+    async (place) => {
       onOpenWishListPortal();
       setTimeout(() => {
         console.log("추가 api 호출 및 업데이트");
