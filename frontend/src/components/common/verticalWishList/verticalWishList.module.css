@@ -36,7 +36,7 @@
 
 .imageContainer {
   position: relative;
-  width: 20vw;
+  width: 16vw;
   margin-right: 32px;
 }
 .imageContainer::before {

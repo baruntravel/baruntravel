@@ -1,15 +1,17 @@
 import React, { useCallback, useState } from "react";
+import { useRecoilState } from "recoil";
+import { userWishList } from "../../../recoil/userState";
 import WishListPortalInput from "../../portal/wishListInputPortal/wishListPortalInput";
 import styles from "./verticalWishList.module.css";
 
 const VerticalWishList = ({ onClose }) => {
-  const wishListItems = [
-    "https://i.pinimg.com/564x/d7/ec/75/d7ec75c9e68873ee75b734ac4ab09ced.jpg",
-    "https://i.pinimg.com/474x/30/5a/21/305a216481dfaaec10fd59cf1f667652.jpg",
-    "https://i.pinimg.com/474x/5f/a2/8e/5fa28eae2bdebd6ab2d30690304927b9.jpg",
-    "https://i.pinimg.com/474x/a6/56/70/a65670944d4bf492a3a71c4a95bb3910.jpg",
-  ];
-
+  // const wishListItems = [
+  //   "https://i.pinimg.com/564x/d7/ec/75/d7ec75c9e68873ee75b734ac4ab09ced.jpg",
+  //   "https://i.pinimg.com/474x/30/5a/21/305a216481dfaaec10fd59cf1f667652.jpg",
+  //   "https://i.pinimg.com/474x/5f/a2/8e/5fa28eae2bdebd6ab2d30690304927b9.jpg",
+  //   "https://i.pinimg.com/474x/a6/56/70/a65670944d4bf492a3a71c4a95bb3910.jpg",
+  // ];
+  const [wishListItems, setWishListItems] = useRecoilState(userWishList);
   const [openInput, setOpenInput] = useState(false);
 
   const onOpenInput = useCallback(() => {
@@ -33,7 +35,7 @@ const VerticalWishList = ({ onClose }) => {
             <div
               className={`${styles.imageContainer} ${styles.plusContainer}`}
             ></div>
-            <span className={styles.name}>이름</span>
+            <span className={styles.name}>새로운 찜 목록</span>
           </li>
           {wishListItems.map((item, index) => (
             <li key={index} className={styles.wishItem}>

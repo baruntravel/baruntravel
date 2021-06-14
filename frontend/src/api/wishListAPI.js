@@ -9,6 +9,16 @@ export const onAddWishItem = (wishListId, placeId) => {
     .then((res) => true)
     .catch((error) => {
       console.error(error);
-      throw new Error(`error`);
+      throw new Error(`error : ${error}`);
+    });
+};
+
+export const onReceiveWishList = () => {
+  return axios
+    .get(`/wishlist/my`)
+    .then((res) => res.data)
+    .catch((error) => {
+      console.error(error);
+      throw new Error(`error : ${error}`);
     });
 };

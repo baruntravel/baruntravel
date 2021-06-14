@@ -1,11 +1,11 @@
 import React, { useCallback, useRef, useState } from "react";
 import styles from "./loginBody.module.css";
 import { onLogin } from "../../../api/authAPI";
-import { Spin } from "antd";
 import { useRecoilState } from "recoil";
 import useInput from "../../../hooks/useInput";
-import { userState, userCart } from "../../../recoil/userState";
-// import { onReceiveCart } from "../../../api/cartAPI";
+import { userState, userWishList } from "../../../recoil/userState";
+import Loading from "../../common/loading/loading";
+import { onReceiveWishList } from "../../../api/wishListAPI";
 
 const LoginBody = ({ onClickRegister, onClose }) => {
   const formRef = useRef();
@@ -13,7 +13,9 @@ const LoginBody = ({ onClickRegister, onClose }) => {
   const [password, onHandlePassword] = useInput();
   const [loading, setLoading] = useState(false);
   const [userStates, setUserStates] = useRecoilState(userState);
-  const [shoppingItems, setShoppingItems] = useRecoilState(userCart);
+  const [userWishListItems, setUserWishListItems] = useRecoilState(
+    userWishList
+  );
   const [loginFail, setLoginFail] = useState(false);
   const updateUserLogin = useCallback(
     (isLogin, email, name, avatar) => {
@@ -36,14 +38,21 @@ const LoginBody = ({ onClickRegister, onClose }) => {
       updateUserLogin(isLogin, userEmail, userName, avatar);
       setLoading(false);
       if (isLogin) {
+        const myWishList = await onReceiveWishList();
+        if (myWishList) setUserWishListItems(myWishList);
+
         formRef.current.reset();
         onClose();
       } else {
         setLoginFail(true);
       }
     },
-    [email, onClose, password, updateUserLogin]
+    [email, onClose, password, setUserWishListItems, updateUserLogin]
   );
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <form ref={formRef} className={styles.loginForm} onSubmit={handleSubmit}>
@@ -77,11 +86,6 @@ const LoginBody = ({ onClickRegister, onClose }) => {
           회원가입
         </span>
       </div>
-      {loading && (
-        <div className={styles.loadingBody}>
-          <Spin tip="Logging in..."></Spin>
-        </div>
-      )}
     </form>
   );
 };

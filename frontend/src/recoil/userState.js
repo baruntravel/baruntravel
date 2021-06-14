@@ -16,3 +16,9 @@ export const userCart = atom({
   default: [],
   effects_UNSTABLE: [persistAtom],
 });
+
+export const userWishList = atom({
+  key: "userWishList",
+  default: [],
+  effects_UNSTABLE: [persistAtom],
+});
