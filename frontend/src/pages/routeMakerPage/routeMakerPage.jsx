@@ -19,7 +19,9 @@ const RouteMakerPage = (props) => {
   const getCartList = useCallback(async () => {
     if (userStates.isLogin) {
       const items = await onReceiveCart();
-      setCartItems(items);
+      if (items) {
+        setCartItems(items);
+      }
     }
   }, [userStates.isLogin]);
 
@@ -48,7 +50,7 @@ const RouteMakerPage = (props) => {
     }
 
     getCartList();
-    getRouteDetailInfo();
+    // getRouteDetailInfo();
   }, [getCartList]);
 
   return (
