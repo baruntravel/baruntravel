@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { useRecoilState } from "recoil";
+import { onAddNewMyWish, onReceiveWishList } from "../../../api/wishListAPI";
 import { userWishList } from "../../../recoil/userState";
 import WishListPortalInput from "../../portal/wishListInputPortal/wishListPortalInput";
 import styles from "./verticalWishList.module.css";
@@ -21,6 +22,14 @@ const VerticalWishList = ({ onClose }) => {
     setOpenInput(false);
   }, []);
 
+  const onMakeNewWishList = useCallback(
+    async (name) => {
+      await onAddNewMyWish(name);
+      const myList = await onReceiveWishList();
+      setWishListItems(myList);
+    },
+    [setWishListItems]
+  );
   return (
     <div className={styles.VerticalWishList}>
       <header className={styles.header}>
@@ -47,7 +56,12 @@ const VerticalWishList = ({ onClose }) => {
           ))}
         </ul>
       </section>
-      {openInput && <WishListPortalInput onClose={onCloseInput} />}
+      {openInput && (
+        <WishListPortalInput
+          onClose={onCloseInput}
+          addWishList={onMakeNewWishList}
+        />
+      )}
     </div>
   );
 };

@@ -1,5 +1,18 @@
 import axios from "axios";
 
+export const onAddNewMyWish = (name) => {
+  const data = {
+    name,
+  };
+  return axios
+    .post(`/wishlist`, data)
+    .then((res) => true)
+    .catch((error) => {
+      console.error(error);
+      throw new Error(`error : ${error}`);
+    });
+};
+
 export const onAddWishItem = (wishListId, placeId) => {
   const data = {
     placeId,
