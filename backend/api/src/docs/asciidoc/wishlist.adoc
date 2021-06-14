@@ -48,10 +48,10 @@ include::{snippets}/wishlist-getMine/response-fields.adoc[]
 
 === 찜목록에 있는 장소 조회
 
-`GET /wishlist/{wishlist}/places`
+`GET /wishlist/{wishlistId}/places`
 
 요청 HTTP
-include::{snippets}/wishlist-addPlace/path-parameters.adoc[]
+include::{snippets}/wishlist-getPlaces/path-parameters.adoc[]
 include::{snippets}/wishlist-getPlaces/http-request.adoc[]
 
 성공 응답 HTTP
@@ -60,7 +60,7 @@ include::{snippets}/wishlist-getPlaces/response-fields.adoc[]
 
 === 찜목록 삭제
 
-`DELETE /wishlist/{wishlist}`
+`DELETE /wishlist/{wishlistId}`
 
 요청 HTTP
 include::{snippets}/wishlist-delete/path-parameters.adoc[]
