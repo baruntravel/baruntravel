@@ -1,0 +1,70 @@
+= 바른여행길잡이 API 문서 (Wishlist)
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:snippets: ../../../build/generated-snippets
+
+= Wishlist
+---
+== 기본 API
+
+=== 비어있는 찜목록 생성
+
+`POST /wishlist`
+
+요청 HTTP
+include::{snippets}/wishlist-create/http-request.adoc[]
+include::{snippets}/wishlist-create/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/wishlist-create/http-response.adoc[]
+include::{snippets}/wishlist-create/response-fields.adoc[]
+
+=== 찜목록에 장소 추가
+
+`POST /wishlist/{wishlistId}/place`
+
+요청 HTTP
+include::{snippets}/wishlist-addPlace/path-parameters.adoc[]
+include::{snippets}/wishlist-addPlace/http-request.adoc[]
+include::{snippets}/wishlist-addPlace/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/wishlist-addPlace/http-response.adoc[]
+
+=== 자신의 찜목록 조회
+
+`GET /wishlist/my`
+
+요청 HTTP
+include::{snippets}/wishlist-getMine/http-request.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/wishlist-getMine/http-response.adoc[]
+include::{snippets}/wishlist-getMine/response-fields.adoc[]
+
+=== 찜목록에 있는 장소 조회
+
+`GET /wishlist/{wishlistId}/places`
+
+요청 HTTP
+include::{snippets}/wishlist-getPlaces/path-parameters.adoc[]
+include::{snippets}/wishlist-getPlaces/http-request.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/wishlist-getPlaces/http-response.adoc[]
+include::{snippets}/wishlist-getPlaces/response-fields.adoc[]
+
+=== 찜목록 삭제
+
+`DELETE /wishlist/{wishlistId}`
+
+요청 HTTP
+include::{snippets}/wishlist-delete/path-parameters.adoc[]
+include::{snippets}/wishlist-delete/http-request.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/wishlist-delete/http-response.adoc[]

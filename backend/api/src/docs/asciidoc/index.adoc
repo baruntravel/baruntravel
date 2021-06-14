@@ -2,3 +2,4 @@
 - link:/docs/route.html[경로 API]
 - link:/docs/place.html[장소 API]
 - link:/docs/cart.html[카트 API]
+- link:/docs/wishlist.html[찜목록 API]

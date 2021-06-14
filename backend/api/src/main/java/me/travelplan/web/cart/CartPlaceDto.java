@@ -13,9 +13,11 @@ public class CartPlaceDto {
         private String categoryId;
         private String categoryName;
         private String address;
-        private String memo;
+        private Double x;
+        private Double y;
         private String url;
         private Integer order;
+        private String memo;
         private boolean likeCheck;
     }
 }

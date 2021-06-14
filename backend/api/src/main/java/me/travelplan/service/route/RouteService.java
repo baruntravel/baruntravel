@@ -41,7 +41,7 @@ public class RouteService {
                     Place findPlace = placeRepository.findById(place.getId()).orElseThrow(PlaceNotFoundException::new);
                     return RoutePlace.create(findPlace, place.getOrder());
                 }).collect(Collectors.toList());
-        Route route = Route.create(request.getName(), routePlaces);
+        Route route = Route.create(request.getName(), request.getRegion(), routePlaces);
         route.calculateCoordinate(routePlaces);
 
         return routeRepository.save(route);

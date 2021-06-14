@@ -30,10 +30,12 @@ public interface CartPlaceMapper {
                     .address(cartPlace.getPlace().getAddress())
                     .categoryId(cartPlace.getPlace().getCategory().getId())
                     .categoryName(cartPlace.getPlace().getCategory().getName())
-                    .memo(cartPlace.getMemo())
-                    .order(cartPlace.getOrder())
                     .likeCheck(cartPlace.getPlace().isLike(user))
                     .url(cartPlace.getPlace().getUrl())
+                    .x(cartPlace.getPlace().getX())
+                    .y(cartPlace.getPlace().getY())
+                    .memo(cartPlace.getMemo())
+                    .order(cartPlace.getOrder())
                     .build();
             cartPlaceList.add(place);
         });
