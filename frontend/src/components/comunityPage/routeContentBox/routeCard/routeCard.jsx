@@ -22,7 +22,6 @@ const RouteCard = () => {
                 <div className={styles.row1}>
                   <div className={styles.routeName}>{routes[value].routeName}</div>
                   <div className={styles.buttonBox}>
-                    <button className={styles.cartButton}>cart</button>
                     <button className={styles.heartButton}>heart</button>
                   </div>
                 </div>
