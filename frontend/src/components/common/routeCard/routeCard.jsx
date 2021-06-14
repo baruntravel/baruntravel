@@ -1,7 +1,7 @@
 import styles from "./routeCard.module.css";
 import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
-import { usersRouteItems } from "../../../../recoil/routeAtom";
+import { usersRouteItems } from "../../../recoil/routeAtom";
 import { useHistory } from "react-router-dom";
 
 const RouteCard = () => {

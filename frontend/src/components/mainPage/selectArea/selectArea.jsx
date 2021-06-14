@@ -10,14 +10,14 @@ const SelectArea = () => {
   // 인기지역 10개만 보여주고, 전체보기 누르면 전체 지역
   const AreaList = () => {
     let areaArray = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < (areaList.length < 10 ? areaList.length : 10); i++) {
       areaArray.push(
         <div
           onClick={() =>
             history.push({
               // pathname: `/${areaList[i].eng}`,
-              pathname: `/test2`,
-              state: { areaKor: areaList[i].kor, areaEng: areaList[i].eng },
+              pathname: `/community/${areaList[i].eng}`,
+              state: { areaKor: areaList[i].kor, lat: areaList[i].lat, lng: areaList[i].lng },
             })
           }
           className={styles.areaBox}

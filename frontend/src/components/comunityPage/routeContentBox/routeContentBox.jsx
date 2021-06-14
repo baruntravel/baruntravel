@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import styles from "./routeContentBox.module.css";
 import SortBox from "../../../components/common/sortBox/sortBox";
-import RouteCard from "./routeCard/routeCard";
+import RouteCard from "../../common/routeCard/routeCard";
 import RouteMapPage from "../../../pages/routeMapPage/routeMapPage";
 import MapButton from "../mapButton/mapButton";
 // import UsersRoutePage from "../../usersRoutePage/usersRoutePage";

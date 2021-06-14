@@ -77,7 +77,7 @@ function App() {
             <RouteMakerPage />
           </Route>
 
-          <Route exact path="/test2">
+          <Route exact path="/community/:id">
             <ComunityPage />
           </Route>
 
