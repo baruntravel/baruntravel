@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./placeDetailPage.module.css";
 import Slider from "react-slick";
-// import "../kakaoMapPage/node_modules/slick-carousel/slick/slick.css";
-// import "../kakaoMapPage/node_modules/slick-carousel/slick/slick-theme.css";
 import { StarFilled } from "@ant-design/icons";
 import { Drawer } from "antd";
 import { userState } from "../../recoil/userState";

@@ -37,6 +37,7 @@ const ReviewList = ({
   }, []);
   const onClickReviewWrite = useCallback(() => {
     if (userStates.isLogin) {
+      setSelectedCard(null);
       setReviewWrite(true);
     } else {
       onOpenPortalAuth();
@@ -50,14 +51,10 @@ const ReviewList = ({
   }, []);
 
   const onHandleDeleteReview = useCallback(
-    (id) => {
-      onDeleteReview(id);
-      setReviewDatas((prev) => {
-        const updated = prev.filter((item) => item.id !== id);
-        return updated;
-      });
+    async (id) => {
+      await onDeleteReview(id);
     },
-    [onDeleteReview, setReviewDatas]
+    [onDeleteReview]
   );
   const onHandleEditReview = useCallback(
     (formData) => {
@@ -112,6 +109,7 @@ const ReviewList = ({
         height="100vh"
         bodyStyle={{ padding: 0 }}
         onClose={onCloseReviewWrite}
+        destroyOnClose={true}
       >
         <ReviewForm onUploadReview={onUploadReview} onClose={onCloseReviewWrite} />
       </Drawer>
@@ -122,6 +120,7 @@ const ReviewList = ({
         height="100vh"
         bodyStyle={{ padding: 0 }}
         onClose={onCloseEditForm}
+        destroyOnClose={true}
       >
         <ReviewForm prevReview={selectedCard} onUploadReview={onHandleEditReview} onClose={onCloseEditForm} />
       </Drawer>

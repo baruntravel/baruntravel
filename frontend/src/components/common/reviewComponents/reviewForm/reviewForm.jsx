@@ -1,7 +1,7 @@
 import styles from "./reviewForm.module.css";
 import { Card, Rate } from "antd";
 import TextArea from "antd/lib/input/TextArea";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 // import { getYear, getMonth, getDate } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImages } from "@fortawesome/free-solid-svg-icons";
@@ -11,7 +11,7 @@ import useInput from "../../../../hooks/useInput";
 const ReviewForm = ({ onClose, onUploadReview, prevReview }) => {
   const [images, setImages] = useState(prevReview ? prevReview.images.map((image) => image.url) : {}); // 미리보기용 URL 저장소
   const [files, setFiles] = useState({}); // 이미지 file 저장
-  const [inputContext, handleInputContext] = useInput(prevReview ? prevReview.content : "");
+  const [inputContext, handleInputContext, setInputContext] = useInput(prevReview ? prevReview.content : "");
   const [rate, setRate] = useState(prevReview ? prevReview.score : 5);
   const imageInput = useRef();
   const onSubmit = useCallback(
@@ -49,16 +49,24 @@ const ReviewForm = ({ onClose, onUploadReview, prevReview }) => {
     },
     [files, images]
   );
-  const onDeleteImages = (name) => {
-    // 이미지 업로드를 하고 코드 작성을하자
-    // imageFormData;
-    const updatedFiles = { ...files };
-    const updatedImages = { ...images };
-    delete updatedFiles[name];
-    delete updatedImages[name];
-    setFiles(updatedImages);
-    setImages(updatedImages);
-  };
+  const onDeleteImages = useCallback(
+    (name) => {
+      // 이미지 업로드를 하고 코드 작성을하자
+      // imageFormData;
+      const updatedFiles = { ...files };
+      const updatedImages = { ...images };
+      delete updatedFiles[name];
+      delete updatedImages[name];
+      setFiles(updatedImages);
+      setImages(updatedImages);
+    },
+    [files, images]
+  );
+
+  // const onResetWhenClose = useCallback(() => {
+  //   setImages([]);
+  //   set;
+  // }, []);
   return (
     <div className={styles.ReviewForm}>
       <Card
