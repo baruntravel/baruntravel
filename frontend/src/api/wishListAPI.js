@@ -36,3 +36,13 @@ export const onReceiveWishList = () => {
       throw new Error(`error : ${error}`);
     });
 };
+
+export const onReceivePlacesInWishList = (wishlistId) => {
+  return axios
+    .get(`/wishlist/${wishlistId}/places`)
+    .then((res) => res.data.places)
+    .catch((error) => {
+      console.error(error);
+      throw new Error(`error : ${error}`);
+    });
+};

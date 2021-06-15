@@ -16,7 +16,6 @@ const ReviewList = ({
   onUnlikeReview,
   userStates,
   reviewDatas,
-  setReviewDatas,
 }) => {
   const [selectedCard, setSelectedCard] = useState(false);
   const [openDeleteConfrim, setOpenDeleteConfirm] = useState(false);

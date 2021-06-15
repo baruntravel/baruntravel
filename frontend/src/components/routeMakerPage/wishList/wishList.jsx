@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { onReceivePlacesInWishList } from "../../../api/wishListAPI";
 import WishListCard from "../wishListCard/wishListCard";
 import WishListHeader from "../wishListHeader/wishListHeader";
 import WishPlaceCard from "../wishPlaceCard/wishPlaceCard";
@@ -10,9 +11,8 @@ const WishList = ({ wishList, onAddCart, onDeleteCart, cartItems }) => {
 
   const sortWishPlaces = useCallback(
     (places) => {
-      const updated = cartItems.map((cartItem) =>
-        places.find((item) => item.id === cartItem.id)
-      );
+      console.log(places);
+      const updated = cartItems.map((cartItem) => places.find((item) => item.id === cartItem.id));
       places.forEach((item) => {
         if (!updated.find((cartItem) => cartItem.id === item.id)) {
           updated.push(item);
@@ -23,10 +23,15 @@ const WishList = ({ wishList, onAddCart, onDeleteCart, cartItems }) => {
     [cartItems]
   );
 
-  const onOpenPlaceList = useCallback(() => {
-    setIsClicked(true);
-    sortWishPlaces(wishList[0].places);
-  }, [sortWishPlaces, wishList]);
+  const onOpenPlaceList = useCallback(
+    async (e) => {
+      const link = e.target.closest("li").dataset.link;
+      const places = await onReceivePlacesInWishList(link);
+      setIsClicked(true);
+      sortWishPlaces(places);
+    },
+    [sortWishPlaces]
+  );
 
   const onClosePlaceList = useCallback(() => {
     setIsClicked(false);
@@ -42,14 +47,12 @@ const WishList = ({ wishList, onAddCart, onDeleteCart, cartItems }) => {
       {isClicked ? (
         <ul className={styles.listContainer}>
           {itemsInWish.map((item, index) => (
-            <li key={index} className={styles.cardContainer} data-link={item}>
+            <li key={index} className={styles.cardContainer} data-link={item.id}>
               <WishPlaceCard
                 item={item}
                 onAddCart={onAddCart}
                 onDeleteCart={onDeleteCart}
-                index={
-                  cartItems.findIndex((cartItem) => cartItem.id === item.id) + 1
-                }
+                index={cartItems.findIndex((cartItem) => cartItem.id === item.id) + 1}
               />
             </li>
           ))}
@@ -57,7 +60,7 @@ const WishList = ({ wishList, onAddCart, onDeleteCart, cartItems }) => {
       ) : (
         <ul className={styles.listContainer} onClick={onOpenPlaceList}>
           {wishList.map((item, index) => (
-            <li key={index} className={styles.cardContainer} data-link={item}>
+            <li key={index} className={styles.cardContainer} data-link={item.id}>
               <WishListCard item={item} />
             </li>
           ))}
