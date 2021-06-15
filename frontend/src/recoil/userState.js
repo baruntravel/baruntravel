@@ -7,6 +7,7 @@ export const userState = atom({
     isLogin: null,
     name: null, // 내 정보 -> 내id, 내가작성한 route Cart 등 나의 데이터 id들만 가져올 것들?
     email: null,
+    avatar: null,
   },
   effects_UNSTABLE: [persistAtom],
 });
