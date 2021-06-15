@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { usersRouteItems } from "../../../recoil/routeAtom";
 import { useHistory } from "react-router-dom";
+import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 
 const RouteCard = () => {
   const [routes, setRoutes] = useRecoilState(usersRouteItems); // Todo : routeAPI로 불러오기
@@ -21,9 +22,7 @@ const RouteCard = () => {
               <div className={styles.col2}>
                 <div className={styles.row1}>
                   <div className={styles.routeName}>{routes[value].routeName}</div>
-                  <div className={styles.buttonBox}>
-                    <button className={styles.heartButton}>heart</button>
-                  </div>
+                  <HeartOutlined className={styles.heartIcon} />
                 </div>
                 <div className={styles.row2}>
                   {routes[value].places.map((value, index) => {
@@ -42,7 +41,5 @@ const RouteCard = () => {
     </div>
   );
 };
-
-// routeName, heartButton, p
 
 export default RouteCard;

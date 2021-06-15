@@ -12,17 +12,7 @@ const SelectArea = () => {
     let areaArray = [];
     for (let i = 0; i < (areaList.length < 10 ? areaList.length : 10); i++) {
       areaArray.push(
-        <div
-          onClick={() =>
-            history.push({
-              // pathname: `/${areaList[i].eng}`,
-              pathname: `/community/${areaList[i].eng}`,
-              state: { areaKor: areaList[i].kor, lat: areaList[i].lat, lng: areaList[i].lng },
-            })
-          }
-          className={styles.areaBox}
-          key={i}
-        >
+        <div onClick={() => history.push(`/community/${areaList[i].eng}`)} className={styles.areaBox} key={i}>
           <li className={styles.area} id={areaList[i].eng} key={i}>
             {areaList[i].kor}
           </li>
