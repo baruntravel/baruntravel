@@ -4,6 +4,7 @@ import DetailHeader from "../../components/common/detailHeader/detailHeader";
 import styles from "./reviewDetailPage.module.css";
 import ReviewCardBottom from "../../components/common/reviewComponents/reviewList/reviewCard/reviewCardBottom/reviewCardBottom";
 import ReviewScoreText from "../../components/common/reviewComponents/reviewScoreText/reviewScoreText";
+import Header from "../../components/common/header/header";
 
 const ReviewDetailPage = (props) => {
   const review = {
@@ -46,24 +47,16 @@ const ReviewDetailPage = (props) => {
 
   return (
     <div className={styles.ReviewDetailPage}>
-      <DetailHeader />
+      <Header title={"장소 이름"} />
       <div className={styles.reviewHeader}>
         <ReviewUserProfile avatar={review.avatar} name={review.creator.name} />
         <ReviewScoreText score={review.score} content={review.content} />
       </div>
       {review.files.map((file, index) => (
-        <img
-          key={index}
-          src={file.url}
-          className={styles.image}
-          alt="사용자 이미지"
-        />
+        <img key={index} src={file.url} className={styles.image} alt="사용자 이미지" />
       ))}
       <div className={styles.reviewBottom}>
-        <ReviewCardBottom
-          date={review.updatedAt || review.createdAt}
-          likeCount={review.likeCount}
-        />
+        <ReviewCardBottom date={review.updatedAt || review.createdAt} likeCount={review.likeCount} />
       </div>
     </div>
   );

@@ -24,6 +24,7 @@ import Loading from "../../components/common/loading/loading";
 import PlaceInRouteDetail from "../../components/routeDetailPage/placeInRouteDetail/placeInRouteDetail";
 import ImagesZoom from "../../components/common/reviewComponents/imagesZoom/imagesZoom";
 import ReviewList from "../../components/common/reviewComponents/reviewList/reviewList";
+import Header from "../../components/common/header/header";
 
 const RouteDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
@@ -139,10 +140,12 @@ const RouteDetailPage = (props) => {
       const route = await getRouteDetail(routeId);
       await setRouteDetail(route);
       const route_images = route && route.places.map((place) => [place.image, place.name]);
-      const images = route_images.filter((item) => item[0]); // 이미지가 존재하는것만 뽑아낸다.
-      setPostImages(images.map((img) => img[0])); // 이미지만 뽑아서 저장
-      setImages(images); // 이미지와 이름을 세트로 저장
-      setImagePlaceName(images[0][1]); // 첫 이미지의 장소 이름 저장
+      if (route_images) {
+        const images = route_images.filter((item) => item[0]); // 이미지가 존재하는것만 뽑아낸다.
+        setPostImages(images.map((img) => img[0])); // 이미지만 뽑아서 저장
+        setImages(images); // 이미지와 이름을 세트로 저장
+        setImagePlaceName(images[0][1]); // 첫 이미지의 장소 이름 저장
+      }
       setLoading(false);
     }
     getRouteDetailInfo();
@@ -170,9 +173,17 @@ const RouteDetailPage = (props) => {
       </>
     );
   }
+  if (!routeDetail) {
+    return (
+      <>
+        <div>해당 정보가 없습니다.</div>
+      </>
+    );
+  }
   return (
     <div className={styles.RouteDetailPage}>
-      <DetailHeader liked={liked} onHandleLike={onHandleLike} onHandleUnlike={onHandleUnlike} />
+      {/* <DetailHeader liked={liked} onHandleLike={onHandleLike} onHandleUnlike={onHandleUnlike} /> */}
+      <Header title={`${routeDetail.creator.name}'s 경로`} />
       {images && (
         <div className={styles.sliderContainer} onClick={onZoom}>
           <Slider {...settings} afterChange={(index) => afterSliderChange(index)}>

@@ -5,12 +5,15 @@ import styles from "./placeCard.module.css";
 const PlaceCard = ({ place, onHandleDelete, onClickAdd, isLiked }) => {
   const history = useHistory();
   const likeIconRef = useRef();
+
   const onClickDelete = useCallback(() => {
     onHandleDelete(place.id);
   }, [onHandleDelete, place]);
+
   const onHandleLike = useCallback(() => {
     onClickAdd(place);
   }, [onClickAdd, place]);
+
   const onClickCard = useCallback(
     (event) => {
       if (
