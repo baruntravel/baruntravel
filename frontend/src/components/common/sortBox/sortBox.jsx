@@ -7,15 +7,15 @@ const SortBox = ({ onSortReviewForDate, onSortReviewForLike }) => {
   const recommendRef = useRef();
 
   const onSortByRecommend = useCallback(() => {
-    onSortReviewForDate();
+    onSortReviewForLike();
     recommendRef.current.classList.add(styles["pink__color"]);
     newRef.current.classList.remove(styles["pink__color"]);
-  }, [onSortReviewForDate]);
+  }, [onSortReviewForLike]);
   const onSortByDate = useCallback(() => {
-    onSortReviewForLike();
+    onSortReviewForDate();
     newRef.current.classList.add(styles["pink__color"]);
     recommendRef.current.classList.remove(styles["pink__color"]);
-  }, [onSortReviewForLike]);
+  }, [onSortReviewForDate]);
 
   useEffect(() => {
     newRef.current.classList.add(styles["pink__color"]);

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./reviewCard.module.css";
 // import { getYear, getMonth, getDate } from "date-fns";
 import PostImages from "../../postImages/postImages";
@@ -40,6 +40,10 @@ const ReviewCard = ({
     onOpenEditForm();
   }, [onHandleSelected, onOpenEditForm, review]);
 
+  useEffect(() => {
+    setLiked(isLike);
+    setLikeCount(likes);
+  }, [review]);
   return (
     <div className={styles.ReviewCard}>
       <ReviewUserProfile

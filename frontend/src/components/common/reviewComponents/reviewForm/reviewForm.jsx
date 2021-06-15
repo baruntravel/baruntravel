@@ -122,7 +122,7 @@ const ReviewForm = ({ onClose, onUploadReview, prevReview }) => {
         <input type="file" name="image" multiple hidden ref={imageInput} onChange={onChangeImages} />
         <div className={styles.bottom}>
           <button className={styles.submitBtn} onClick={onSubmit}>
-            리뷰 등록
+            {prevReview ? "리뷰 수정" : "리뷰 등록"}
           </button>
         </div>
       </Card>

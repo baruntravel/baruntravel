@@ -43,9 +43,8 @@ const RouteDetailPage = (props) => {
   const [images, setImages] = useState([]); // 이미지와 이름을 같이 저장
   const [postImages, setPostImages] = useState([]); // 이미지만 저장 (줌을 위한 이미지)
   const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
-  const [page, setPage] = useState(0);
-  const [size, setSize] = useState(5);
-  const [sortType, setSortType] = useState("latest");
+
+  const [params, setParams] = useState({ page: 0, size: 5, sortType: "latest" });
 
   // 좋아요 테스트
   const [liked, setLiked] = useState(false);
@@ -84,13 +83,11 @@ const RouteDetailPage = (props) => {
   }, []);
 
   const onGetReviewList = useCallback(async () => {
-    const reviews = await onReceiveRouteReview(routeId, page, size, sortType);
+    const reviews = await onReceiveRouteReview(routeId, params);
     setReviewDatas(reviews.content);
   }, [routeId]);
-
-  const handleSetReviewDatas = useCallback((updated) => {
-    setReviewDatas(updated);
-  }, []);
+  const onSortReviewForDate = useCallback(() => {}, []);
+  const onSortReviewForLike = useCallback(() => {}, []);
 
   const onUploadReview = useCallback(
     async (formData) => {
@@ -256,8 +253,9 @@ const RouteDetailPage = (props) => {
             onLikeReview={onLikeReview}
             onUnlikeReview={onUnlikeReview}
             reviewDatas={moreReview ? reviewDatas : reviewDatas.slice(0, 4)}
-            setReviewDatas={handleSetReviewDatas}
             userStates={userStates}
+            onSortReviewForDate={onSortReviewForDate}
+            onSortReviewForLike={onSortReviewForLike}
           />
         </div>
         {routeDetail.reviewCount > 5 && (

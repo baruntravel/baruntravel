@@ -16,14 +16,10 @@ export const onUploadRouteReview = (routeId, formData) => {
 };
 
 // 경로 리뷰 받아오기
-export const onReceiveRouteReview = (routeId, page, size, sortType) => {
+export const onReceiveRouteReview = (routeId, params) => {
   return axios
     .get(`/route/${routeId}/reviews`, {
-      params: {
-        page,
-        size,
-        sortType,
-      },
+      params,
     })
     .then((res) => res.data)
     .catch((error) => {
@@ -132,11 +128,7 @@ export const onHandlePlaceReviewLike = (placeId, reviewId) => {
 };
 
 // 장소 리뷰 수정 시 이미지 삭제
-export const onDeleteImageInPlaceReview = (
-  placeId,
-  reviewId,
-  reviewImageId
-) => {
+export const onDeleteImageInPlaceReview = (placeId, reviewId, reviewImageId) => {
   return axios
     .delete(`/place/${placeId}/review/${reviewId}/image/${reviewImageId}`)
     .then((res) => true)

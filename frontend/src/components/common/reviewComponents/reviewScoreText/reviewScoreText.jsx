@@ -9,7 +9,7 @@ const ReviewScoreText = ({ score, content }) => {
         <div className={styles.rateBox}>
           <Rate
             className={styles.rate}
-            defaultValue={parseInt(score)}
+            value={parseInt(score)}
             disabled={true}
             style={{
               fontSize: "0.9em",

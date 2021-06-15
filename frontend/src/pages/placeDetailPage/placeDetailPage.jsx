@@ -44,11 +44,14 @@ const PlaceDetailPage = (props) => {
 
   const [params, setParams] = useState({ page: 0, size: 5, sortType: "latest" });
 
-  const onGetReviewList = useCallback(async () => {
-    // 해당 place의 리뷰를 받아오는 함수
-    const reviews = await onReceivePlaceReview(placeId, params);
-    setReviewDatas(reviews.content);
-  }, [params, placeId]);
+  const onGetReviewList = useCallback(
+    async (params) => {
+      // 해당 place의 리뷰를 받아오는 함수
+      const reviews = await onReceivePlaceReview(placeId, params);
+      setReviewDatas(reviews.content);
+    },
+    [placeId]
+  );
 
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);
@@ -88,17 +91,17 @@ const PlaceDetailPage = (props) => {
   const onUploadReview = useCallback(
     async (formData) => {
       await onUploadPlaceReview(placeId, formData);
-      onGetReviewList();
+      onGetReviewList(params);
     },
-    [onGetReviewList, placeId]
+    [onGetReviewList, params, placeId]
   );
 
   const onDeleteReview = useCallback(
     async (reviewId) => {
       await onDeletePlaceReview(placeId, reviewId);
-      onGetReviewList();
+      onGetReviewList(params);
     },
-    [onGetReviewList, placeId]
+    [onGetReviewList, params, placeId]
   );
 
   const onLikeReview = useCallback(
@@ -117,9 +120,9 @@ const PlaceDetailPage = (props) => {
   const onEditReview = useCallback(
     async (reviewId, formData) => {
       await onEditPlaceReview(placeId, reviewId, formData);
-      onGetReviewList();
+      onGetReviewList(params);
     },
-    [onGetReviewList, placeId]
+    [onGetReviewList, params, placeId]
   );
   const onDeleteReviewImage = useCallback(
     // api 수정 후 적용해야될 함수
@@ -130,14 +133,17 @@ const PlaceDetailPage = (props) => {
   );
 
   const onSortReviewForDate = useCallback(() => {
-    setParams((prev) => ({ ...prev, page: 0, sortType: "latest" }));
-    onGetReviewList();
-  }, [onGetReviewList]);
+    const updatedParams = { ...params, page: 0, sortType: "latest" };
+    onGetReviewList(updatedParams);
+    setParams(updatedParams);
+  }, [onGetReviewList, params]);
 
   const onSortReviewForLike = useCallback(() => {
-    setParams((prev) => ({ ...prev, page: 0, sortType: "best" }));
-    onGetReviewList();
-  }, [onGetReviewList]);
+    const updatedParams = { ...params, page: 0, sortType: "best" };
+    onGetReviewList(updatedParams);
+    setParams(updatedParams);
+  }, [onGetReviewList, params]);
+
   useEffect(() => {
     async function getPlaceDetail() {
       // place 디테일 정보를 불러오는 함수
@@ -166,7 +172,7 @@ const PlaceDetailPage = (props) => {
     }
     // placeDetail 받아오는 곳
     getPlaceDetail();
-    onGetReviewList();
+    onGetReviewList(params);
     window.scrollTo(0, 0);
   }, [placeId]);
 
