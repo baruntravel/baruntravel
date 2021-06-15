@@ -16,6 +16,8 @@ const ReviewList = ({
   onUnlikeReview,
   userStates,
   reviewDatas,
+  onSortReviewForDate,
+  onSortReviewForLike,
 }) => {
   const [selectedCard, setSelectedCard] = useState(false);
   const [openDeleteConfrim, setOpenDeleteConfirm] = useState(false);
@@ -76,10 +78,7 @@ const ReviewList = ({
           </h2>
         </div>
         <div className={styles.sortBoxContainer}>
-          <SortBox
-          // onHandleRecommend={viewListLikeCount}
-          // onHandleNewest={viewListDate}
-          />
+          <SortBox onSortReviewForDate={onSortReviewForDate} onSortReviewForLike={onSortReviewForLike} />
         </div>
       </header>
       <div className={styles.reviewList__body}>

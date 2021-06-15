@@ -42,10 +42,7 @@ const PlaceDetailPage = (props) => {
   const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
   const [moreReview, setMoreReview] = useState(false);
 
-  const [page, setPage] = useState(0);
-  const [size, setSize] = useState(5);
-  const [sortType, setSortType] = useState("latest");
-  const params = { page, size, sortType };
+  const [params, setParams] = useState({ page: 0, size: 5, sortType: "latest" });
 
   const onGetReviewList = useCallback(async () => {
     // 해당 place의 리뷰를 받아오는 함수
@@ -88,10 +85,6 @@ const PlaceDetailPage = (props) => {
     setLiked(false);
   }, []);
 
-  const handleSetReviewDatas = useCallback((updated) => {
-    setReviewDatas(updated);
-  }, []);
-
   const onUploadReview = useCallback(
     async (formData) => {
       await onUploadPlaceReview(placeId, formData);
@@ -129,12 +122,22 @@ const PlaceDetailPage = (props) => {
     [onGetReviewList, placeId]
   );
   const onDeleteReviewImage = useCallback(
+    // api 수정 후 적용해야될 함수
     async (reviewId, reviewImageId) => {
       await onDeleteImageInPlaceReview(placeId, reviewId, reviewImageId);
     },
     [placeId]
   );
 
+  const onSortReviewForDate = useCallback(() => {
+    setParams((prev) => ({ ...prev, page: 0, sortType: "latest" }));
+    onGetReviewList();
+  }, [onGetReviewList]);
+
+  const onSortReviewForLike = useCallback(() => {
+    setParams((prev) => ({ ...prev, page: 0, sortType: "best" }));
+    onGetReviewList();
+  }, [onGetReviewList]);
   useEffect(() => {
     async function getPlaceDetail() {
       // place 디테일 정보를 불러오는 함수
@@ -256,7 +259,8 @@ const PlaceDetailPage = (props) => {
             onUnlikeReview={onUnlikeReview}
             onEditReview={onEditReview}
             onDeleteReview={onDeleteReview}
-            setReviewDatas={handleSetReviewDatas}
+            onSortReviewForDate={onSortReviewForDate}
+            onSortReviewForLike={onSortReviewForLike}
           />
         </div>
         <div className={styles.buttonBox}>
@@ -274,11 +278,7 @@ const PlaceDetailPage = (props) => {
           overflowY: "hidden",
         }}
       >
-        <MoreReviewList
-          setReviewDatas={handleSetReviewDatas}
-          onCloseMoreReview={onCloseMoreReview}
-          reviewDatas={reviewDatas}
-        />
+        <MoreReviewList onCloseMoreReview={onCloseMoreReview} reviewDatas={reviewDatas} />
       </Drawer>
       {showImagesZoom && <ImagesZoom images={images} onClose={onCloseZoom} index={imageIndex} />}
       {needLogin && <PortalAuth onClose={onClosePortalAuth} />}
