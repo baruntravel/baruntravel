@@ -47,7 +47,6 @@ const KakaoMapPage = () => {
     if (places.length > 0) {
       placeListRef.current.style.display = "initial";
     }
-    setPlace(places[0]);
     setSearchPlaces(places);
   }, []);
 
@@ -121,14 +120,14 @@ const KakaoMapPage = () => {
 
   const onAddToWishList = useCallback(
     async (wishListId) => {
-      const result = await onAddWishItem(wishListId, place.id);
-      console.log(wishListId, place.id);
+      const id = place ? place.id : searchPlaces[0].id; // searchPlaces 첫번째는 setPlace를 하지 않으므로 예외처리
+      const result = await onAddWishItem(wishListId, id);
       if (result) {
         onCloseWishListPortal();
         onOpenAddSuccess();
       }
     },
-    [onCloseWishListPortal, onOpenAddSuccess, place]
+    [onCloseWishListPortal, onOpenAddSuccess, place, searchPlaces]
   );
 
   return (
@@ -160,10 +159,7 @@ const KakaoMapPage = () => {
       </div>
       <div ref={placeListRef} className={styles.carouselContainer}>
         <div className={styles.mapButtonBox}>
-          <button
-            className={styles.listPortalButton}
-            onClick={onOpenListPortal}
-          >
+          <button className={styles.listPortalButton} onClick={onOpenListPortal}>
             <FontAwesomeIcon icon={faList} color="white" size="lg" />
           </button>
         </div>
@@ -182,21 +178,10 @@ const KakaoMapPage = () => {
         <CategoryBar />
       </div>
       {needLogin && <PortalAuth onClose={portalAuthClose} />}
-      {openListPortal && (
-        <PortalPlaceList onClose={onCloseListPortal} places={searchPlaces} />
-      )}
-      {!needLogin && openWishPortal && (
-        <WishListPortal
-          onClose={onCloseWishListPortal}
-          onAddItem={onAddToWishList}
-        />
-      )}
-      {openAddSuccessConfirm && (
-        <AddSuccessConfirm onClose={onCloseAddSuccess} />
-      )}
-      {openDelSuccessConfirm && (
-        <RemoveSuccessConfirm onClose={onCloseDeleteSuccess} />
-      )}
+      {openListPortal && <PortalPlaceList onClose={onCloseListPortal} places={searchPlaces} />}
+      {!needLogin && openWishPortal && <WishListPortal onClose={onCloseWishListPortal} onAddItem={onAddToWishList} />}
+      {openAddSuccessConfirm && <AddSuccessConfirm onClose={onCloseAddSuccess} />}
+      {openDelSuccessConfirm && <RemoveSuccessConfirm onClose={onCloseDeleteSuccess} />}
     </div>
   );
 };

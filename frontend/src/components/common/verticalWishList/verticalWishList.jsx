@@ -33,10 +33,11 @@ const VerticalWishList = ({ onClose, onAddItem }) => {
           onOpenInput();
         } else {
           onAddItem(link);
+          onClose();
         }
       }
     },
-    [onAddItem, onOpenInput]
+    [onAddItem, onClose, onOpenInput]
   );
 
   return (
@@ -50,9 +51,7 @@ const VerticalWishList = ({ onClose, onAddItem }) => {
       <section className={styles.body} onClick={onAddItemToWishList}>
         <ul className={styles.list}>
           <li className={styles.wishItem} data-link="new">
-            <div
-              className={`${styles.imageContainer} ${styles.plusContainer}`}
-            ></div>
+            <div className={`${styles.imageContainer} ${styles.plusContainer}`}></div>
             <span className={styles.name}>새로운 찜 목록</span>
           </li>
           {wishListItems.map((item, index) => (
@@ -65,12 +64,7 @@ const VerticalWishList = ({ onClose, onAddItem }) => {
           ))}
         </ul>
       </section>
-      {openInput && (
-        <WishListPortalInput
-          onClose={onCloseInput}
-          addWishList={onMakeNewWishList}
-        />
-      )}
+      {openInput && <WishListPortalInput onClose={onCloseInput} addWishList={onMakeNewWishList} />}
     </div>
   );
 };
