@@ -18,9 +18,7 @@ const WishListPortalInput = ({ onClose, addNewWishList }) => {
 
   useEffect(() => {
     window.addEventListener("click", handleClose);
-    return () => {
-      window.removeEventListener("click", handleClose);
-    };
+    return () => window.removeEventListener("click", handleClose);
   }, [handleClose]);
   return (
     <Portal>
