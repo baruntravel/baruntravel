@@ -16,6 +16,7 @@ const MoreReviewList = ({
   onDeleteReview,
   onSortReviewForDate,
   onSortReviewForLike,
+  onGetReviewWhenScroll,
 }) => {
   return (
     <div className={styles.moreReviewList}>
@@ -36,6 +37,7 @@ const MoreReviewList = ({
         onDeleteReview={onDeleteReview}
         onSortReviewForDate={onSortReviewForDate}
         onSortReviewForLike={onSortReviewForLike}
+        onGetReviewWhenScroll={onGetReviewWhenScroll}
       />
     </div>
   );

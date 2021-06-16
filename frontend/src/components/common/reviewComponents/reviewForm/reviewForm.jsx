@@ -23,18 +23,22 @@ const ReviewForm = ({ onClose, onUploadReview, prevReview }) => {
       }); // formData.getAll("images") 를 하면 모두 담겨있는 것을 확인했다.
       formData.append("content", inputContext);
       formData.append("score", rate);
-      onUploadReview(formData, {
-        ...prevReview,
-        rate,
-        content: inputContext,
-        images: images.map((url) => {
-          return { url };
-        }),
-      }); // 두 번째 인자는 수정 후 update될 때만 반영된다.
+
+      const editReview = prevReview
+        ? {
+            ...prevReview,
+            rate,
+            content: inputContext,
+            images: images.map((url) => {
+              return { url };
+            }),
+          }
+        : null;
+      onUploadReview(formData, editReview); // 두 번째 인자는 수정 후 update될 때만 반영된다.
       onClose();
       // image update API 호출
     },
-    [files, inputContext, onClose, onUploadReview, rate]
+    [files, images, inputContext, onClose, onUploadReview, prevReview, rate]
   );
   const onChangeRate = useCallback((number) => {
     setRate(number);

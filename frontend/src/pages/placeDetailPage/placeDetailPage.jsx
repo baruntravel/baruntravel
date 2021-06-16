@@ -53,17 +53,28 @@ const PlaceDetailPage = (props) => {
   });
   // 해당 place의 리뷰를 받아오는 함수
   const onGetReviewList = useCallback(
-    async (params) => {
-      // if (paramsResultInfo.last) {
-      //   return;
-      // }
-      setParams(params);
-      const reviews = await onReceivePlaceReview(placeId, params);
+    async (paramsArg) => {
+      if (paramsResultInfo.last) {
+        return;
+      }
+      setParams(paramsArg);
+      const reviews = await onReceivePlaceReview(placeId, paramsArg);
       setParamsResultInfo({ totalReviewCount: reviews.totalElements, last: reviews.last });
-      setReviewDatas(reviews.content);
+      if (paramsArg.page > 0) {
+        setReviewDatas((prev) => [...prev].concat(reviews.content));
+      } else {
+        setReviewDatas(reviews.content);
+      }
     },
     [placeId]
   );
+
+  const onGetReviewWhenScroll = useCallback(() => {
+    if (!params.last) {
+      const updatedParams = { ...params, page: params.page + 1 };
+      onGetReviewList(updatedParams);
+    }
+  }, [onGetReviewList, params]);
 
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);
@@ -255,8 +266,8 @@ const PlaceDetailPage = (props) => {
           <div className={styles.body__placeInfo}>
             <div className={styles.body__rate}>
               <StarFilled style={{ color: "#eb2f96" }} />
-              <span className={styles.body__score}>{placeDetail.score}</span>
-              <span className={styles.body__reviewCount}>({reviewDatas.length})</span>
+              <span className={styles.body__score}>{parseInt(placeDetail.score)}</span>
+              <span className={styles.body__reviewCount}>{`(${paramsResultInfo.totalReviewCount})`}</span>
             </div>
             <span className={styles.body__address}>{placeDetail.address}</span>
           </div>
@@ -319,6 +330,7 @@ const PlaceDetailPage = (props) => {
           onDeleteReview={onDeleteReview}
           onSortReviewForDate={onSortReviewForDate}
           onSortReviewForLike={onSortReviewForLike}
+          onGetReviewWhenScroll={onGetReviewWhenScroll}
         />
       </Drawer>
       {showImagesZoom && <ImagesZoom images={images} onClose={onCloseZoom} index={imageIndex} />}
