@@ -35,11 +35,11 @@ const WishListPortalInput = ({ onClose, addWishList }) => {
               autoFocus
               onInput={(e) => (wishListName = e.target.value)}
             />
-            <select className={styles.areaSelectBox}>
+            {/* <select className={styles.areaSelectBox}>
               <option value="서울">서울</option>
               <option value="강릉">강릉</option>
               <option value="제주">제주</option>
-            </select>
+            </select> */}
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -48,7 +48,7 @@ const WishListPortalInput = ({ onClose, addWishList }) => {
               }}
               className={styles.inputButton}
             >
-              확인
+              새로 만들기
             </button>
           </form>
         </div>
