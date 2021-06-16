@@ -106,9 +106,7 @@ const PlaceContentBox = () => {
     [history]
   );
   useEffect(() => {
-    const image__Elements = Array.from(imageBoxRef.current.children).map(
-      (imageContainer) => imageContainer.firstChild
-    ); // 이미지 요소들 모두 뽑아오기
+    const image__Elements = Array.from(imageBoxRef.current.children).map((imageContainer) => imageContainer.firstChild); // 이미지 요소들 모두 뽑아오기
     if ("IntersectionObserver" in window) {
       let lazyImageObserver = new IntersectionObserver(
         function (entries, observer) {
@@ -156,11 +154,7 @@ const PlaceContentBox = () => {
             index // 이미지를 받아오면 해당 이미지의 id를 key로 넣고 그 key를 이용해서 리뷰 창 띄워주기
           ) => (
             <div key={index} className={styles.imageContainer}>
-              <img
-                className={`${styles.img} ${styles.lazy}`}
-                data-src={item.url}
-                alt=""
-              />
+              <img className={`${styles.img} ${styles.lazy}`} data-src={item.url} alt="" />
             </div>
           )
         )}

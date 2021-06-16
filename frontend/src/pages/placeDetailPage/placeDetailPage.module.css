@@ -38,7 +38,10 @@
   margin-top: 4px;
   margin-bottom: 8px;
 }
-
+.body__rate {
+  display: flex;
+  align-items: center;
+}
 .body__score,
 .body__reviewCount {
   padding-left: 4px;

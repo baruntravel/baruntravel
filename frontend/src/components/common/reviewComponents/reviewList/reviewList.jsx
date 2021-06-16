@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReviewCard from "./reviewCard/reviewCard";
 import styles from "./reviewList.module.css";
 import { EditTwoTone } from "@ant-design/icons";
@@ -19,7 +19,10 @@ const ReviewList = ({
   reviewDatas,
   onSortReviewForDate,
   onSortReviewForLike,
+  onGetReviewWhenScroll,
 }) => {
+  const reviewListRef = useRef(null);
+  const scrollTargetRef = useRef(null);
   const [selectedCard, setSelectedCard] = useState(false);
   const [openDeleteConfrim, setOpenDeleteConfirm] = useState(false);
   const [openEditform, setOpenEditForm] = useState(false);
@@ -66,6 +69,31 @@ const ReviewList = ({
     [onEditReview, selectedCard]
   );
 
+  useEffect(() => {
+    if (onGetReviewWhenScroll) {
+      // 리뷰 더 보기로 무한 스크롤링을 진행할 때!
+      const options = {
+        threshold: 0,
+      };
+      const handleIntersection = (entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            // 타겟과 겹쳤는 지 확인
+            return;
+          }
+          onGetReviewWhenScroll();
+          observer.unobserve(entry.target); // 기존 타겟을 unobserve 하고
+          observer.observe(scrollTargetRef.current); // 새로운 타겟을 observe
+        });
+      };
+      const io = new IntersectionObserver(handleIntersection, options);
+      if (scrollTargetRef.current) {
+        io.observe(scrollTargetRef.current); // target을 감시
+      }
+      return () => io && io.disconnect();
+    }
+  }, [scrollTargetRef]);
+
   return (
     <div className={styles.reviewList}>
       <header className={styles.reviewList__header}>
@@ -82,9 +110,13 @@ const ReviewList = ({
           <SortBox onSortReviewForDate={onSortReviewForDate} onSortReviewForLike={onSortReviewForLike} />
         </div>
       </header>
-      <div className={styles.reviewList__body}>
+      <ul ref={reviewListRef} className={styles.reviewList__body}>
         {reviewDatas.map((item, index) => (
-          <div key={index} className={styles.reviewContainer}>
+          <li
+            ref={reviewDatas.length - 1 === index ? scrollTargetRef : null}
+            key={index}
+            className={styles.reviewContainer}
+          >
             <ReviewCard
               review={item}
               creator={item.createdBy || item.creator}
@@ -95,9 +127,9 @@ const ReviewList = ({
               onLikeReview={onLikeReview}
               onUnlikeReview={onUnlikeReview}
             />
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
       {openDeleteConfrim && (
         <DeleteConfirm onClose={onCloseConfirm} onDeleteItem={onHandleDeleteReview} deleteItemId={selectedCard.id} />
       )}
