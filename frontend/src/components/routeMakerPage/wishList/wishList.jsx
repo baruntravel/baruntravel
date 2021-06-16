@@ -11,7 +11,6 @@ const WishList = ({ wishList, onAddCart, onDeleteCart, cartItems }) => {
 
   const sortWishPlaces = useCallback(
     (places) => {
-      console.log(places);
       const updated = cartItems.map((cartItem) => places.find((item) => item.id === cartItem.id));
       places.forEach((item) => {
         if (!updated.find((cartItem) => cartItem.id === item.id)) {

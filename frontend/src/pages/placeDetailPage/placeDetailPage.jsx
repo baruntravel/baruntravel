@@ -30,7 +30,7 @@ const PlaceDetailPage = (props) => {
   const history = useHistory();
   const mapRef = useRef();
 
-  const placeId = window.location.pathname.split("/").pop(); // url 마지막 부분이 ID이다.
+  const [placeId, setPlaceId] = useState(window.location.pathname.split("/").pop()); // url 마지막 부분이 ID이다.
 
   const [loading, setLoading] = useState(true); // 처음에는 로딩이 필요하다
   const [needLogin, setNeedLogin] = useState(false);
@@ -41,13 +41,25 @@ const PlaceDetailPage = (props) => {
   const [placeDetail, setPlaceDetail] = useState({});
   const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
   const [moreReview, setMoreReview] = useState(false);
-
+  const [paramsResultInfo, setParamsResultInfo] = useState({ totalReviewCount: 0, last: false });
   const [params, setParams] = useState({ page: 0, size: 5, sortType: "latest" });
-
+  const [settings, setSettings] = useState({
+    // slider option
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  });
+  // 해당 place의 리뷰를 받아오는 함수
   const onGetReviewList = useCallback(
     async (params) => {
-      // 해당 place의 리뷰를 받아오는 함수
+      // if (paramsResultInfo.last) {
+      //   return;
+      // }
+      setParams(params);
       const reviews = await onReceivePlaceReview(placeId, params);
+      setParamsResultInfo({ totalReviewCount: reviews.totalElements, last: reviews.last });
       setReviewDatas(reviews.content);
     },
     [placeId]
@@ -88,20 +100,45 @@ const PlaceDetailPage = (props) => {
     setLiked(false);
   }, []);
 
+  const onSortReviewForDate = useCallback(() => {
+    const updatedParams = { ...params, page: 0, sortType: "latest" };
+    onGetReviewList(updatedParams);
+  }, [onGetReviewList, params]);
+
+  const onSortReviewForLike = useCallback(() => {
+    const updatedParams = { ...params, page: 0, sortType: "best" };
+    onGetReviewList(updatedParams);
+  }, [onGetReviewList, params]);
+
   const onUploadReview = useCallback(
     async (formData) => {
       await onUploadPlaceReview(placeId, formData);
-      onGetReviewList(params);
+      onSortReviewForDate();
     },
-    [onGetReviewList, params, placeId]
+    [onSortReviewForDate, placeId]
   );
 
   const onDeleteReview = useCallback(
     async (reviewId) => {
-      await onDeletePlaceReview(placeId, reviewId);
-      onGetReviewList(params);
+      const result = await onDeletePlaceReview(placeId, reviewId);
+      if (result) {
+        setReviewDatas((prev) => {
+          const updatedDatas = [...prev].filter((review) => review.id !== reviewId);
+          return updatedDatas;
+        });
+      }
     },
-    [onGetReviewList, params, placeId]
+    [placeId]
+  );
+
+  const onEditReview = useCallback(
+    async (reviewId, formData) => {
+      const result = await onEditPlaceReview(placeId, reviewId, formData);
+      if (result) {
+        onSortReviewForDate();
+      }
+    },
+    [onSortReviewForDate, placeId]
   );
 
   const onLikeReview = useCallback(
@@ -117,13 +154,6 @@ const PlaceDetailPage = (props) => {
     [placeId]
   );
 
-  const onEditReview = useCallback(
-    async (reviewId, formData) => {
-      await onEditPlaceReview(placeId, reviewId, formData);
-      onGetReviewList(params);
-    },
-    [onGetReviewList, params, placeId]
-  );
   const onDeleteReviewImage = useCallback(
     // api 수정 후 적용해야될 함수
     async (reviewId, reviewImageId) => {
@@ -132,17 +162,9 @@ const PlaceDetailPage = (props) => {
     [placeId]
   );
 
-  const onSortReviewForDate = useCallback(() => {
-    const updatedParams = { ...params, page: 0, sortType: "latest" };
-    onGetReviewList(updatedParams);
-    setParams(updatedParams);
-  }, [onGetReviewList, params]);
-
-  const onSortReviewForLike = useCallback(() => {
-    const updatedParams = { ...params, page: 0, sortType: "best" };
-    onGetReviewList(updatedParams);
-    setParams(updatedParams);
-  }, [onGetReviewList, params]);
+  const afterSliderChange = useCallback((index) => {
+    setImageIndex(index);
+  }, []);
 
   useEffect(() => {
     async function getPlaceDetail() {
@@ -176,17 +198,8 @@ const PlaceDetailPage = (props) => {
     window.scrollTo(0, 0);
   }, [placeId]);
 
-  const afterSliderChange = useCallback((index) => {
-    setImageIndex(index);
-  }, []);
+  useEffect(() => {}, [placeDetail]);
 
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
   if (!userStates.isLogin) {
     // 로그인 하지 않았을 때 접근 불가 -> 추후에 API 수정 후 고쳐야됨
     history.push("/");
@@ -258,6 +271,7 @@ const PlaceDetailPage = (props) => {
         <div className={styles.reviewList}>
           <ReviewList
             userStates={userStates}
+            totalReviewCount={paramsResultInfo.totalReviewCount}
             reviewDatas={reviewDatas}
             onOpenPortalAuth={onOpenPortalAuth}
             onUploadReview={onUploadReview}
@@ -274,7 +288,6 @@ const PlaceDetailPage = (props) => {
         </div>
       </div>
       <Drawer // 리뷰 더보기
-        className={styles.reviewListDrawer}
         visible={moreReview}
         placement="right"
         width="100vw"
@@ -284,7 +297,20 @@ const PlaceDetailPage = (props) => {
           overflowY: "hidden",
         }}
       >
-        <MoreReviewList onCloseMoreReview={onCloseMoreReview} reviewDatas={reviewDatas} />
+        <MoreReviewList
+          userStates={userStates}
+          onCloseMoreReview={onCloseMoreReview}
+          reviewDatas={reviewDatas}
+          totalReviewCount={paramsResultInfo.totalReviewCount}
+          onOpenPortalAuth={onOpenPortalAuth}
+          onUploadReview={onUploadReview}
+          onLikeReview={onLikeReview}
+          onUnlikeReview={onUnlikeReview}
+          onEditReview={onEditReview}
+          onDeleteReview={onDeleteReview}
+          onSortReviewForDate={onSortReviewForDate}
+          onSortReviewForLike={onSortReviewForLike}
+        />
       </Drawer>
       {showImagesZoom && <ImagesZoom images={images} onClose={onCloseZoom} index={imageIndex} />}
       {needLogin && <PortalAuth onClose={onClosePortalAuth} />}

@@ -8,6 +8,7 @@ import DeleteConfirm from "../../deleteConfirm/deleteConfirm";
 import SortBox from "../../sortBox/sortBox";
 
 const ReviewList = ({
+  totalReviewCount,
   onOpenPortalAuth,
   onUploadReview,
   onDeleteReview,
@@ -71,7 +72,7 @@ const ReviewList = ({
         <div className={styles.reviewList__first}>
           <div className={styles.reviewCountBox}>
             <h2>리뷰</h2>
-            <h2 className={styles.reviewCount}>{reviewDatas.length}</h2>
+            <h2 className={styles.reviewCount}>{totalReviewCount}</h2>
           </div>
           <h2 onClick={onClickReviewWrite}>
             <EditTwoTone />
