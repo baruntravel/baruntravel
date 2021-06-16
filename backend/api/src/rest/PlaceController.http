@@ -4,13 +4,13 @@ Authorization: {{ authorizationToken }}
 
 ###
 
-GET {{apiUrl}}/place/1440347564/review?size=10&page=1&sortType=best
+GET {{apiUrl}}/place/1797997961/review?size=5&page=1&sortType=best
 Content-Type: application/json
 Authorization: {{ authorizationToken }}
 
 ###
 
-POST {{apiUrl}}/place/1440347564/review
+POST {{apiUrl}}/place/1797997961/review
 Content-Type: multipart/form-data; boundary=boundary
 Authorization: {{ authorizationToken }}
 

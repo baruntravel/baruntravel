@@ -29,10 +29,10 @@ public class PlaceReviewController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public Page<PlaceReviewDto.Response> getReviews(@PathVariable Long placeId, PageDto pageDto, @CurrentUser CustomUserDetails userDetails) {
-        List<PlaceReview> content = placeReviewService.getReviews(placeId, pageDto).getContent();
-        List<PlaceReviewDto.Response> getList = placeReviewMapper.entityToResponseDto(content, userDetails.getUser());
+        Page<PlaceReview> placeReviewPage = placeReviewService.getReviews(placeId, pageDto);
+        List<PlaceReviewDto.Response> getList = placeReviewMapper.entityToResponseDto(placeReviewPage.getContent(), userDetails.getUser());
 
-        return new PageImpl<>(getList, pageDto.of(), content.size());
+        return new PageImpl<>(getList, pageDto.of(), placeReviewPage.getTotalElements());
     }
 
     @ResponseStatus(HttpStatus.OK)
