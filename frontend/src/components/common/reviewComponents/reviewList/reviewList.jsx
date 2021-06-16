@@ -59,9 +59,9 @@ const ReviewList = ({
     [onDeleteReview]
   );
   const onHandleEditReview = useCallback(
-    (formData) => {
+    (formData, updateReviewContent) => {
       // 수정할 리뷰 ID를 받아와야한다.
-      onEditReview(selectedCard.id, formData);
+      onEditReview(selectedCard.id, formData, updateReviewContent);
     },
     [onEditReview, selectedCard]
   );

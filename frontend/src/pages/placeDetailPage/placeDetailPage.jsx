@@ -132,13 +132,22 @@ const PlaceDetailPage = (props) => {
   );
 
   const onEditReview = useCallback(
-    async (reviewId, formData) => {
+    async (reviewId, formData, updateReview) => {
       const result = await onEditPlaceReview(placeId, reviewId, formData);
       if (result) {
-        onSortReviewForDate();
+        setReviewDatas((prev) => {
+          const updated = [...prev].map((review) => {
+            if (review.id !== reviewId) {
+              return review;
+            } else {
+              return updateReview;
+            }
+          });
+          return updated;
+        });
       }
     },
-    [onSortReviewForDate, placeId]
+    [placeId]
   );
 
   const onLikeReview = useCallback(

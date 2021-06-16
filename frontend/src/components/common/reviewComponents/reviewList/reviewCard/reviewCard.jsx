@@ -59,13 +59,7 @@ const ReviewCard = ({
           <PostImages images={images.map((file) => file.url)} />
         </div>
       )}
-      <ReviewCardBottom
-        liked={liked}
-        onLike={onLike}
-        onUnlike={onUnlike}
-        date={updatedAt || createdAt}
-        likeCount={likeCount}
-      />
+      <ReviewCardBottom liked={liked} onLike={onLike} onUnlike={onUnlike} date={createdAt} likeCount={likeCount} />
     </div>
   );
 };
