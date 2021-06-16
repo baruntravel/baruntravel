@@ -46,7 +46,7 @@ function App() {
             <AllArea />
           </Route>
 
-          <Route exact path="/route">
+          <Route exact path="/route-map">
             <RoutePage />
           </Route>
           <Route exact path="/route-all">

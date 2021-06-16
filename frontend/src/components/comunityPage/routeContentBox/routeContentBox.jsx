@@ -2,13 +2,12 @@ import { useState, useEffect, useCallback } from "react";
 import styles from "./routeContentBox.module.css";
 import SortBox from "../../../components/common/sortBox/sortBox";
 import RouteCard from "../../common/routeCard/routeCard";
-import RouteMapPage from "../../../pages/routeMapPage/routeMapPage";
 import MapButton from "../mapButton/mapButton";
-// import UsersRoutePage from "../../usersRoutePage/usersRoutePage";
+import { useHistory } from "react-router-dom";
 
 const RouteContentBox = ({ area }) => {
-  const [mapOpen, setMapOpen] = useState(false);
-  const mapHandler = useCallback(() => setMapOpen(!mapOpen), []);
+  const history = useHistory();
+  const mapHandler = () => history.push("/route-map");
 
   return (
     <div className={styles.container}>
@@ -19,8 +18,6 @@ const RouteContentBox = ({ area }) => {
       <div className={styles.routeCards}>
         <RouteCard />
       </div>
-
-      {mapOpen && <RouteMapPage />}
     </div>
   );
 };
