@@ -8,44 +8,45 @@ import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import WishListContainer from "../../components/wishListPage/wishListContainer/wishListContainer";
 import PlaceContainer from "../../components/wishListPage/placeContainer/placeContainer";
-import WishListPortalInput from "../../components/portal/wishListInputPortal/wishListPortalInput";
-import { onReceiveWishList, onReceiveWishListPlaces, onAddNewMyWish } from "../../api/wishListAPI";
-
-//TO-DO : 찜목록 제거하기
+import { onReceiveWishList, onReceiveWishListPlaces, onAddNewMyWish, onDeleteWishList } from "../../api/wishListAPI";
 
 const WishListPage = () => {
   const { isLogin, name } = useRecoilValue(userState);
   const [folderToggle, setFolderToggle] = useState(false); // false : out(main), true : in
-  const [portalToggle, setPortalToggle] = useState(false); // false : closed, true : open
   const [wishlistArray, setWishlistArray] = useState([]);
   const [places, setPlaces] = useState([]);
   const [title, setTitle] = useState();
 
-  const folderIn = (title) => {
-    setTitle(title);
-    setPlaces(places);
+  const folderIn = (id) => {
+    const wishlist = wishlistArray.filter((i) => Number(id) === i.id)[0];
+    setTitle(wishlist.name);
+    getWishlistPlaces(id);
     setFolderToggle(true);
   };
   const folderOut = () => setFolderToggle(false);
-  const handlePortalOpen = () => setPortalToggle(!portalToggle);
 
   useEffect(() => {
-    getMyWishList();
-  }, [wishlistArray]);
+    loadMyWishList();
+  }, []);
 
-  async function getMyWishList() {
+  async function loadMyWishList() {
     const wishlist = await onReceiveWishList();
-    wishlist && setWishlistArray(wishlist);
+    setWishlistArray(wishlist);
   }
 
   async function getWishlistPlaces(id) {
-    const places = await onReceiveWishListPlaces(id);
-    console.log(places);
+    const { places } = await onReceiveWishListPlaces(id);
+    setPlaces(places);
   }
 
-  async function addNewWishList(wishlist) {
-    setWishlistArray((wishlistArray) => [...wishlistArray, wishlist]);
-    await onAddNewMyWish(wishlist);
+  async function addNewWishList(name) {
+    await onAddNewMyWish(name);
+    loadMyWishList();
+  }
+
+  async function deleteWishList(id) {
+    await onDeleteWishList(id);
+    loadMyWishList();
   }
 
   return (
@@ -58,9 +59,14 @@ const WishListPage = () => {
         ) : (
           <div className={styles.body}>
             {!folderToggle ? (
-              <WishListContainer folderIn={folderIn} wishlistArray={wishlistArray} addNewWishList={addNewWishList} />
+              <WishListContainer
+                folderIn={folderIn}
+                wishlistArray={wishlistArray}
+                addNewWishList={addNewWishList}
+                deleteWishList={deleteWishList}
+              />
             ) : (
-              <PlaceContainer places={places} />
+              <PlaceContainer />
             )}
           </div>
         )}

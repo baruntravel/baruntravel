@@ -46,3 +46,13 @@ export const onReceiveWishListPlaces = (wishListId) => {
       // throw new Error(`error : ${error}`);
     });
 };
+
+export const onDeleteWishList = (id) => {
+  return axios
+    .delete(`/wishlist/${id}`)
+    .then((res) => true)
+    .catch((error) => {
+      console.error(error);
+      throw new Error(`error : ${error}`);
+    });
+};

@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import styles from "./wishListContainer.module.css";
 import WishListPortalInput from "../../portal/wishListInputPortal/wishListPortalInput";
+import { CloseOutlined } from "@ant-design/icons";
 
-const WishListContainer = ({ folderIn, wishlistArray, addNewWishList }) => {
+const WishListContainer = ({ folderIn, wishlistArray, addNewWishList, deleteWishList }) => {
   const [portalOpened, setPortalOpened] = useState(false);
   const handlePortalOpen = () => setPortalOpened(!portalOpened);
-  // const addWishList = (name) => setWishList((wishList) => [...wishList, name]);
-  const handleFolderIn = (e) => folderIn(e.target.textContent);
+  const handleFolderIn = (e) => {
+    e.preventDefault();
+    folderIn(e.currentTarget.id);
+  };
 
   return (
     <div className={styles.container}>
@@ -14,7 +17,17 @@ const WishListContainer = ({ folderIn, wishlistArray, addNewWishList }) => {
         {wishlistArray.map(({ id, name }) => {
           return (
             <div className={styles.cardBox} onClick={handleFolderIn} key={id} id={id}>
-              <div className={styles.wishlistTitle}>{name}</div>
+              {/* TODO : 클릭 이벤트 오류 */}
+              {/* <div className={styles.cardBox__row1}></div>  */}
+              <div className={styles.cardBox__row2}>
+                <span className={styles.wishlistTitle}>{name}</span>
+                <CloseOutlined
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteWishList(e.target.closest("div").parentNode.id);
+                  }}
+                />
+              </div>
             </div>
           );
         })}
