@@ -92,7 +92,7 @@ const ReviewList = ({
       }
       return () => io && io.disconnect();
     }
-  }, [scrollTargetRef]);
+  }, [onGetReviewWhenScroll, scrollTargetRef]);
 
   return (
     <div className={styles.reviewList}>

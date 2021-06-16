@@ -66,7 +66,7 @@ const PlaceDetailPage = (props) => {
         setReviewDatas(reviews.content);
       }
     },
-    [placeId]
+    [paramsResultInfo.last, placeId]
   );
 
   const onGetReviewWhenScroll = useCallback(() => {
