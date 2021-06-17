@@ -1,9 +1,9 @@
 .WishListCard {
   position: relative;
-
   width: 100%;
   height: 100%;
 }
+.imageAlt,
 .image {
   width: 100%;
   height: 100%;
@@ -11,6 +11,9 @@
   vertical-align: middle;
   opacity: 0.9;
   border-radius: 6px;
+}
+.imageAlt {
+  background-color: #64aaff;
 }
 .nameBox {
   display: flex;

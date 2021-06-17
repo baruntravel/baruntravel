@@ -8,10 +8,9 @@ import styles from "./wishList.module.css";
 const WishList = ({ wishList, onAddCart, onDeleteCart, cartItems }) => {
   const [itemsInWish, setItemsInWish] = useState([]);
   const [isClicked, setIsClicked] = useState(false);
-
   const sortWishPlaces = useCallback(
     (places) => {
-      const updated = cartItems.map((cartItem) => places.find((item) => item.id === cartItem.id));
+      const updated = places.filter((item) => cartItems.find((cartItem) => item.id === cartItem.id));
       places.forEach((item) => {
         if (!updated.find((cartItem) => cartItem.id === item.id)) {
           updated.push(item);

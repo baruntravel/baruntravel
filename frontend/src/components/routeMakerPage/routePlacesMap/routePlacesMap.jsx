@@ -2,29 +2,26 @@ import React, { useEffect, useState } from "react";
 import styles from "./routePlacesMap.module.css";
 const { kakao } = window;
 
-const RoutePlacesMap = ({ places, centerX, centerY }) => {
-  const [staticMap, setStaticMap] = useState();
+const RoutePlacesMap = ({ places }) => {
+  const [map, setMap] = useState();
   const [markers, setMarkers] = useState([]);
-
+  const centerX = places & (places.reduce((place, current) => place.x + current, 0) / places.length);
+  const centerY = places & (places.reduce((place, current) => place.y + current, 0) / places.length);
   useEffect(() => {
     function initMap() {
-      // 초기 지생느 지역의 지도를 보여줄 것인가?
-      let staticMapContainer = document.getElementById("staticMap"),
-        staticMapOption = {
+      // 초기 지역의 지도를 보여줄 것인가?
+      let mapContainer = document.getElementById("map"),
+        mapOption = {
           center: new kakao.maps.LatLng(centerY || 37.566826, centerX || 126.9786567),
           level: 4,
         };
-      let map = new kakao.maps.Map(staticMapContainer, staticMapOption);
-      setStaticMap(map);
+      let map = new kakao.maps.Map(mapContainer, mapOption);
+      setMap(map);
     }
     initMap();
   }, []);
 
   useEffect(() => {
-    function moveLocationMap() {
-      staticMap.setCenter(new kakao.maps.LatLng(centerY, centerX));
-      // panTo로 할 것인가? (지역별이면 panTo도 괜찮을 듯 하므로 고민)
-    }
     function addMarker(position, index, map) {
       var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
         imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
@@ -47,10 +44,10 @@ const RoutePlacesMap = ({ places, centerX, centerY }) => {
       let bounds = new kakao.maps.LatLngBounds();
       for (let i = 0; i < places.length; i++) {
         const placePosition = new kakao.maps.LatLng(places[i].y, places[i].x);
-        addMarker(placePosition, i, staticMap);
+        addMarker(placePosition, i, map);
         bounds.extend(placePosition);
       }
-      staticMap.setBounds(bounds);
+      map.setBounds(bounds);
     }
 
     function addPath() {
@@ -66,7 +63,7 @@ const RoutePlacesMap = ({ places, centerX, centerY }) => {
         strokeOpacity: 1, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
         strokeStyle: "solid", // 선의 스타일입니다
       });
-      polyline.setMap(staticMap);
+      polyline.setMap(map);
       return polyline;
     }
 
@@ -82,17 +79,20 @@ const RoutePlacesMap = ({ places, centerX, centerY }) => {
     }
 
     let path;
-    if (centerX && centerY && places) {
-      moveLocationMap();
+    if (map && places.length > 0) {
       displayMarker();
       path = addPath();
     }
+    if (map && markers.length > 0 && places.length < 1) {
+      removePath(path);
+      removeMarker();
+    }
     return () => removePath(path);
-  }, [places, centerX, centerY]);
+  }, [map, places]);
 
   return (
     <div className={styles.RoutePlacesMap}>
-      <div id="staticMap" className={styles.map} />
+      <div id="map" className={styles.map} />
     </div>
   );
 };
