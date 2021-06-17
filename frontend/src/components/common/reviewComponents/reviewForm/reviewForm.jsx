@@ -83,7 +83,7 @@ const ReviewForm = ({ onClose, onUploadReview, prevReview }) => {
       <Card
         title={
           <div className={styles.title}>
-            <span>{"장소 이름"}</span>
+            <span>리뷰</span>
             <div className={styles.rateBox}>
               <Rate
                 defaultValue={5}

@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Slider from "react-slick";
-// import "../kakaoMapPage/node_modules/slick-carousel/slick/slick.css";
-// import "../kakaoMapPage/node_modules/slick-carousel/slick/slick-theme.css";
 import styles from "./routeDetailPage.module.css";
 import DetailHeader from "../../components/common/detailHeader/detailHeader";
 import ImageMap from "../../components/routeDetailPage/imageMap/imageMap";
