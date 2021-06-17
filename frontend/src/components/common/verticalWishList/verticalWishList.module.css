@@ -44,6 +44,7 @@
   display: block;
   padding-top: 100%; /* 정사각형일 경우 */
 }
+.imageAlt,
 .image {
   position: absolute;
   top: 0;
@@ -54,6 +55,9 @@
   height: 100%;
   object-fit: cover;
   border-radius: 12px;
+}
+.imageAlt {
+  background-color: #64aaff;
 }
 .plusContainer {
   background-color: black;

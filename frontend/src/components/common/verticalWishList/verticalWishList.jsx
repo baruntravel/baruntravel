@@ -57,9 +57,13 @@ const VerticalWishList = ({ onClose, onAddItem }) => {
           {wishListItems.map((item, index) => (
             <li key={index} className={styles.wishItem} data-link={item.id}>
               <div className={styles.imageContainer}>
-                <img className={styles.image} src={item} alt="thumbnail" />
+                {item.images.length > 0 ? (
+                  <img className={styles.image} src={item.images[0].url} alt="thumbnail" />
+                ) : (
+                  <div className={styles.imageAlt} />
+                )}
               </div>
-              <span className={styles.name}>이름</span>
+              <span className={styles.name}>{item.name}</span>
             </li>
           ))}
         </ul>
