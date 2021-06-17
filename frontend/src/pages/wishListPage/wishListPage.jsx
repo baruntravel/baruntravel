@@ -23,7 +23,10 @@ const WishListPage = () => {
   };
   const folderOut = () => setFolderToggle(false);
 
-  useEffect(() => loadMyWishList(), []);
+  useEffect(() => {
+    loadMyWishList();
+    console.log(isLogin);
+  }, []);
 
   async function loadMyWishList() {
     const wishlist = await onReceiveWishList();
