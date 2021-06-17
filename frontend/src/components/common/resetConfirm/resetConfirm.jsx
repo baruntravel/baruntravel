@@ -31,11 +31,11 @@ const ResetConfirm = ({ onClose, onReset }) => {
             <p className={styles.alertText}>정말 카트를 정리하시겠습니까?</p>
           </div>
           <div className={styles.buttonBox}>
-            <div className={styles.closeBtnBox}>
-              <span onClick={onClose}>취소</span>
+            <div className={styles.closeBtnBox} onClick={onClose}>
+              <span>취소</span>
             </div>
-            <div className={styles.confirmBtnBox}>
-              <span onClick={handleReset}>초기화</span>
+            <div className={styles.confirmBtnBox} onClick={handleReset}>
+              <span>초기화</span>
             </div>
           </div>
         </div>

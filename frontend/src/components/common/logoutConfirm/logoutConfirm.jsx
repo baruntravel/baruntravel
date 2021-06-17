@@ -30,11 +30,11 @@ const LogoutConfirm = ({ onClose, onLogout }) => {
             <p className={styles.alertText}>정말 로그아웃하시겠습니까?</p>
           </div>
           <div className={styles.buttonBox}>
-            <div className={styles.closeBtnBox}>
-              <span onClick={onClose}>취소</span>
+            <div className={styles.closeBtnBox} onClick={onClose}>
+              <span>취소</span>
             </div>
-            <div className={styles.confirmBtnBox}>
-              <span onClick={handleLogout}>로그아웃</span>
+            <div className={styles.confirmBtnBox} onClick={handleLogout}>
+              <span>로그아웃</span>
             </div>
           </div>
         </div>
