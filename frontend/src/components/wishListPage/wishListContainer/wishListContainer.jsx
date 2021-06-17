@@ -1,27 +1,38 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import styles from "./wishListContainer.module.css";
 import WishListPortalInput from "../../portal/wishListInputPortal/wishListPortalInput";
+import { CloseOutlined } from "@ant-design/icons";
+import DeleteConfirm from "../deleteConfirm/deleteConfirm";
 
-const WishListContainer = ({ folderIn }) => {
+const WishListContainer = ({ folderIn, wishlistArray, addNewWishList, deleteWishList }) => {
   const [portalOpened, setPortalOpened] = useState(false);
-  const [wishList, setWishList] = useState([
-    "찜목록 A",
-    "찜목록 B",
-    "찜목록 C",
-  ]);
-  const handlePortalOpen = () => setPortalOpened(!portalOpened);
-  const addWishList = (name) => setWishList((wishList) => [...wishList, name]);
-  const handleFolderIn = (e) => folderIn(e.target.textContent);
+  const [deleteID, setDeleteID] = useState();
 
-  useEffect(() => {}, [wishList]);
+  const handlePortalOpen = () => setPortalOpened(!portalOpened);
+  const handleFolderIn = (e) => {
+    e.preventDefault();
+    folderIn(e.currentTarget.id);
+  };
+  const onOpenDelete = useCallback((id) => setDeleteID(id), []);
+  const onCloseDelete = useCallback(() => setDeleteID(false), []);
+  const handleDelete = () => deleteWishList(deleteID);
 
   return (
     <div className={styles.container}>
       <div className={styles.cardsContainer}>
-        {wishList.map((v, key) => {
+        {wishlistArray.map(({ id, name }) => {
           return (
-            <div className={styles.cardBox} onClick={handleFolderIn} key={key}>
-              <div className={styles.wishlistTitle}>{v}</div>
+            <div className={styles.cardBox} onClick={handleFolderIn} key={id} id={id}>
+              {/* <div className={styles.cardBox__row1}></div> */}
+              <div className={styles.cardBox__row2}>
+                <span className={styles.wishlistTitle}>{name}</span>
+                <CloseOutlined
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onOpenDelete(e.target.closest("div").parentNode.id);
+                  }}
+                />
+              </div>
             </div>
           );
         })}
@@ -29,12 +40,8 @@ const WishListContainer = ({ folderIn }) => {
       <button onClick={handlePortalOpen} className={styles.addButton}>
         새 찜목록 만들기
       </button>
-      {portalOpened && (
-        <WishListPortalInput
-          onClose={handlePortalOpen}
-          addWishList={addWishList}
-        />
-      )}
+      {portalOpened && <WishListPortalInput onClose={handlePortalOpen} addNewWishList={addNewWishList} />}
+      {deleteID && <DeleteConfirm onClose={onCloseDelete} onDelete={handleDelete} />}
     </div>
   );
 };

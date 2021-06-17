@@ -20,6 +20,7 @@
   background-color: white;
   border-radius: 12px;
 }
+
 .header {
   display: flex;
   width: 100%;
@@ -44,7 +45,4 @@ form {
 
 .nameInput {
   border: 0.3px black solid;
-}
-
-.areaSelectBox {
 }

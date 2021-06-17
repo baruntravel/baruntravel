@@ -4,58 +4,67 @@ import Header from "../../components/common/header/header";
 import Navbar from "../../components/common/navbar/navbar";
 import { userState } from "../../recoil/userState";
 import { useRecoilValue } from "recoil";
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useState, useEffect } from "react";
 import WishListContainer from "../../components/wishListPage/wishListContainer/wishListContainer";
 import PlaceContainer from "../../components/wishListPage/placeContainer/placeContainer";
-import WishListPortalInput from "../../components/portal/wishListInputPortal/wishListPortalInput";
+import { onReceiveWishList, onReceiveWishListPlaces, onAddNewMyWish, onDeleteWishList } from "../../api/wishListAPI";
 
-//TODO : 나의 찜목록 가져오는 API 연결
 const WishListPage = () => {
   const { isLogin, name } = useRecoilValue(userState);
   const [folderToggle, setFolderToggle] = useState(false); // false : out(main), true : in
-  const [portalOpened, setPortalOpened] = useState(false);
-  const [wishlistName, setWishlistName] = useState();
+  const [wishlistArray, setWishlistArray] = useState([]);
+  const [places, setPlaces] = useState([]);
   const [title, setTitle] = useState();
-
-  const folderIn = (title) => {
-    setTitle(title);
+  const folderIn = (id) => {
+    const wishlist = wishlistArray.filter((i) => Number(id) === i.id)[0];
+    setTitle(wishlist.name);
+    getWishlistPlaces(id);
     setFolderToggle(true);
   };
   const folderOut = () => setFolderToggle(false);
-  const handlePortalOpen = () => setPortalOpened(!portalOpened);
-  const handleWishlistName = (name) => setWishlistName(name);
-  const places = useState([]);
 
-  // useEffect(() => {}, [wishlistName]);
+  useEffect(() => loadMyWishList(), []);
+
+  async function loadMyWishList() {
+    const wishlist = await onReceiveWishList();
+    setWishlistArray(wishlist);
+  }
+
+  async function getWishlistPlaces(id) {
+    const { places } = await onReceiveWishListPlaces(id);
+    setPlaces(places);
+  }
+
+  async function addNewWishList(name) {
+    await onAddNewMyWish(name);
+    loadMyWishList();
+  }
+
+  async function deleteWishList(id) {
+    await onDeleteWishList(id);
+    loadMyWishList();
+  }
 
   return (
     <>
       <div className={styles.container}>
-        {!folderToggle ? (
-          <Header title={"찜 목록"} />
-        ) : (
-          <Header title={title} onBackHandler={folderOut} />
-        )}
+        {!folderToggle ? <Header title={`${name}님의 찜 목록`} /> : <Header title={title} onBackHandler={folderOut} />}
 
         {isLogin === undefined ? (
           <h1>로그인을 해주세요</h1>
         ) : (
           <div className={styles.body}>
             {!folderToggle ? (
-              <WishListContainer folderIn={folderIn} />
+              <WishListContainer
+                folderIn={folderIn}
+                wishlistArray={wishlistArray}
+                addNewWishList={addNewWishList}
+                deleteWishList={deleteWishList}
+              />
             ) : (
-              <PlaceContainer />
+              <PlaceContainer places={places} />
             )}
-            <h1>{wishlistName}</h1>
           </div>
-        )}
-
-        {portalOpened && (
-          <WishListPortalInput
-            onClose={handlePortalOpen}
-            handleWishlistName={handleWishlistName}
-          />
         )}
         <Navbar />
       </div>

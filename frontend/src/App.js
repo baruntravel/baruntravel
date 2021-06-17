@@ -46,7 +46,7 @@ function App() {
             <AllArea />
           </Route>
 
-          <Route exact path="/route">
+          <Route exact path="/route-map">
             <RoutePage />
           </Route>
           <Route exact path="/route-all">
@@ -77,7 +77,7 @@ function App() {
             <RouteMakerPage />
           </Route>
 
-          <Route exact path="/test2">
+          <Route exact path="/community/:id">
             <ComunityPage />
           </Route>
 

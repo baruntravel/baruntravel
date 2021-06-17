@@ -33,6 +33,26 @@ export const onReceiveWishList = () => {
     .then((res) => res.data)
     .catch((error) => {
       console.error(error);
+      // throw new Error(`error : ${error}`);
+    });
+};
+
+export const onReceiveWishListPlaces = (wishListId) => {
+  return axios
+    .get(`wishlist/${wishListId}/places`)
+    .then((res) => res.data)
+    .catch((error) => {
+      console.error(error);
+      // throw new Error(`error : ${error}`);
+    });
+};
+
+export const onDeleteWishList = (id) => {
+  return axios
+    .delete(`/wishlist/${id}`)
+    .then((res) => true)
+    .catch((error) => {
+      console.error(error);
       throw new Error(`error : ${error}`);
     });
 };

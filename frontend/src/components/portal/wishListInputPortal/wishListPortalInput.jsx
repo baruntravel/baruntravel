@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import Portal from "../portal";
 import styles from "./wishListPortalInput.module.css";
 
-const WishListPortalInput = ({ onClose, addWishList }) => {
+const WishListPortalInput = ({ onClose, addNewWishList }) => {
   const portalRef = useRef();
   let wishListName;
 
@@ -15,11 +15,10 @@ const WishListPortalInput = ({ onClose, addWishList }) => {
       onClose();
     }
   };
+
   useEffect(() => {
     window.addEventListener("click", handleClose);
-    return () => {
-      window.removeEventListener("click", handleClose);
-    };
+    return () => window.removeEventListener("click", handleClose);
   }, [handleClose]);
   return (
     <Portal>
@@ -35,20 +34,15 @@ const WishListPortalInput = ({ onClose, addWishList }) => {
               autoFocus
               onInput={(e) => (wishListName = e.target.value)}
             />
-            <select className={styles.areaSelectBox}>
-              <option value="서울">서울</option>
-              <option value="강릉">강릉</option>
-              <option value="제주">제주</option>
-            </select>
             <button
               onClick={(e) => {
                 e.preventDefault();
-                addWishList(wishListName);
+                addNewWishList(wishListName);
                 onClose();
               }}
               className={styles.inputButton}
             >
-              확인
+              새로 만들기
             </button>
           </form>
         </div>
