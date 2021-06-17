@@ -49,8 +49,8 @@
   justify-content: center;
 }
 .closeBtnBox {
-  border-right: 1px solid lightgrey;
+  color: #00acee;
 }
 .confirmBtnBox {
-  color: #00acee;
+  border-right: 1px solid lightgrey;
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./reviewCard.module.css";
 // import { getYear, getMonth, getDate } from "date-fns";
 import PostImages from "../../postImages/postImages";
@@ -8,7 +8,7 @@ import ReviewUserProfile from "../../../reviewUserProfile/reviewUserProfile";
 
 const ReviewCard = ({
   review,
-  review: { id, content, score, likes, isLike, images, createdAt, updatedAt },
+  review: { id, content, score, likes, isLike, images, createdAt },
   creator: { name, avatarUrl, email },
   isUserReview,
   onOpenDeleteConfirm,
@@ -40,6 +40,10 @@ const ReviewCard = ({
     onOpenEditForm();
   }, [onHandleSelected, onOpenEditForm, review]);
 
+  useEffect(() => {
+    setLiked(isLike);
+    setLikeCount(likes);
+  }, [review]);
   return (
     <div className={styles.ReviewCard}>
       <ReviewUserProfile
@@ -55,13 +59,7 @@ const ReviewCard = ({
           <PostImages images={images.map((file) => file.url)} />
         </div>
       )}
-      <ReviewCardBottom
-        liked={liked}
-        onLike={onLike}
-        onUnlike={onUnlike}
-        date={updatedAt || createdAt}
-        likeCount={likeCount}
-      />
+      <ReviewCardBottom liked={liked} onLike={onLike} onUnlike={onUnlike} date={createdAt} likeCount={likeCount} />
     </div>
   );
 };

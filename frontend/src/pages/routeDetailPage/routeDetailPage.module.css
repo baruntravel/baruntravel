@@ -12,7 +12,7 @@
 }
 .slider__placeNameBox {
   display: flex;
-  top: calc(35vh + 25px);
+  top: calc(35vh + 15px);
   position: absolute;
   right: 10px;
   z-index: 1;

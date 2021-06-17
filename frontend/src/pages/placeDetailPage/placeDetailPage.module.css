@@ -12,7 +12,7 @@
 }
 .imageCounter {
   display: flex;
-  top: calc(35vh + 25px);
+  top: calc(35vh + 15px);
   position: absolute;
   right: 10px;
   z-index: 1;
@@ -38,7 +38,10 @@
   margin-top: 4px;
   margin-bottom: 8px;
 }
-
+.body__rate {
+  display: flex;
+  align-items: center;
+}
 .body__score,
 .body__reviewCount {
   padding-left: 4px;

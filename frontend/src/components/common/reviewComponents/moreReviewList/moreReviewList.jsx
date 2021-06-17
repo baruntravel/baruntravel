@@ -4,10 +4,19 @@ import ReviewList from "../reviewList/reviewList";
 import styles from "./moreReviewList.module.css";
 
 const MoreReviewList = ({
-  setReviewDatas,
-  onClickReviewWrite,
+  userStates,
   onCloseMoreReview,
+  totalReviewCount,
   reviewDatas,
+  onOpenPortalAuth,
+  onUploadReview,
+  onLikeReview,
+  onUnlikeReview,
+  onEditReview,
+  onDeleteReview,
+  onSortReviewForDate,
+  onSortReviewForLike,
+  onGetReviewWhenScroll,
 }) => {
   return (
     <div className={styles.moreReviewList}>
@@ -17,9 +26,18 @@ const MoreReviewList = ({
         </div>
       </header>
       <ReviewList
+        userStates={userStates}
+        totalReviewCount={totalReviewCount}
         reviewDatas={reviewDatas}
-        onClickReviewWrite={onClickReviewWrite}
-        setReviewDatas={setReviewDatas}
+        onOpenPortalAuth={onOpenPortalAuth}
+        onUploadReview={onUploadReview}
+        onLikeReview={onLikeReview}
+        onUnlikeReview={onUnlikeReview}
+        onEditReview={onEditReview}
+        onDeleteReview={onDeleteReview}
+        onSortReviewForDate={onSortReviewForDate}
+        onSortReviewForLike={onSortReviewForLike}
+        onGetReviewWhenScroll={onGetReviewWhenScroll}
       />
     </div>
   );
