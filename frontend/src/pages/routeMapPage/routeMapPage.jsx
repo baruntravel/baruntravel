@@ -4,12 +4,12 @@ import { useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userState } from "../../recoil/userState";
 import { usersRouteItems } from "../../recoil/routeAtom";
-
 import RouteCarousel from "../../components/routeMapPage/routeCarousel/routeCarousel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList, faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import PlaceListModal from "../../components/routeMapPage/placeListModal/placeListModal";
 import Header from "../../components/common/header/header";
+import Navbar from "../../components/common/navbar/navbar";
 import RouteMap from "../../components/routeMapPage/routeMap/routeMap";
 //Todo
 //route 드래그할 때 마다 루트 10개씩 가져옴 -> setRoutes
@@ -45,7 +45,7 @@ const RouteMapPage = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.headerContainer}>
-        <Header />
+        <Header title="루트 지도" />
       </div>
       <RouteMap mapHandler={mapHandler} routesHandler={routesHandler} places={places} routes={routes} />
       <div className={styles.routeCarousel} onDragStart={(e) => e.preventDefault()}>
@@ -78,7 +78,7 @@ const RouteMapPage = () => {
         </div>
         <RouteCarousel initialIndex={index} routes={routes} indexHandler={(e) => indexHandler(e)} />
       </div>
-
+      <Navbar />
       {modalToggle && (
         <div className={styles.modalContainer}>
           <PlaceListModal routes={routes} modalHandler={modalHandler} />

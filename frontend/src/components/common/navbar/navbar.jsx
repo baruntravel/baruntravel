@@ -1,5 +1,4 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faRoute, faHome, faHeart, faUser } from "@fortawesome/free-solid-svg-icons";
+import { SearchOutlined, ShareAltOutlined, HomeOutlined, HeartOutlined, UserOutlined } from "@ant-design/icons";
 import styles from "./navbar.module.css";
 import { useHistory } from "react-router-dom";
 
@@ -13,11 +12,17 @@ const Navbar = () => {
 
   return (
     <div className={styles.container}>
-      <FontAwesomeIcon icon={faSearch} size="2x" onClick={searchClicked} />
+      <SearchOutlined className={styles.icon} onClick={searchClicked} />
+      <ShareAltOutlined className={styles.icon} onClick={routeClicked} />
+      <HomeOutlined className={styles.icon} onClick={homeClicked} />
+      <HeartOutlined className={styles.icon} onClick={heartClicked} />
+      <UserOutlined className={styles.icon} onClick={userClicked} />
+
+      {/* <FontAwesomeIcon icon={faSearch} size="2x" onClick={searchClicked} />
       <FontAwesomeIcon icon={faRoute} size="2x" onClick={routeClicked} />
       <FontAwesomeIcon icon={faHome} size="2x" onClick={homeClicked} />
       <FontAwesomeIcon icon={faHeart} size="2x" onClick={heartClicked} />
-      <FontAwesomeIcon icon={faUser} size="2x" onClick={userClicked} />
+      <FontAwesomeIcon icon={faUser} size="2x" onClick={userClicked} /> */}
     </div>
   );
 };

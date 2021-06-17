@@ -4,8 +4,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  user-select: none;
-  overflow: hidden;
+  /* user-select: none; */
+  /* overflow: hidden; */
 }
 
 .headerContainer {
@@ -22,7 +22,7 @@
   max-height: 128px;
   width: 95%;
   height: 20%;
-  bottom: 1%;
+  bottom: 10%;
 }
 
 .box1 {
@@ -33,7 +33,7 @@
   align-items: flex-end;
   justify-content: space-between;
   z-index: 10;
-  bottom: 22%;
+  bottom: 30%;
 }
 
 .searchHere {
@@ -75,7 +75,6 @@
 .plusButton,
 .minusButton {
   border: 1px solid rgba(0, 0, 0, 0.12);
-
   background-color: #f7f7f7;
   border: none;
   outline: none;

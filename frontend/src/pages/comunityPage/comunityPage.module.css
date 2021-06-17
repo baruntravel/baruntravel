@@ -5,26 +5,34 @@
   flex-direction: column;
 }
 
-.header {
-  width: 100%;
-}
-
 .tabBox {
   display: flex;
   justify-content: center;
-  width: 100%;
+  width: 95%;
+  margin: 8px auto;
 }
 
-.routeTab,
-.placeTab {
-  width: 100px;
+.unclicked {
+  width: 100%;
+  background-color: white;
+  color: black;
+  border: 0.3px #b3b3b3 solid;
+  outline: none;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.clicked {
+  width: 100%;
+  background-color: #ff57b3;
+  color: white;
+  border: 0.3px #b3b3b3 solid;
+  outline: none;
+  font-size: 14px;
+  padding: 0 4px;
+  border-radius: 4px;
 }
 
 .contentBox {
   width: 100%;
-}
-
-.areaTitle {
-  font-size: 24px;
-  text-align: center;
 }
