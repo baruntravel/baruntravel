@@ -30,7 +30,7 @@ const RouteDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
   const history = useHistory();
 
-  const routeId = window.location.pathname.split("/").pop(); // url 마지막 부분이 ID이다.
+  const [routeId, setRouteId] = useState(window.location.pathname.split("/").pop()); // url 마지막 부분이 ID이다.
 
   const [loading, setLoading] = useState(true);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
@@ -44,7 +44,18 @@ const RouteDetailPage = (props) => {
   const [postImages, setPostImages] = useState([]); // 이미지만 저장 (줌을 위한 이미지)
   const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
 
+  // pagination option
+  const [paramsResultInfo, setParamsResultInfo] = useState({ totalReviewCount: 0, last: false });
   const [params, setParams] = useState({ page: 0, size: 5, sortType: "latest" });
+
+  // slider option
+  const [settings, setSettings] = useState({
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  });
 
   // 좋아요 테스트
   const [liked, setLiked] = useState(false);
@@ -149,14 +160,6 @@ const RouteDetailPage = (props) => {
     onGetReviewList();
     // setLoading(false);
   }, [history, routeId, userStates]);
-
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
 
   if (!userStates.isLogin) {
     // 로그인 하지않으면 기존 페이지로 이동

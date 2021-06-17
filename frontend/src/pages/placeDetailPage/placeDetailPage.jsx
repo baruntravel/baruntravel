@@ -43,8 +43,9 @@ const PlaceDetailPage = (props) => {
   const [moreReview, setMoreReview] = useState(false);
   const [paramsResultInfo, setParamsResultInfo] = useState({ totalReviewCount: 0, last: false });
   const [params, setParams] = useState({ page: 0, size: 5, sortType: "latest" });
+
+  // slider option
   const [settings, setSettings] = useState({
-    // slider option
     dots: false,
     infinite: true,
     speed: 500,
