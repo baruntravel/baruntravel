@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useRef } from "react";
 import Portal from "../../portal/portal";
 import styles from "./deleteConfirm.module.css";
 
-const DeleteConfirm = ({ onClose, onDelete }) => {
+const DeleteConfirm = ({ onClose, onDelete, deleteId }) => {
   const portalRef = useRef();
   const handleDelete = useCallback(() => {
-    onDelete();
+    onDelete(deleteId);
     onClose();
   }, [onClose, onDelete]);
   const handleClose = (event) => {
