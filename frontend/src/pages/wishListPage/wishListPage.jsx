@@ -25,7 +25,6 @@ const WishListPage = () => {
 
   useEffect(() => {
     loadMyWishList();
-    console.log(isLogin);
   }, []);
 
   async function loadMyWishList() {

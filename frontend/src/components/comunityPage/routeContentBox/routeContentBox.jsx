@@ -4,10 +4,22 @@ import SortBox from "../../../components/common/sortBox/sortBox";
 import RouteCard from "../../common/routeCard/routeCard";
 import MapButton from "../mapButton/mapButton";
 import { useHistory } from "react-router-dom";
+import { onReceivePlace } from "../../../api/placeAPI";
+import { getRoutesByRegion } from "../../../api/routeAPI";
 
-const RouteContentBox = ({ area }) => {
+const RouteContentBox = ({ areaEng, areaKor }) => {
   const history = useHistory();
   const mapHandler = () => history.push("/route-map");
+  const [routes, setRoutes] = useState([]);
+
+  useEffect(() => {
+    onGetRoutes(1, 10, "best", areaKor);
+  }, []);
+
+  async function onGetRoutes(page, size, sortType, region) {
+    const { content } = await getRoutesByRegion(page, size, sortType, region);
+    setRoutes(content);
+  }
 
   return (
     <div className={styles.container}>
@@ -16,7 +28,7 @@ const RouteContentBox = ({ area }) => {
         <SortBox />
       </div>
       <div className={styles.routeCards}>
-        <RouteCard />
+        <RouteCard routes={routes} />
       </div>
     </div>
   );
