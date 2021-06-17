@@ -29,9 +29,9 @@ export const onReceiveRouteReview = (routeId, params) => {
 };
 
 // 경로 리뷰 수정하기
-export const onEditRouteReview = (routeId, formData) => {
+export const onEditRouteReview = (reviewId, formData) => {
   return axios
-    .post(`/route/review/${routeId}`, formData, {
+    .post(`/route/review/${reviewId}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     })
     .then((res) => true)
@@ -42,9 +42,9 @@ export const onEditRouteReview = (routeId, formData) => {
 };
 
 // 경로 리뷰 삭제하기
-export const onDeleteRouteReview = (routeId) => {
-  axios
-    .delete(`/route/review/${routeId}`)
+export const onDeleteRouteReview = (reviewId) => {
+  return axios
+    .delete(`/route/review/${reviewId}`)
     .then((res) => true)
     .catch((error) => {
       console.error(error);
@@ -53,7 +53,7 @@ export const onDeleteRouteReview = (routeId) => {
 };
 
 export const onHandleRouteReviewLike = (reviewId) => {
-  axios
+  return axios
     .post(`/route/review/${reviewId}/like`)
     .then((res) => true)
     .catch((error) => {
