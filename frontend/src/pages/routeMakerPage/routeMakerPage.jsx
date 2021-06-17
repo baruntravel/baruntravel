@@ -7,12 +7,12 @@ import Navbar from "../../components/common/navbar/navbar";
 import RoutePlacesMap from "../../components/routeMakerPage/routePlacesMap/routePlacesMap";
 import WishList from "../../components/routeMakerPage/wishList/wishList";
 import styles from "./routeMakerPage.module.css";
-import { userState } from "../../recoil/userState";
-import { useRecoilValue } from "recoil";
+import { userState, userWishList } from "../../recoil/userState";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 const RouteMakerPage = (props) => {
   const userStates = useRecoilValue(userState);
-  const [wishList, setWishList] = useState([]);
+  const [wishList, setWishList] = useRecoilState(userWishList);
   const [routeDetail, setRouteDetail] = useState({});
   const [cartItems, setCartItems] = useState([]);
 
@@ -60,19 +60,10 @@ const RouteMakerPage = (props) => {
         <CartIcon items={cartItems} onUpdateItems={getCartList} />
       </div>
       <div className={styles.mapContainer}>
-        <RoutePlacesMap
-          places={routeDetail.places}
-          centerX={routeDetail.centerX}
-          centerY={routeDetail.centerY}
-        />
+        <RoutePlacesMap places={routeDetail.places} centerX={routeDetail.centerX} centerY={routeDetail.centerY} />
       </div>
       <div className={styles.wishListContainer}>
-        <WishList
-          wishList={wishList}
-          onAddCart={onAddCartItem}
-          onDeleteCart={onDeleteCartItem}
-          cartItems={cartItems}
-        />
+        <WishList wishList={wishList} onAddCart={onAddCartItem} onDeleteCart={onDeleteCartItem} cartItems={cartItems} />
       </div>
       <Navbar />
     </div>

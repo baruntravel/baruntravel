@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./placeDetailPage.module.css";
 import Slider from "react-slick";
-// import "../kakaoMapPage/node_modules/slick-carousel/slick/slick.css";
-// import "../kakaoMapPage/node_modules/slick-carousel/slick/slick-theme.css";
 import { StarFilled } from "@ant-design/icons";
 import { Drawer } from "antd";
 import { userState } from "../../recoil/userState";
@@ -32,7 +30,7 @@ const PlaceDetailPage = (props) => {
   const history = useHistory();
   const mapRef = useRef();
 
-  const placeId = window.location.pathname.split("/").pop(); // url 마지막 부분이 ID이다.
+  const [placeId, setPlaceId] = useState(window.location.pathname.split("/").pop()); // url 마지막 부분이 ID이다.
 
   const [loading, setLoading] = useState(true); // 처음에는 로딩이 필요하다
   const [needLogin, setNeedLogin] = useState(false);
@@ -43,17 +41,40 @@ const PlaceDetailPage = (props) => {
   const [placeDetail, setPlaceDetail] = useState({});
   const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
   const [moreReview, setMoreReview] = useState(false);
+  const [paramsResultInfo, setParamsResultInfo] = useState({ totalReviewCount: 0, last: false });
+  const [params, setParams] = useState({ page: 0, size: 5, sortType: "latest" });
+  const [settings, setSettings] = useState({
+    // slider option
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  });
+  // 해당 place의 리뷰를 받아오는 함수
+  const onGetReviewList = useCallback(
+    async (paramsArg) => {
+      if (paramsResultInfo.last) {
+        return;
+      }
+      setParams(paramsArg);
+      const reviews = await onReceivePlaceReview(placeId, paramsArg);
+      setParamsResultInfo({ totalReviewCount: reviews.totalElements, last: reviews.last });
+      if (paramsArg.page > 0) {
+        setReviewDatas((prev) => [...prev].concat(reviews.content));
+      } else {
+        setReviewDatas(reviews.content);
+      }
+    },
+    [paramsResultInfo.last, placeId]
+  );
 
-  const [page, setPage] = useState(0);
-  const [size, setSize] = useState(5);
-  const [sortType, setSortType] = useState("latest");
-  const params = { page, size, sortType };
-
-  const onGetReviewList = useCallback(async () => {
-    // 해당 place의 리뷰를 받아오는 함수
-    const reviews = await onReceivePlaceReview(placeId, params);
-    setReviewDatas(reviews.content);
-  }, [params, placeId]);
+  const onGetReviewWhenScroll = useCallback(() => {
+    if (!params.last) {
+      const updatedParams = { ...params, page: params.page + 1 };
+      onGetReviewList(updatedParams);
+    }
+  }, [onGetReviewList, params]);
 
   const onZoom = useCallback(() => {
     setShowImagesZoom(true);
@@ -90,24 +111,54 @@ const PlaceDetailPage = (props) => {
     setLiked(false);
   }, []);
 
-  const handleSetReviewDatas = useCallback((updated) => {
-    setReviewDatas(updated);
-  }, []);
+  const onSortReviewForDate = useCallback(() => {
+    const updatedParams = { ...params, page: 0, sortType: "latest" };
+    onGetReviewList(updatedParams);
+  }, [onGetReviewList, params]);
+
+  const onSortReviewForLike = useCallback(() => {
+    const updatedParams = { ...params, page: 0, sortType: "best" };
+    onGetReviewList(updatedParams);
+  }, [onGetReviewList, params]);
 
   const onUploadReview = useCallback(
     async (formData) => {
       await onUploadPlaceReview(placeId, formData);
-      onGetReviewList();
+      onSortReviewForDate();
     },
-    [onGetReviewList, placeId]
+    [onSortReviewForDate, placeId]
   );
 
   const onDeleteReview = useCallback(
     async (reviewId) => {
-      await onDeletePlaceReview(placeId, reviewId);
-      onGetReviewList();
+      const result = await onDeletePlaceReview(placeId, reviewId);
+      if (result) {
+        setReviewDatas((prev) => {
+          const updatedDatas = [...prev].filter((review) => review.id !== reviewId);
+          return updatedDatas;
+        });
+      }
     },
-    [onGetReviewList, placeId]
+    [placeId]
+  );
+
+  const onEditReview = useCallback(
+    async (reviewId, formData, updateReview) => {
+      const result = await onEditPlaceReview(placeId, reviewId, formData);
+      if (result) {
+        setReviewDatas((prev) => {
+          const updated = [...prev].map((review) => {
+            if (review.id !== reviewId) {
+              return review;
+            } else {
+              return updateReview;
+            }
+          });
+          return updated;
+        });
+      }
+    },
+    [placeId]
   );
 
   const onLikeReview = useCallback(
@@ -123,19 +174,17 @@ const PlaceDetailPage = (props) => {
     [placeId]
   );
 
-  const onEditReview = useCallback(
-    async (reviewId, formData) => {
-      await onEditPlaceReview(placeId, reviewId, formData);
-      onGetReviewList();
-    },
-    [onGetReviewList, placeId]
-  );
   const onDeleteReviewImage = useCallback(
+    // api 수정 후 적용해야될 함수
     async (reviewId, reviewImageId) => {
       await onDeleteImageInPlaceReview(placeId, reviewId, reviewImageId);
     },
     [placeId]
   );
+
+  const afterSliderChange = useCallback((index) => {
+    setImageIndex(index);
+  }, []);
 
   useEffect(() => {
     async function getPlaceDetail() {
@@ -165,21 +214,12 @@ const PlaceDetailPage = (props) => {
     }
     // placeDetail 받아오는 곳
     getPlaceDetail();
-    onGetReviewList();
+    onGetReviewList(params);
     window.scrollTo(0, 0);
   }, [placeId]);
 
-  const afterSliderChange = useCallback((index) => {
-    setImageIndex(index);
-  }, []);
+  useEffect(() => {}, [placeDetail]);
 
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
   if (!userStates.isLogin) {
     // 로그인 하지 않았을 때 접근 불가 -> 추후에 API 수정 후 고쳐야됨
     history.push("/");
@@ -226,8 +266,8 @@ const PlaceDetailPage = (props) => {
           <div className={styles.body__placeInfo}>
             <div className={styles.body__rate}>
               <StarFilled style={{ color: "#eb2f96" }} />
-              <span className={styles.body__score}>{placeDetail.score}</span>
-              <span className={styles.body__reviewCount}>({reviewDatas.length})</span>
+              <span className={styles.body__score}>{parseInt(placeDetail.score)}</span>
+              <span className={styles.body__reviewCount}>{`(${paramsResultInfo.totalReviewCount})`}</span>
             </div>
             <span className={styles.body__address}>{placeDetail.address}</span>
           </div>
@@ -251,6 +291,7 @@ const PlaceDetailPage = (props) => {
         <div className={styles.reviewList}>
           <ReviewList
             userStates={userStates}
+            totalReviewCount={paramsResultInfo.totalReviewCount}
             reviewDatas={reviewDatas}
             onOpenPortalAuth={onOpenPortalAuth}
             onUploadReview={onUploadReview}
@@ -258,7 +299,8 @@ const PlaceDetailPage = (props) => {
             onUnlikeReview={onUnlikeReview}
             onEditReview={onEditReview}
             onDeleteReview={onDeleteReview}
-            setReviewDatas={handleSetReviewDatas}
+            onSortReviewForDate={onSortReviewForDate}
+            onSortReviewForLike={onSortReviewForLike}
           />
         </div>
         <div className={styles.buttonBox}>
@@ -266,7 +308,6 @@ const PlaceDetailPage = (props) => {
         </div>
       </div>
       <Drawer // 리뷰 더보기
-        className={styles.reviewListDrawer}
         visible={moreReview}
         placement="right"
         width="100vw"
@@ -277,9 +318,19 @@ const PlaceDetailPage = (props) => {
         }}
       >
         <MoreReviewList
-          setReviewDatas={handleSetReviewDatas}
+          userStates={userStates}
           onCloseMoreReview={onCloseMoreReview}
           reviewDatas={reviewDatas}
+          totalReviewCount={paramsResultInfo.totalReviewCount}
+          onOpenPortalAuth={onOpenPortalAuth}
+          onUploadReview={onUploadReview}
+          onLikeReview={onLikeReview}
+          onUnlikeReview={onUnlikeReview}
+          onEditReview={onEditReview}
+          onDeleteReview={onDeleteReview}
+          onSortReviewForDate={onSortReviewForDate}
+          onSortReviewForLike={onSortReviewForLike}
+          onGetReviewWhenScroll={onGetReviewWhenScroll}
         />
       </Drawer>
       {showImagesZoom && <ImagesZoom images={images} onClose={onCloseZoom} index={imageIndex} />}

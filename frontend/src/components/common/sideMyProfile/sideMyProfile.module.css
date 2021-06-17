@@ -21,6 +21,7 @@
 .nicknameBox {
   display: flex;
   flex-direction: column;
+  margin-left: 12px;
 }
 .nicknameBox > span {
   width: 100%;

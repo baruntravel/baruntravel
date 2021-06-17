@@ -5,6 +5,7 @@ import { useCallback } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import Header from "../../components/common/header/header";
+import Navbar from "../../components/common/navbar/navbar";
 import DetailProfileBottom from "../../components/detailProfilePage/detailProfileBottom/detailProfileBottom";
 import DetailProfileCondition from "../../components/detailProfilePage/detailProfileCondition/detailProfileCondition";
 import { userState } from "../../recoil/userState";
@@ -81,6 +82,7 @@ const DetailProfilePage = (props) => {
       <div className={styles.bottom}>
         <DetailProfileBottom />
       </div>
+      <Navbar />
     </div>
   );
 };

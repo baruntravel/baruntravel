@@ -32,11 +32,11 @@ const DeleteConfirm = ({ deleteItemId, onDeleteItem, onClose }) => {
             <p className={styles.confirmText}>삭제하시겠습니까?</p>
           </div>
           <div className={styles.buttonBox}>
-            <div className={styles.closeBtnBox}>
-              <span onClick={onClose}>취소</span>
-            </div>
             <div className={styles.confirmBtnBox}>
               <span onClick={deleteItem}>확인</span>
+            </div>
+            <div className={styles.closeBtnBox}>
+              <span onClick={onClose}>취소</span>
             </div>
           </div>
         </div>
