@@ -37,6 +37,7 @@ const DeleteConfirm = ({ deleteItemId, onDeleteItem, onClose }) => {
             </div>
             <div className={styles.confirmBtnBox} onClick={deleteItem}>
               <span>확인</span>
+            </div>
           </div>
         </div>
       </div>
