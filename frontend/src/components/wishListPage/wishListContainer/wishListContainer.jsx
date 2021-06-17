@@ -2,20 +2,20 @@ import { useState, useEffect, useCallback } from "react";
 import styles from "./wishListContainer.module.css";
 import WishListPortalInput from "../../portal/wishListInputPortal/wishListPortalInput";
 import { CloseOutlined } from "@ant-design/icons";
-import DeleteConfirm from "../deleteConfirm/deleteConfirm";
+// import DeleteConfirm from "../deleteConfirm/deleteConfirm";
+import DeleteConfirm from "../../common/deleteConfirm/deleteConfirm";
 
 const WishListContainer = ({ folderIn, wishlistArray, addNewWishList, deleteWishList }) => {
   const [portalOpened, setPortalOpened] = useState(false);
-  const [deleteID, setDeleteID] = useState();
+  const [deleteItemId, setDeleteItemId] = useState();
 
   const handlePortalOpen = () => setPortalOpened(!portalOpened);
   const handleFolderIn = (e) => {
     e.preventDefault();
     folderIn(e.currentTarget.id);
   };
-  const onOpenDelete = useCallback((id) => setDeleteID(id), []);
-  const onCloseDelete = useCallback(() => setDeleteID(false), []);
-  const handleDelete = () => deleteWishList(deleteID);
+  const onOpenDelete = useCallback((id) => setDeleteItemId(id), []);
+  const onCloseDelete = useCallback(() => setDeleteItemId(false), []);
 
   return (
     <div className={styles.container}>
@@ -41,7 +41,9 @@ const WishListContainer = ({ folderIn, wishlistArray, addNewWishList, deleteWish
         새 찜목록 만들기
       </button>
       {portalOpened && <WishListPortalInput onClose={handlePortalOpen} addNewWishList={addNewWishList} />}
-      {deleteID && <DeleteConfirm onClose={onCloseDelete} onDelete={handleDelete} />}
+      {deleteItemId && (
+        <DeleteConfirm onClose={onCloseDelete} onDeleteItem={deleteWishList} deleteItemId={deleteItemId} />
+      )}
     </div>
   );
 };

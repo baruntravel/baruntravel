@@ -2,15 +2,17 @@ import React from "react";
 import styles from "./wishListPage.module.css";
 import Header from "../../components/common/header/header";
 import Navbar from "../../components/common/navbar/navbar";
-import { userState } from "../../recoil/userState";
-import { useRecoilValue } from "recoil";
 import { useState, useEffect } from "react";
 import WishListContainer from "../../components/wishListPage/wishListContainer/wishListContainer";
 import PlaceContainer from "../../components/wishListPage/placeContainer/placeContainer";
 import { onReceiveWishList, onReceiveWishListPlaces, onAddNewMyWish, onDeleteWishList } from "../../api/wishListAPI";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { userState, userWishList } from "../../recoil/userState";
 
 const WishListPage = () => {
+  // const [userStates, setUserStates] = useRecoilState(userState);
   const { isLogin, name } = useRecoilValue(userState);
+  const [userWishListItems, setUserWishListItems] = useRecoilState(userWishList);
   const [folderToggle, setFolderToggle] = useState(false); // false : out(main), true : in
   const [wishlistArray, setWishlistArray] = useState([]);
   const [places, setPlaces] = useState([]);
@@ -23,11 +25,14 @@ const WishListPage = () => {
   };
   const folderOut = () => setFolderToggle(false);
 
-  useEffect(() => loadMyWishList(), []);
+  useEffect(() => {
+    loadMyWishList();
+  }, []);
 
   async function loadMyWishList() {
     const wishlist = await onReceiveWishList();
     setWishlistArray(wishlist);
+    setUserWishListItems(wishlist);
   }
 
   async function getWishlistPlaces(id) {

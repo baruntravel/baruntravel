@@ -27,7 +27,7 @@ const ComunityPage = () => {
           </button>
         </div>
         <div className={styles.contentBox}>
-          {tabBox === false ? <RouteContentBox area={area} /> : <PlaceContentBox />}
+          {tabBox === false ? <RouteContentBox areaEng={area} areaKor={title} /> : <PlaceContentBox />}
         </div>
         <Navbar />
       </div>
