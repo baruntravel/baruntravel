@@ -1,6 +1,5 @@
 import React from "react";
 import ReviewUserProfile from "../../components/common/reviewUserProfile/reviewUserProfile";
-import DetailHeader from "../../components/common/detailHeader/detailHeader";
 import styles from "./reviewDetailPage.module.css";
 import ReviewCardBottom from "../../components/common/reviewComponents/reviewList/reviewCard/reviewCardBottom/reviewCardBottom";
 import ReviewScoreText from "../../components/common/reviewComponents/reviewScoreText/reviewScoreText";
@@ -20,25 +19,32 @@ const ReviewDetailPage = (props) => {
     likeCheck: false,
     files: [
       {
-        url: "https://i.pinimg.com/564x/d7/ec/75/d7ec75c9e68873ee75b734ac4ab09ced.jpg",
+        url:
+          "https://i.pinimg.com/564x/d7/ec/75/d7ec75c9e68873ee75b734ac4ab09ced.jpg",
       },
       {
-        url: "https://i.pinimg.com/474x/30/5a/21/305a216481dfaaec10fd59cf1f667652.jpg",
+        url:
+          "https://i.pinimg.com/474x/30/5a/21/305a216481dfaaec10fd59cf1f667652.jpg",
       },
       {
-        url: "https://i.pinimg.com/474x/5f/a2/8e/5fa28eae2bdebd6ab2d30690304927b9.jpg",
+        url:
+          "https://i.pinimg.com/474x/5f/a2/8e/5fa28eae2bdebd6ab2d30690304927b9.jpg",
       },
       {
-        url: "https://i.pinimg.com/474x/a6/56/70/a65670944d4bf492a3a71c4a95bb3910.jpg",
+        url:
+          "https://i.pinimg.com/474x/a6/56/70/a65670944d4bf492a3a71c4a95bb3910.jpg",
       },
       {
-        url: "https://i.pinimg.com/474x/e8/58/f3/e858f330363c0fb4240ca8cad087f74d.jpg",
+        url:
+          "https://i.pinimg.com/474x/e8/58/f3/e858f330363c0fb4240ca8cad087f74d.jpg",
       },
       {
-        url: "https://i.pinimg.com/474x/c5/eb/47/c5eb47f58dd27a764f88551151f54893.jpg",
+        url:
+          "https://i.pinimg.com/474x/c5/eb/47/c5eb47f58dd27a764f88551151f54893.jpg",
       },
       {
-        url: "https://i.pinimg.com/474x/5f/a2/8e/5fa28eae2bdebd6ab2d30690304927b9.jpg",
+        url:
+          "https://i.pinimg.com/474x/5f/a2/8e/5fa28eae2bdebd6ab2d30690304927b9.jpg",
       },
     ],
     createdAt: "2021-04-14 09:00:00",
@@ -53,10 +59,18 @@ const ReviewDetailPage = (props) => {
         <ReviewScoreText score={review.score} content={review.content} />
       </div>
       {review.files.map((file, index) => (
-        <img key={index} src={file.url} className={styles.image} alt="사용자 이미지" />
+        <img
+          key={index}
+          src={file.url}
+          className={styles.image}
+          alt="사용자 이미지"
+        />
       ))}
       <div className={styles.reviewBottom}>
-        <ReviewCardBottom date={review.updatedAt || review.createdAt} likeCount={review.likeCount} />
+        <ReviewCardBottom
+          date={review.updatedAt || review.createdAt}
+          likeCount={review.likeCount}
+        />
       </div>
     </div>
   );
