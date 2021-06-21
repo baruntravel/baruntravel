@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Slider from "react-slick";
-// import "../kakaoMapPage/node_modules/slick-carousel/slick/slick.css";
-// import "../kakaoMapPage/node_modules/slick-carousel/slick/slick-theme.css";
 import styles from "./routeDetailPage.module.css";
 import DetailHeader from "../../components/common/detailHeader/detailHeader";
 import ImageMap from "../../components/routeDetailPage/imageMap/imageMap";
@@ -25,12 +23,14 @@ import PlaceInRouteDetail from "../../components/routeDetailPage/placeInRouteDet
 import ImagesZoom from "../../components/common/reviewComponents/imagesZoom/imagesZoom";
 import ReviewList from "../../components/common/reviewComponents/reviewList/reviewList";
 import Header from "../../components/common/header/header";
+import MoreReviewList from "../../components/common/reviewComponents/moreReviewList/moreReviewList";
+import { Drawer } from "antd";
 
 const RouteDetailPage = (props) => {
   const userStates = useRecoilValue(userState);
   const history = useHistory();
 
-  const routeId = window.location.pathname.split("/").pop(); // url 마지막 부분이 ID이다.
+  const [routeId, setRouteId] = useState(window.location.pathname.split("/").pop()); // url 마지막 부분이 ID이다.
 
   const [loading, setLoading] = useState(true);
   const [showImagesZoom, setShowImagesZoom] = useState(false);
@@ -44,7 +44,18 @@ const RouteDetailPage = (props) => {
   const [postImages, setPostImages] = useState([]); // 이미지만 저장 (줌을 위한 이미지)
   const [reviewDatas, setReviewDatas] = useState([]); // 리뷰들을 불러와 저장할 state
 
+  // pagination option
+  const [paramsResultInfo, setParamsResultInfo] = useState({ totalReviewCount: 0, last: false });
   const [params, setParams] = useState({ page: 0, size: 5, sortType: "latest" });
+
+  // slider option
+  const [settings, setSettings] = useState({
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  });
 
   // 좋아요 테스트
   const [liked, setLiked] = useState(false);
@@ -82,36 +93,76 @@ const RouteDetailPage = (props) => {
     setMoreReview(false);
   }, []);
 
-  const onGetReviewList = useCallback(async () => {
-    const reviews = await onReceiveRouteReview(routeId, params);
-    setReviewDatas(reviews.content);
-  }, [routeId]);
-  const onSortReviewForDate = useCallback(() => {}, []);
-  const onSortReviewForLike = useCallback(() => {}, []);
+  const onGetReviewList = useCallback(
+    async (paramsArg) => {
+      if (paramsResultInfo.last && paramsArg.page !== 0) {
+        return;
+      }
+      setParams(paramsArg);
+      const reviews = await onReceiveRouteReview(routeId, paramsArg);
+      setParamsResultInfo({ totalReviewCount: reviews.totalElements, last: reviews.last });
+      if (paramsArg.page > 0) {
+        setReviewDatas((prev) => [...prev].concat(reviews.content));
+      } else {
+        setReviewDatas(reviews.content);
+      }
+    },
+    [paramsResultInfo.last, routeId]
+  );
+
+  const onGetReviewWhenScroll = useCallback(() => {
+    if (!params.last) {
+      const updatedParams = { ...params, page: params.page + 1 };
+      onGetReviewList(updatedParams);
+    }
+  }, [onGetReviewList, params]);
+
+  const onSortReviewForDate = useCallback(() => {
+    const updatedParams = { ...params, page: 0, sortType: "latest" };
+    onGetReviewList(updatedParams);
+  }, [onGetReviewList, params]);
+
+  const onSortReviewForLike = useCallback(() => {
+    const updatedParams = { ...params, page: 0, sortType: "best" };
+    onGetReviewList(updatedParams);
+  }, [onGetReviewList, params]);
 
   const onUploadReview = useCallback(
     async (formData) => {
-      await onUploadRouteReview(routeId, formData); // 추후에 root ID 동적으로 받아오는 걸 구현 후 수정
-      onGetReviewList();
+      const res = await onUploadRouteReview(routeId, formData); // 추후에 root ID 동적으로 받아오는 걸 구현 후 수정
+      if (res) {
+        onSortReviewForDate();
+      }
     },
-    [onGetReviewList, routeId]
+    [onSortReviewForDate, routeId]
   );
 
-  const onEditReview = useCallback(
-    async (reviewId, formData) => {
-      await onEditRouteReview(reviewId, formData);
-      onGetReviewList();
-    },
-    [onGetReviewList]
-  );
+  const onEditReview = useCallback(async (reviewId, formData, updateReview) => {
+    const result = await onEditRouteReview(reviewId, formData);
+    if (result) {
+      setReviewDatas((prev) => {
+        const updated = [...prev].map((review) => {
+          if (review.id !== reviewId) {
+            return review;
+          } else {
+            return updateReview;
+          }
+        });
+        return updated;
+      });
+    }
+  }, []);
 
-  const onDeleteReview = useCallback(
-    async (id) => {
-      await onDeleteRouteReview(id);
-      onGetReviewList();
-    },
-    [onGetReviewList]
-  );
+  const onDeleteReview = useCallback(async (reviewId) => {
+    const result = await onDeleteRouteReview(reviewId);
+    if (result) {
+      setReviewDatas((prev) => {
+        const updatedDatas = [...prev].filter((review) => review.id !== reviewId);
+        return updatedDatas;
+      });
+    }
+  }, []);
+
   const onLikeReview = useCallback((reviewId) => {
     onHandleRouteReviewLike(reviewId);
   }, []);
@@ -146,17 +197,9 @@ const RouteDetailPage = (props) => {
       setLoading(false);
     }
     getRouteDetailInfo();
-    onGetReviewList();
+    onGetReviewList(params);
     // setLoading(false);
   }, [history, routeId, userStates]);
-
-  const settings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
 
   if (!userStates.isLogin) {
     // 로그인 하지않으면 기존 페이지로 이동
@@ -246,27 +289,53 @@ const RouteDetailPage = (props) => {
         </div>
         <div className={styles.reviewList}>
           <ReviewList
+            userStates={userStates}
+            totalReviewCount={paramsResultInfo.totalReviewCount}
+            reviewDatas={reviewDatas}
             onOpenPortalAuth={onOpenPortalAuth}
-            onDeleteReview={onDeleteReview}
             onUploadReview={onUploadReview}
-            onEditReview={onEditReview}
             onLikeReview={onLikeReview}
             onUnlikeReview={onUnlikeReview}
-            reviewDatas={moreReview ? reviewDatas : reviewDatas.slice(0, 4)}
-            userStates={userStates}
+            onEditReview={onEditReview}
+            onDeleteReview={onDeleteReview}
             onSortReviewForDate={onSortReviewForDate}
             onSortReviewForLike={onSortReviewForLike}
           />
         </div>
         {routeDetail.reviewCount > 5 && (
           <div className={styles.buttonBox}>
-            <button className={styles.button} onClick={onOpenMoreReview}>{`${
+            <button className={styles.moreButton} onClick={onOpenMoreReview}>{`${
               routeDetail.reviewCount - 4
             }개의 리뷰 더보기`}</button>
           </div>
         )}
       </section>
-
+      <Drawer // 리뷰 더보기
+        visible={moreReview}
+        placement="right"
+        width="100vw"
+        bodyStyle={{ padding: 0 }}
+        closeIcon={false}
+        style={{
+          overflowY: "hidden",
+        }}
+      >
+        <MoreReviewList
+          userStates={userStates}
+          onCloseMoreReview={onCloseMoreReview}
+          reviewDatas={reviewDatas}
+          totalReviewCount={paramsResultInfo.totalReviewCount}
+          onOpenPortalAuth={onOpenPortalAuth}
+          onUploadReview={onUploadReview}
+          onLikeReview={onLikeReview}
+          onUnlikeReview={onUnlikeReview}
+          onEditReview={onEditReview}
+          onDeleteReview={onDeleteReview}
+          onSortReviewForDate={onSortReviewForDate}
+          onSortReviewForLike={onSortReviewForLike}
+          onGetReviewWhenScroll={onGetReviewWhenScroll}
+        />
+      </Drawer>
       {showImagesZoom && <ImagesZoom images={postImages} onClose={onClose} index={imageIndex} />}
       {openInputName && <InputRootName onClose={onCloseInputName} />}
       {needLogin && <PortalAuth onClose={onClosePortalAuth} />}

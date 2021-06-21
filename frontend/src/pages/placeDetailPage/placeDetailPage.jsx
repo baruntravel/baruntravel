@@ -43,14 +43,16 @@ const PlaceDetailPage = (props) => {
   const [moreReview, setMoreReview] = useState(false);
   const [paramsResultInfo, setParamsResultInfo] = useState({ totalReviewCount: 0, last: false });
   const [params, setParams] = useState({ page: 0, size: 5, sortType: "latest" });
+
+  // slider option
   const [settings, setSettings] = useState({
-    // slider option
     dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
   });
+
   // 해당 place의 리뷰를 받아오는 함수
   const onGetReviewList = useCallback(
     async (paramsArg) => {
@@ -76,41 +78,6 @@ const PlaceDetailPage = (props) => {
     }
   }, [onGetReviewList, params]);
 
-  const onZoom = useCallback(() => {
-    setShowImagesZoom(true);
-  }, []);
-  const onCloseZoom = useCallback(() => {
-    setShowImagesZoom(false);
-  }, []);
-
-  const onClosePortalAuth = useCallback(() => {
-    setNeedLogin(false);
-  }, []);
-  const onOpenPortalAuth = useCallback(() => {
-    setNeedLogin(true);
-  }, []);
-
-  const onOpenMoreReview = useCallback(() => {
-    setMoreReview(true);
-  }, []);
-  const onCloseMoreReview = useCallback(() => {
-    setMoreReview(false);
-  }, []);
-
-  const onClickLike = useCallback(() => {
-    if (userStates.isLogin) {
-      console.log("좋아요 API 호출");
-      setLiked(true);
-    } else {
-      setNeedLogin(true);
-    }
-  }, [userStates]);
-
-  const onClickUnlike = useCallback(() => {
-    console.log("좋아요 취소 API 호출");
-    setLiked(false);
-  }, []);
-
   const onSortReviewForDate = useCallback(() => {
     const updatedParams = { ...params, page: 0, sortType: "latest" };
     onGetReviewList(updatedParams);
@@ -123,8 +90,10 @@ const PlaceDetailPage = (props) => {
 
   const onUploadReview = useCallback(
     async (formData) => {
-      await onUploadPlaceReview(placeId, formData);
-      onSortReviewForDate();
+      const res = await onUploadPlaceReview(placeId, formData);
+      if (res) {
+        onSortReviewForDate();
+      }
     },
     [onSortReviewForDate, placeId]
   );
@@ -181,6 +150,40 @@ const PlaceDetailPage = (props) => {
     },
     [placeId]
   );
+  const onClickLike = useCallback(() => {
+    if (userStates.isLogin) {
+      console.log("좋아요 API 호출");
+      setLiked(true);
+    } else {
+      setNeedLogin(true);
+    }
+  }, [userStates]);
+
+  const onClickUnlike = useCallback(() => {
+    console.log("좋아요 취소 API 호출");
+    setLiked(false);
+  }, []);
+
+  const onZoom = useCallback(() => {
+    setShowImagesZoom(true);
+  }, []);
+  const onCloseZoom = useCallback(() => {
+    setShowImagesZoom(false);
+  }, []);
+
+  const onClosePortalAuth = useCallback(() => {
+    setNeedLogin(false);
+  }, []);
+  const onOpenPortalAuth = useCallback(() => {
+    setNeedLogin(true);
+  }, []);
+
+  const onOpenMoreReview = useCallback(() => {
+    setMoreReview(true);
+  }, []);
+  const onCloseMoreReview = useCallback(() => {
+    setMoreReview(false);
+  }, []);
 
   const afterSliderChange = useCallback((index) => {
     setImageIndex(index);
