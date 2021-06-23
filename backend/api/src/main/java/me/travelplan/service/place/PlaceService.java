@@ -15,17 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class PlaceService {
     private final PlaceRepository placeRepository;
     private final PlaceCategoryRepository placeCategoryRepository;
     private final KakaoMapService kakaoMapService;
 
-    public Place getById(Long placeId) {
-        return placeRepository.findByIdWithCategory(placeId).orElseThrow(PlaceNotFoundException::new);
-    }
-
-    @Transactional
     public Place create(PlaceDto.Request placeDto) {
         Place place = Place.builder()
                 .id(placeDto.getId())
@@ -40,6 +36,16 @@ public class PlaceService {
         Place savedPlace = placeRepository.save(place);
         this.updateDetail(savedPlace.getId());
         return savedPlace;
+    }
+
+    public Place getById(Long placeId, Place place) {
+        if (place.getName() != null && placeRepository.findById(placeId).isEmpty()) {
+            Place savedPlace = placeRepository.save(place);
+            this.updateDetail(place.getId());
+            return savedPlace;
+        }
+
+        return placeRepository.findByIdWithCategory(placeId).orElseThrow(PlaceNotFoundException::new);
     }
 
     //    @Async

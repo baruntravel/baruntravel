@@ -3,11 +3,11 @@ package me.travelplan.web.place;
 import me.travelplan.service.file.domain.File;
 import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.domain.PlaceImage;
-import me.travelplan.service.place.domain.PlaceReview;
 import me.travelplan.service.user.domain.User;
 import me.travelplan.web.common.FileDto;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,6 +17,11 @@ import java.util.stream.Collectors;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR
 )
 public interface PlaceMapper {
+    @Mapping(constant = "PENDING", target = "detailStatus")
+    @Mapping(source = "place.categoryId", target = "category.id")
+    @Mapping(constant = "", target = "openHour")
+    Place dtoToPlace(PlaceDto.Request place);
+
     default PlaceDto.Response entityToResponseDto(Place place, User currentUser) {
         return PlaceDto.Response.builder()
                 .id(place.getId())

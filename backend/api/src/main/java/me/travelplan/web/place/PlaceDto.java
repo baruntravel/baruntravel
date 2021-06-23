@@ -1,17 +1,15 @@
 package me.travelplan.web.place;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 import me.travelplan.web.common.FileDto;
 
 import java.util.List;
 
 public class PlaceDto {
     @Getter
+    @Setter
     @Builder
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class Request {
         private final Long id;
         private final String name;

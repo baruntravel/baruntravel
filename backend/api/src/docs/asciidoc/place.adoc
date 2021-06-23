@@ -24,6 +24,20 @@ include::{snippets}/place-get/path-parameters.adoc[]
 include::{snippets}/place-get/http-response.adoc[]
 include::{snippets}/place-get/response-fields.adoc[]
 
+=== DB에 없는 장소 조회(크롤링 과정 포함)
+
+`GET /place/{id}`
+
+요청 HTTP
+
+include::{snippets}/place-get-withCrawling/http-request.adoc[]
+include::{snippets}/place-get-withCrawling/path-parameters.adoc[]
+include::{snippets}/place-get-withCrawling/request-parameters.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/place-get-withCrawling/http-response.adoc[]
+include::{snippets}/place-get-withCrawling/response-fields.adoc[]
+
 === 좋아요 생성 or 삭제
 
 요청 HTTP
