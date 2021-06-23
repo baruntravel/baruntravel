@@ -29,6 +29,11 @@ public class WishlistController {
         wishlistService.addPlace(wishlistId, request, customUserDetails.getUser());
     }
 
+    @PostMapping("/{wishlistId}/kakaoPlace")
+    public void addKakaoPlace(@PathVariable Long wishlistId, @RequestBody WishlistRequest.AddKakaoPlace request, @CurrentUser CustomUserDetails customUserDetails) {
+        wishlistService.addKakaoPlace(wishlistId, wishlistMapper.dtoToPlace(request), customUserDetails.getUser());
+    }
+
     @GetMapping("/my")
     public List<WishlistResponse.GetMine> getMine(@CurrentUser CustomUserDetails customUserDetails) {
         return wishlistMapper.toGetMine(wishlistService.getMine(customUserDetails.getUser()));

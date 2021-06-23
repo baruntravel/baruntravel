@@ -35,6 +35,18 @@ include::{snippets}/wishlist-addPlace/request-fields.adoc[]
 성공 응답 HTTP
 include::{snippets}/wishlist-addPlace/http-response.adoc[]
 
+=== 카카오 지도에서 찜목록에 장소 추가(크롤링과정포함)
+
+`POST /wishlist/{wishlistId}/kakaoPlace`
+
+요청 HTTP
+include::{snippets}/wishlist-addKakaoPlace/path-parameters.adoc[]
+include::{snippets}/wishlist-addKakaoPlace/http-request.adoc[]
+include::{snippets}/wishlist-addKakaoPlace/request-fields.adoc[]
+
+성공 응답 HTTP
+include::{snippets}/wishlist-addKakaoPlace/http-response.adoc[]
+
 === 자신의 찜목록 조회
 
 `GET /wishlist/my`

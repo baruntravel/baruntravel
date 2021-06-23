@@ -2,6 +2,7 @@ package me.travelplan.service.wishlist;
 
 import lombok.RequiredArgsConstructor;
 import me.travelplan.exception.PermissionDeniedException;
+import me.travelplan.service.place.PlaceService;
 import me.travelplan.service.place.domain.Place;
 import me.travelplan.service.place.exception.PlaceNotFoundException;
 import me.travelplan.service.place.repository.PlaceRepository;
@@ -23,8 +24,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WishlistService {
     private final WishlistRepository wishlistRepository;
-    private final PlaceRepository placeRepository;
     private final WishlistPlaceRepository wishlistPlaceRepository;
+    private final PlaceService placeService;
+    private final PlaceRepository placeRepository;
 
     public Wishlist create(WishlistRequest.Create request) {
         Wishlist wishlist = Wishlist.create(request.getName());
@@ -43,6 +45,21 @@ public class WishlistService {
         wishlistPlaceRepository.save(wishlistPlace);
     }
 
+    public void addKakaoPlace(Long wishlistId, Place place, User user) {
+        Wishlist wishlist = wishlistRepository.findById(wishlistId).orElseThrow(WishlistNotFoundException::new);
+        permissionCheck(user, wishlist);
+        if (placeRepository.findById(place.getId()).isEmpty()) {
+            placeRepository.save(place);
+            placeService.updateDetail(place.getId());
+        }
+        if (wishlistPlaceRepository.findByWishlistIdAndPlaceId(wishlistId, place.getId()).isPresent()) {
+            throw new WishlistPlaceDuplicatedException();
+        }
+        WishlistPlace wishlistPlace = WishlistPlace.create(wishlist, place);
+
+        wishlistPlaceRepository.save(wishlistPlace);
+    }
+
     @Transactional(readOnly = true)
     public List<Wishlist> getMine(User user) {
         return wishlistRepository.findAllByCreatedBy(user);
@@ -50,6 +67,7 @@ public class WishlistService {
 
     @Transactional(readOnly = true)
     public List<WishlistPlace> getPlaces(Long wishlistId) {
+        wishlistRepository.findById(wishlistId).orElseThrow(WishlistNotFoundException::new);
         return wishlistPlaceRepository.findByWishlistId(wishlistId);
     }
 
