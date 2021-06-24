@@ -55,7 +55,7 @@ public class PlaceControllerTest extends MvcTest {
                 .category(PlaceCategory.builder().id("FD6").name("음식점").build())
                 .url("https://place.map.kakao.com/1797997961")
                 .build();
-        given(placeService.getById(any(), any())).willReturn(place);
+        given(placeService.getById(any())).willReturn(place);
 
         // when
         ResultActions results = mockMvc.perform(
@@ -106,11 +106,11 @@ public class PlaceControllerTest extends MvcTest {
                 .category(PlaceCategory.builder().id("FD6").name("음식점").build())
                 .url("https://place.map.kakao.com/1797997961")
                 .build();
-        given(placeService.getById(any(), any())).willReturn(place);
+        given(placeService.getByIdWithCrawling(any())).willReturn(place);
 
         // when
         ResultActions results = mockMvc.perform(
-                get("/place/{id}", 1440347564)
+                get("/place", 1440347564)
                         .param("id", "1440347564")
                         .param("name", "커피 한약방")
                         .param("url", "https://place.map.kakao.com/1440347564")
@@ -125,9 +125,6 @@ public class PlaceControllerTest extends MvcTest {
                 .andDo(document("place-get-withCrawling",
                         getDocumentRequest(),
                         getDocumentResponse(),
-                        pathParameters(
-                                parameterWithName("id").description("장소 식별자")
-                        ),
                         requestParameters(
                                 parameterWithName("id").description("조회할 장소 식별자"),
                                 parameterWithName("name").description("조회할 장소 이름"),

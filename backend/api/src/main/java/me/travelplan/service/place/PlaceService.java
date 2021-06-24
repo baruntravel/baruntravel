@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import me.travelplan.component.kakaomap.KakaoMapPlace;
 import me.travelplan.component.kakaomap.KakaoMapService;
 import me.travelplan.service.place.domain.Place;
-import me.travelplan.service.place.domain.PlaceDetailStatus;
 import me.travelplan.service.place.exception.PlaceNotFoundException;
 import me.travelplan.service.place.repository.PlaceCategoryRepository;
 import me.travelplan.service.place.repository.PlaceRepository;
@@ -23,29 +22,25 @@ public class PlaceService {
     private final KakaoMapService kakaoMapService;
 
     public Place create(PlaceDto.Request placeDto) {
-        Place place = Place.builder()
-                .id(placeDto.getId())
-                .category(placeCategoryRepository.getOne(placeDto.getCategoryId()))
-                .name(placeDto.getName())
-                .url(placeDto.getUrl())
-                .address(placeDto.getAddress())
-                .x(placeDto.getX())
-                .y(placeDto.getY())
-                .detailStatus(PlaceDetailStatus.PENDING)
-                .build();
+        Place place = Place.create(placeDto, placeCategoryRepository.getOne(placeDto.getCategoryId()));
         Place savedPlace = placeRepository.save(place);
         this.updateDetail(savedPlace.getId());
         return savedPlace;
     }
 
-    public Place getById(Long placeId, Place place) {
-        if (place.getName() != null && placeRepository.findById(placeId).isEmpty()) {
+    @Transactional(readOnly = true)
+    public Place getById(Long placeId) {
+        return placeRepository.findByIdWithCategory(placeId).orElseThrow(PlaceNotFoundException::new);
+    }
+
+    public Place getByIdWithCrawling(Place place) {
+        if (place.getName() != null && placeRepository.findById(place.getId()).isEmpty()) {
             Place savedPlace = placeRepository.save(place);
             this.updateDetail(place.getId());
             return savedPlace;
         }
 
-        return placeRepository.findByIdWithCategory(placeId).orElseThrow(PlaceNotFoundException::new);
+        return placeRepository.findByIdWithCategory(place.getId()).orElseThrow(PlaceNotFoundException::new);
     }
 
     //    @Async

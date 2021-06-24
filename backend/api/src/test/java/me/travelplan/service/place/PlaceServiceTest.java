@@ -61,7 +61,7 @@ public class PlaceServiceTest {
     @DisplayName("장소 하나 가져오기")
     public void getById() {
         given(placeRepository.findByIdWithCategory(any())).willReturn(Optional.of(Place.builder().id(1L).build()));
-        Place place = placeService.getById(1L, Place.builder().build());
+        Place place = placeService.getByIdWithCrawling(Place.builder().id(1L).build());
 
         verify(placeRepository, times(1)).findByIdWithCategory(any());
         assertEquals(place.getId(), 1L);
@@ -72,7 +72,7 @@ public class PlaceServiceTest {
     public void getByIdException() {
         given(placeRepository.findByIdWithCategory(any())).willReturn(Optional.empty());
 
-        assertThrows(PlaceNotFoundException.class, () -> placeService.getById(1L, Place.builder().build()));
+        assertThrows(PlaceNotFoundException.class, () -> placeService.getByIdWithCrawling(Place.builder().id(1L).build()));
     }
 
     @Test
@@ -80,7 +80,7 @@ public class PlaceServiceTest {
     public void getByIdWithCrawling() {
         given(placeRepository.findById(any())).willReturn(Optional.empty());
 
-        placeService.getById(1L, Place.builder().id(1234L).name("테스트 장소 이름").build());
+        placeService.getByIdWithCrawling(Place.builder().id(1234L).name("테스트 장소 이름").build());
 
         verify(placeRepository, times(1)).save(any());
     }

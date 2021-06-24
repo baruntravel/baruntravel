@@ -49,7 +49,6 @@ Content-Disposition: form-data; name="score";
 
 3.5
 
-
 ###
 
 DELETE {{apiUrl}}/place/123/review/2
