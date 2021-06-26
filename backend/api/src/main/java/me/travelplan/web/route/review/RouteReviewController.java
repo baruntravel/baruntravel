@@ -30,10 +30,10 @@ public class RouteReviewController {
 
     @GetMapping("/{id}/reviews")
     public Page<RouteReviewResponse.GetList> getList(@PathVariable Long id, PageDto pageDto, @CurrentUser CustomUserDetails customUserDetails) {
-        List<RouteReview> content = routeReviewService.getList(id, pageDto).getContent();
-        List<RouteReviewResponse.GetList> getList = routeReviewMapper.entityToResponseReviewList(content, customUserDetails);
+        Page<RouteReview> routeReviewPage = routeReviewService.getList(id, pageDto);
+        List<RouteReviewResponse.GetList> getList = routeReviewMapper.entityToResponseReviewList(routeReviewPage.getContent(), customUserDetails);
 
-        return new PageImpl<>(getList, pageDto.of(), content.size());
+        return new PageImpl<>(getList, pageDto.of(), routeReviewPage.getTotalElements());
     }
 
     @PostMapping("/review/{id}")

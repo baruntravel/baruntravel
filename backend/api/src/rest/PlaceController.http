@@ -1,16 +1,22 @@
+GET {{apiUrl}}/place/1440347564?id=1440347564&name=커피 한약방&address=서울 중구 삼일대로12길 16-6 (우)04542&url=https://place.map.kakao.com/1440347564&x=37.554619995803215&y=126.91083170563417&categoryId=CE7
+Content-Type: application/json
+Authorization: {{ authorizationToken }}
+
+###
+
 GET {{apiUrl}}/place/1440347564
 Content-Type: application/json
 Authorization: {{ authorizationToken }}
 
 ###
 
-GET {{apiUrl}}/place/1440347564/review?size=10&page=1&sortType=best
+GET {{apiUrl}}/place/1797997961/review?size=5&page=1&sortType=best
 Content-Type: application/json
 Authorization: {{ authorizationToken }}
 
 ###
 
-POST {{apiUrl}}/place/1440347564/review
+POST {{apiUrl}}/place/1797997961/review
 Content-Type: multipart/form-data; boundary=boundary
 Authorization: {{ authorizationToken }}
 
@@ -43,7 +49,6 @@ Content-Disposition: form-data; name="score";
 
 3.5
 
-
 ###
 
 DELETE {{apiUrl}}/place/123/review/2
@@ -52,7 +57,7 @@ Authorization: {{ authorizationToken }}
 
 ###
 
-POST {{apiUrl}}/place/123/like
+POST {{apiUrl}}/place/1440347564/like
 Content-Type: application/json
 Authorization: {{ authorizationToken }}
 

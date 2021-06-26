@@ -1,8 +1,8 @@
 package me.travelplan.web.cart;
 
+import me.travelplan.security.userdetails.CustomUserDetails;
 import me.travelplan.service.cart.domain.CartPlace;
 import me.travelplan.service.place.domain.Place;
-import me.travelplan.service.user.domain.User;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -21,7 +21,7 @@ public interface CartPlaceMapper {
     @Mapping(constant = "", target = "openHour")
     Place dtoToPlace(CartPlaceRequest.AddPlace place);
 
-    default CartPlaceResponse.GetList toGetListResponse(List<CartPlace> cartPlaces, User user) {
+    default CartPlaceResponse.GetList toGetListResponse(List<CartPlace> cartPlaces, CustomUserDetails customUserDetails) {
         List<CartPlaceDto.Place> cartPlaceList = new ArrayList<>();
         cartPlaces.forEach(cartPlace -> {
             CartPlaceDto.Place place = CartPlaceDto.Place.builder()
@@ -30,7 +30,7 @@ public interface CartPlaceMapper {
                     .address(cartPlace.getPlace().getAddress())
                     .categoryId(cartPlace.getPlace().getCategory().getId())
                     .categoryName(cartPlace.getPlace().getCategory().getName())
-                    .likeCheck(cartPlace.getPlace().isLike(user))
+                    .likeCheck(cartPlace.getPlace().isLike(customUserDetails))
                     .url(cartPlace.getPlace().getUrl())
                     .x(cartPlace.getPlace().getX())
                     .y(cartPlace.getPlace().getY())

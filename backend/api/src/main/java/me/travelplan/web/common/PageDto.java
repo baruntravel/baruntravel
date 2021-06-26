@@ -2,6 +2,7 @@ package me.travelplan.web.common;
 
 import lombok.Getter;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @Getter
 public class PageDto {
@@ -28,7 +29,7 @@ public class PageDto {
         this.sortType = sortType;
     }
 
-    public PageRequest of() {
-        return PageRequest.of(page - 1, size);
+    public Pageable of() {
+        return PageRequest.of(this.page - 1, this.size);
     }
 }

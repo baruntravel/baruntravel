@@ -25,18 +25,18 @@ public class RoutesController {
 
     @GetMapping
     public Page<RouteResponse.GetListByRegion> getListByRegion(PageDto pageDto, RouteRequest.GetListByRegion request) {
-        List<Route> content = routeService.getListByRegion(request,pageDto).getContent();
-        List<RouteResponse.GetListByRegion> getList = routeMapper.toListResponse(content);
+        Page<Route> routePage = routeService.getListByRegion(request, pageDto);
+        List<RouteResponse.GetListByRegion> getList = routeMapper.toListResponse(routePage.getContent());
 
-        return new PageImpl<>(getList, pageDto.of(), content.size());
+        return new PageImpl<>(getList, pageDto.of(), routePage.getTotalElements());
     }
 
     @GetMapping("/coordinate")
     public Page<RouteResponse.GetListByCoordinate> getListByCoordinate(PageDto pageDto, RouteRequest.GetListCoordinate request, @CurrentUser CustomUserDetails customUserDetails) {
-        List<Route> content = routeService.getListByCoordinate(request, pageDto).getContent();
-        List<RouteResponse.GetListByCoordinate> getList = routeMapper.toListResponse(content, customUserDetails);
+        Page<Route> routePage = routeService.getListByCoordinate(request, pageDto);
+        List<RouteResponse.GetListByCoordinate> getList = routeMapper.toListResponse(routePage.getContent(), customUserDetails);
 
-        return new PageImpl<>(getList, pageDto.of(), content.size());
+        return new PageImpl<>(getList, pageDto.of(), routePage.getTotalElements());
     }
 
     @GetMapping("/my")

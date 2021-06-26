@@ -1,10 +1,11 @@
 package me.travelplan.service.place.domain;
 
 import lombok.*;
-import me.travelplan.config.jpa.BaseEntity;
-import me.travelplan.service.file.domain.File;
 import me.travelplan.component.kakaomap.KakaoMapPlace;
-import me.travelplan.service.user.domain.User;
+import me.travelplan.config.jpa.BaseEntity;
+import me.travelplan.security.userdetails.CustomUserDetails;
+import me.travelplan.service.file.domain.File;
+import me.travelplan.web.place.PlaceDto;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -50,8 +51,8 @@ public class Place extends BaseEntity {
     private List<PlaceImage> images;
     private String openHour;
 
-    public boolean isLike(User user) {
-        return this.placeLikes.stream().anyMatch(placeLike -> placeLike.getCreatedBy().getId().equals(user.getId()));
+    public boolean isLike(CustomUserDetails customUserDetails) {
+        return customUserDetails != null && this.placeLikes.stream().anyMatch(placeLike -> placeLike.getCreatedBy().getId().equals(customUserDetails.getUser().getId()));
     }
 
     public Place setFromKakaoMapPlace(KakaoMapPlace kakaoMapPlace) {
@@ -72,5 +73,18 @@ public class Place extends BaseEntity {
 
     public Double getAverageReviewScore() {
         return this.reviews.stream().mapToDouble(PlaceReview::getScore).average().orElse(0);
+    }
+
+    public static Place create(PlaceDto.Request request, PlaceCategory category) {
+        return Place.builder()
+                .id(request.getId())
+                .category(category)
+                .name(request.getName())
+                .url(request.getUrl())
+                .address(request.getAddress())
+                .x(request.getX())
+                .y(request.getY())
+                .detailStatus(PlaceDetailStatus.PENDING)
+                .build();
     }
 }

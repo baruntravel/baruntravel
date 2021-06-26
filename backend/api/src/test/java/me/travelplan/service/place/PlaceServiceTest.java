@@ -28,9 +28,12 @@ public class PlaceServiceTest {
     @InjectMocks
     private PlaceService placeService;
 
-    @Mock private PlaceRepository placeRepository;
-    @Mock private PlaceCategoryRepository placeCategoryRepository;
-    @Mock private KakaoMapService kakaoMapService;
+    @Mock
+    private PlaceRepository placeRepository;
+    @Mock
+    private PlaceCategoryRepository placeCategoryRepository;
+    @Mock
+    private KakaoMapService kakaoMapService;
 
     @Test
     @DisplayName("장소 생성")
@@ -58,7 +61,8 @@ public class PlaceServiceTest {
     @DisplayName("장소 하나 가져오기")
     public void getById() {
         given(placeRepository.findByIdWithCategory(any())).willReturn(Optional.of(Place.builder().id(1L).build()));
-        Place place = placeService.getById(1L);
+        Place place = placeService.getByIdWithCrawling(Place.builder().id(1L).build());
+
         verify(placeRepository, times(1)).findByIdWithCategory(any());
         assertEquals(place.getId(), 1L);
     }
@@ -67,6 +71,17 @@ public class PlaceServiceTest {
     @DisplayName("장소 하나 가져오기 : 장소가 없을경우")
     public void getByIdException() {
         given(placeRepository.findByIdWithCategory(any())).willReturn(Optional.empty());
-        assertThrows(PlaceNotFoundException.class, () -> placeService.getById(1L));
+
+        assertThrows(PlaceNotFoundException.class, () -> placeService.getByIdWithCrawling(Place.builder().id(1L).build()));
+    }
+
+    @Test
+    @DisplayName("DB에 없는 장소 조회(크롤링 과정 포함)")
+    public void getByIdWithCrawling() {
+        given(placeRepository.findById(any())).willReturn(Optional.empty());
+
+        placeService.getByIdWithCrawling(Place.builder().id(1234L).name("테스트 장소 이름").build());
+
+        verify(placeRepository, times(1)).save(any());
     }
 }
