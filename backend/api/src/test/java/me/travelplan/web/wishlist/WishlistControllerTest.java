@@ -98,13 +98,56 @@ class WishlistControllerTest extends MvcTest {
 
     @Test
     @WithMockCustomUser
+    @DisplayName("카카오지도를 보고 찜목록에 장소 추가(장소 정보받아서 저장)")
+    public void addKakaoPlace() throws Exception {
+        WishlistRequest.AddKakaoPlace request = WishlistRequest.AddKakaoPlace.builder()
+                .id(123L)
+                .name("테스트 장소이름")
+                .x(36.5)
+                .y(127.12)
+                .url("www.naver.com")
+                .address("서울 종로구 종로3길 17")
+                .categoryId("CE7")
+                .categoryName("카페")
+                .build();
+
+        ResultActions results = mockMvc.perform(
+                post("/wishlist/{wishlistId}/kakaoPlace", 1L)
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+        );
+
+        results.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("wishlist-addKakaoPlace",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("wishlistId").description("찜목록 식별자")
+                        ),
+                        requestFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("장소 식별자"),
+                                fieldWithPath("name").type(JsonFieldType.STRING).description("장소 이름"),
+                                fieldWithPath("address").type(JsonFieldType.STRING).description("장소 주소"),
+                                fieldWithPath("x").type(JsonFieldType.NUMBER).description("장소 x 좌표"),
+                                fieldWithPath("y").type(JsonFieldType.NUMBER).description("장소 y 좌표"),
+                                fieldWithPath("url").type(JsonFieldType.STRING).description("장소 url"),
+                                fieldWithPath("categoryId").type(JsonFieldType.STRING).description("장소 카테고리 식별자"),
+                                fieldWithPath("categoryName").type(JsonFieldType.STRING).description("장소 카테고리 이름")
+                        )
+                ));
+    }
+
+    @Test
+    @WithMockCustomUser
     @DisplayName("자신의 찜목록 조회")
     public void getMine() throws Exception {
         List<Wishlist> wishlists = new ArrayList<>();
         Wishlist wishlist1 = Wishlist.builder().id(1L).name("서울 여행")
                 .wishlistPlaces(IntStream.range(1, 3).mapToObj(i -> WishlistPlace.builder().place(Place.builder().name("카페" + i).thumbnail(File.builder().url("cafe" + i + ".jpg").build()).build()).build()).collect(Collectors.toList()))
                 .build();
-        Wishlist wishlist2 = Wishlist.builder().id(1L).name("부산 여행")
+        Wishlist wishlist2 = Wishlist.builder().id(2L).name("부산 여행")
                 .wishlistPlaces(IntStream.range(1, 3).mapToObj(i -> WishlistPlace.builder().place(Place.builder().name("밥집" + i).thumbnail(File.builder().url("babzip" + i + ".jpg").build()).build()).build()).collect(Collectors.toList()))
                 .build();
         wishlists.add(wishlist1);
